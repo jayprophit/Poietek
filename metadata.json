@@ -1,0 +1,6 @@
+{
+  "name": "Studio DAW Suite",
+  "description": "Universal Virtual Studio DAW Station with Multi-Track Waveform Sequencer, Channel Rack, Master Console Mixer, MPC Sampler, and Modular Hardware Audio Rack.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
