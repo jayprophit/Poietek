@@ -1,0 +1,68 @@
+import { PresetItem } from '../types';
+
+export const FACTORY_PRESETS: PresetItem[] = [
+  {
+    id: 'preset_90s_boombap',
+    name: '90s Boom Bap Golden Era Rig',
+    description: 'Classic MPC Studio drum pad paired with lo-fi SP-404 vinyl FX, sub synth bass, and SSL mixer.',
+    category: 'factory',
+    bpm: 92,
+    createdAt: '2026-08-12',
+    color: '#f59e0b',
+    modules: [
+      { id: 'bb_mpc', type: 'mpc', title: 'MPC Studio Drum Pad', tapeLabel: 'BOOM BAP KIT', colorTag: 'amber' },
+      { id: 'bb_sp404', type: 'sp404', title: 'SP-404 MKII Sampler', tapeLabel: 'VINYL DUST MFX', colorTag: 'rose' },
+      { id: 'bb_synth', type: 'keyboard', title: 'Analog Subtractive Synth', tapeLabel: 'SUB BASS LEAD', colorTag: 'violet' },
+      { id: 'bb_chop', type: 'chop_lab', title: 'Chop Lab Stem Slicer', tapeLabel: 'SOUL SAMPLE CHOPS', colorTag: 'emerald' },
+      { id: 'bb_mixer', type: 'mixer', title: 'SSL 9000 Master Mixer', tapeLabel: 'MASTER CONSOLE', colorTag: 'cyan' },
+    ],
+  },
+  {
+    id: 'preset_lofi_ambient',
+    name: 'Lo-Fi Chill & Tape Warmth Stack',
+    description: 'Vintage tape-saturated SP-404 sampler, Rhodes keyboard, Melodic pitch editor, and D-Groove shuffle.',
+    category: 'factory',
+    bpm: 80,
+    createdAt: '2026-08-12',
+    color: '#10b981',
+    modules: [
+      { id: 'lf_sp404', type: 'sp404', title: 'SP-404 MKII Sampler', tapeLabel: 'TAPE WARMTH', colorTag: 'rose' },
+      { id: 'lf_keys', type: 'keyboard', title: 'Analog Subtractive Synth', tapeLabel: 'RHODES CHORDS', colorTag: 'emerald' },
+      { id: 'lf_pitch', type: 'melodyne_pitch', title: 'Pro Vocal Pitch Editor', tapeLabel: 'AUTO TUNER', colorTag: 'violet' },
+      { id: 'lf_groove', type: 'd_groove', title: 'D-Groove Shuffle Pool', tapeLabel: 'LAZY SWING 62%', colorTag: 'gold' },
+      { id: 'lf_mixer', type: 'mixer', title: 'SSL 9000 Master Mixer', tapeLabel: 'CHILL MASTER', colorTag: 'neutral' },
+    ],
+  },
+  {
+    id: 'preset_trap_synth',
+    name: 'Modern 808 Trap & Drill Rig',
+    description: 'Studio Drum Computer with 808 sub bass, Pitch Editor, Piano Roll MIDI sequencer, and Combinator bus.',
+    category: 'genre',
+    bpm: 140,
+    createdAt: '2026-08-12',
+    color: '#ef4444',
+    modules: [
+      { id: 'tr_drums', type: 'drum_machines', title: 'Studio Drum Computer', tapeLabel: '808 TRAP KIT', colorTag: 'rose' },
+      { id: 'tr_roll', type: 'piano_roll', title: 'Universal Piano Roll Grid', tapeLabel: 'HI-HAT ROLLS', colorTag: 'cyan' },
+      { id: 'tr_synth', type: 'keyboard', title: 'Analog Subtractive Synth', tapeLabel: '808 SUB SLIDE', colorTag: 'amber' },
+      { id: 'tr_pitch', type: 'melodyne_pitch', title: 'Pro Vocal Pitch Editor', tapeLabel: 'DRILL AUTO-TUNE', colorTag: 'violet' },
+      { id: 'tr_mixer', type: 'mixer', title: 'SSL 9000 Master Mixer', tapeLabel: 'TRAP CONSOLE', colorTag: 'neutral' },
+    ],
+  },
+  {
+    id: 'preset_acoustic_vocal',
+    name: 'Studio Acoustic & Vocal Production Suite',
+    description: 'E-Drum Mesh Kit, Vocal Pitch Editor, Circle of Fifths Harmony Wheel, and Waveform Sequencer.',
+    category: 'vintage',
+    bpm: 110,
+    createdAt: '2026-08-12',
+    color: '#8b5cf6',
+    modules: [
+      { id: 'ac_edrum', type: 'edrum', title: 'E-Drum Mesh Kit', tapeLabel: 'ACOUSTIC KIT', colorTag: 'gold' },
+      { id: 'ac_pitch', type: 'melodyne_pitch', title: 'Pro Vocal Pitch Editor', tapeLabel: 'VOCAL HARMONIZER', colorTag: 'violet' },
+      { id: 'ac_circle', type: 'circle_fifths', title: 'Circle of Fifths Harmony Wheel', tapeLabel: 'CHORD PROGRESSION', colorTag: 'cyan' },
+      { id: 'ac_wave', type: 'wave_sequencer', title: 'Multi-Track Audio Waveforms', tapeLabel: 'STEM TIMELINE', colorTag: 'amber' },
+      { id: 'ac_mixer', type: 'mixer', title: 'SSL 9000 Master Mixer', tapeLabel: 'ANALOG DESK', colorTag: 'emerald' },
+    ],
+  },
+];

@@ -1,151 +1,330 @@
-import React, { useState } from 'react';
-import { WorkspaceType, MasterState } from '../../types';
-import { Radio, RefreshCw, Zap, Sliders, Check, Plus, Trash2, ArrowRightLeft } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { MasterState, RackModuleItem } from '../../types';
+import { Radio, RefreshCw, Trash2, ArrowRightLeft, Palette, Sliders, Zap } from 'lucide-react';
 
 interface StudioRearPanelProps {
   masterState: MasterState;
+  rackModules?: RackModuleItem[];
   onToggleFlip: () => void;
 }
 
 interface PatchConnection {
   id: string;
-  fromUnit: string;
+  fromUnitId: string;
+  fromUnitName: string;
   fromJack: string;
-  fromX: number; // percentage
-  fromY: number; // px
-  toUnit: string;
+  fromX: number; // SVG pixel coordinate
+  fromY: number; // SVG pixel coordinate
+  toUnitId: string;
+  toUnitName: string;
   toJack: string;
-  toX: number; // percentage
-  toY: number; // px
+  toX: number; // SVG pixel coordinate
+  toY: number; // SVG pixel coordinate
   color: string;
 }
 
-export const StudioRearPanel: React.FC<StudioRearPanelProps> = ({ masterState, onToggleFlip }) => {
-  // Preset patch cables representing signal flow
+interface JackPort {
+  id: string;
+  unitId: string;
+  unitName: string;
+  jackName: string;
+  type: 'audio_out' | 'audio_in' | 'cv_out' | 'cv_in' | 'gate_out' | 'gate_in';
+}
+
+export const StudioRearPanel: React.FC<StudioRearPanelProps> = ({
+  masterState,
+  rackModules = [],
+  onToggleFlip,
+}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  // Active patch cable connections
   const [connections, setConnections] = useState<PatchConnection[]>([
     {
       id: 'cable_1',
-      fromUnit: 'MPC Drum Sampler',
-      fromJack: 'Main Audio Out L',
-      fromX: 25,
-      fromY: 180,
-      toUnit: 'Hardware Interface',
-      toJack: 'Audio In 1',
-      toX: 18,
-      toY: 60,
-      color: '#ef4444', // Red cable
+      fromUnitId: 'hardware_host',
+      fromUnitName: 'Hardware Interface',
+      fromJack: 'Audio Out L',
+      fromX: 180,
+      fromY: 85,
+      toUnitId: 'master_mixer',
+      toUnitName: 'Master SSL Mixer',
+      toJack: 'Main In L',
+      toX: 180,
+      toY: 480,
+      color: '#ef4444',
     },
     {
       id: 'cable_2',
-      fromUnit: 'MPC Drum Sampler',
-      fromJack: 'Main Audio Out R',
-      fromX: 30,
-      fromY: 180,
-      toUnit: 'Hardware Interface',
-      toJack: 'Audio In 2',
-      toX: 23,
-      toY: 60,
-      color: '#ef4444', // Red cable
+      fromUnitId: 'hardware_host',
+      fromUnitName: 'Hardware Interface',
+      fromJack: 'Audio Out R',
+      fromX: 230,
+      fromY: 85,
+      toUnitId: 'master_mixer',
+      toUnitName: 'Master SSL Mixer',
+      toJack: 'Main In R',
+      toX: 230,
+      toY: 480,
+      color: '#ef4444',
     },
     {
       id: 'cable_3',
-      fromUnit: 'Analog Synth Engine',
-      fromJack: 'CV Pitch Out',
-      fromX: 60,
-      fromY: 340,
-      toUnit: 'Matrix Sequencer',
-      toJack: 'CV Gate In',
-      toX: 75,
-      toY: 220,
-      color: '#eab308', // Yellow CV cable
-    },
-    {
-      id: 'cable_4',
-      fromUnit: 'SP-404 FX Unit',
-      fromJack: 'Send FX 1 Out',
-      fromX: 82,
-      fromY: 180,
-      toUnit: 'Master Studio Mixer',
-      toJack: 'Aux Return L/R',
-      toX: 45,
-      toY: 340,
-      color: '#3b82f6', // Cyan audio cable
+      fromUnitId: 'subtractor_1',
+      fromUnitName: 'Subtractor Synth',
+      fromJack: 'Audio Out L',
+      fromX: 300,
+      fromY: 260,
+      toUnitId: 'rv7000_1',
+      toUnitName: 'RV7000 Reverb',
+      toJack: 'Audio In L',
+      toX: 300,
+      toY: 370,
+      color: '#eab308',
     },
   ]);
 
-  const [selectedJack, setSelectedJack] = useState<{
-    unit: string;
-    jack: string;
-    x: number;
-    y: number;
-  } | null>(null);
-
+  // Selected cable color for new patch cords
+  const [activeColor, setActiveColor] = useState<string>('#ef4444');
   const cableColors = ['#ef4444', '#f97316', '#eab308', '#10b981', '#06b6d4', '#8b5cf6', '#ec4899'];
 
-  const handleJackClick = (unit: string, jack: string, x: number, y: number) => {
-    if (!selectedJack) {
-      setSelectedJack({ unit, jack, x, y });
-    } else {
-      // Connect
-      if (selectedJack.unit === unit && selectedJack.jack === jack) {
-        setSelectedJack(null);
-        return;
+  // Dragging state for creating or moving cable connections
+  const [dragging, setDragging] = useState<{
+    fromUnitId: string;
+    fromUnitName: string;
+    fromJack: string;
+    startX: number;
+    startY: number;
+    currentX: number;
+    currentY: number;
+    cableIdToReplace?: string;
+  } | null>(null);
+
+  // Store element positions of jacks registered on DOM
+  const jackCoordsRef = useRef<Map<string, { x: number; y: number }>>(new Map());
+
+  // Register jack coordinates into our map
+  const registerJackRef = (key: string, el: HTMLDivElement | null) => {
+    if (!el || !containerRef.current) return;
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const jackRect = el.getBoundingClientRect();
+    const x = jackRect.left + jackRect.width / 2 - containerRect.left;
+    const y = jackRect.top + jackRect.height / 2 - containerRect.top;
+    jackCoordsRef.current.set(key, { x, y });
+  };
+
+  // Mouse move handler for active cable dragging
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!dragging || !containerRef.current) return;
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const currentX = e.clientX - containerRect.left;
+    const currentY = e.clientY - containerRect.top;
+    setDragging((prev) => (prev ? { ...prev, currentX, currentY } : null));
+  };
+
+  // Mouse up or click on background to cancel or drop dragging
+  const handleMouseUp = () => {
+    if (dragging) {
+      if (dragging.cableIdToReplace) {
+        // Disconnected the cable into open air
+        setConnections((prev) => prev.filter((c) => c.id !== dragging.cableIdToReplace));
       }
-      const newCable: PatchConnection = {
-        id: `cable_${Date.now()}`,
-        fromUnit: selectedJack.unit,
-        fromJack: selectedJack.jack,
-        fromX: selectedJack.x,
-        fromY: selectedJack.y,
-        toUnit: unit,
-        toJack: jack,
-        toX: x,
-        toY: y,
-        color: cableColors[Math.floor(Math.random() * cableColors.length)],
-      };
-      setConnections((prev) => [...prev, newCable]);
-      setSelectedJack(null);
+      setDragging(null);
     }
   };
 
-  const removeCable = (id: string) => {
-    setConnections((prev) => prev.filter((c) => c.id !== id));
+  // Click or drop onto a Jack Port
+  const handleJackPortMouseDown = (
+    unitId: string,
+    unitName: string,
+    jackName: string,
+    e: React.MouseEvent
+  ) => {
+    e.stopPropagation();
+    const key = `${unitId}_${jackName}`;
+    const coords = jackCoordsRef.current.get(key);
+    if (!coords) return;
+
+    // Check if there is already a cable attached at this jack to drag off
+    const existingCable = connections.find(
+      (c) =>
+        (c.fromUnitId === unitId && c.fromJack === jackName) ||
+        (c.toUnitId === unitId && c.toJack === jackName)
+    );
+
+    if (existingCable) {
+      // Pick up existing cable end
+      const isFrom = existingCable.fromUnitId === unitId && existingCable.fromJack === jackName;
+      const otherUnitId = isFrom ? existingCable.toUnitId : existingCable.fromUnitId;
+      const otherUnitName = isFrom ? existingCable.toUnitName : existingCable.fromUnitName;
+      const otherJack = isFrom ? existingCable.toJack : existingCable.fromJack;
+      const otherX = isFrom ? existingCable.toX : existingCable.fromX;
+      const otherY = isFrom ? existingCable.toY : existingCable.fromY;
+
+      setDragging({
+        fromUnitId: otherUnitId,
+        fromUnitName: otherUnitName,
+        fromJack: otherJack,
+        startX: otherX,
+        startY: otherY,
+        currentX: coords.x,
+        currentY: coords.y,
+        cableIdToReplace: existingCable.id,
+      });
+    } else {
+      // Start fresh new cable from this jack
+      setDragging({
+        fromUnitId: unitId,
+        fromUnitName: unitName,
+        fromJack: jackName,
+        startX: coords.x,
+        startY: coords.y,
+        currentX: coords.x,
+        currentY: coords.y,
+      });
+    }
   };
 
-  const resetDefaultRouting = () => {
-    setConnections([
-      { id: 'c1', fromUnit: 'Active Unit', fromJack: 'Main Out L', fromX: 20, fromY: 180, toUnit: 'Hardware Interface', toJack: 'In 1', toX: 18, toY: 60, color: '#ef4444' },
-      { id: 'c2', fromUnit: 'Active Unit', fromJack: 'Main Out R', fromX: 25, fromY: 180, toUnit: 'Hardware Interface', toJack: 'In 2', toX: 23, toY: 60, color: '#ef4444' },
-      { id: 'c3', fromUnit: 'Studio Mixer', fromJack: 'Send 1', fromX: 70, fromY: 340, toUnit: 'SP-404 FX', toJack: 'FX In', toX: 80, toY: 180, color: '#3b82f6' },
-    ]);
+  const handleJackPortMouseUp = (
+    unitId: string,
+    unitName: string,
+    jackName: string,
+    e: React.MouseEvent
+  ) => {
+    e.stopPropagation();
+    if (!dragging) return;
+
+    // Don't connect to self
+    if (dragging.fromUnitId === unitId && dragging.fromJack === jackName) {
+      setDragging(null);
+      return;
+    }
+
+    const key = `${unitId}_${jackName}`;
+    const coords = jackCoordsRef.current.get(key);
+    if (!coords) return;
+
+    // Remove existing cable if we were replacing one
+    let filtered = connections;
+    if (dragging.cableIdToReplace) {
+      filtered = connections.filter((c) => c.id !== dragging.cableIdToReplace);
+    }
+
+    const newCable: PatchConnection = {
+      id: `cable_${Date.now()}`,
+      fromUnitId: dragging.fromUnitId,
+      fromUnitName: dragging.fromUnitName,
+      fromJack: dragging.fromJack,
+      fromX: dragging.startX,
+      fromY: dragging.startY,
+      toUnitId: unitId,
+      toUnitName: unitName,
+      toJack: jackName,
+      toX: coords.x,
+      toY: coords.y,
+      color: activeColor,
+    };
+
+    setConnections([...filtered, newCable]);
+    setDragging(null);
+  };
+
+  // Build default rear devices if rackModules is empty
+  const defaultRearModules: { id: string; title: string; category: string }[] =
+    rackModules.length > 0
+      ? rackModules.map((m) => ({ id: m.id, title: m.title, category: m.type }))
+      : [
+          { id: 'subtractor_1', title: 'Subtractor Polyphonic Synth', category: 'subtractor_synth' },
+          { id: 'rv7000_1', title: 'RV7000 MkII Advanced Reverb', category: 'rv7000_reverb' },
+          { id: 'echo_1', title: 'The Echo Digital Tape Delay', category: 'the_echo_delay' },
+          { id: 'scream_1', title: 'Scream 4 Distortion Unit', category: 'scream4_distortion' },
+        ];
+
+  // Helper renderer for Jack Button
+  const renderJack = (
+    unitId: string,
+    unitName: string,
+    jackName: string,
+    label: string,
+    type: 'audio_out' | 'audio_in' | 'cv_out' | 'cv_in' | 'gate'
+  ) => {
+    const key = `${unitId}_${jackName}`;
+    const isConnected = connections.some(
+      (c) =>
+        (c.fromUnitId === unitId && c.fromJack === jackName) ||
+        (c.toUnitId === unitId && c.toJack === jackName)
+    );
+
+    let borderColor = 'border-neutral-600 text-neutral-300';
+    if (type === 'audio_out') borderColor = 'border-emerald-500 text-emerald-300';
+    if (type === 'audio_in') borderColor = 'border-blue-500 text-blue-300';
+    if (type === 'cv_out') borderColor = 'border-amber-500 text-amber-300';
+    if (type === 'cv_in') borderColor = 'border-orange-500 text-orange-300';
+    if (type === 'gate') borderColor = 'border-pink-500 text-pink-300';
+
+    return (
+      <div className="flex flex-col items-center gap-1">
+        <div
+          ref={(el) => registerJackRef(key, el)}
+          onMouseDown={(e) => handleJackPortMouseDown(unitId, unitName, jackName, e)}
+          onMouseUp={(e) => handleJackPortMouseUp(unitId, unitName, jackName, e)}
+          className={`w-9 h-9 rounded-full border-2 bg-neutral-950 flex items-center justify-center cursor-pointer shadow-inner transition transform hover:scale-110 select-none ${borderColor} ${
+            isConnected ? 'ring-2 ring-amber-400 bg-amber-950/80 font-black' : 'hover:border-amber-400'
+          }`}
+          title={`${unitName}: ${label} (Drag or Click to Patch)`}
+        >
+          <div className={`w-3 h-3 rounded-full ${isConnected ? 'bg-amber-400 animate-pulse' : 'bg-neutral-800'}`} />
+        </div>
+        <span className="text-[8px] font-mono text-neutral-400 font-bold uppercase truncate max-w-[60px] text-center">
+          {label}
+        </span>
+      </div>
+    );
   };
 
   return (
-    <div className="relative bg-neutral-950 min-h-[600px] border-2 border-neutral-800 rounded-2xl p-6 overflow-hidden select-none shadow-2xl">
+    <div
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      className="relative bg-neutral-950 min-h-[750px] border-2 border-neutral-800 rounded-2xl p-6 overflow-hidden select-none shadow-2xl"
+    >
       {/* Background Rack Rail Grid */}
       <div className="absolute inset-0 bg-[radial-gradient(#262626_1px,transparent_1px)] [background-size:12px_12px] opacity-60" />
 
-      {/* Top Rear Bar */}
-      <div className="relative z-10 bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 border-2 border-neutral-700 rounded-xl p-4 shadow-xl flex flex-wrap items-center justify-between gap-4 mb-6">
+      {/* Top Controls Header */}
+      <div className="relative z-20 bg-gradient-to-r from-neutral-900 via-stone-900 to-neutral-900 border-2 border-neutral-700 rounded-xl p-4 shadow-xl flex flex-wrap items-center justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-sm font-mono font-black text-amber-400 uppercase tracking-widest flex items-center gap-2">
+          <h2 className="text-xs font-mono font-black text-amber-400 uppercase tracking-widest flex items-center gap-2">
             <Radio className="w-4 h-4 animate-pulse" />
-            HARDWARE REAR PANEL & CV/AUDIO PATCH BAY
+            REASON HARDWARE REAR PANEL & PATCH BAY
           </h2>
-          <p className="text-[11px] text-neutral-400 font-mono">
-            Click any jack socket to route physical Audio & CV (Control Voltage) signals with dangling patch cords.
+          <p className="text-[10px] text-neutral-400 font-mono mt-0.5">
+            Drag cables between jacks to route Audio & Control Voltage (CV) signals. Click or drag off to disconnect.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <button
-            onClick={resetDefaultRouting}
-            className="px-3 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 font-mono text-xs border border-neutral-600 transition flex items-center gap-1"
-          >
-            <RefreshCw className="w-3.5 h-3.5 text-indigo-400" />
-            <span>RESET DEFAULT PATCHING</span>
-          </button>
+        {/* Cable Color Selector */}
+        <div className="flex items-center gap-2 bg-black/60 p-1.5 rounded-lg border border-neutral-700">
+          <Palette className="w-3.5 h-3.5 text-amber-400 ml-1" />
+          <span className="text-[9px] font-mono text-neutral-300 font-bold uppercase">CABLE COLOR:</span>
+          <div className="flex gap-1">
+            {cableColors.map((color) => (
+              <button
+                key={color}
+                onClick={() => setActiveColor(color)}
+                style={{ backgroundColor: color }}
+                className={`w-5 h-5 rounded-full border-2 transition ${
+                  activeColor === color ? 'border-white scale-110 shadow-lg' : 'border-black/50 opacity-70 hover:opacity-100'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
 
+        {/* Control Buttons */}
+        <div className="flex items-center gap-2">
           <button
             onClick={() => setConnections([])}
             className="px-3 py-1.5 rounded bg-rose-950/80 hover:bg-rose-900 text-rose-300 font-mono text-xs border border-rose-800 transition flex items-center gap-1"
@@ -164,203 +343,172 @@ export const StudioRearPanel: React.FC<StudioRearPanelProps> = ({ masterState, o
         </div>
       </div>
 
-      {/* Interactive SVG Cables Overlay Layer */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none z-30">
+      {/* SVG Cable Rendering Layer */}
+      <svg ref={svgRef} className="absolute inset-0 w-full h-full pointer-events-none z-30">
+        {/* Render Established Connections */}
         {connections.map((c) => {
-          // Calculate realistic sag curve for patch cables
-          const startX = (c.fromX / 100) * 1000; // approximate width scale
-          const startY = c.fromY;
-          const endX = (c.toX / 100) * 1000;
-          const endY = c.toY;
-          const sagY = Math.max(startY, endY) + 80;
-
+          const sagY = Math.max(c.fromY, c.toY) + 90;
           return (
-            <g key={c.id} className="pointer-events-auto cursor-pointer" onClick={() => removeCable(c.id)}>
-              {/* Cable Outer Shadow */}
+            <g key={c.id} className="pointer-events-auto cursor-pointer" onClick={() => setConnections((prev) => prev.filter((item) => item.id !== c.id))}>
+              {/* Outer Shadow */}
               <path
-                d={`M ${startX} ${startY} C ${startX} ${sagY}, ${endX} ${sagY}, ${endX} ${endY}`}
+                d={`M ${c.fromX} ${c.fromY} C ${c.fromX} ${sagY}, ${c.toX} ${sagY}, ${c.toX} ${c.toY}`}
                 fill="none"
                 stroke="black"
-                strokeWidth="7"
-                strokeOpacity="0.6"
+                strokeWidth="8"
+                strokeOpacity="0.5"
               />
-              {/* Main Cable Wire */}
+              {/* Main Cable Path */}
               <path
-                d={`M ${startX} ${startY} C ${startX} ${sagY}, ${endX} ${sagY}, ${endX} ${endY}`}
+                d={`M ${c.fromX} ${c.fromY} C ${c.fromX} ${sagY}, ${c.toX} ${sagY}, ${c.toX} ${c.toY}`}
                 fill="none"
                 stroke={c.color}
-                strokeWidth="4"
+                strokeWidth="4.5"
                 strokeLinecap="round"
               />
-              {/* Plug End Rings */}
-              <circle cx={startX} cy={startY} r="5" fill="#171717" stroke="#fbbf24" strokeWidth="1.5" />
-              <circle cx={endX} cy={endY} r="5" fill="#171717" stroke="#fbbf24" strokeWidth="1.5" />
+              {/* Connectors */}
+              <circle cx={c.fromX} cy={c.fromY} r="5.5" fill="#171717" stroke="#fbbf24" strokeWidth="1.5" />
+              <circle cx={c.toX} cy={c.toY} r="5.5" fill="#171717" stroke="#fbbf24" strokeWidth="1.5" />
             </g>
           );
         })}
+
+        {/* Render Currently Dragged Active Cable */}
+        {dragging && (
+          <g>
+            {/* Live Drooping Arc to Mouse Cursor */}
+            <path
+              d={`M ${dragging.startX} ${dragging.startY} C ${dragging.startX} ${
+                Math.max(dragging.startY, dragging.currentY) + 70
+              }, ${dragging.currentX} ${
+                Math.max(dragging.startY, dragging.currentY) + 70
+              }, ${dragging.currentX} ${dragging.currentY}`}
+              fill="none"
+              stroke={activeColor}
+              strokeWidth="5"
+              strokeDasharray="4,4"
+              strokeLinecap="round"
+              className="animate-pulse"
+            />
+            <circle cx={dragging.startX} cy={dragging.startY} r="6" fill="#fbbf24" />
+            <circle cx={dragging.currentX} cy={dragging.currentY} r="6" fill={activeColor} stroke="#ffffff" strokeWidth="2" />
+          </g>
+        )}
       </svg>
 
-      {/* Rear Device Hardware Chassis Stacks */}
+      {/* Rear Panel Device Hardware Chassis Layout */}
       <div className="relative z-10 space-y-6">
-        {/* Unit 1: Hardware Interface Rear Chassis */}
+        {/* Hardware Host Interface Unit (Top Rear) */}
         <div className="bg-gradient-to-r from-neutral-900 via-stone-900 to-neutral-900 border-2 border-neutral-700 rounded-2xl p-5 shadow-2xl relative">
           <div className="flex items-center justify-between border-b border-neutral-800 pb-2 mb-4">
             <span className="font-mono text-xs font-bold text-amber-500 uppercase tracking-wider">
-              1. HARDWARE AUDIO & MIDI INTERFACE (REAR)
+              HARDWARE AUDIO & MIDI INTERFACE (SYSTEM HOST REAR)
             </span>
-            <span className="text-[10px] font-mono text-neutral-500">64 AUDIO I/O BUS • 16 MIDI CHANNELS</span>
+            <span className="text-[10px] font-mono text-neutral-500">64 STEREO AUDIO BUS • MIDI CLOCK SINK</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Audio In Jack Sockets */}
             <div>
-              <span className="text-[10px] font-mono font-bold text-neutral-400 block mb-2 uppercase">AUDIO INPUTS (1-8)</span>
-              <div className="flex flex-wrap gap-2">
-                {['In 1', 'In 2', 'In 3', 'In 4', 'In 5', 'In 6', 'In 7', 'In 8'].map((j, idx) => (
-                  <button
-                    key={j}
-                    onClick={() => handleJackClick('Hardware Interface', j, 15 + idx * 4, 60)}
-                    className={`w-10 h-10 rounded-full border-2 bg-neutral-950 flex items-center justify-center text-[9px] font-mono font-bold shadow-inner transition ${
-                      selectedJack?.jack === j ? 'border-amber-400 bg-amber-950 text-white animate-pulse' : 'border-neutral-600 text-neutral-300 hover:border-amber-500'
-                    }`}
-                  >
-                    {j}
-                  </button>
-                ))}
+              <span className="text-[10px] font-mono font-bold text-neutral-400 block mb-2 uppercase">SYSTEM AUDIO OUTPUTS</span>
+              <div className="flex flex-wrap gap-3">
+                {renderJack('hardware_host', 'Hardware Interface', 'Audio Out L', 'Out L', 'audio_out')}
+                {renderJack('hardware_host', 'Hardware Interface', 'Audio Out R', 'Out R', 'audio_out')}
+                {renderJack('hardware_host', 'Hardware Interface', 'Monitor L', 'Mon L', 'audio_out')}
+                {renderJack('hardware_host', 'Hardware Interface', 'Monitor R', 'Mon R', 'audio_out')}
               </div>
             </div>
 
-            {/* Audio Out Jack Sockets */}
             <div>
-              <span className="text-[10px] font-mono font-bold text-neutral-400 block mb-2 uppercase">MASTER AUDIO OUTPUTS</span>
-              <div className="flex flex-wrap gap-2">
-                {['Out 1 (L)', 'Out 2 (R)', 'Monitor L', 'Monitor R'].map((j, idx) => (
-                  <button
-                    key={j}
-                    onClick={() => handleJackClick('Hardware Interface', j, 45 + idx * 5, 60)}
-                    className="w-10 h-10 rounded-full border-2 border-emerald-600 bg-neutral-950 flex items-center justify-center text-[9px] font-mono font-bold text-emerald-300 shadow-inner hover:border-emerald-400 transition"
-                  >
-                    {j}
-                  </button>
-                ))}
+              <span className="text-[10px] font-mono font-bold text-neutral-400 block mb-2 uppercase">AUDIO INPUTS (BUS 1-4)</span>
+              <div className="flex flex-wrap gap-3">
+                {renderJack('hardware_host', 'Hardware Interface', 'Audio In 1', 'In 1', 'audio_in')}
+                {renderJack('hardware_host', 'Hardware Interface', 'Audio In 2', 'In 2', 'audio_in')}
+                {renderJack('hardware_host', 'Hardware Interface', 'Audio In 3', 'In 3', 'audio_in')}
+                {renderJack('hardware_host', 'Hardware Interface', 'Audio In 4', 'In 4', 'audio_in')}
               </div>
             </div>
 
-            {/* CV & Sync Jacks */}
             <div>
-              <span className="text-[10px] font-mono font-bold text-neutral-400 block mb-2 uppercase">MASTER CV & CLOCK SYNC</span>
-              <div className="flex flex-wrap gap-2">
-                {['Gate Out', 'Pitch Out', 'Clock Sync', 'Reset CV'].map((j, idx) => (
-                  <button
-                    key={j}
-                    onClick={() => handleJackClick('Hardware Interface', j, 75 + idx * 5, 60)}
-                    className="w-10 h-10 rounded-full border-2 border-amber-600 bg-neutral-950 flex items-center justify-center text-[9px] font-mono font-bold text-amber-300 shadow-inner hover:border-amber-400 transition"
-                  >
-                    {j}
-                  </button>
-                ))}
+              <span className="text-[10px] font-mono font-bold text-neutral-400 block mb-2 uppercase">MASTER SYNC & GATE CV</span>
+              <div className="flex flex-wrap gap-3">
+                {renderJack('hardware_host', 'Hardware Interface', 'Gate Out', 'Gate', 'gate')}
+                {renderJack('hardware_host', 'Hardware Interface', 'Pitch CV', 'Pitch', 'cv_out')}
+                {renderJack('hardware_host', 'Hardware Interface', 'Clock CV', 'Clock', 'cv_out')}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Unit 2: Active Workspace Instrument / Processor Unit (Rear) */}
-        <div className="bg-gradient-to-r from-neutral-900 via-stone-900 to-neutral-900 border-2 border-neutral-700 rounded-2xl p-5 shadow-2xl relative">
-          <div className="flex items-center justify-between border-b border-neutral-800 pb-2 mb-4">
-            <span className="font-mono text-xs font-bold text-indigo-400 uppercase tracking-wider">
-              2. ACTIVE RACK UNIT: {masterState.activeWorkspace.toUpperCase()} SAMPLER / INSTRUMENT (REAR)
-            </span>
-            <span className="text-[10px] font-mono text-neutral-500">INDIVIDUAL PAD AUDIO OUTS + CV MODULATION</span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Pad Direct Audio Outs */}
-            <div>
-              <span className="text-[10px] font-mono font-bold text-neutral-400 block mb-2 uppercase">DIRECT AUDIO OUTS</span>
-              <div className="flex flex-wrap gap-2">
-                {['Main Out L', 'Main Out R', 'Pad 1 Out', 'Pad 2 Out', 'Sub Out 1', 'Sub Out 2'].map((j, idx) => (
-                  <button
-                    key={j}
-                    onClick={() => handleJackClick('Active Instrument', j, 18 + idx * 5, 180)}
-                    className="w-10 h-10 rounded-full border-2 border-indigo-500 bg-neutral-950 flex items-center justify-center text-[8px] font-mono font-bold text-indigo-300 shadow-inner hover:border-indigo-400 transition"
-                  >
-                    {j}
-                  </button>
-                ))}
-              </div>
+        {/* Dynamic Rear View for Active Stacked Modules */}
+        {defaultRearModules.map((mod, index) => (
+          <div
+            key={mod.id}
+            className="bg-gradient-to-r from-neutral-900 via-stone-900 to-neutral-900 border-2 border-neutral-700 rounded-2xl p-5 shadow-2xl relative"
+          >
+            <div className="flex items-center justify-between border-b border-neutral-800 pb-2 mb-4">
+              <span className="font-mono text-xs font-bold text-indigo-400 uppercase tracking-wider">
+                {index + 1}. {mod.title.toUpperCase()} (REAR CHASSIS)
+              </span>
+              <span className="text-[10px] font-mono text-neutral-500">I/O BUS • CV MODULATION PORTS</span>
             </div>
 
-            {/* Modulation CV Inputs */}
-            <div>
-              <span className="text-[10px] font-mono font-bold text-neutral-400 block mb-2 uppercase">CV MODULATION INPUTS</span>
-              <div className="flex flex-wrap gap-2">
-                {['Pitch CV', 'Gate In', 'Filter Cutoff CV', 'Velocity CV'].map((j, idx) => (
-                  <button
-                    key={j}
-                    onClick={() => handleJackClick('Active Instrument', j, 50 + idx * 6, 180)}
-                    className="w-10 h-10 rounded-full border-2 border-amber-500 bg-neutral-950 flex items-center justify-center text-[8px] font-mono font-bold text-amber-300 shadow-inner hover:border-amber-400 transition"
-                  >
-                    {j}
-                  </button>
-                ))}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <span className="text-[10px] font-mono font-bold text-neutral-400 block mb-2 uppercase">AUDIO OUTPUTS</span>
+                <div className="flex flex-wrap gap-3">
+                  {renderJack(mod.id, mod.title, 'Audio Out L', 'Main L', 'audio_out')}
+                  {renderJack(mod.id, mod.title, 'Audio Out R', 'Main R', 'audio_out')}
+                  {renderJack(mod.id, mod.title, 'Direct Out 1', 'Dir 1', 'audio_out')}
+                </div>
               </div>
-            </div>
 
-            {/* FX Send / Returns */}
-            <div>
-              <span className="text-[10px] font-mono font-bold text-neutral-400 block mb-2 uppercase">FX SENDS & AUX BUS</span>
-              <div className="flex flex-wrap gap-2">
-                {['Send 1 Out', 'Send 2 Out', 'Return 1 L/R', 'Return 2 L/R'].map((j, idx) => (
-                  <button
-                    key={j}
-                    onClick={() => handleJackClick('Active Instrument', j, 78 + idx * 5, 180)}
-                    className="w-10 h-10 rounded-full border-2 border-pink-500 bg-neutral-950 flex items-center justify-center text-[8px] font-mono font-bold text-pink-300 shadow-inner hover:border-pink-400 transition"
-                  >
-                    {j}
-                  </button>
-                ))}
+              <div>
+                <span className="text-[10px] font-mono font-bold text-neutral-400 block mb-2 uppercase">AUDIO INPUTS / SENDS</span>
+                <div className="flex flex-wrap gap-3">
+                  {renderJack(mod.id, mod.title, 'Audio In L', 'In L', 'audio_in')}
+                  {renderJack(mod.id, mod.title, 'Audio In R', 'In R', 'audio_in')}
+                  {renderJack(mod.id, mod.title, 'Sidechain In', 'Sidech', 'audio_in')}
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[10px] font-mono font-bold text-neutral-400 block mb-2 uppercase">CV & GATE CONTROL</span>
+                <div className="flex flex-wrap gap-3">
+                  {renderJack(mod.id, mod.title, 'Gate In', 'Gate In', 'gate')}
+                  {renderJack(mod.id, mod.title, 'Pitch CV In', 'Pitch In', 'cv_in')}
+                  {renderJack(mod.id, mod.title, 'Mod CV In', 'Mod In', 'cv_in')}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        ))}
 
-        {/* Unit 3: Master Studio SSL Mixer & FX Rack Unit (Rear) */}
+        {/* Master SSL Studio Mixer Unit (Bottom Rear) */}
         <div className="bg-gradient-to-r from-neutral-900 via-stone-900 to-neutral-900 border-2 border-neutral-700 rounded-2xl p-5 shadow-2xl relative">
           <div className="flex items-center justify-between border-b border-neutral-800 pb-2 mb-4">
             <span className="font-mono text-xs font-bold text-emerald-400 uppercase tracking-wider">
-              3. SSL MASTER MIXING CONSOLE & BUS COMPRESSOR (REAR)
+              MASTER SSL MIXING CONSOLE & BUS COMPRESSOR (REAR)
             </span>
-            <span className="text-[10px] font-mono text-neutral-500">ANALOG BUS INSERTION & REVERB/DELAY SENDS</span>
+            <span className="text-[10px] font-mono text-neutral-500">ANALOG CHANNELS 1-8 • AUX REVERB/DELAY BUS</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <span className="text-[10px] font-mono font-bold text-neutral-400 block mb-2 uppercase">MIX BUS INSERTS & RETURNS</span>
-              <div className="flex flex-wrap gap-2">
-                {['Ch 1 In', 'Ch 2 In', 'Ch 3 In', 'Ch 4 In', 'Ch 5 In', 'Ch 6 In', 'Ch 7 In', 'Ch 8 In'].map((j, idx) => (
-                  <button
-                    key={j}
-                    onClick={() => handleJackClick('Studio Mixer', j, 20 + idx * 4, 340)}
-                    className="w-10 h-10 rounded-full border-2 border-emerald-500 bg-neutral-950 flex items-center justify-center text-[8px] font-mono font-bold text-emerald-300 shadow-inner hover:border-emerald-400 transition"
-                  >
-                    {j}
-                  </button>
-                ))}
+              <span className="text-[10px] font-mono font-bold text-neutral-400 block mb-2 uppercase">CHANNEL INSERT INPUTS</span>
+              <div className="flex flex-wrap gap-3">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((ch) =>
+                  renderJack('master_mixer', 'Master SSL Mixer', `Ch ${ch} In`, `Ch ${ch}`, 'audio_in')
+                )}
               </div>
             </div>
 
             <div>
-              <span className="text-[10px] font-mono font-bold text-neutral-400 block mb-2 uppercase">MASTER FX RETURN & SIDECHAIN</span>
-              <div className="flex flex-wrap gap-2">
-                {['Sidechain In', 'Reverb Send', 'Delay Send', 'Master Out L/R'].map((j, idx) => (
-                  <button
-                    key={j}
-                    onClick={() => handleJackClick('Studio Mixer', j, 65 + idx * 7, 340)}
-                    className="w-10 h-10 rounded-full border-2 border-cyan-500 bg-neutral-950 flex items-center justify-center text-[8px] font-mono font-bold text-cyan-300 shadow-inner hover:border-cyan-400 transition"
-                  >
-                    {j}
-                  </button>
-                ))}
+              <span className="text-[10px] font-mono font-bold text-neutral-400 block mb-2 uppercase">MASTER AUX & SIDECHAIN</span>
+              <div className="flex flex-wrap gap-3">
+                {renderJack('master_mixer', 'Master SSL Mixer', 'Main In L', 'Main L', 'audio_in')}
+                {renderJack('master_mixer', 'Master SSL Mixer', 'Main In R', 'Main R', 'audio_in')}
+                {renderJack('master_mixer', 'Master SSL Mixer', 'Aux Send 1', 'Aux 1', 'audio_out')}
+                {renderJack('master_mixer', 'Master SSL Mixer', 'Aux Return L/R', 'Return', 'audio_in')}
               </div>
             </div>
           </div>

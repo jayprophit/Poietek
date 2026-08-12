@@ -14,9 +14,11 @@ import {
   FolderMinus,
   Undo2,
   Redo2,
-  RotateCcw,
+  ZoomIn,
+  ZoomOut,
+  Maximize,
 } from 'lucide-react';
-import { RackModuleItem, WorkspaceType, ModuleType, MasterState, SamplePad, TrackChannel } from '../../types';
+import { RackModuleItem, WorkspaceType, ModuleType, MasterState, SamplePad, TrackChannel, RackColorTag } from '../../types';
 import { StudioRackDevice } from './StudioRackDevice';
 import { CombinatorFolderDevice } from './CombinatorFolderDevice';
 
@@ -39,7 +41,24 @@ import { MelodynePitchEditor } from '../daw/MelodynePitchEditor';
 import { DGrooveMixer } from '../daw/DGrooveMixer';
 import { PianoRollSequencer } from '../daw/PianoRollSequencer';
 import { CubaseLogicWaveformSequencer } from '../daw/CubaseLogicWaveformSequencer';
+import { WaveformTimeline } from '../daw/WaveformTimeline';
 import { FLStudioChannelRack } from '../daw/FLStudioChannelRack';
+import { ReGroovePanel } from './ReGroovePanel';
+import {
+  SubtractorSynthDevice,
+  RV7000ReverbDevice,
+  TheEchoDelayDevice,
+  Scream4DistortionDevice,
+  SidechainDuckerDevice,
+  ScalesAndChordsPlayerDevice,
+  ThorPolySynthDevice,
+  PolytoneSynthDevice,
+  MimicSamplerDevice,
+  PulverizerDemolitionDevice,
+  AudiomaticRetroDevice,
+  SpiderCvSplitterDevice,
+  LineMixer62Device,
+} from './ReasonModules';
 
 interface RackStackManagerProps {
   rackModules: RackModuleItem[];
@@ -79,6 +98,15 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
   canRedo = false,
 }) => {
   const [isAddMenuOpen, setIsAddMenuOpen] = useState<boolean>(false);
+  const [rackZoom, setRackZoom] = useState<number>(100); // 70% to 130%
+
+  const handleFoldAllModules = () => {
+    setRackModules((prev) => prev.map((m) => ({ ...m, isFolded: true })));
+  };
+
+  const handleUnfoldAllModules = () => {
+    setRackModules((prev) => prev.map((m) => ({ ...m, isFolded: false })));
+  };
 
   // Helper functions for stack management
   const handleMoveModule = (id: string, direction: 'up' | 'down') => {
@@ -111,6 +139,12 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
   const handleToggleFoldModule = (id: string) => {
     setRackModules((prev) =>
       prev.map((m) => (m.id === id ? { ...m, isFolded: !m.isFolded } : m))
+    );
+  };
+
+  const handleSetColorTag = (id: string, color: RackColorTag) => {
+    setRackModules((prev) =>
+      prev.map((m) => (m.id === id ? { ...m, colorTag: color } : m))
     );
   };
 
@@ -176,6 +210,58 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
         title = 'Chop Lab Stem Slicer';
         tapeLabel = 'STEM CHOPPER';
         break;
+      case 'subtractor_synth':
+        title = 'Subtractor Polyphonic Synth';
+        tapeLabel = 'SUBTRACTIVE SYNTH';
+        break;
+      case 'rv7000_reverb':
+        title = 'RV7000 MkII Advanced Reverb';
+        tapeLabel = 'CONVOLUTION REVERB';
+        break;
+      case 'the_echo_delay':
+        title = 'The Echo Digital Tape Delay';
+        tapeLabel = 'TAPE DELAY';
+        break;
+      case 'scream4_distortion':
+        title = 'Scream 4 Sound Destruction';
+        tapeLabel = 'DISTORTION UNIT';
+        break;
+      case 'sidechain_ducker':
+        title = 'Dynamic Sidechain Ducker';
+        tapeLabel = 'SIDECHAIN DUCKER';
+        break;
+      case 'scales_chords':
+        title = 'Scales & Chords Player';
+        tapeLabel = 'HARMONIC PLAYER';
+        break;
+      case 'thor_synth':
+        title = 'Thor Polysonic Synthesizer';
+        tapeLabel = 'THOR SYNTH';
+        break;
+      case 'polytone_synth':
+        title = 'Polytone Dual Synth';
+        tapeLabel = 'POLYTONE SYNTH';
+        break;
+      case 'mimic_sampler':
+        title = 'Mimic Creative Sampler';
+        tapeLabel = 'MIMIC SAMPLER';
+        break;
+      case 'pulverizer_comp':
+        title = 'Pulverizer Demolition Unit';
+        tapeLabel = 'PULVERIZER COMP';
+        break;
+      case 'audiomatic_retro':
+        title = 'Audiomatic Retro Unit';
+        tapeLabel = 'RETRO TRANSFORMER';
+        break;
+      case 'spider_cv_splitter':
+        title = 'Spider Audio & CV Merger/Splitter';
+        tapeLabel = 'SPIDER SPLITTER';
+        break;
+      case 'line_mixer_6_2':
+        title = 'Line Mixer 6:2';
+        tapeLabel = 'LINE MIXER 6:2';
+        break;
       default:
         title = 'Studio Module';
     }
@@ -187,11 +273,11 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
       tapeLabel,
       groupId: targetFolderId,
       isFolded: false,
+      colorTag: 'amber',
     };
 
     setRackModules((prev) => {
       if (targetFolderId) {
-        // Attach to folder
         return prev.map((m) =>
           m.id === targetFolderId
             ? { ...m, subModuleIds: [...(m.subModuleIds || []), newId] }
@@ -267,9 +353,35 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
       case 'piano_roll':
         return <PianoRollSequencer />;
       case 'wave_sequencer':
-        return <CubaseLogicWaveformSequencer />;
+        return <WaveformTimeline bpm={masterState.bpm} />;
       case 'fl_channel_rack':
         return <FLStudioChannelRack />;
+      case 'subtractor_synth':
+        return <SubtractorSynthDevice />;
+      case 'rv7000_reverb':
+        return <RV7000ReverbDevice />;
+      case 'the_echo_delay':
+        return <TheEchoDelayDevice />;
+      case 'scream4_distortion':
+        return <Scream4DistortionDevice />;
+      case 'sidechain_ducker':
+        return <SidechainDuckerDevice />;
+      case 'scales_chords':
+        return <ScalesAndChordsPlayerDevice />;
+      case 'thor_synth':
+        return <ThorPolySynthDevice />;
+      case 'polytone_synth':
+        return <PolytoneSynthDevice />;
+      case 'mimic_sampler':
+        return <MimicSamplerDevice />;
+      case 'pulverizer_comp':
+        return <PulverizerDemolitionDevice />;
+      case 'audiomatic_retro':
+        return <AudiomaticRetroDevice />;
+      case 'spider_cv_splitter':
+        return <SpiderCvSplitterDevice />;
+      case 'line_mixer_6_2':
+        return <LineMixer62Device />;
       default:
         return null;
     }
@@ -281,7 +393,7 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
   return (
     <div className="space-y-4 font-mono select-none pb-12">
       {/* Top Rack Stack Manager Header Controls */}
-      <div className="bg-neutral-900/90 border border-neutral-800 rounded-2xl p-2.5 px-4 flex items-center justify-between shadow-xl">
+      <div className="bg-neutral-900/90 border border-neutral-800 rounded-2xl p-2.5 px-4 flex items-center justify-between shadow-xl flex-wrap gap-2">
         <div className="flex items-center gap-2">
           <span className="text-xs font-black text-amber-400 uppercase tracking-wider">
             STUDIO RACK STACK
@@ -289,6 +401,43 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
           <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-300 font-bold border border-amber-500/20">
             {rackModules.length} {rackModules.length === 1 ? 'UNIT' : 'UNITS'} ACTIVE
           </span>
+        </div>
+
+        {/* Rack Cascading Fold / Expand All & Zoom Slider Control */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-1 bg-neutral-950 p-1 rounded-xl border border-neutral-800 text-xs">
+            <button
+              onClick={handleFoldAllModules}
+              className="px-2.5 py-1 rounded bg-stone-800 hover:bg-amber-500 hover:text-black text-amber-400 font-black text-[10px] flex items-center gap-1 transition"
+              title="Collapse all modules into compact 1U bars"
+            >
+              <ChevronUp className="w-3 h-3" />
+              <span>FOLD ALL</span>
+            </button>
+            <button
+              onClick={handleUnfoldAllModules}
+              className="px-2.5 py-1 rounded bg-stone-800 hover:bg-amber-500 hover:text-black text-amber-400 font-black text-[10px] flex items-center gap-1 transition"
+              title="Expand all modules to full faceplates"
+            >
+              <ChevronDown className="w-3 h-3" />
+              <span>EXPAND ALL</span>
+            </button>
+          </div>
+
+          <div className="flex items-center gap-2 bg-neutral-950 px-3 py-1 rounded-xl border border-neutral-800 text-xs">
+            <ZoomOut className="w-3.5 h-3.5 text-neutral-400" />
+            <span className="text-[10px] text-neutral-400 font-bold hidden sm:inline">ZOOM</span>
+            <input
+              type="range"
+              min="70"
+              max="130"
+              value={rackZoom}
+              onChange={(e) => setRackZoom(Number(e.target.value))}
+              className="w-20 sm:w-28 accent-amber-500 cursor-pointer"
+            />
+            <ZoomIn className="w-3.5 h-3.5 text-neutral-400" />
+            <span className="text-[10px] text-amber-400 font-bold w-8">{rackZoom}%</span>
+          </div>
         </div>
 
         {/* Undo / Redo & Clear Stack Actions */}
@@ -339,143 +488,100 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
         </div>
       </div>
 
-      {topLevelModules.length === 0 ? (
-        <div className="p-12 text-center border-2 border-dashed border-neutral-800 rounded-3xl bg-neutral-950/80 my-4 space-y-3">
-          <h3 className="text-sm font-black text-amber-400 uppercase tracking-widest">
-            THE STUDIO RACK CAN CAN HOLD INFINITE STACKED MODULES
-          </h3>
-          <p className="text-xs text-neutral-400 max-w-md mx-auto font-sans">
-            Your studio rack is empty. Add samplers, synthesizers, sequencers, or Combinator Bus Folders below to build your custom modular rig.
-          </p>
-          <button
-            onClick={() => handleAddModule('mpc')}
-            className="px-6 py-2.5 rounded-xl bg-amber-500 text-neutral-950 font-black text-xs hover:bg-amber-400 transition shadow-lg shadow-amber-500/20"
-          >
-            + ADD FIRST MODULE TO RACK
-          </button>
-        </div>
-      ) : (
-        topLevelModules.map((mod) => {
-          if (mod.type === 'folder_combinator') {
-            const subMods = rackModules.filter((m) => m.groupId === mod.id);
-            return (
-              <CombinatorFolderDevice
-                key={mod.id}
-                folderModule={mod}
-                subModules={subMods}
-                onUpdateFolderParams={handleUpdateFolderParams}
-                onUpdateTitle={handleUpdateFolderTitle}
-                onToggleFoldFolder={handleToggleFoldModule}
-                onRemoveFolder={handleDeleteModule}
-                onMoveFolder={handleMoveModule}
-                onAddModuleToFolder={(folderId, type) => handleAddModule(type, folderId)}
-                renderSubModuleComponent={(subMod) => (
-                  <StudioRackDevice
-                    key={subMod.id}
-                    title={subMod.title}
-                    tapeLabel={subMod.tapeLabel}
-                    subtitle="GROUPED BUS MODULE"
-                    onDetach={() => onDetachWorkspace(subMod.type as WorkspaceType)}
-                    onToggleFlip={onToggleFlip}
-                  >
-                    <div className="flex items-center justify-between border-b border-neutral-800 pb-1 mb-2">
-                      <div className="flex items-center gap-1.5 text-[10px] text-neutral-400">
-                        <button
-                          onClick={() => handleMoveModule(subMod.id, 'up')}
-                          className="hover:text-white p-0.5"
-                          title="Move Up"
-                        >
-                          <ChevronUp className="w-3 h-3" />
-                        </button>
-                        <button
-                          onClick={() => handleMoveModule(subMod.id, 'down')}
-                          className="hover:text-white p-0.5"
-                          title="Move Down"
-                        >
-                          <ChevronDown className="w-3 h-3" />
-                        </button>
-                        <button
-                          onClick={() => handleDuplicateModule(subMod)}
-                          className="hover:text-amber-400 p-0.5 ml-1"
-                          title="Duplicate Module"
-                        >
-                          <Copy className="w-3 h-3" />
-                        </button>
-                      </div>
-
-                      <button
-                        onClick={() => handleDeleteModule(subMod.id)}
-                        className="text-[10px] text-rose-400 hover:text-rose-300 font-bold px-1.5 py-0.5 rounded bg-rose-950/40 border border-rose-800/40"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                    {renderModuleContent(mod.type)}
-                  </StudioRackDevice>
-                )}
-              />
-            );
+      {/* Main Scaled Rack Container */}
+      <div
+        onDragOver={(e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'copy';
+        }}
+        onDrop={(e) => {
+          e.preventDefault();
+          const moduleType = e.dataTransfer.getData('moduleType') || e.dataTransfer.getData('text/plain');
+          if (moduleType) {
+            handleAddModule(moduleType as ModuleType);
           }
+        }}
+        style={{
+          transform: `scale(${rackZoom / 100})`,
+          transformOrigin: 'top center',
+          transition: 'transform 0.15s ease-out',
+        }}
+        className="space-y-4 min-h-[160px] p-2 border-2 border-dashed border-transparent hover:border-amber-500/30 rounded-3xl transition"
+      >
+        {topLevelModules.length === 0 ? (
+          <div className="p-12 text-center border-2 border-dashed border-neutral-800 rounded-3xl bg-neutral-950/80 my-4 space-y-3">
+            <h3 className="text-sm font-black text-amber-400 uppercase tracking-widest">
+              THE STUDIO RACK STACK CAN HOLD INFINITE UNITS
+            </h3>
+            <p className="text-xs text-neutral-400 max-w-md mx-auto font-sans">
+              Your studio rack is empty. Select samplers, synthesizers, sequencers, or Combinator Bus Folders from the left DAW Browser or click below to build your rig.
+            </p>
+            <button
+              onClick={() => handleAddModule('mpc')}
+              className="px-6 py-2.5 rounded-xl bg-amber-500 text-neutral-950 font-black text-xs hover:bg-amber-400 transition shadow-lg shadow-amber-500/20"
+            >
+              + ADD FIRST MODULE TO RACK
+            </button>
+          </div>
+        ) : (
+          topLevelModules.map((mod) => {
+            if (mod.type === 'folder_combinator') {
+              const subMods = rackModules.filter((m) => m.groupId === mod.id);
+              return (
+                <CombinatorFolderDevice
+                  key={mod.id}
+                  folderModule={mod}
+                  subModules={subMods}
+                  onUpdateFolderParams={handleUpdateFolderParams}
+                  onUpdateTitle={handleUpdateFolderTitle}
+                  onToggleFoldFolder={handleToggleFoldModule}
+                  onRemoveFolder={handleDeleteModule}
+                  onMoveFolder={handleMoveModule}
+                  onAddModuleToFolder={(folderId, type) => handleAddModule(type, folderId)}
+                  renderSubModuleComponent={(subMod) => (
+                    <StudioRackDevice
+                      key={subMod.id}
+                      title={subMod.title}
+                      tapeLabel={subMod.tapeLabel}
+                      subtitle="GROUPED BUS MODULE"
+                      colorTag={subMod.colorTag || 'amber'}
+                      isFolded={subMod.isFolded}
+                      onToggleFold={() => handleToggleFoldModule(subMod.id)}
+                      onSetColorTag={(c) => handleSetColorTag(subMod.id, c)}
+                      onDetach={() => onDetachWorkspace(subMod.type as WorkspaceType)}
+                      onToggleFlip={onToggleFlip}
+                      onDelete={() => handleDeleteModule(subMod.id)}
+                      onDuplicate={() => handleDuplicateModule(subMod)}
+                    >
+                      {renderModuleContent(subMod.type)}
+                    </StudioRackDevice>
+                  )}
+                />
+              );
+            }
 
-          return (
-            <div key={mod.id} className="relative group">
-              {/* Stack Item Quick Reorder & Controls Strip */}
-              <div className="flex items-center justify-between bg-neutral-900 border-x-2 border-t-2 border-neutral-800 rounded-t-xl px-3 py-1 text-[10px]">
-                <div className="flex items-center gap-2">
-                  <GripVertical className="w-3 h-3 text-neutral-500 cursor-move" />
-                  <span className="text-amber-400 font-black uppercase tracking-wider">
-                    {mod.title}
-                  </span>
-                  <span className="text-[9px] px-1.5 py-0.2 rounded bg-stone-800 text-stone-300 font-bold border border-stone-700">
-                    {mod.tapeLabel}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-1.5">
-                  <button
-                    onClick={() => handleMoveModule(mod.id, 'up')}
-                    className="p-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300"
-                    title="Move Module Up in Rack Stack"
-                  >
-                    <ChevronUp className="w-3 h-3" />
-                  </button>
-                  <button
-                    onClick={() => handleMoveModule(mod.id, 'down')}
-                    className="p-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300"
-                    title="Move Module Down in Rack Stack"
-                  >
-                    <ChevronDown className="w-3 h-3" />
-                  </button>
-                  <button
-                    onClick={() => handleDuplicateModule(mod)}
-                    className="p-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300"
-                    title="Duplicate Module"
-                  >
-                    <Copy className="w-3 h-3" />
-                  </button>
-                  <button
-                    onClick={() => handleDeleteModule(mod.id)}
-                    className="p-1 rounded bg-neutral-800 hover:bg-rose-900 text-neutral-400 hover:text-rose-300"
-                    title="Remove Module from Rack"
-                  >
-                    <Trash2 className="w-3 h-3" />
-                  </button>
-                </div>
+            return (
+              <div key={mod.id} className="relative group">
+                <StudioRackDevice
+                  title={mod.title}
+                  tapeLabel={mod.tapeLabel}
+                  subtitle="STACKED VIRTUAL RACK UNIT"
+                  colorTag={mod.colorTag || 'amber'}
+                  isFolded={mod.isFolded}
+                  onToggleFold={() => handleToggleFoldModule(mod.id)}
+                  onSetColorTag={(c) => handleSetColorTag(mod.id, c)}
+                  onDetach={() => onDetachWorkspace(mod.type as WorkspaceType)}
+                  onToggleFlip={onToggleFlip}
+                  onDelete={() => handleDeleteModule(mod.id)}
+                  onDuplicate={() => handleDuplicateModule(mod)}
+                >
+                  {renderModuleContent(mod.type)}
+                </StudioRackDevice>
               </div>
-
-              <StudioRackDevice
-                title={mod.title}
-                tapeLabel={mod.tapeLabel}
-                subtitle="STACKED VIRTUAL RACK UNIT"
-                onDetach={() => onDetachWorkspace(mod.type as WorkspaceType)}
-                onToggleFlip={onToggleFlip}
-              >
-                {renderModuleContent(mod.type)}
-              </StudioRackDevice>
-            </div>
-          );
-        })
-      )}
+            );
+          })
+        )}
+      </div>
 
       {/* INFINITE RACK ADD MODULE BOTTOM BAR */}
       <div className="relative pt-2">
@@ -491,6 +597,12 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
           <div className="absolute left-0 right-0 bottom-full mb-2 bg-neutral-950 border-2 border-neutral-700 rounded-2xl shadow-2xl p-3 z-50 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 max-h-72 overflow-y-auto scrollbar-thin scrollbar-thumb-stone-700">
             {[
               { type: 'folder_combinator', name: 'Combinator Bus Folder' },
+              { type: 'subtractor_synth', name: 'Subtractor Polyphonic Synth' },
+              { type: 'rv7000_reverb', name: 'RV7000 MkII Reverb FX' },
+              { type: 'the_echo_delay', name: 'The Echo Tape Delay FX' },
+              { type: 'scream4_distortion', name: 'Scream 4 Distortion FX' },
+              { type: 'sidechain_ducker', name: 'Dynamic Sidechain Ducker' },
+              { type: 'scales_chords', name: 'Scales & Chords Player' },
               { type: 'mpc', name: 'MPC Studio Drum Pad' },
               { type: 'sp404', name: 'SP-404 MKII Sampler' },
               { type: 'keyboard', name: 'Analog Subtractive Synth' },
@@ -518,6 +630,9 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
           </div>
         )}
       </div>
+
+      {/* REGROOVE GLOBAL TIMING & SHUFFLE POOL PANEL */}
+      <ReGroovePanel currentBpm={masterState.bpm} />
     </div>
   );
 };

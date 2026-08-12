@@ -5,6 +5,7 @@ import {
   ConnectedDevice,
   SamplePad,
   TrackChannel,
+  PresetItem,
 } from './types';
 import { audioEngine } from './audio/engine';
 import { midiManager } from './midi/manager';
@@ -14,6 +15,7 @@ import { StudioTransport } from './components/rack/StudioTransport';
 import { StudioRearPanel } from './components/rack/StudioRearPanel';
 import { StudioRackDevice } from './components/rack/StudioRackDevice';
 import { StudioRackNav } from './components/rack/StudioRackNav';
+import { RackPresetAndDemoBar } from './components/rack/RackPresetAndDemoBar';
 
 import { MPCWorkspace } from './components/workspaces/MPCWorkspace';
 import { SP404Workspace } from './components/workspaces/SP404Workspace';
@@ -39,12 +41,21 @@ import { DAWBrowserSidebar } from './components/daw/DAWBrowserSidebar';
 import { CubaseLogicWaveformSequencer } from './components/daw/CubaseLogicWaveformSequencer';
 import { FLStudioChannelRack } from './components/daw/FLStudioChannelRack';
 import { FloatingWindowManager } from './components/daw/FloatingWindowManager';
+import { DirectToDiskRecorder } from './components/daw/DirectToDiskRecorder';
 
 import { RackModuleItem, StudioTemplate, ModuleType } from './types';
 import { RackStackManager } from './components/rack/RackStackManager';
 import { FloatingQuickPalette } from './components/daw/FloatingQuickPalette';
 import { TemplatesModal } from './components/daw/TemplatesModal';
 import { GuidedWalkthroughBanner } from './components/daw/GuidedWalkthroughBanner';
+import { ReasonSSLConsole } from './components/rack/ReasonSSLConsole';
+import { BottomDAWAndReGroovePanel } from './components/daw/BottomDAWAndReGroovePanel';
+import { UnitDetachSelectorModal } from './components/daw/UnitDetachSelectorModal';
+import { UserProfileModal } from './components/system/UserProfileModal';
+import { SettingsModal } from './components/system/SettingsModal';
+import { KeyboardShortcutsModal } from './components/system/KeyboardShortcutsModal';
+import { PluginStoreModal, SubscriptionTier } from './components/system/PluginStoreModal';
+import { Disc, Check } from 'lucide-react';
 
 export default function App() {
   // Master Global App State
@@ -61,31 +72,61 @@ export default function App() {
 
   const [connectedDevices, setConnectedDevices] = useState<ConnectedDevice[]>([]);
   const [isAIGrooveOpen, setIsAIGrooveOpen] = useState<boolean>(false);
+  const [isRecorderOpen, setIsRecorderOpen] = useState<boolean>(false);
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
   const [isBrowserOpen, setIsBrowserOpen] = useState<boolean>(true);
   const [detachedWorkspaces, setDetachedWorkspaces] = useState<WorkspaceType[]>([]);
+  const [isUnitDetachModalOpen, setIsUnitDetachModalOpen] = useState<boolean>(false);
 
   const [isTemplatesOpen, setIsTemplatesOpen] = useState<boolean>(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
+  const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
+  const [isShortcutsOpen, setIsShortcutsOpen] = useState<boolean>(false);
+  const [isStoreOpen, setIsStoreOpen] = useState<boolean>(false);
+  const [userTier, setUserTier] = useState<SubscriptionTier>('producer_pass');
+
   const [isWalkthroughActive, setIsWalkthroughActive] = useState<boolean>(true);
   const [autoHideBars, setAutoHideBars] = useState<boolean>(false);
+  const [lastAutoSaveTime, setLastAutoSaveTime] = useState<string>('');
+
+  const [autoSaveEnabled, setAutoSaveEnabled] = useState<boolean>(() => {
+    return localStorage.getItem('studio_autosave_enabled') !== 'false';
+  });
+
+  const [autoSaveInterval, setAutoSaveInterval] = useState<number>(() => {
+    const saved = localStorage.getItem('studio_autosave_interval');
+    return saved ? parseInt(saved, 10) : 30; // 30 seconds default
+  });
 
   // Infinite Rack Modules State with Undo/Redo History Stack
-  const [rackHistory, setRackHistory] = useState<RackModuleItem[][]>([
-    [
-      { id: 'start_mpc', type: 'mpc', title: 'MPC Studio Drum Pad', tapeLabel: 'BOOM BAP KIT' },
-      { id: 'start_synth', type: 'keyboard', title: 'Analog Subtractive Synth', tapeLabel: 'LEAD SYNTH' },
-      {
-        id: 'start_bus',
-        type: 'folder_combinator',
-        title: 'Drums & FX Bus Folder',
-        tapeLabel: 'COMBINATOR BUS',
-        subModuleIds: ['start_sp404'],
-      },
-      { id: 'start_sp404', type: 'sp404', title: 'SP-404 MKII Sampler', tapeLabel: 'LO-FI MFX', groupId: 'start_bus' },
-      { id: 'start_pitch', type: 'melodyne_pitch', title: 'Pro Vocal Pitch Editor', tapeLabel: 'AUTO TUNER' },
-      { id: 'start_mixer', type: 'mixer', title: 'SSL 9000 Master Mixer', tapeLabel: 'MASTER CONSOLE' },
-    ],
-  ]);
+  const [rackHistory, setRackHistory] = useState<RackModuleItem[][]>(() => {
+    try {
+      const saved = localStorage.getItem('studio_auto_saved_rack_history');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return [
+      [
+        { id: 'start_mpc', type: 'mpc', title: 'MPC Studio Drum Pad', tapeLabel: 'BOOM BAP KIT', colorTag: 'amber' },
+        {
+          id: 'start_bus',
+          type: 'folder_combinator',
+          title: 'Drums & FX Bus Folder',
+          tapeLabel: 'COMBINATOR BUS',
+          colorTag: 'gold',
+          subModuleIds: ['start_sp404'],
+        },
+        { id: 'start_sp404', type: 'sp404', title: 'SP-404 MKII Sampler', tapeLabel: 'LO-FI MFX', groupId: 'start_bus', colorTag: 'rose' },
+        { id: 'start_subtractor', type: 'subtractor_synth', title: 'Subtractor Polyphonic Synth', tapeLabel: 'DEEP 808 BASS', colorTag: 'violet' },
+        { id: 'start_thor', type: 'thor_synth', title: 'Thor Polysonic Synthesizer', tapeLabel: 'CYBER SAW LEAD', colorTag: 'emerald' },
+      ],
+    ];
+  });
+
   const [historyIndex, setHistoryIndex] = useState<number>(0);
 
   const rackModules = rackHistory[historyIndex] || [];
@@ -108,6 +149,35 @@ export default function App() {
     },
     [historyIndex]
   );
+
+  // MANUAL & AUTOSAVE TRIGGER FUNCTION
+  const handleTriggerManualSave = useCallback(() => {
+    try {
+      localStorage.setItem('studio_auto_saved_rack_history', JSON.stringify(rackHistory));
+      localStorage.setItem('studio_auto_saved_bpm', String(masterState.bpm));
+      setLastAutoSaveTime(new Date().toLocaleTimeString());
+    } catch (e) {
+      console.error('Manual save failed:', e);
+    }
+  }, [rackHistory, masterState.bpm]);
+
+  // AUTOMATIC REAL-TIME PROJECT SAVE SYSTEM
+  useEffect(() => {
+    if (!autoSaveEnabled) return;
+
+    const autoSaveTimer = setInterval(() => {
+      handleTriggerManualSave();
+    }, autoSaveInterval * 1000);
+
+    return () => clearInterval(autoSaveTimer);
+  }, [autoSaveEnabled, autoSaveInterval, handleTriggerManualSave]);
+
+  const handleResetProject = useCallback(() => {
+    if (window.confirm('Reset current project to factory initial state?')) {
+      localStorage.removeItem('studio_auto_saved_rack_history');
+      window.location.reload();
+    }
+  }, []);
 
   const handleUndo = useCallback(() => {
     if (historyIndex > 0) {
@@ -168,6 +238,7 @@ export default function App() {
       type,
       title,
       tapeLabel,
+      colorTag: 'amber',
     };
     setRackModules((prev) => [...prev, newMod]);
   };
@@ -181,6 +252,21 @@ export default function App() {
       setIsWalkthroughActive(false);
     }
   };
+
+  const handleLoadPreset = (preset: PresetItem) => {
+    setRackModules(preset.modules);
+    setMasterState((prev) => ({ ...prev, bpm: preset.bpm }));
+  };
+
+  const handleLoadRackPreset = useCallback(
+    (modules: RackModuleItem[], bpm?: number) => {
+      setRackModules(modules);
+      if (bpm) {
+        setMasterState((prev) => ({ ...prev, bpm }));
+      }
+    },
+    [setRackModules, setMasterState]
+  );
 
   const handleDetachWorkspace = (ws: WorkspaceType) => {
     if (!detachedWorkspaces.includes(ws)) {
@@ -401,6 +487,10 @@ export default function App() {
           onToggleFlip={() => setIsFlipped((prev) => !prev)}
           openAIGrooveModal={() => setIsAIGrooveOpen(true)}
           openTemplatesModal={() => setIsTemplatesOpen(true)}
+          openSettingsModal={() => setIsSettingsOpen(true)}
+          openProfileModal={() => setIsProfileOpen(true)}
+          openShortcutsModal={() => setIsShortcutsOpen(true)}
+          openStoreModal={() => setIsStoreOpen(true)}
           bpm={masterState.bpm}
           detachedWorkspaces={detachedWorkspaces}
           onDetachWorkspace={handleDetachWorkspace}
@@ -408,6 +498,12 @@ export default function App() {
           onRedo={handleRedo}
           canUndo={canUndo}
           canRedo={canRedo}
+          autoSaveEnabled={autoSaveEnabled}
+          lastAutoSaveTime={lastAutoSaveTime}
+          onTriggerManualSave={handleTriggerManualSave}
+          onFoldAllModules={() => setRackModules((prev) => prev.map((m) => ({ ...m, isFolded: true })))}
+          onUnfoldAllModules={() => setRackModules((prev) => prev.map((m) => ({ ...m, isFolded: false })))}
+          onResetProject={handleResetProject}
         />
 
         {/* Top Header / Studio Hardware Bar */}
@@ -421,6 +517,18 @@ export default function App() {
           openAIGrooveModal={() => setIsAIGrooveOpen(true)}
         />
       </div>
+
+      {/* Direct To Disk Recorder Modal / Floating Bar */}
+      {isRecorderOpen && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="w-full max-w-2xl">
+            <DirectToDiskRecorder
+              bpm={masterState.bpm}
+              onClose={() => setIsRecorderOpen(false)}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Starter Song Interactive Walkthrough Banner */}
       {isWalkthroughActive && (
@@ -444,35 +552,84 @@ export default function App() {
           }}
           isOpen={isBrowserOpen}
           onToggle={() => setIsBrowserOpen((prev) => !prev)}
+          onAddModuleToRack={handleAddModuleToRack}
+          rackModules={rackModules}
+          currentBpm={masterState.bpm}
+          onLoadPreset={handleLoadPreset}
         />
 
         {/* Center Studio Workstation Container */}
-        <div className="flex-1 flex flex-col overflow-y-auto bg-stone-900 border-x-[14px] border-[#381e0e] shadow-[inset_0_0_50px_rgba(0,0,0,0.9)] scrollbar-thin scrollbar-thumb-stone-700">
+        <div className="flex-1 flex flex-col h-full overflow-hidden bg-stone-900 border-x-[14px] border-[#381e0e] shadow-[inset_0_0_50px_rgba(0,0,0,0.9)]">
           {/* 1U Studio Hardware Audio & MIDI Interface (Top Rack Unit) */}
-          <div className="p-2 bg-stone-950 border-b-2 border-stone-800">
+          <div className="p-2 bg-stone-950 border-b-2 border-stone-800 flex items-center justify-between shrink-0">
             <HardwareInterfaceUnit
               connectedDevices={connectedDevices}
               bpm={masterState.bpm}
               isFlipped={isFlipped}
               onToggleFlip={() => setIsFlipped((prev) => !prev)}
             />
+
+            <div className="flex items-center gap-2 pr-2">
+              <button
+                onClick={() => setIsUnitDetachModalOpen(true)}
+                className="px-2.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-mono font-black text-xs flex items-center gap-1.5 shadow-md transition"
+                title="Open Detachable Units Manager"
+              >
+                <span>DETACH UNITS</span>
+              </button>
+
+              <button
+                onClick={() => setIsRecorderOpen(!isRecorderOpen)}
+                className="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-mono font-black text-xs flex items-center gap-1.5 shadow-lg shadow-rose-600/30 transition"
+                title="Open Direct-To-Disk Stereo Master Recorder"
+              >
+                <Disc className="w-3.5 h-3.5 animate-pulse" />
+                <span>DIRECT-TO-DISK RECORDER</span>
+              </button>
+
+              {lastAutoSaveTime && (
+                <div className="hidden lg:flex items-center gap-1 text-[10px] font-mono text-emerald-400 bg-neutral-950 px-2 py-1 rounded-lg border border-neutral-800">
+                  <Check className="w-3 h-3" />
+                  <span>AUTO-SAVED {lastAutoSaveTime}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Preset & Demo Track Selector Bar */}
+          <div className="shrink-0">
+            <RackPresetAndDemoBar onLoadRackPreset={handleLoadRackPreset} />
           </div>
 
           {/* Studio Rack Device Browser Palette */}
-          <StudioRackNav
-            activeWorkspace={masterState.activeWorkspace}
-            setActiveWorkspace={(ws) => {
-              setMasterState((prev) => ({ ...prev, activeWorkspace: ws }));
-              handleAddModuleToRack(ws);
-            }}
-          />
+          <div className="shrink-0">
+            <StudioRackNav
+              activeWorkspace={masterState.activeWorkspace}
+              setActiveWorkspace={(ws) => {
+                setMasterState((prev) => ({ ...prev, activeWorkspace: ws }));
+                handleAddModuleToRack(ws);
+              }}
+            />
+          </div>
 
-          {/* Main Virtual Studio Infinite Stacked Rack Display */}
-          <main className="p-4 flex-1">
+          {/* PINNED TOP: SSL 9000 MASTER MIXING CONSOLE */}
+          <div className="p-2 bg-stone-950/80 border-b border-stone-800 shrink-0">
+            <ReasonSSLConsole
+              channels={channels}
+              setChannels={setChannels}
+              isDetached={detachedWorkspaces.includes('mixer')}
+              onDetach={() => handleDetachWorkspace('mixer')}
+              onDock={() => handleDockWorkspace('mixer')}
+            />
+          </div>
+
+          {/* SCROLLABLE MIDDLE: MAIN REASON RACK STACK */}
+          <main className="p-3 flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-stone-700">
             {isFlipped ? (
               /* REAR PANEL VIEW WITH CABLES */
               <StudioRearPanel
                 masterState={masterState}
+                rackModules={rackModules}
                 onToggleFlip={() => setIsFlipped(false)}
               />
             ) : (
@@ -497,6 +654,22 @@ export default function App() {
               />
             )}
           </main>
+
+          {/* PINNED BOTTOM: AUDIO DAW SEQUENCER, REGROOVE & KEYBOARD PANEL */}
+          <div className="shrink-0 border-t border-stone-800">
+            <BottomDAWAndReGroovePanel
+              isDAWDetached={detachedWorkspaces.includes('wave_sequencer')}
+              isReGrooveDetached={detachedWorkspaces.includes('d_groove')}
+              isKeyboardDetached={detachedWorkspaces.includes('keyboard')}
+              onDetachDAW={() => handleDetachWorkspace('wave_sequencer')}
+              onDockDAW={() => handleDockWorkspace('wave_sequencer')}
+              onDetachReGroove={() => handleDetachWorkspace('d_groove')}
+              onDockReGroove={() => handleDockWorkspace('d_groove')}
+              onDetachKeyboard={() => handleDetachWorkspace('keyboard')}
+              onDockKeyboard={() => handleDockWorkspace('keyboard')}
+              onSimulateMIDI={handleSimulateMIDI}
+            />
+          </div>
         </div>
       </div>
 
@@ -554,6 +727,15 @@ export default function App() {
         onApplyGroove={handleApplyAIGroove}
       />
 
+      {/* Detachable Windows & Units Manager Modal */}
+      <UnitDetachSelectorModal
+        isOpen={isUnitDetachModalOpen}
+        onClose={() => setIsUnitDetachModalOpen(false)}
+        detachedWorkspaces={detachedWorkspaces}
+        onDetachWorkspace={handleDetachWorkspace}
+        onDockWorkspace={handleDockWorkspace}
+      />
+
       {/* Detachable Multi-Window Floating System */}
       <FloatingWindowManager
         detachedWorkspaces={detachedWorkspaces}
@@ -562,6 +744,31 @@ export default function App() {
         setMasterState={setMasterState}
         connectedDevices={connectedDevices}
         openAIGrooveModal={() => setIsAIGrooveOpen(true)}
+      />
+
+      {/* User Producer Profile & License Modal */}
+      <UserProfileModal
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+        rackModuleCount={rackModules.length}
+        bpm={masterState.bpm}
+      />
+
+      {/* Preferences & Audio Engine Settings Modal */}
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        autoSaveEnabled={autoSaveEnabled}
+        setAutoSaveEnabled={setAutoSaveEnabled}
+        autoSaveInterval={autoSaveInterval}
+        setAutoSaveInterval={setAutoSaveInterval}
+        onTriggerManualSave={handleTriggerManualSave}
+      />
+
+      {/* Keyboard Shortcuts Reference Modal */}
+      <KeyboardShortcutsModal
+        isOpen={isShortcutsOpen}
+        onClose={() => setIsShortcutsOpen(false)}
       />
     </div>
   );

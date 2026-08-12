@@ -57,11 +57,14 @@ export const FloatingQuickPalette: React.FC<FloatingQuickPaletteProps> = ({
   canUndo = false,
   canRedo = false,
 }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false); // Start collapsed so it's not in the way
+  const [isDismissed, setIsDismissed] = useState<boolean>(false);
   const [isAddMenuOpen, setIsAddMenuOpen] = useState<boolean>(false);
-  const [position, setPosition] = useState<{ x: number; y: number }>({ x: 24, y: 110 });
+  const [position, setPosition] = useState<{ x: number; y: number }>({ x: 20, y: 160 });
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [dragOffset, setDragOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  if (isDismissed) return null;
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
@@ -111,7 +114,7 @@ export const FloatingQuickPalette: React.FC<FloatingQuickPaletteProps> = ({
   return (
     <div
       style={{ top: `${position.y}px`, left: `${position.x}px` }}
-      className="fixed z-[120] font-mono select-none"
+      className="fixed z-[80] font-mono select-none"
     >
       <div className="bg-neutral-950/95 border-2 border-amber-500/70 rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.95)] backdrop-blur-md overflow-hidden text-xs text-neutral-200 w-72">
         {/* Header Bar */}
@@ -123,12 +126,22 @@ export const FloatingQuickPalette: React.FC<FloatingQuickPaletteProps> = ({
             <GripVertical className="w-3.5 h-3.5 text-neutral-500" />
             <span className="text-[11px]">QUICK OPTIONS PALETTE</span>
           </div>
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="p-0.5 rounded hover:bg-neutral-800 text-neutral-400 hover:text-white"
-          >
-            {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="p-0.5 rounded hover:bg-neutral-800 text-neutral-400 hover:text-white"
+              title={isOpen ? 'Collapse Palette' : 'Expand Palette'}
+            >
+              {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
+            <button
+              onClick={() => setIsDismissed(true)}
+              className="p-0.5 rounded hover:bg-neutral-800 text-neutral-400 hover:text-rose-400"
+              title="Close Quick Palette"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {isOpen && (

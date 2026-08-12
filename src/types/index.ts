@@ -1,4 +1,23 @@
-export type ModuleType = WorkspaceType | 'folder_combinator';
+export type ModuleType = WorkspaceType | 'folder_combinator' | 'rack_group';
+
+export type RackColorTag =
+  | 'amber'
+  | 'cyan'
+  | 'rose'
+  | 'emerald'
+  | 'violet'
+  | 'gold'
+  | 'neutral'
+  | 'slate';
+
+export interface RackMacroBinding {
+  id: string;
+  name: string;
+  targetModuleId: string;
+  targetParam: string;
+  value: number; // 0 to 100
+  depth: number; // 0 to 100
+}
 
 export interface RackModuleItem {
   id: string;
@@ -6,9 +25,10 @@ export interface RackModuleItem {
   title: string;
   tapeLabel: string;
   isFolded?: boolean;
-  groupId?: string; // Optional parent Combinator folder ID
-  subModuleIds?: string[]; // If type === 'folder_combinator'
+  groupId?: string; // Optional parent Combinator or Rack Group ID
+  subModuleIds?: string[]; // If type === 'folder_combinator' or 'rack_group'
   color?: string;
+  colorTag?: RackColorTag;
   macroParams?: {
     filterCutoff: number;
     drive: number;
@@ -16,6 +36,18 @@ export interface RackModuleItem {
     delayLevel: number;
     masterVol: number;
   };
+  macroBindings?: RackMacroBinding[];
+}
+
+export interface PresetItem {
+  id: string;
+  name: string;
+  description: string;
+  category: 'factory' | 'user' | 'genre' | 'vintage';
+  modules: RackModuleItem[];
+  bpm: number;
+  createdAt: string;
+  color?: string;
 }
 
 export interface StudioTemplate {
@@ -48,7 +80,20 @@ export type WorkspaceType =
   | 'd_groove'
   | 'piano_roll'
   | 'wave_sequencer'
-  | 'fl_channel_rack';
+  | 'fl_channel_rack'
+  | 'subtractor_synth'
+  | 'thor_synth'
+  | 'polytone_synth'
+  | 'mimic_sampler'
+  | 'rv7000_reverb'
+  | 'the_echo_delay'
+  | 'pulverizer_comp'
+  | 'scream4_distortion'
+  | 'audiomatic_retro'
+  | 'sidechain_ducker'
+  | 'scales_chords'
+  | 'line_mixer_6_2'
+  | 'spider_cv_splitter';
 
 export type DeviceCategory =
   | 'mpc'
@@ -173,6 +218,18 @@ export interface TrackChannel {
   sendDelay: number; // 0 to 1
   assignedPadIds: string[];
   instrumentType: 'sampler' | 'synth' | 'e_drum' | 'dj_deck';
+  // Enhanced SSL 9000 Console Channel Strip Controls
+  gainTrim?: number; // -20 to +20 dB
+  phaseInvert?: boolean;
+  hpfFreq?: number; // 18Hz to 350Hz
+  hpfEnabled?: boolean;
+  compThreshold?: number; // -30 to +10 dB
+  compRatio?: number; // 1 to 20
+  compFastAttack?: boolean;
+  eqIn?: boolean;
+  sendAux3?: number; // 0 to 1
+  busRouting?: 'master' | 'bus12' | 'bus34';
+  insertBypass?: boolean;
 }
 
 export interface AudioInputPatch {
@@ -217,3 +274,42 @@ export interface MIDILogEvent {
   number: number;
   value: number;
 }
+
+export interface AudioRegion {
+  id: string;
+  startBar: number;
+  durationBars: number;
+  title: string;
+  waveSeed: number;
+  gainDb: number; // -24 to +12 dB
+  pitchOffset: number; // semitones (-12 to +12)
+  isReversed?: boolean;
+  isMuted?: boolean;
+  trimStartPercent: number; // 0 to 50%
+  trimEndPercent: number; // 0 to 50%
+  type: 'audio' | 'midi';
+}
+
+export interface SequencerTrack {
+  id: string;
+  name: string;
+  type: 'audio' | 'instrument';
+  color: string;
+  isMuted: boolean;
+  isSolo: boolean;
+  isArmed: boolean;
+  volume: number; // 0-100
+  pan: number; // -50 to +50
+  regions: AudioRegion[];
+}
+
+export interface ReGroovePreset {
+  id: string;
+  name: string;
+  description: string;
+  swingAmount: number; // 0% to 100%
+  intensity: number; // 0% to 100%
+  humanizeJitterMs: number; // 0 to 20ms
+  grid: '1/16' | '1/8' | '1/32' | '1/16T';
+}
+

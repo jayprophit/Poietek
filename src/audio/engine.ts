@@ -527,6 +527,116 @@ class AudioEngine {
     });
   }
 
+  // Play synthesized tone for synth modules and preview audition
+  public playSynthTone(freq: number = 440, type: OscillatorType = 'sawtooth', duration: number = 0.5, cutoff: number = 3000) {
+    this.initAudio();
+    if (!this.ctx || !this.masterGain) return;
+
+    try {
+      const osc = this.ctx.createOscillator();
+      const filter = this.ctx.createBiquadFilter();
+      const env = this.ctx.createGain();
+
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(cutoff, this.ctx.currentTime);
+
+      env.gain.setValueAtTime(0.3, this.ctx.currentTime);
+      env.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+
+      osc.connect(filter);
+      filter.connect(env);
+      env.connect(this.masterGain);
+
+      osc.start();
+      osc.stop(this.ctx.currentTime + duration);
+    } catch (e) {
+      console.error('Error playing synth tone', e);
+    }
+  }
+
+  // Play sample audition for Reason Browser Sound Bank
+  public playSampleAudition(synthType: string = 'sawtooth', freq: number = 440, volume: number = 0.8) {
+    this.initAudio();
+    if (!this.ctx || !this.masterGain) return;
+
+    try {
+      const now = this.ctx.currentTime;
+      if (synthType === 'noise') {
+        // Generate crisp noise hit for snares, vinyl crackle, hi-hats
+        const bufferSize = this.ctx.sampleRate * 0.3;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = freq > 4000 ? 'highpass' : 'bandpass';
+        filter.frequency.setValueAtTime(freq, now);
+
+        const env = this.ctx.createGain();
+        env.gain.setValueAtTime(volume * 0.4, now);
+        env.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+        noise.connect(filter);
+        filter.connect(env);
+        env.connect(this.masterGain);
+        noise.start(now);
+      } else if (synthType === 'loop_beat') {
+        // Play rhythmic drum loop audition sequence
+        [0, 0.2, 0.4, 0.6, 0.8, 1.0].forEach((t, i) => {
+          const osc = this.ctx!.createOscillator();
+          const gain = this.ctx!.createGain();
+          osc.type = i % 2 === 0 ? 'sine' : 'triangle';
+          osc.frequency.setValueAtTime(i % 2 === 0 ? 60 : 180, now + t);
+          if (i % 2 === 0) osc.frequency.exponentialRampToValueAtTime(30, now + t + 0.1);
+          gain.gain.setValueAtTime(volume * 0.4, now + t);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + t + 0.15);
+          osc.connect(gain);
+          gain.connect(this.masterGain!);
+          osc.start(now + t);
+          osc.stop(now + t + 0.15);
+        });
+      } else if (synthType === 'vocal_chop') {
+        // Melodic vocal chop synthesizer simulation
+        [0, 0.15, 0.35, 0.55].forEach((t, i) => {
+          const osc = this.ctx!.createOscillator();
+          const gain = this.ctx!.createGain();
+          const f = freq * [1, 1.25, 1.5, 1.33][i];
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(f, now + t);
+          gain.gain.setValueAtTime(volume * 0.3, now + t);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + t + 0.18);
+          osc.connect(gain);
+          gain.connect(this.masterGain!);
+          osc.start(now + t);
+          osc.stop(now + t + 0.18);
+        });
+      } else {
+        // Standard oscillator synth audition
+        const osc = this.ctx.createOscillator();
+        const env = this.ctx.createGain();
+        osc.type = (synthType as OscillatorType) || 'sawtooth';
+        osc.frequency.setValueAtTime(freq, now);
+
+        env.gain.setValueAtTime(volume * 0.4, now);
+        env.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+
+        osc.connect(env);
+        env.connect(this.masterGain);
+        osc.start(now);
+        osc.stop(now + 0.6);
+      }
+    } catch (e) {
+      console.error('Error in playSampleAudition', e);
+    }
+  }
+
   // Custom Sample Registration
   public registerCustomSample(id: string, buffer: AudioBuffer) {
     this.sampleBuffers.set(id, buffer);

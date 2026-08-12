@@ -189,29 +189,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         </div>
       </div>
 
-      {/* Workspace Navigation Bar */}
-      <nav className="flex items-center gap-1 overflow-x-auto mt-3 pt-2 border-t border-slate-800/60 scrollbar-none">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = masterState.activeWorkspace === item.id;
-          return (
-            <button
-              key={item.id}
-              onClick={() =>
-                setMasterState((prev) => ({ ...prev, activeWorkspace: item.id }))
-              }
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
-                isActive
-                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/70'
-              }`}
-            >
-              <Icon className="w-3.5 h-3.5" />
-              <span>{item.label}</span>
-            </button>
-          );
-        })}
-      </nav>
+      {/* Workspace Navigation Dropdown / Selector Menu (Hidden tabs by default) */}
     </header>
   );
 };
