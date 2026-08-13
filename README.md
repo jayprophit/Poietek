@@ -5,6 +5,12 @@ local-first creative audio workspace that preserves the useful hardware/rack UX
 while moving durable projects, media, playback and platform capabilities into a
 versioned architecture.
 
+It is one application with device-aware access points. On launch it detects the
+active desktop, tablet, mobile or other form factor plus touch/pointer,
+orientation and browser/installed/native surface, then applies only that device's
+layout and available capabilities. The canonical project remains the same across
+every access point.
+
 The application now opens in the **Arrange** desk: real imported audio, stored
 waveforms, clip editing and the track-linked console. Select **Rack** (or press
 F6) for the modular device stack and rear patching; press F7 to return to the
@@ -78,6 +84,7 @@ framework-independent core, all Node tests and the production Vite build.
 - [Archive policy](docs/ARCHIVE_POLICY.md)
 - [Professional workstation comparison](docs/PRO_DAW_COMPARISON.md)
 - [Industry qualification and five-star evidence baseline](docs/INDUSTRY_QUALIFICATION.md)
+- [One-app device-aware access architecture](docs/DEVICE_AWARE_ACCESS.md)
 - [Native scaffold boundary](src-tauri/README.md)
 
 ## Non-negotiable truth rules

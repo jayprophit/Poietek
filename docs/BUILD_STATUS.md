@@ -5,8 +5,8 @@
 - Formatting hygiene: passed
 - Full TypeScript typecheck: passed
 - Strict Poietek core compile: passed
-- Automated regression tests: 88 passed, 0 failed
-- Vite production build: passed (1,780 modules)
+- Automated regression tests: 95 passed, 0 failed
+- Vite production build: passed (1,782 modules)
 - Production browser smoke test: passed
 - Installed dependency graph: no missing, invalid or extraneous packages
 - Git whitespace/conflict check: passed
@@ -46,6 +46,16 @@ render speed and 84.57 MB/s temporary IndexedDB write/read. These are browser an
 computer observations, not audio-interface, plug-in, LUFS, true-peak or
 commercial-product measurements.
 
+The device-aware pass established one application with active desktop, tablet,
+mobile and conservative-other profiles. Runtime evidence now covers viewport,
+orientation, touch, pointer/hover, installed/native surface and pixel ratio;
+rotation and resizing update the session without changing canonical project
+truth. Live QA verified expanded desktop at 1280 px, compact workspace at 1024 px
+and a 390 px handheld layout with fixed bottom navigation, reserved content space
+and no page-level horizontal overflow. Pure profile tests additionally cover
+touch-phone portrait/landscape, hybrid tablet, narrow desktop and unidentified
+access points without inventing hardware.
+
 The managed Codex Windows sandbox does not permit Vite's development dependency
 optimizer to traverse its normal resolution boundary. `npm run dev` therefore
 builds and serves the verified bundle on port 3000. `npm run dev:hmr` retains the
@@ -64,6 +74,8 @@ normal live Vite workflow for unrestricted development environments.
 - Rights/team/provenance/commerce/privacy/learning/interoperability/plugin/video/AI contracts
 - Destination profiles, A432 derivative boundary, local community/feed/store contracts
 - PWA shell and least-privilege Tauri scaffold
+- Versioned active-device detection with expanded desktop, compact tablet and
+  handheld mobile presentation from one application shell
 - Versioned global settings, four named profiles and JSON import/export
 - Audio/MIDI/sync/recording/editing/file/plugin/appearance/privacy setup UI
 - Honest 21-item original module/content catalog and procedural one-shot kit

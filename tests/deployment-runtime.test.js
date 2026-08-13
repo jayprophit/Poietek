@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {deriveDeploymentSnapshot} from './.compiled-core/deployment/derive.js';
+import {deriveDeviceRuntimeProfile} from './.compiled-core/deployment/deviceProfile.js';
 
 function probe(overrides = {}) {
   return {
@@ -53,4 +54,106 @@ test('offline mode preserves local engines and reports network state separately'
   assert.equal(snapshot.online, false);
   assert.equal(snapshot.engines.find((engine) => engine.id === 'project-store').state, 'available');
   assert.equal(snapshot.engines.find((engine) => engine.id === 'network').state, 'not-initialized');
+});
+
+function device(overrides = {}) {
+  return {
+    viewportWidth: 1440,
+    viewportHeight: 900,
+    pixelRatio: 1,
+    coarsePointer: false,
+    finePointer: true,
+    hover: true,
+    maxTouchPoints: 0,
+    mobileHint: false,
+    nativeBridge: false,
+    standalone: false,
+    ...overrides,
+  };
+}
+
+test('desktop receives the expanded pointer-and-keyboard workspace', () => {
+  const profile = deriveDeviceRuntimeProfile(device());
+  assert.equal(profile.deviceClass, 'desktop');
+  assert.equal(profile.layout, 'expanded');
+  assert.equal(profile.primaryNavigation, 'top');
+  assert.equal(profile.inputMode, 'mouse-keyboard');
+  assert.equal(profile.showKeyboardShortcuts, true);
+  assert.equal(profile.touchTargetPx, 32);
+});
+
+test('phone receives the handheld touch workspace in portrait and landscape', () => {
+  const portrait = deriveDeviceRuntimeProfile(device({
+    viewportWidth: 390,
+    viewportHeight: 844,
+    pixelRatio: 3,
+    coarsePointer: true,
+    finePointer: false,
+    hover: false,
+    maxTouchPoints: 5,
+    mobileHint: true,
+  }));
+  const landscape = deriveDeviceRuntimeProfile(device({
+    viewportWidth: 844,
+    viewportHeight: 390,
+    pixelRatio: 3,
+    coarsePointer: true,
+    finePointer: false,
+    hover: false,
+    maxTouchPoints: 5,
+    mobileHint: true,
+  }));
+  for (const profile of [portrait, landscape]) {
+    assert.equal(profile.deviceClass, 'mobile');
+    assert.equal(profile.layout, 'handheld');
+    assert.equal(profile.primaryNavigation, 'bottom');
+    assert.equal(profile.rackPresentation, 'horizontal-scroll');
+    assert.equal(profile.touchTargetPx, 44);
+  }
+  assert.equal(portrait.orientation, 'portrait');
+  assert.equal(landscape.orientation, 'landscape');
+});
+
+test('tablet and hybrid inputs receive compact touch-safe controls', () => {
+  const profile = deriveDeviceRuntimeProfile(device({
+    viewportWidth: 1024,
+    viewportHeight: 768,
+    pixelRatio: 2,
+    coarsePointer: true,
+    finePointer: true,
+    maxTouchPoints: 10,
+  }));
+  assert.equal(profile.deviceClass, 'tablet');
+  assert.equal(profile.layout, 'compact');
+  assert.equal(profile.primaryNavigation, 'compact');
+  assert.equal(profile.inputMode, 'hybrid');
+  assert.equal(profile.touchTargetPx, 44);
+  assert.equal(profile.showKeyboardShortcuts, true);
+});
+
+test('a narrow desktop window uses compact layout without inventing tablet hardware', () => {
+  const profile = deriveDeviceRuntimeProfile(device({viewportWidth: 1024, viewportHeight: 768}));
+  assert.equal(profile.deviceClass, 'desktop');
+  assert.equal(profile.layout, 'compact');
+  assert.equal(profile.primaryNavigation, 'compact');
+  assert.equal(profile.inputMode, 'mouse-keyboard');
+});
+
+test('a phone-width desktop window uses handheld layout without claiming mobile hardware', () => {
+  const profile = deriveDeviceRuntimeProfile(device({viewportWidth: 390, viewportHeight: 844}));
+  assert.equal(profile.deviceClass, 'desktop');
+  assert.equal(profile.layout, 'handheld');
+  assert.equal(profile.inputMode, 'mouse-keyboard');
+});
+
+test('unidentified access points remain other instead of inventing a device', () => {
+  const profile = deriveDeviceRuntimeProfile(device({
+    viewportWidth: 0,
+    viewportHeight: 0,
+    finePointer: false,
+    hover: false,
+  }));
+  assert.equal(profile.deviceClass, 'other');
+  assert.equal(profile.layout, 'compact');
+  assert.equal(profile.orientation, 'unknown');
 });

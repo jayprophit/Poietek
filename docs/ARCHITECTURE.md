@@ -110,6 +110,25 @@ The current Tauri directory is intentionally a least-privilege scaffold: no IPC
 commands or plugins, restrictive CSP, and bundling disabled until real native
 adapters, icons, signing and platform tests are complete.
 
+### One app, active-device presentation
+
+`deployment/deviceProfile.ts` derives a versioned, session-local runtime profile
+from viewport, orientation, touch points, pointer/hover evidence and the current
+browser, installed or native surface. `useDeviceRuntimeProfile` observes changes
+and applies the active profile to the shared application shell.
+
+Desktop receives the expanded professional workspace, touch or hybrid tablets
+receive compact chrome and touch-safe controls, and phones receive a handheld
+workspace with persistent bottom navigation. A phone remains mobile in landscape;
+a narrow desktop window can use the handheld layout without falsely identifying
+the hardware as a phone. Unidentified access points use the conservative compact
+profile.
+
+This device profile is deliberately not stored in `PoietekProject`. The project,
+assets, rights and release data remain portable creative truth; presentation and
+available-device capabilities remain local to the active access point. See
+`DEVICE_AWARE_ACCESS.md` for the complete detection and acceptance matrix.
+
 ## Controlled architecture set
 
 This overview is read with the following controlled documents:

@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
 import {useOfflineRuntime} from './useOfflineRuntime';
+import type {PoietekDeviceRuntimeProfile} from '../deployment';
 
 function formatBytes(value: number | null) {
   if (value == null) return 'Not reported';
@@ -15,7 +16,10 @@ const modeLabels = {
   'native-mobile': 'Native mobile shell',
 };
 
-export function OfflineInstallCenter() {
+const deviceLabels = {desktop: 'Desktop', tablet: 'Tablet', mobile: 'Mobile', other: 'Other device', unknown: 'Unknown device'};
+const inputLabels = {'mouse-keyboard': 'mouse + keys', touch: 'touch', hybrid: 'touch + pointer', unknown: 'input unknown'};
+
+export function OfflineInstallCenter({deviceProfile}: {deviceProfile: PoietekDeviceRuntimeProfile}) {
   const runtime = useOfflineRuntime();
   const [open, setOpen] = useState(false);
   const panel = useRef<HTMLDivElement>(null);
@@ -46,7 +50,7 @@ export function OfflineInstallCenter() {
         <i />
         <span>
           <strong>{runtime.deployment.online ? 'Local + online' : 'Local offline'}</strong>
-          <small>{modeLabels[runtime.deployment.mode]} · {readyCount} engines ready</small>
+          <small>{deviceLabels[deviceProfile.deviceClass]} · {modeLabels[runtime.deployment.mode]} · {readyCount} engines ready</small>
         </span>
       </button>
 
@@ -61,6 +65,7 @@ export function OfflineInstallCenter() {
           </header>
 
           <div className="poietek-offline-summary">
+            <span><i className="is-ready" /> Active device <b>{deviceLabels[deviceProfile.deviceClass]} · {inputLabels[deviceProfile.inputMode]}</b></span>
             <span><i className={runtime.deployment.online ? 'is-ready' : 'is-warn'} /> Network <b>{runtime.deployment.online ? 'available' : 'offline'}</b></span>
             <span><i className={runtime.serviceWorker.state === 'ready' ? 'is-ready' : 'is-warn'} /> Offline shell <b>{runtime.serviceWorker.state.replace('-', ' ')}</b></span>
             <span><i className={runtime.storage.persisted ? 'is-ready' : 'is-warn'} /> Storage <b>{runtime.storage.persisted ? 'persistent' : 'best effort'}</b></span>
@@ -95,7 +100,7 @@ export function OfflineInstallCenter() {
           </div>
 
           <footer>
-            Private projects and imported media stay in the project store. Online providers are optional and never required to open the editor.
+            This is the active {deviceLabels[deviceProfile.deviceClass].toLowerCase()} access point. The same canonical project opens everywhere, while this interface exposes only capabilities detected on this device. Private projects and imported media stay in the project store.
           </footer>
         </section>
       )}

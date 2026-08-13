@@ -5,6 +5,7 @@ export {OfflineInstallCenter} from './OfflineInstallCenter';
 export {PoietekEcosystemCenter} from './PoietekEcosystemCenter';
 export {PoietekAiCenter} from './PoietekAiCenter';
 export {useOfflineRuntime, type OfflineRuntimeController} from './useOfflineRuntime';
+export {useDeviceRuntimeProfile} from './useDeviceRuntimeProfile';
 export {
   PoietekStudioWorkspace,
   type PoietekStudioWorkspaceProps,

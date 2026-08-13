@@ -5,6 +5,7 @@ import {StudioMenuBar} from './StudioMenuBar';
 import {dispatchStudioCommand, type StudioArea, type StudioCommandDetail} from './studioCommands';
 import {BrowserStudioSettingsRepository, type StudioPreferences} from '../settings';
 import type {StudioSetupTab} from './StudioSetupModal';
+import {useDeviceRuntimeProfile} from './useDeviceRuntimeProfile';
 
 const PoietekStudioWorkspace = lazy(async () => {
   const module = await import('./PoietekStudioWorkspace');
@@ -27,6 +28,7 @@ const StudioSetupModal = lazy(async () => {
 });
 
 export function PoietekAppShell({children}: {children: ReactNode}) {
+  const deviceProfile = useDeviceRuntimeProfile();
   const [area, setArea] = useState<StudioArea>(() => {
     if (typeof location !== 'undefined') {
       const requested = new URLSearchParams(location.search).get('area');
@@ -140,7 +142,13 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
   }, [area, runCommand]);
 
   return (
-    <div className="poietek-app-shell">
+    <div
+      className="poietek-app-shell"
+      data-device-class={deviceProfile.deviceClass}
+      data-device-layout={deviceProfile.layout}
+      data-input-mode={deviceProfile.inputMode}
+      data-orientation={deviceProfile.orientation}
+    >
       <StudioMenuBar
         activeArea={area}
         onAreaChange={setArea}
@@ -152,32 +160,32 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
           <span aria-hidden="true">P</span>
           <div>
             <strong>POIETEK STUDIO</strong>
-            <small>local production system</small>
+            <small>{deviceProfile.deviceClass} · {deviceProfile.inputMode}</small>
           </div>
         </div>
         <nav aria-label="Primary studio areas">
           <button type="button" className={area === 'arrange' ? 'is-active' : ''} onClick={() => setArea('arrange')}>
-            <span>F7</span>
+            <span aria-hidden={!deviceProfile.showKeyboardShortcuts}>F7</span>
             <strong>Arrange</strong>
             <small>timeline · mix · inspect</small>
           </button>
           <button type="button" className={area === 'rack' ? 'is-active' : ''} onClick={() => setArea('rack')}>
-            <span>F6</span>
+            <span aria-hidden={!deviceProfile.showKeyboardShortcuts}>F6</span>
             <strong>Rack</strong>
             <small>devices · patching · sampling</small>
           </button>
           <button type="button" className={area === 'ecosystem' ? 'is-active' : ''} onClick={() => setArea('ecosystem')}>
-            <span>F8</span>
+            <span aria-hidden={!deviceProfile.showKeyboardShortcuts}>F8</span>
             <strong>Ecosystem</strong>
             <small>vision · systems · roadmap</small>
           </button>
           <button type="button" className={area === 'ai' ? 'is-active' : ''} onClick={() => setArea('ai')}>
-            <span>F9</span>
+            <span aria-hidden={!deviceProfile.showKeyboardShortcuts}>F9</span>
             <strong>AI</strong>
             <small>local brain · model router</small>
           </button>
         </nav>
-        <OfflineInstallCenter />
+        <OfflineInstallCenter deviceProfile={deviceProfile} />
       </header>
 
       <div className="poietek-shell-stage">

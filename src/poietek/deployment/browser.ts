@@ -1,9 +1,11 @@
-import type {DeploymentProbeInput, PoietekDeviceClass, PoietekDeploymentSnapshot} from './contracts';
+import type {DeploymentProbeInput, PoietekDeviceRuntimeProfile, PoietekDeploymentSnapshot} from './contracts';
+import {deriveDeviceRuntimeProfile} from './deviceProfile';
 import {deriveDeploymentSnapshot} from './derive';
 
 declare global {
   interface Navigator {
     standalone?: boolean;
+    userAgentData?: {mobile?: boolean};
   }
 
   interface Window {
@@ -11,13 +13,29 @@ declare global {
   }
 }
 
-function detectDeviceClass(): PoietekDeviceClass {
-  const width = typeof window === 'undefined' ? 0 : window.innerWidth;
-  const coarse = typeof window !== 'undefined' && window.matchMedia?.('(pointer: coarse)').matches;
-  if (width > 0 && width < 680) return 'mobile';
-  if (width > 0 && width < 1100 && coarse) return 'tablet';
-  if (width > 0) return 'desktop';
-  return 'unknown';
+function matchesMedia(query: string): boolean {
+  return typeof window !== 'undefined' && window.matchMedia?.(query).matches === true;
+}
+
+export function probeBrowserDeviceProfile(): PoietekDeviceRuntimeProfile {
+  const browser = typeof window !== 'undefined' && typeof navigator !== 'undefined';
+  const viewportWidth = browser ? window.visualViewport?.width ?? window.innerWidth : 0;
+  const viewportHeight = browser ? window.visualViewport?.height ?? window.innerHeight : 0;
+  const userAgent = browser ? navigator.userAgent : '';
+  return deriveDeviceRuntimeProfile({
+    viewportWidth,
+    viewportHeight,
+    pixelRatio: browser ? window.devicePixelRatio : 1,
+    coarsePointer: matchesMedia('(pointer: coarse)'),
+    finePointer: matchesMedia('(pointer: fine)'),
+    hover: matchesMedia('(hover: hover)'),
+    maxTouchPoints: browser ? navigator.maxTouchPoints || 0 : 0,
+    mobileHint: browser && (navigator.userAgentData?.mobile === true || /Android|iPhone|iPod/i.test(userAgent)),
+    nativeBridge: browser && '__TAURI_INTERNALS__' in window,
+    standalone: browser && (
+      matchesMedia('(display-mode: standalone)') || navigator.standalone === true
+    ),
+  });
 }
 
 function detectGraphics(): DeploymentProbeInput['graphics'] {
@@ -46,7 +64,7 @@ export function probeBrowserDeployment(): PoietekDeploymentSnapshot {
     nativeBridge,
     nativeMobile,
     standalone,
-    deviceClass: detectDeviceClass(),
+    deviceClass: probeBrowserDeviceProfile().deviceClass,
     online: browser ? navigator.onLine : false,
     secureContext: browser ? window.isSecureContext : false,
     indexedDb: typeof indexedDB !== 'undefined',

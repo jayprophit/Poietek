@@ -46,3 +46,21 @@ test('menu capability boundaries remain explicit', async () => {
   assert.match(menu, /No verified MIDI-clock output adapter is active/);
   assert.match(menu, /Multi-output cue routing needs a verified native audio-device adapter/);
 });
+
+test('one application adapts to only the active runtime device profile', async () => {
+  const [shell, hook, styles] = await Promise.all([
+    read('src/poietek/react/PoietekAppShell.tsx'),
+    read('src/poietek/react/useDeviceRuntimeProfile.ts'),
+    read('src/poietek/react/PoietekAppShell.css'),
+  ]);
+  assert.match(shell, /useDeviceRuntimeProfile/);
+  assert.match(shell, /data-device-class=/);
+  assert.match(shell, /data-device-layout=/);
+  assert.match(shell, /deviceProfile\.showKeyboardShortcuts/);
+  assert.match(hook, /orientationchange/);
+  assert.match(hook, /visualViewport/);
+  assert.match(hook, /poietekDeviceLayout/);
+  assert.match(styles, /data-device-layout='compact'/);
+  assert.match(styles, /data-device-layout='handheld'/);
+  assert.match(styles, /position: fixed;[\s\S]*bottom: 0;/);
+});

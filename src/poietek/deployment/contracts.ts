@@ -4,7 +4,41 @@ export type PoietekExecutionMode =
   | 'native-desktop'
   | 'native-mobile';
 
-export type PoietekDeviceClass = 'desktop' | 'tablet' | 'mobile' | 'unknown';
+export type PoietekDeviceClass = 'desktop' | 'tablet' | 'mobile' | 'other' | 'unknown';
+
+export type PoietekDeviceOrientation = 'portrait' | 'landscape' | 'square' | 'unknown';
+export type PoietekInputMode = 'mouse-keyboard' | 'touch' | 'hybrid' | 'unknown';
+export type PoietekDeviceLayout = 'expanded' | 'compact' | 'handheld';
+export type PoietekPrimaryNavigation = 'top' | 'compact' | 'bottom';
+export type PoietekRackPresentation = 'full-width' | 'horizontal-scroll';
+
+export interface DeviceRuntimeProbeInput {
+  viewportWidth: number;
+  viewportHeight: number;
+  pixelRatio: number;
+  coarsePointer: boolean;
+  finePointer: boolean;
+  hover: boolean;
+  maxTouchPoints: number;
+  mobileHint: boolean;
+  nativeBridge: boolean;
+  standalone: boolean;
+}
+
+export interface PoietekDeviceRuntimeProfile {
+  schemaVersion: 1;
+  deviceClass: PoietekDeviceClass;
+  orientation: PoietekDeviceOrientation;
+  inputMode: PoietekInputMode;
+  layout: PoietekDeviceLayout;
+  primaryNavigation: PoietekPrimaryNavigation;
+  rackPresentation: PoietekRackPresentation;
+  executionSurface: 'browser' | 'installed' | 'native';
+  viewport: {width: number; height: number; pixelRatio: number};
+  touchTargetPx: 32 | 44;
+  showKeyboardShortcuts: boolean;
+  reasons: string[];
+}
 
 export type EngineCapabilityState =
   | 'available'
