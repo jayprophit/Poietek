@@ -33,7 +33,7 @@ export const CORE_ECOSYSTEM_PILLARS: readonly EcosystemPillar[] = [
   {id: 'collaboration-platform', name: 'Collaboration platform', domainIds: ['collaboration-community', 'creative-os'], status: 'foundation', promise: 'Commit locally, synchronize revisions, resolve conflicts and preserve creative history.'},
   {id: 'publishing-platform', name: 'Publishing platform', domainIds: ['publishing-delivery', 'release-preflight'], status: 'foundation', promise: 'Prepare traceable packages for a selected destination without changing the creator original.'},
   {id: 'rights-platform', name: 'Rights management', domainIds: ['rights-provenance', 'publishing-delivery'], status: 'foundation', promise: 'Track contributors, splits, agreements, clearances, registrations and evidence.'},
-  {id: 'ai-assistant', name: 'AI creative assistant', domainIds: ['creative-intelligence', 'learning-accessibility'], status: 'foundation', promise: 'Offer optional, evidence-backed, previewable and undoable creative assistance.'},
+  {id: 'ai-assistant', name: 'AI creative assistant', domainIds: ['creative-intelligence', 'learning-accessibility'], status: 'operational', promise: 'Offer independent local project guidance plus optional, consented and securely routed model providers.'},
   {id: 'social-network', name: 'Creator social network', domainIds: ['collaboration-community', 'tuning-player'], status: 'foundation', promise: 'Support private-to-public creator pages, feeds, comments, channels, remixes and live rooms.'},
   {id: 'marketplace', name: 'Marketplace', domainIds: ['commerce-marketplace', 'rights-provenance'], status: 'foundation', promise: 'Sell original assets, tools, learning and services with explicit licences and payment evidence.'},
   {id: 'cloud-platform', name: 'Cloud platform', domainIds: ['storage-router', 'deployment-operations', 'privacy-security'], status: 'foundation', promise: 'Add optional encrypted sync, backup, providers and remote compute without weakening local-first work.'},
@@ -89,10 +89,10 @@ export const SDS_VISION_CATALOG: readonly VisionCapabilityArea[] = [
     gates: ['codec/render backends', 'WebCodecs/native media support', 'validated colour and HDR profiles'],
   },
   {
-    id: 'creative-intelligence', category: 'Assist', name: 'AI creative intelligence', status: 'foundation', horizon: 'next',
+    id: 'creative-intelligence', category: 'Assist', name: 'AI creative intelligence', status: 'operational', horizon: 'now',
     purpose: 'Optional mix, master, composition, visual, rights, marketing, learning and project assistance.',
-    currentEvidence: ['provider-neutral capability router', 'preview/accept/undo AI contract', 'Creative Intent Lock classifier'],
-    advances: ['local model adapter', 'cross-modal analysis graph', 'explainable recommendation evidence', 'personal My Sound profile'],
+    currentEvidence: ['independent offline Studio Brain', 'project-aware evidence findings', 'secure provider catalogue and adapters', 'per-request remote consent', 'preview/accept/undo AI contract', 'Creative Intent Lock classifier'],
+    advances: ['native secure credential service', 'operational provider proxy', 'cross-modal analysis graph', 'personal My Sound profile'],
     gates: ['model/provider configuration', 'consent and data governance', 'licensed training/reference data'],
   },
   {

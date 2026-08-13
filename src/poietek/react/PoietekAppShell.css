@@ -12,7 +12,7 @@
   position: relative;
   z-index: 500;
   display: grid;
-  grid-template-columns: minmax(180px, 240px) minmax(520px, 1fr) minmax(180px, 250px);
+  grid-template-columns: minmax(180px, 240px) minmax(650px, 1fr) minmax(180px, 250px);
   align-items: stretch;
   border-bottom: 1px solid #4a3a2d;
   background:
@@ -170,10 +170,12 @@
 .poietek-shell-stage,
 .poietek-rack-host,
 .poietek-arrange-host,
-.poietek-ecosystem-host { min-width: 0; min-height: 0; overflow: hidden; }
+.poietek-ecosystem-host,
+.poietek-ai-host { min-width: 0; min-height: 0; overflow: hidden; }
 .poietek-rack-host > div { height: 100%; }
 .poietek-arrange-host { height: 100%; overflow: auto; background: #080c0e; }
 .poietek-ecosystem-host { height: 100%; overflow: auto; background: #080c0e; }
+.poietek-ai-host { height: 100%; overflow: auto; background: #080c0e; }
 .poietek-shell-loading { padding: 28px; color: #a9b5b4; font: 11px ui-monospace, Consolas, monospace; }
 .poietek-rack-mobile-note { display: none; }
 

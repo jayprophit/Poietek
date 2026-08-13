@@ -3,6 +3,7 @@ export { PoietekRuntimeStatus } from "./PoietekRuntimeStatus";
 export { PoietekAppShell } from "./PoietekAppShell";
 export {OfflineInstallCenter} from './OfflineInstallCenter';
 export {PoietekEcosystemCenter} from './PoietekEcosystemCenter';
+export {PoietekAiCenter} from './PoietekAiCenter';
 export {useOfflineRuntime, type OfflineRuntimeController} from './useOfflineRuntime';
 export {
   PoietekStudioWorkspace,

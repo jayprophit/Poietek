@@ -1,0 +1,64 @@
+.poietek-ai { min-height: 100%; padding: 22px; color: #dce7e6; background: radial-gradient(circle at 75% -10%, rgba(67,157,148,.13), transparent 36%), #080c0e; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+.poietek-ai button, .poietek-ai input, .poietek-ai textarea, .poietek-ai select { font: inherit; }
+.poietek-ai-hero { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 28px; padding: 26px; border: 1px solid #344347; border-radius: 16px; background: linear-gradient(125deg, rgba(227,143,72,.08), rgba(37,106,101,.09)), #111719; }
+.poietek-ai-hero p, .poietek-ai section > header p, .poietek-ai aside > header p, .poietek-ai-provider-editor header p { margin: 0 0 7px; color: #d69054; font: 800 9px ui-monospace, Consolas, monospace; text-transform: uppercase; letter-spacing: .13em; }
+.poietek-ai-hero h1 { margin: 0 0 10px; color: #fff2e4; font-size: clamp(27px, 4vw, 46px); line-height: 1; letter-spacing: -.035em; }
+.poietek-ai-hero > div > span { color: #99a8aa; font-size: 12px; }
+.poietek-ai-hero dl { min-width: 280px; display: grid; gap: 7px; margin: 0; }
+.poietek-ai-hero dl div { display: grid; grid-template-columns: 1fr auto; gap: 16px; padding: 9px 11px; border: 1px solid #2d3a3e; border-radius: 7px; background: rgba(0,0,0,.16); }
+.poietek-ai-hero dt { color: #778689; font: 8px ui-monospace, Consolas, monospace; text-transform: uppercase; }
+.poietek-ai-hero dd { margin: 0; color: #91ddd3; font: 800 9px ui-monospace, Consolas, monospace; }
+.poietek-ai-grid { display: grid; grid-template-columns: minmax(480px,1.05fr) minmax(420px,.95fr); gap: 14px; margin-top: 14px; }
+.poietek-ai-assistant, .poietek-ai-providers { min-width: 0; padding: 17px; border: 1px solid #2b383c; border-radius: 13px; background: #0e1416; }
+.poietek-ai-assistant > header, .poietek-ai-providers > header, .poietek-ai-provider-editor > header { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+.poietek-ai h2, .poietek-ai h3 { margin: 0; color: #edf4f3; font-size: 18px; }
+.poietek-ai-assistant > header > span { padding: 5px 8px; border: 1px solid #59432f; border-radius: 999px; color: #d59a66; font: 8px ui-monospace, Consolas, monospace; text-transform: uppercase; }
+.poietek-ai-assistant > header > span.is-local { border-color: #32645f; color: #72d3c8; }
+.poietek-ai-modes { display: grid; grid-template-columns: repeat(4,1fr); gap: 5px; margin: 14px 0; }
+.poietek-ai-modes button { min-height: 48px; display: grid; gap: 2px; padding: 7px; border: 1px solid #303d41; border-radius: 6px; color: #a8b3b4; background: #141b1e; text-align: left; cursor: pointer; }
+.poietek-ai-modes button:hover, .poietek-ai-modes button.is-active { border-color: #b27542; color: #ffe8d2; background: #261b13; }
+.poietek-ai-modes strong { font-size: 10px; }
+.poietek-ai-modes small { color: #718083; font-size: 7px; }
+.poietek-ai-prompt, .poietek-ai-fields label { display: grid; gap: 6px; color: #8e9d9f; font: 8px ui-monospace, Consolas, monospace; text-transform: uppercase; letter-spacing: .06em; }
+.poietek-ai-prompt textarea, .poietek-ai-fields input, .poietek-ai-fields select { width: 100%; padding: 10px; border: 1px solid #344348; border-radius: 7px; color: #eef5f4; background: #080d0f; outline: none; resize: vertical; }
+.poietek-ai-prompt textarea:focus, .poietek-ai-fields input:focus, .poietek-ai-fields select:focus { border-color: #c98347; box-shadow: 0 0 0 2px rgba(201,131,71,.12); }
+.poietek-ai-consent, .poietek-ai-remote-toggle, .poietek-ai-fields label.is-checkbox { display: flex; align-items: center; gap: 8px; margin: 10px 0; color: #aeb9ba; font-size: 9px; line-height: 1.4; }
+.poietek-ai-actions { display: flex; gap: 7px; margin-top: 11px; }
+.poietek-ai-actions button, .poietek-ai-providers > header button, .poietek-ai-provider-editor header button { min-height: 34px; padding: 7px 12px; border: 1px solid #d2945f; border-radius: 6px; color: #21150b; background: linear-gradient(#e8ac78,#b9703a); font-size: 9px; font-weight: 900; cursor: pointer; }
+.poietek-ai-actions button.is-secondary { color: #b9c5c6; background: #172023; border-color: #3a494e; }
+.poietek-ai button:disabled { opacity: .45; cursor: not-allowed; }
+.poietek-ai-message { min-height: 17px; margin: 9px 0; color: #879598; font-size: 9px; }
+.poietek-ai-health { display: grid; gap: 3px; padding: 9px; border-left: 3px solid #d79559; color: #9ca9aa; background: rgba(215,149,89,.06); font-size: 9px; }
+.poietek-ai-health.is-available { border-color: #63cfc3; background: rgba(99,207,195,.06); }
+.poietek-ai-health strong { color: #e3eceb; text-transform: uppercase; }
+.poietek-ai-response { display: grid; gap: 7px; margin-top: 12px; }
+.poietek-ai-response > header { display: grid; gap: 3px; padding: 10px; border: 1px solid #36524f; border-radius: 7px; background: rgba(63,129,122,.07); }
+.poietek-ai-response > header strong { font-size: 11px; }
+.poietek-ai-response > header small { color: #7e8d8e; font-size: 8px; }
+.poietek-ai-response article { padding: 10px; border: 1px solid #2c383c; border-radius: 7px; background: #11181a; }
+.poietek-ai-response article.is-attention { border-color: #5c4937; }
+.poietek-ai-response article.is-blocking { border-color: #79483f; }
+.poietek-ai-response article > div { display: flex; align-items: center; gap: 8px; }
+.poietek-ai-response article > div span { color: #d18e55; font: 7px ui-monospace, Consolas, monospace; text-transform: uppercase; }
+.poietek-ai-response article > div strong { font-size: 11px; }
+.poietek-ai-response article p { margin: 7px 0; color: #a7b3b4; font-size: 9px; line-height: 1.5; }
+.poietek-ai-response article ul, .poietek-ai-notes, .poietek-ai-validation { margin: 7px 0 0; padding-left: 17px; color: #758588; font-size: 8px; line-height: 1.5; }
+.poietek-ai-response article footer { margin-top: 7px; padding-top: 7px; border-top: 1px solid #2c383c; color: #84c7bf; font-size: 8px; }
+.poietek-ai-providers { display: grid; grid-template-rows: auto auto minmax(230px,1fr) auto; gap: 10px; }
+.poietek-ai-provider-list { min-height: 0; max-height: 340px; display: grid; gap: 4px; overflow: auto; padding-right: 3px; }
+.poietek-ai-provider-list > button { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 10px; padding: 9px; border: 1px solid #293539; border-radius: 7px; color: #d9e2e1; background: #11181a; text-align: left; cursor: pointer; }
+.poietek-ai-provider-list > button:hover, .poietek-ai-provider-list > button.is-active { border-color: #a76d3e; background: #201710; }
+.poietek-ai-provider-list span { min-width: 0; display: grid; gap: 3px; }
+.poietek-ai-provider-list strong { font-size: 10px; }
+.poietek-ai-provider-list small { overflow: hidden; color: #748285; font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
+.poietek-ai-provider-list em { color: #7fc8bf; font: 7px ui-monospace, Consolas, monospace; font-style: normal; text-transform: uppercase; }
+.poietek-ai-provider-editor { padding: 12px; border: 1px solid #354247; border-radius: 8px; background: #111719; }
+.poietek-ai-provider-editor > p { margin: 8px 0; color: #899799; font-size: 9px; line-height: 1.45; }
+.poietek-ai-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.poietek-ai-fields label:nth-child(3), .poietek-ai-fields label:nth-child(5), .poietek-ai-fields label.is-checkbox { grid-column: 1 / -1; }
+.poietek-ai-fields label small { color: #c68d5b; font-size: 7px; text-transform: none; }
+.poietek-ai-validation { padding: 8px 8px 8px 24px; border: 1px solid #6c4138; border-radius: 6px; color: #e3a492; background: rgba(116,55,45,.09); }
+.poietek-ai-provider-editor a { display: inline-block; margin-top: 8px; color: #75c9c0; font-size: 8px; }
+@media (max-width: 980px) { .poietek-ai-grid { grid-template-columns: 1fr; } .poietek-ai-provider-list { max-height: 280px; } }
+@media (max-width: 600px) { .poietek-ai { padding: 8px; } .poietek-ai-hero { grid-template-columns: 1fr; gap: 17px; padding: 16px; } .poietek-ai-hero dl { min-width: 0; } .poietek-ai-assistant, .poietek-ai-providers { padding: 11px; } .poietek-ai-modes { grid-template-columns: repeat(2,1fr); } .poietek-ai-fields { grid-template-columns: 1fr; } .poietek-ai-fields label { grid-column: 1 !important; } }
+@media (prefers-reduced-motion: reduce) { .poietek-ai * { scroll-behavior: auto !important; transition: none !important; } }

@@ -12,17 +12,22 @@ const PoietekEcosystemCenter = lazy(async () => {
   return {default: module.PoietekEcosystemCenter};
 });
 
-type StudioArea = 'arrange' | 'rack' | 'ecosystem';
+const PoietekAiCenter = lazy(async () => {
+  const module = await import('./PoietekAiCenter');
+  return {default: module.PoietekAiCenter};
+});
+
+type StudioArea = 'arrange' | 'rack' | 'ecosystem' | 'ai';
 
 export function PoietekAppShell({children}: {children: ReactNode}) {
   const [area, setArea] = useState<StudioArea>(() => {
     if (typeof location !== 'undefined') {
       const requested = new URLSearchParams(location.search).get('area');
-      if (requested === 'rack' || requested === 'arrange' || requested === 'ecosystem') return requested;
+      if (requested === 'rack' || requested === 'arrange' || requested === 'ecosystem' || requested === 'ai') return requested;
     }
     if (typeof sessionStorage === 'undefined') return 'arrange';
     const stored = sessionStorage.getItem('poietek-active-area');
-    return stored === 'rack' || stored === 'ecosystem' ? stored : 'arrange';
+    return stored === 'rack' || stored === 'ecosystem' || stored === 'ai' ? stored : 'arrange';
   });
 
   useEffect(() => {
@@ -43,6 +48,10 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
       if (event.key === 'F8') {
         event.preventDefault();
         setArea('ecosystem');
+      }
+      if (event.key === 'F9') {
+        event.preventDefault();
+        setArea('ai');
       }
     };
     window.addEventListener('keydown', switchArea);
@@ -75,6 +84,11 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
             <strong>Ecosystem</strong>
             <small>vision · systems · roadmap</small>
           </button>
+          <button type="button" className={area === 'ai' ? 'is-active' : ''} onClick={() => setArea('ai')}>
+            <span>F9</span>
+            <strong>AI</strong>
+            <small>local brain · model router</small>
+          </button>
         </nav>
         <OfflineInstallCenter />
       </header>
@@ -89,6 +103,12 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
           <div className="poietek-ecosystem-host">
             <Suspense fallback={<div className="poietek-shell-loading" role="status">Opening the creative operating system…</div>}>
               <PoietekEcosystemCenter />
+            </Suspense>
+          </div>
+        ) : area === 'ai' ? (
+          <div className="poietek-ai-host">
+            <Suspense fallback={<div className="poietek-shell-loading" role="status">Opening the independent studio brain…</div>}>
+              <PoietekAiCenter />
             </Suspense>
           </div>
         ) : (
