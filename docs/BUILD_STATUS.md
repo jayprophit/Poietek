@@ -5,8 +5,8 @@
 - Formatting hygiene: passed
 - Full TypeScript typecheck: passed
 - Strict Poietek core compile: passed
-- Pure/core regression tests: 49 passed, 0 failed
-- Vite production build: passed (1,753 modules)
+- Automated regression tests: 75 passed, 0 failed
+- Vite production build: passed (1,778 modules)
 - Production browser smoke test: passed
 - Installed dependency graph: no missing, invalid or extraneous packages
 - Git whitespace/conflict check: passed
@@ -52,7 +52,7 @@ normal live Vite workflow for unrestricted development environments.
 - PWA shell and least-privilege Tauri scaffold
 - Versioned global settings, four named profiles and JSON import/export
 - Audio/MIDI/sync/recording/editing/file/plugin/appearance/privacy setup UI
-- Honest 20-item original module/content catalog and procedural one-shot kit
+- Honest 21-item original module/content catalog and procedural one-shot kit
 - Repeatable DSP/scheduler/offline-audio/storage benchmark with derived stars
 - Original visible/source component naming with legacy ids retained for migration
 - Unified Arrange/Rack application shell with F7/F6 navigation
@@ -61,6 +61,8 @@ normal live Vite workflow for unrestricted development environments.
 - Fade-aware Web Audio scheduling
 - Summit console with active track gain/pan/mute/solo and honest bypass states
 - Sound Atlas with 24 original recipe/provenance records across nine families
+- Controlled master specification, 45-screen UI catalog, platform/data/API/AI/
+  security blueprint, P0-P10 delivery plan and automated coverage checks
 
 ## Not represented as finished
 

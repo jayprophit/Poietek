@@ -54,8 +54,13 @@ framework-independent core, all Node tests and the production Vite build.
 
 ## Architecture and status
 
+- [Controlled master specification](docs/POIETEK_MASTER_SPECIFICATION.md)
+- [UI, menu, settings, screen and workflow catalog](docs/UI_SCREEN_WORKFLOW_CATALOG.md)
+- [Platform data, API, AI, security and cloud blueprint](docs/PLATFORM_DATA_API_SECURITY_BLUEPRINT.md)
+- [Delivery, testing and documentation plan](docs/DELIVERY_TEST_DOCUMENTATION_PLAN.md)
 - [System architecture](docs/ARCHITECTURE.md)
 - [Staged roadmap](docs/ROADMAP.md)
+- [SDS source coverage and traceability](docs/SDS_VISION_COVERAGE.md)
 - [Integration baseline](docs/INTEGRATION_BASELINE.md)
 - [Archive policy](docs/ARCHIVE_POLICY.md)
 - [Professional workstation comparison](docs/PRO_DAW_COMPARISON.md)

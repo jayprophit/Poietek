@@ -1,5 +1,10 @@
 # Poietek staged delivery roadmap
 
+This concise engineering view is retained for day-to-day sequencing. The
+controlled P0-P10 roadmap, platform matrix, test evidence and exit gates are in
+`DELIVERY_TEST_DOCUMENTATION_PLAN.md`; requirements and status vocabulary are in
+`POIETEK_MASTER_SPECIFICATION.md`.
+
 ## Stage 1 — trustworthy local audio project
 
 Status: integrated and testable.

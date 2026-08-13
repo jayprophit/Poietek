@@ -27,9 +27,14 @@ src/
     ├── settings/             Versioned global preferences and portable profiles
     ├── library/              Original modules, content and availability catalog
     ├── diagnostics/          Evidence-based local benchmark
+    ├── ai/                   Local assistant, provider catalog and policy
+    ├── hardware/             Device, routing, sync and measurement contracts
+    ├── community/            Hub, release and tuning destination contracts
     ├── platform/             Collaboration, rights, provenance, commerce,
     │                         privacy, learning, interoperability, plugin,
     │                         video/VFX and AI contracts
+    ├── deployment/           Local/PWA/native deployment capability model
+    ├── vision/               Traceable product capability catalog
     ├── pwa/                  Install/offline shell integration
     └── react/                Unified Arrange/Rack shell, Horizon arranger,
                               Summit console, setup and SDS bridge
@@ -104,6 +109,24 @@ The same canonical project format is used by the browser/PWA and the Tauri shell
 The current Tauri directory is intentionally a least-privilege scaffold: no IPC
 commands or plugins, restrictive CSP, and bundling disabled until real native
 adapters, icons, signing and platform tests are complete.
+
+## Controlled architecture set
+
+This overview is read with the following controlled documents:
+
+- `POIETEK_MASTER_SPECIFICATION.md` defines vision, philosophy, capability
+  domains, users, permissions, workflows and status language.
+- `UI_SCREEN_WORKFLOW_CATALOG.md` inventories screens, global menus, settings,
+  operational controls, responsive behavior and tutorials.
+- `PLATFORM_DATA_API_SECURITY_BLUEPRINT.md` defines data ownership, local and
+  remote schemas, command/event/API boundaries, AI, providers, SDKs, protocols,
+  trust zones and security requirements.
+- `DELIVERY_TEST_DOCUMENTATION_PLAN.md` maps the definition into web, PWA,
+  desktop, mobile, backend and cloud workstreams with phase exit gates.
+
+These documents are specifications, not automatic implementation claims. Their
+status labels must agree with code, adapters, tests and visible unavailable
+states.
 
 ## Archive policy
 
