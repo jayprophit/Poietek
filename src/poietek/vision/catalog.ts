@@ -13,7 +13,7 @@ export interface VisionCapabilityArea {
   gates: string[];
 }
 
-export const SDS_VISION_CATALOG_VERSION = '3.2.0' as const;
+export const SDS_VISION_CATALOG_VERSION = '3.3.0' as const;
 
 export interface EcosystemPillar {
   id: string;

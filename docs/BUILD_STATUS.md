@@ -5,8 +5,8 @@
 - Formatting hygiene: passed
 - Full TypeScript typecheck: passed
 - Strict Poietek core compile: passed
-- Automated regression tests: 78 passed, 0 failed
-- Vite production build: passed (1,778 modules)
+- Automated regression tests: 82 passed, 0 failed
+- Vite production build: passed (1,779 modules)
 - Production browser smoke test: passed
 - Installed dependency graph: no missing, invalid or extraneous packages
 - Git whitespace/conflict check: passed
@@ -65,6 +65,8 @@ normal live Vite workflow for unrestricted development environments.
   security blueprint, P0-P10 delivery plan and automated coverage checks
 - Fourteen-volume professional specification series with controlled index,
   cross-volume dependencies and structural regression tests
+- Searchable in-app Development Library crosswalk for the fingerprinted 2,221-line
+  source, its 23 explicit volumes, ten expansion parts and five appendices
 
 ## Not represented as finished
 

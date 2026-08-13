@@ -45,7 +45,7 @@ separate transport or project truth.
 | `SCR-030` | Studio Setup | operational settings | Eleven settings pages, profile persistence, validation and benchmark. |
 | `SCR-031` | Offline/install centre | operational web/PWA | Engine capability snapshot, install, update activation and storage persistence request. |
 | `SCR-032` | AI Studio | operational local core | Mode, local analysis, provider selection/configuration, health check and local save. |
-| `SCR-033` | Ecosystem | operational scope/status view | Search/filter the machine-readable vision catalog and inspect status/gates. |
+| `SCR-033` | Ecosystem | operational scope/status view | Search/filter the machine-readable vision catalog or the fingerprinted Development Library crosswalk (Volumes 01–20 and 51–53), then inspect professional ownership, evidence and gates. |
 | `SCR-034` | Keyboard shortcuts dialog | operational | Current global shortcuts and workspace switching. |
 | `SCR-035` | About/build truth dialog | operational | Local-first scope and explicit unavailable capability boundaries. |
 | `SCR-036` | Crash recovery chooser | foundation | Recover, Skip and Discard semantics exist; full startup UI remains to be integrated. |

@@ -31,6 +31,12 @@ privacy and profile settings. The setup window also contains the honest module
 catalog and repeatable local benchmark. Requested driver settings remain
 requests until a real browser/native adapter reports what the device accepted.
 
+Open **Ecosystem** and select **Development Library** to inspect the complete
+attached requirements crosswalk: Volumes 01–20, the proposed fifty-volume parts,
+Appendices A–E and Creative OS Volumes 51–53. Search results show what is working,
+what is only specified, which professional volume owns it and what real gate
+remains.
+
 ## Run and verify
 
 ```text

@@ -9,6 +9,20 @@ Poietek/SDS conversation history.
 - Audit date: 2026-08-13
 - Current catalogue: `src/poietek/vision/catalog.ts`, version 3.2.0
 
+Additional development-library source integrated into the application:
+
+- Source: attached `Poietek Complete Development Library` conversation export
+- Source size: 2,221 lines / 30,024 decoded characters
+- SHA-256: `9edcb809bff10246526ff7141185a82eef68dbe05440a5567ee81f0f1986dea2`
+- App crosswalk: `src/poietek/vision/developmentLibrary.ts`
+- Visible surface: Ecosystem → Development Library
+
+The additional source contains Volumes 01–20, a proposed fifty-volume expansion
+across ten professional parts, Appendices A–E, and Volumes 51–53 for the Creative
+Operating System, Poietek Ecosystem and Creative Intelligence Layer. These are
+mapped into the controlled fourteen-volume series rather than becoming a second,
+conflicting specification hierarchy.
+
 The historical conversation contains aspirational volumes, intermediate
 architectures, download references, corrections and the v3.1 implementation
 handoff. This document deduplicates that history. Current code remains the source
