@@ -32,7 +32,9 @@
     "src/poietek/settings/**/*.ts",
     "src/poietek/library/**/*.ts",
     "src/poietek/diagnostics/**/*.ts",
-    "src/poietek/deployment/**/*.ts"
+    "src/poietek/deployment/**/*.ts",
+    "src/poietek/creative-os/**/*.ts",
+    "src/poietek/vision/**/*.ts"
   ],
   "exclude": [
     "src/poietek/react/**",

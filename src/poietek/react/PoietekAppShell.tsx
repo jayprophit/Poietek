@@ -7,16 +7,22 @@ const PoietekStudioWorkspace = lazy(async () => {
   return {default: module.PoietekStudioWorkspace};
 });
 
-type StudioArea = 'arrange' | 'rack';
+const PoietekEcosystemCenter = lazy(async () => {
+  const module = await import('./PoietekEcosystemCenter');
+  return {default: module.PoietekEcosystemCenter};
+});
+
+type StudioArea = 'arrange' | 'rack' | 'ecosystem';
 
 export function PoietekAppShell({children}: {children: ReactNode}) {
   const [area, setArea] = useState<StudioArea>(() => {
     if (typeof location !== 'undefined') {
       const requested = new URLSearchParams(location.search).get('area');
-      if (requested === 'rack' || requested === 'arrange') return requested;
+      if (requested === 'rack' || requested === 'arrange' || requested === 'ecosystem') return requested;
     }
     if (typeof sessionStorage === 'undefined') return 'arrange';
-    return sessionStorage.getItem('poietek-active-area') === 'rack' ? 'rack' : 'arrange';
+    const stored = sessionStorage.getItem('poietek-active-area');
+    return stored === 'rack' || stored === 'ecosystem' ? stored : 'arrange';
   });
 
   useEffect(() => {
@@ -33,6 +39,10 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
       if (event.key === 'F7') {
         event.preventDefault();
         setArea('arrange');
+      }
+      if (event.key === 'F8') {
+        event.preventDefault();
+        setArea('ecosystem');
       }
     };
     window.addEventListener('keydown', switchArea);
@@ -60,6 +70,11 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
             <strong>Rack</strong>
             <small>devices · patching · sampling</small>
           </button>
+          <button type="button" className={area === 'ecosystem' ? 'is-active' : ''} onClick={() => setArea('ecosystem')}>
+            <span>F8</span>
+            <strong>Ecosystem</strong>
+            <small>vision · systems · roadmap</small>
+          </button>
         </nav>
         <OfflineInstallCenter />
       </header>
@@ -69,6 +84,12 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
           <div className="poietek-rack-host">
             <p className="poietek-rack-mobile-note">Rack view is widest in landscape. Swipe sideways to reach every device.</p>
             {children}
+          </div>
+        ) : area === 'ecosystem' ? (
+          <div className="poietek-ecosystem-host">
+            <Suspense fallback={<div className="poietek-shell-loading" role="status">Opening the creative operating system…</div>}>
+              <PoietekEcosystemCenter />
+            </Suspense>
           </div>
         ) : (
           <div className="poietek-arrange-host">

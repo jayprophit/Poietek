@@ -19,6 +19,7 @@
   ],
   "shortcuts": [
     {"name": "Open arranger", "short_name": "Arrange", "url": "/?area=arrange&source=shortcut", "icons": [{"src": "/poietek-icon-192.png", "sizes": "192x192", "type": "image/png"}]},
-    {"name": "Open device rack", "short_name": "Rack", "url": "/?area=rack&source=shortcut", "icons": [{"src": "/poietek-icon-192.png", "sizes": "192x192", "type": "image/png"}]}
+    {"name": "Open device rack", "short_name": "Rack", "url": "/?area=rack&source=shortcut", "icons": [{"src": "/poietek-icon-192.png", "sizes": "192x192", "type": "image/png"}]},
+    {"name": "Open ecosystem map", "short_name": "Ecosystem", "url": "/?area=ecosystem&source=shortcut", "icons": [{"src": "/poietek-icon-192.png", "sizes": "192x192", "type": "image/png"}]}
   ]
 }
