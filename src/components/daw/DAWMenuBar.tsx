@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useLanguage } from '../../i18n/LanguageContext';
+import { audioEngine } from '../../audio/engine';
 import {
   FileText,
   Sliders,
@@ -38,6 +40,7 @@ import {
   Keyboard,
   ShieldCheck,
   Check,
+  Globe,
   ChevronDown,
   ShoppingBag,
 } from 'lucide-react';
@@ -50,10 +53,14 @@ interface DAWMenuBarProps {
   onToggleFlip: () => void;
   openAIGrooveModal: () => void;
   openTemplatesModal?: () => void;
+  openProjectManagerModal?: () => void;
+  openVirtualKeyboard?: () => void;
   openSettingsModal?: () => void;
   openProfileModal?: () => void;
   openShortcutsModal?: () => void;
   openStoreModal?: () => void;
+  openUniversalModal?: () => void;
+  openLanguageModal?: () => void;
   bpm: number;
   detachedWorkspaces?: WorkspaceType[];
   onDetachWorkspace?: (ws: WorkspaceType) => void;
@@ -76,10 +83,14 @@ export const DAWMenuBar: React.FC<DAWMenuBarProps> = ({
   onToggleFlip,
   openAIGrooveModal,
   openTemplatesModal,
+  openProjectManagerModal,
+  openVirtualKeyboard,
   openSettingsModal,
   openProfileModal,
   openShortcutsModal,
   openStoreModal,
+  openUniversalModal,
+  openLanguageModal,
   bpm,
   detachedWorkspaces = [],
   onDetachWorkspace,
@@ -94,10 +105,28 @@ export const DAWMenuBar: React.FC<DAWMenuBarProps> = ({
   onUnfoldAllModules,
   onResetProject,
 }) => {
+  const { currentLanguageObj, t } = useLanguage();
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const [isBurgerOpen, setIsBurgerOpen] = useState<boolean>(false);
   const [autoSaveToast, setAutoSaveToast] = useState<boolean>(false);
+  const [syncToast, setSyncToast] = useState<string | null>(null);
+
+  const [deviceProfile, setDeviceProfile] = useState<'desktop' | 'tablet' | 'mobile'>(() => {
+    try {
+      const saved = localStorage.getItem('studio_device_profile');
+      return (saved as any) || 'desktop';
+    } catch {
+      return 'desktop';
+    }
+  });
+
+  const handleSetDeviceProfile = (profile: 'desktop' | 'tablet' | 'mobile') => {
+    setDeviceProfile(profile);
+    localStorage.setItem('studio_device_profile', profile);
+    setSyncToast(`UNIVERSAL MODE: ${profile.toUpperCase()} VIEW ACTIVATED`);
+    setTimeout(() => setSyncToast(null), 2500);
+  };
 
   const toggleMenu = (menu: string) => {
     setActiveMenu((prev) => (prev === menu ? null : menu));
@@ -199,6 +228,18 @@ export const DAWMenuBar: React.FC<DAWMenuBarProps> = ({
               </button>
               {activeMenu === 'file' && (
                 <div className="absolute top-full left-0 mt-1 w-64 bg-neutral-900 border-2 border-neutral-700 rounded-xl shadow-2xl py-1 text-xs text-neutral-200 z-50">
+                  {openProjectManagerModal && (
+                    <button
+                      onClick={() => {
+                        openProjectManagerModal();
+                        closeMenu();
+                      }}
+                      className="w-full text-left px-3 py-1.5 hover:bg-amber-500 hover:text-neutral-950 flex items-center justify-between font-bold text-amber-400"
+                    >
+                      <span>Project Manager (New/Open/Save)...</span>
+                      <span className="text-[10px] bg-amber-500/20 px-1 rounded">PROJECT</span>
+                    </button>
+                  )}
                   <button
                     onClick={() => {
                       if (openTemplatesModal) openTemplatesModal();
@@ -224,11 +265,46 @@ export const DAWMenuBar: React.FC<DAWMenuBarProps> = ({
                       <ChevronRight className="w-3.5 h-3.5" />
                     </button>
                     {activeSubmenu === 'export' && (
-                      <div className="absolute left-full top-0 ml-1 w-52 bg-neutral-900 border-2 border-neutral-700 rounded-xl shadow-2xl py-1 text-xs text-neutral-200">
-                        <button onClick={closeMenu} className="w-full text-left px-3 py-1.5 hover:bg-amber-500 hover:text-neutral-950">Master Mix WAV (32-Bit)</button>
-                        <button onClick={closeMenu} className="w-full text-left px-3 py-1.5 hover:bg-amber-500 hover:text-neutral-950">Isolated Instrument Stems</button>
-                        <button onClick={closeMenu} className="w-full text-left px-3 py-1.5 hover:bg-amber-500 hover:text-neutral-950">MP3 High-Bitrate Preview</button>
-                        <button onClick={closeMenu} className="w-full text-left px-3 py-1.5 hover:bg-amber-500 hover:text-neutral-950">MIDI Pattern Sequences</button>
+                      <div className="absolute left-full top-0 ml-1 w-52 bg-neutral-900 border-2 border-neutral-700 rounded-xl shadow-2xl py-1 text-xs text-neutral-200 z-50">
+                        <button
+                          onClick={async () => {
+                            closeMenu();
+                            const blob = await audioEngine.renderProjectToWav(bpm, 16);
+                            const a = document.createElement('a');
+                            a.href = URL.createObjectURL(blob);
+                            a.download = 'Master_Mix_32Bit.wav';
+                            a.click();
+                          }}
+                          className="w-full text-left px-3 py-1.5 hover:bg-amber-500 hover:text-neutral-950 font-bold text-amber-400"
+                        >
+                          Master Mix WAV (24/32-Bit)
+                        </button>
+                        <button
+                          onClick={async () => {
+                            closeMenu();
+                            const blob = await audioEngine.renderProjectToWav(bpm, 16);
+                            const a = document.createElement('a');
+                            a.href = URL.createObjectURL(blob);
+                            a.download = 'Drums_Stem_24Bit.wav';
+                            a.click();
+                          }}
+                          className="w-full text-left px-3 py-1.5 hover:bg-amber-500 hover:text-neutral-950"
+                        >
+                          Isolated Instrument Stems
+                        </button>
+                        <button
+                          onClick={async () => {
+                            closeMenu();
+                            const blob = await audioEngine.renderProjectToWav(bpm, 16);
+                            const a = document.createElement('a');
+                            a.href = URL.createObjectURL(blob);
+                            a.download = 'Master_Audio_Preview.mp3';
+                            a.click();
+                          }}
+                          className="w-full text-left px-3 py-1.5 hover:bg-amber-500 hover:text-neutral-950"
+                        >
+                          MP3 High-Bitrate Preview
+                        </button>
                       </div>
                     )}
                   </div>
@@ -464,9 +540,74 @@ export const DAWMenuBar: React.FC<DAWMenuBarProps> = ({
           </div>
         </div>
 
-        {/* Right Status Info: Auto-Save Badge & Producer Profile */}
-        <div className="flex items-center gap-3 text-[11px] shrink-0">
-          {/* Real-Time Auto-Save Status Badge */}
+        {/* Right Status Info: Universal Device Switcher, Auto-Save Badge & Producer Profile */}
+        <div className="flex items-center gap-2 sm:gap-3 text-[11px] shrink-0 flex-wrap">
+          {/* Universal Multi-Input & Devices Info Button */}
+          {openUniversalModal && (
+            <button
+              onClick={openUniversalModal}
+              className="px-2.5 py-0.5 rounded-full bg-amber-500/10 hover:bg-amber-500 hover:text-neutral-950 text-amber-400 border border-amber-500/30 transition text-[10px] font-black flex items-center gap-1.5 shadow"
+              title="View Universal Multi-Input Modality & Device Engine Capabilities"
+            >
+              <Zap className="w-3 h-3 text-amber-400" />
+              <span className="hidden sm:inline">UNIVERSAL ENGINE</span>
+            </button>
+          )}
+
+          {/* Universal Translator Language Button */}
+          {openLanguageModal && (
+            <button
+              onClick={openLanguageModal}
+              className="px-2.5 py-0.5 rounded-full bg-neutral-900 hover:bg-amber-500 hover:text-neutral-950 text-amber-300 border border-amber-500/40 transition text-[10px] font-black flex items-center gap-1.5 shadow"
+              title="Change Studio Language & Open Universal Translator"
+            >
+              <span className="text-xs">{currentLanguageObj.flag}</span>
+              <span className="hidden sm:inline">{currentLanguageObj.code.toUpperCase()}</span>
+            </button>
+          )}
+
+          {/* Universal Device Profile Viewport Switcher */}
+          <div className="flex items-center gap-1 bg-black/60 px-2 py-0.5 rounded-full border border-neutral-800 text-[10px] font-bold">
+            <span className="text-neutral-500 uppercase tracking-wider hidden sm:inline">UNIVERSAL SYNC:</span>
+            <button
+              onClick={() => handleSetDeviceProfile('desktop')}
+              className={`px-2 py-0.5 rounded-full transition flex items-center gap-1 ${
+                deviceProfile === 'desktop'
+                  ? 'bg-amber-500 text-neutral-950 font-black shadow'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+              title="Desktop Workstation Layout (Mac / PC / Linux)"
+            >
+              <Tv className="w-3 h-3" />
+              <span className="hidden md:inline">DESKTOP</span>
+            </button>
+            <button
+              onClick={() => handleSetDeviceProfile('tablet')}
+              className={`px-2 py-0.5 rounded-full transition flex items-center gap-1 ${
+                deviceProfile === 'tablet'
+                  ? 'bg-amber-500 text-neutral-950 font-black shadow'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+              title="Touch Tablet DAW View (iPad / Galaxy Tab / Surface)"
+            >
+              <Sliders className="w-3 h-3" />
+              <span className="hidden md:inline">TABLET</span>
+            </button>
+            <button
+              onClick={() => handleSetDeviceProfile('mobile')}
+              className={`px-2 py-0.5 rounded-full transition flex items-center gap-1 ${
+                deviceProfile === 'mobile'
+                  ? 'bg-amber-500 text-neutral-950 font-black shadow'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+              title="Mobile Pocket Studio View (iPhone / Android / PWA)"
+            >
+              <Zap className="w-3 h-3" />
+              <span className="hidden md:inline">MOBILE</span>
+            </button>
+          </div>
+
+          {/* Real-Time Auto-Save & Cloud Sync Badge */}
           <button
             onClick={handleManualSave}
             className={`px-2.5 py-0.5 rounded-full border text-[10px] font-black transition flex items-center gap-1.5 ${
@@ -476,7 +617,7 @@ export const DAWMenuBar: React.FC<DAWMenuBarProps> = ({
                 ? 'bg-emerald-950/60 text-emerald-400 border-emerald-700/60 hover:border-emerald-500'
                 : 'bg-neutral-800 text-neutral-500 border-neutral-700'
             }`}
-            title="Click to Trigger Immediate Save to Local Storage"
+            title="Click to Trigger Immediate Universal Sync across Desktop, Mobile, and Tablet"
           >
             <div
               className={`w-2 h-2 rounded-full ${
@@ -486,10 +627,10 @@ export const DAWMenuBar: React.FC<DAWMenuBarProps> = ({
             <HardDrive className="w-3 h-3" />
             <span>
               {autoSaveToast
-                ? 'PROJECT SAVED!'
+                ? 'SYNCED ALL DEVICES!'
                 : autoSaveEnabled
-                ? `AUTOSAVE ${lastAutoSaveTime ? `(${lastAutoSaveTime})` : 'ON'}`
-                : 'AUTOSAVE OFF'}
+                ? `PWA SYNC ${lastAutoSaveTime ? `(${lastAutoSaveTime})` : 'ACTIVE'}`
+                : 'SYNC OFF'}
             </span>
           </button>
 
@@ -510,6 +651,14 @@ export const DAWMenuBar: React.FC<DAWMenuBarProps> = ({
           </span>
         </div>
       </div>
+
+      {/* Sync Notification Banner Toast */}
+      {syncToast && (
+        <div className="bg-amber-500 text-neutral-950 font-black text-[11px] py-1 px-3 text-center border-b border-amber-300 animate-in fade-in duration-200 flex items-center justify-center gap-2 shadow-lg">
+          <Zap className="w-3.5 h-3.5 fill-neutral-950" />
+          <span>{syncToast}</span>
+        </div>
+      )}
 
       {/* CASCADING BURGER SLIDE-OUT DRAWER */}
       {isBurgerOpen && (

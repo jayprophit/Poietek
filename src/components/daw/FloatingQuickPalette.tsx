@@ -57,12 +57,34 @@ export const FloatingQuickPalette: React.FC<FloatingQuickPaletteProps> = ({
   canUndo = false,
   canRedo = false,
 }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false); // Start collapsed so it's not in the way
+  const [isOpen, setIsOpen] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem('studio_quick_palette_isOpen');
+      return saved !== null ? JSON.parse(saved) : false;
+    } catch {
+      return false;
+    }
+  });
   const [isDismissed, setIsDismissed] = useState<boolean>(false);
   const [isAddMenuOpen, setIsAddMenuOpen] = useState<boolean>(false);
-  const [position, setPosition] = useState<{ x: number; y: number }>({ x: 20, y: 160 });
+  const [position, setPosition] = useState<{ x: number; y: number }>(() => {
+    try {
+      const saved = localStorage.getItem('studio_quick_palette_pos');
+      return saved ? JSON.parse(saved) : { x: 20, y: 160 };
+    } catch {
+      return { x: 20, y: 160 };
+    }
+  });
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [dragOffset, setDragOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  React.useEffect(() => {
+    localStorage.setItem('studio_quick_palette_pos', JSON.stringify(position));
+  }, [position]);
+
+  React.useEffect(() => {
+    localStorage.setItem('studio_quick_palette_isOpen', JSON.stringify(isOpen));
+  }, [isOpen]);
 
   if (isDismissed) return null;
 
@@ -76,9 +98,10 @@ export const FloatingQuickPalette: React.FC<FloatingQuickPaletteProps> = ({
 
   const handleMouseMove = (e: MouseEvent) => {
     if (isDragging) {
+      // Allow moving off-screen or anywhere across multi-monitors
       setPosition({
-        x: Math.max(10, Math.min(window.innerWidth - 300, e.clientX - dragOffset.x)),
-        y: Math.max(50, Math.min(window.innerHeight - 200, e.clientY - dragOffset.y)),
+        x: e.clientX - dragOffset.x,
+        y: e.clientY - dragOffset.y,
       });
     }
   };

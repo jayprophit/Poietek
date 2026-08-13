@@ -99,6 +99,48 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
 }) => {
   const [isAddMenuOpen, setIsAddMenuOpen] = useState<boolean>(false);
   const [rackZoom, setRackZoom] = useState<number>(100); // 70% to 130%
+  const [isGroupSelectMode, setIsGroupSelectMode] = useState<boolean>(false);
+  const [selectedModuleIds, setSelectedModuleIds] = useState<string[]>([]);
+
+  const handleToggleModuleSelection = (id: string) => {
+    setSelectedModuleIds((prev) =>
+      prev.includes(id) ? prev.filter((mId) => mId !== id) : [...prev, id]
+    );
+  };
+
+  const handleCreateSmartGroup = () => {
+    if (selectedModuleIds.length === 0) return;
+
+    const folderId = `folder_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    const folderModule: RackModuleItem = {
+      id: folderId,
+      type: 'folder_combinator',
+      title: `Smart Bus Container (${selectedModuleIds.length} Units)`,
+      tapeLabel: 'SMART BUS',
+      subModuleIds: [...selectedModuleIds],
+      colorTag: 'amber',
+      macroParams: {
+        filterCutoff: 100,
+        drive: 15,
+        reverbDepth: 20,
+        delayLevel: 10,
+        masterVol: 90,
+      },
+    };
+
+    setRackModules((prev) => {
+      const updated = prev.map((m) => {
+        if (selectedModuleIds.includes(m.id)) {
+          return { ...m, groupId: folderId };
+        }
+        return m;
+      });
+      return [folderModule, ...updated];
+    });
+
+    setSelectedModuleIds([]);
+    setIsGroupSelectMode(false);
+  };
 
   const handleFoldAllModules = () => {
     setRackModules((prev) => prev.map((m) => ({ ...m, isFolded: true })));
@@ -405,6 +447,22 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
 
         {/* Rack Cascading Fold / Expand All & Zoom Slider Control */}
         <div className="flex items-center gap-2 flex-wrap">
+          <button
+            onClick={() => {
+              setIsGroupSelectMode(!isGroupSelectMode);
+              if (isGroupSelectMode) setSelectedModuleIds([]);
+            }}
+            className={`px-3 py-1 rounded-xl font-black text-xs transition flex items-center gap-1.5 border ${
+              isGroupSelectMode
+                ? 'bg-amber-500 text-neutral-950 border-amber-300 shadow-md'
+                : 'bg-neutral-800 text-amber-400 hover:bg-neutral-700 border-neutral-700'
+            }`}
+            title="Select multiple rack modules to group into a Combinator container"
+          >
+            <FolderPlus className="w-3.5 h-3.5" />
+            <span>{isGroupSelectMode ? 'EXIT GROUP SELECT' : 'SMART GROUP'}</span>
+          </button>
+
           <div className="flex items-center gap-1 bg-neutral-950 p-1 rounded-xl border border-neutral-800 text-xs">
             <button
               onClick={handleFoldAllModules}
@@ -488,6 +546,46 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
         </div>
       </div>
 
+      {/* Smart Group Selection Active Floating Bar */}
+      {isGroupSelectMode && (
+        <div className="bg-amber-500 text-neutral-950 p-3 rounded-2xl shadow-2xl flex items-center justify-between font-mono animate-in slide-in-from-top-2 border-2 border-amber-300">
+          <div className="flex items-center gap-2">
+            <FolderPlus className="w-5 h-5 stroke-[2.5]" />
+            <div>
+              <span className="text-xs font-black uppercase tracking-wider block">
+                SMART GROUP MULTI-SELECT ACTIVE
+              </span>
+              <span className="text-[10px] font-bold opacity-90">
+                {selectedModuleIds.length} {selectedModuleIds.length === 1 ? 'module' : 'modules'} selected to nest into container
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleCreateSmartGroup}
+              disabled={selectedModuleIds.length === 0}
+              className={`px-4 py-2 rounded-xl text-xs font-black transition border ${
+                selectedModuleIds.length > 0
+                  ? 'bg-neutral-950 text-amber-400 hover:bg-neutral-900 border-amber-400 shadow-lg cursor-pointer'
+                  : 'bg-neutral-950/40 text-neutral-700 border-neutral-800 cursor-not-allowed'
+              }`}
+            >
+              CREATE COMBINATOR CONTAINER ({selectedModuleIds.length})
+            </button>
+            <button
+              onClick={() => {
+                setIsGroupSelectMode(false);
+                setSelectedModuleIds([]);
+              }}
+              className="px-3 py-2 rounded-xl bg-neutral-900 text-white hover:bg-neutral-800 text-xs font-bold"
+            >
+              CANCEL
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Main Scaled Rack Container */}
       <div
         onDragOver={(e) => {
@@ -560,23 +658,46 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
               );
             }
 
+            const isSelected = selectedModuleIds.includes(mod.id);
+
             return (
               <div key={mod.id} className="relative group">
-                <StudioRackDevice
-                  title={mod.title}
-                  tapeLabel={mod.tapeLabel}
-                  subtitle="STACKED VIRTUAL RACK UNIT"
-                  colorTag={mod.colorTag || 'amber'}
-                  isFolded={mod.isFolded}
-                  onToggleFold={() => handleToggleFoldModule(mod.id)}
-                  onSetColorTag={(c) => handleSetColorTag(mod.id, c)}
-                  onDetach={() => onDetachWorkspace(mod.type as WorkspaceType)}
-                  onToggleFlip={onToggleFlip}
-                  onDelete={() => handleDeleteModule(mod.id)}
-                  onDuplicate={() => handleDuplicateModule(mod)}
-                >
-                  {renderModuleContent(mod.type)}
-                </StudioRackDevice>
+                {isGroupSelectMode && (
+                  <div
+                    onClick={() => handleToggleModuleSelection(mod.id)}
+                    className={`absolute left-0 top-0 bottom-0 w-12 z-30 flex items-center justify-center cursor-pointer transition rounded-l-xl border-r ${
+                      isSelected
+                        ? 'bg-amber-500 text-neutral-950 border-amber-400 font-black'
+                        : 'bg-neutral-950/90 text-neutral-500 hover:text-amber-400 border-neutral-800'
+                    }`}
+                    title="Click to select module for Smart Group container"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={() => {}}
+                      className="w-4 h-4 accent-neutral-950 cursor-pointer"
+                    />
+                  </div>
+                )}
+
+                <div className={isGroupSelectMode ? 'pl-12' : ''}>
+                  <StudioRackDevice
+                    title={mod.title}
+                    tapeLabel={mod.tapeLabel}
+                    subtitle="STACKED VIRTUAL RACK UNIT"
+                    colorTag={mod.colorTag || 'amber'}
+                    isFolded={mod.isFolded}
+                    onToggleFold={() => handleToggleFoldModule(mod.id)}
+                    onSetColorTag={(c) => handleSetColorTag(mod.id, c)}
+                    onDetach={() => onDetachWorkspace(mod.type as WorkspaceType)}
+                    onToggleFlip={onToggleFlip}
+                    onDelete={() => handleDeleteModule(mod.id)}
+                    onDuplicate={() => handleDuplicateModule(mod)}
+                  >
+                    {renderModuleContent(mod.type)}
+                  </StudioRackDevice>
+                </div>
               </div>
             );
           })

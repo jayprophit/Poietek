@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ConnectedDevice } from '../../types';
-import { Cpu, Wifi, Radio, Zap, Activity, Volume2, ShieldAlert } from 'lucide-react';
+import { Cpu, Wifi, Radio, Zap, Activity, Volume2, ShieldAlert, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface HardwareInterfaceUnitProps {
   connectedDevices: ConnectedDevice[];
@@ -15,11 +15,38 @@ export const HardwareInterfaceUnit: React.FC<HardwareInterfaceUnitProps> = ({
   isFlipped,
   onToggleFlip,
 }) => {
+  const [isFolded, setIsFolded] = useState<boolean>(false);
   const activeDevs = connectedDevices.filter((d) => d.connected);
   const avgLat =
     activeDevs.length > 0
       ? (activeDevs.reduce((s, d) => s + d.latencyMs, 0) / activeDevs.length).toFixed(1)
       : '1.2';
+
+  if (isFolded) {
+    return (
+      <div className="relative bg-neutral-900 border-y-2 border-slate-700 shadow-md select-none my-1 px-8 py-1.5 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setIsFolded(false)}
+            className="p-1 rounded bg-slate-800 hover:bg-slate-700 text-amber-400"
+            title="Expand Hardware Interface"
+          >
+            <ChevronDown className="w-4 h-4" />
+          </button>
+          <span className="bg-amber-100 text-neutral-900 px-2 py-0.5 rounded font-mono text-[10px] font-black uppercase">
+            HARDWARE INTERFACE (FOLDED)
+          </span>
+          <span className="text-[10px] font-mono text-emerald-400 font-bold">64 CH • {avgLat}ms</span>
+        </div>
+        <button
+          onClick={onToggleFlip}
+          className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-neutral-800 text-amber-400 hover:bg-neutral-700"
+        >
+          {isFlipped ? 'SHOW FRONT' : 'FLIP RACK'}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="relative bg-gradient-to-r from-slate-900 via-neutral-900 to-slate-900 border-y-2 border-slate-700/80 shadow-2xl overflow-hidden select-none my-1">
@@ -48,6 +75,14 @@ export const HardwareInterfaceUnit: React.FC<HardwareInterfaceUnitProps> = ({
       <div className="px-10 py-2.5 flex flex-wrap items-center justify-between gap-4 bg-[radial-gradient(#262626_1px,transparent_1px)] [background-size:8px_8px]">
         {/* Device Title & Brand Tape */}
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => setIsFolded(true)}
+            className="p-1 rounded bg-slate-800 hover:bg-slate-700 text-amber-400"
+            title="Fold / Cascade Hardware Interface"
+          >
+            <ChevronUp className="w-4 h-4" />
+          </button>
+
           {/* Handwritten-style Tape Label */}
           <div className="bg-amber-100/90 text-neutral-900 px-3 py-1 rounded-sm shadow-md font-mono text-xs font-black tracking-wider uppercase border border-amber-300 transform -rotate-1">
             HARDWARE INTERFACE

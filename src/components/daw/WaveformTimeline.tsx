@@ -422,104 +422,33 @@ export const WaveformTimeline: React.FC<WaveformTimelineProps> = ({
       </div>
 
       {/* Main Track Headers + Horizontal Wave Timeline Viewport */}
-      <div className="flex border-2 border-stone-800 rounded-2xl overflow-hidden bg-neutral-900 shadow-inner">
-        {/* Track Headers Column */}
-        <div className="w-56 shrink-0 bg-neutral-950 border-r-2 border-stone-800 space-y-1 p-2">
-          <div className="h-7 border-b border-neutral-800 flex items-center justify-between px-2 text-[10px] font-bold text-neutral-500 uppercase">
-            <span>TRACK CONTROLS</span>
-            <span>VOL / PAN</span>
-          </div>
-
-          {activeTracks.map((tr) => (
-            <div
-              key={tr.id}
-              style={{ height: `${64 * verticalZoom}px` }}
-              className="p-2 rounded-xl bg-neutral-900 border border-neutral-800 flex flex-col justify-between"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 truncate">
-                  <div
-                    className="w-2.5 h-2.5 rounded-full shrink-0"
-                    style={{ backgroundColor: tr.color }}
-                  />
-                  <span className="text-xs font-black text-stone-200 truncate">{tr.name}</span>
-                </div>
-                <span className="text-[9px] font-mono text-neutral-500 uppercase">{tr.type}</span>
-              </div>
-
-              <div className="flex items-center justify-between pt-1">
-                <div className="flex items-center gap-1 text-[9px] font-bold">
-                  <button
-                    onClick={() => {
-                      const updated = activeTracks.map((t) =>
-                        t.id === tr.id ? { ...t, isMuted: !t.isMuted } : t
-                      );
-                      updateTracksState(updated);
-                    }}
-                    className={`px-1.5 py-0.5 rounded border ${
-                      tr.isMuted
-                        ? 'bg-rose-950 text-rose-400 border-rose-800'
-                        : 'bg-neutral-800 text-neutral-400 border-neutral-700'
-                    }`}
-                  >
-                    M
-                  </button>
-                  <button
-                    onClick={() => {
-                      const updated = activeTracks.map((t) =>
-                        t.id === tr.id ? { ...t, isSolo: !t.isSolo } : t
-                      );
-                      updateTracksState(updated);
-                    }}
-                    className={`px-1.5 py-0.5 rounded border ${
-                      tr.isSolo
-                        ? 'bg-amber-500 text-neutral-950 font-black border-amber-400'
-                        : 'bg-neutral-800 text-neutral-400 border-neutral-700'
-                    }`}
-                  >
-                    S
-                  </button>
-                </div>
-
-                <div className="flex items-center gap-1">
-                  <Volume2 className="w-3 h-3 text-neutral-500" />
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={tr.volume}
-                    onChange={(e) => {
-                      const updated = activeTracks.map((t) =>
-                        t.id === tr.id ? { ...t, volume: Number(e.target.value) } : t
-                      );
-                      updateTracksState(updated);
-                    }}
-                    className="w-14 accent-amber-500 cursor-pointer"
-                  />
-                </div>
-              </div>
+      <div className="border-2 border-stone-800 rounded-2xl overflow-auto max-w-full max-h-[550px] bg-neutral-900 shadow-inner scrollbar-thin scrollbar-thumb-stone-700 touch-pan-x touch-pan-y relative">
+        <div className="min-w-max">
+          {/* Sticky Timeline Bar Ruler Header */}
+          <div className="h-8 bg-neutral-950 border-b-2 border-stone-800 flex items-center sticky top-0 z-20 text-[10px] font-bold text-neutral-500 backdrop-blur-md">
+            {/* Top-Left Corner Box matching Track Controls Header */}
+            <div className="w-56 shrink-0 sticky left-0 z-30 bg-neutral-950 border-r-2 border-stone-800 px-3 py-1 text-[10px] font-black text-amber-400 uppercase tracking-wider flex items-center justify-between">
+              <span>TRACK CONTROLS</span>
+              <span>VOL / MUTE / SOLO</span>
             </div>
-          ))}
-        </div>
 
-        {/* Horizontal Scrolling Timeline Area */}
-        <div className="flex-1 overflow-x-auto relative scrollbar-thin scrollbar-thumb-stone-800">
-          {/* Timeline Bar Ruler */}
-          <div className="h-7 bg-neutral-950 border-b border-stone-800 flex items-center relative text-[10px] font-bold text-neutral-500">
-            {Array.from({ length: totalBars }).map((_, i) => (
-              <div
-                key={i}
-                style={{ width: `${pixelsPerBar}px` }}
-                className="shrink-0 border-r border-neutral-800 px-1 flex items-center justify-between"
-              >
-                <span className="text-amber-400">{i + 1}</span>
-                <span className="text-neutral-700 text-[8px]">. . .</span>
-              </div>
-            ))}
+            {/* Ruler Ticks */}
+            <div className="flex items-center">
+              {Array.from({ length: totalBars }).map((_, i) => (
+                <div
+                  key={i}
+                  style={{ width: `${pixelsPerBar}px` }}
+                  className="shrink-0 border-r border-neutral-800 px-1 flex items-center justify-between h-full"
+                >
+                  <span className="text-amber-400 font-mono">BAR {i + 1}</span>
+                  <span className="text-neutral-700 text-[8px] font-mono">. .</span>
+                </div>
+              ))}
+            </div>
 
             {/* Scrubbing Playhead Handle Line */}
             <div
-              style={{ left: `${playheadPosPercent}%` }}
+              style={{ left: `calc(14rem + ${playheadPosPercent}%)` }}
               className="absolute top-0 bottom-0 w-0.5 bg-rose-500 z-30 pointer-events-none shadow-lg shadow-rose-500/80"
             >
               <div className="w-3 h-3 bg-rose-500 rounded-b transform -translate-x-1.2 flex items-center justify-center text-[7px] font-black text-white">
@@ -528,77 +457,148 @@ export const WaveformTimeline: React.FC<WaveformTimelineProps> = ({
             </div>
           </div>
 
-          {/* Tracks Horizontal Clips Grid */}
-          <div className="space-y-1 p-0 relative min-w-max">
+          {/* Unified Tracks List (Track Header Box + Timeline Clip Strip side-by-side per track) */}
+          <div className="divide-y divide-neutral-800/80">
             {activeTracks.map((tr) => (
               <div
                 key={tr.id}
-                style={{
-                  height: `${64 * verticalZoom}px`,
-                  width: `${totalBars * pixelsPerBar}px`,
-                }}
-                className="bg-neutral-900/40 border-b border-neutral-800/80 relative flex items-center"
+                style={{ height: `${64 * verticalZoom}px` }}
+                className="flex items-center relative"
               >
-                {/* Background Grid Lines */}
-                {Array.from({ length: totalBars }).map((_, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      left: `${i * pixelsPerBar}px`,
-                      width: `${pixelsPerBar}px`,
-                    }}
-                    className="absolute top-0 bottom-0 border-r border-neutral-800/40 pointer-events-none"
-                  />
-                ))}
-
-                {/* Audio / MIDI Region Clips */}
-                {tr.regions.map((reg) => {
-                  const leftPx = (reg.startBar - 1) * pixelsPerBar;
-                  const widthPx = reg.durationBars * pixelsPerBar;
-                  const isSelected = selectedRegionId === reg.id;
-
-                  return (
-                    <div
-                      key={reg.id}
-                      onClick={() => setSelectedRegionId(reg.id)}
-                      onDoubleClick={() => handleRegionDoubleClick(reg, tr)}
-                      style={{
-                        left: `${leftPx}px`,
-                        width: `${widthPx}px`,
-                        height: '82%',
-                        backgroundColor: `${tr.color}25`,
-                        borderColor: isSelected ? '#f59e0b' : tr.color,
-                      }}
-                      className={`absolute top-1 rounded-xl border-2 p-1.5 flex flex-col justify-between cursor-pointer transition shadow hover:brightness-125 select-none overflow-hidden ${
-                        isSelected ? 'ring-2 ring-amber-400 shadow-amber-500/30 z-20' : 'z-10'
-                      }`}
-                      title="Double-click to open AudioClipEditor waveform modal"
-                    >
-                      <div className="flex items-center justify-between text-[10px] font-black truncate">
-                        <span className="truncate text-white drop-shadow">{reg.title}</span>
-                        <span className="text-[8px] font-mono opacity-80 uppercase px-1 rounded bg-black/40">
-                          {reg.durationBars}B
-                        </span>
-                      </div>
-
-                      {/* Mini Waveform Visualization */}
-                      <div className="h-5 flex items-center gap-0.5 overflow-hidden opacity-90">
-                        {Array.from({ length: 24 }).map((_, idx) => (
-                          <div
-                            key={idx}
-                            style={{
-                              height: `${
-                                Math.abs(Math.sin(idx * 0.4 + reg.waveSeed)) * 80 + 20
-                              }%`,
-                              backgroundColor: tr.color,
-                            }}
-                            className="w-1 rounded-full shrink-0"
-                          />
-                        ))}
-                      </div>
+                {/* Sticky Left Track Header Control Box */}
+                <div className="w-56 shrink-0 h-full bg-neutral-950 border-r-2 border-stone-800 p-2 flex flex-col justify-between sticky left-0 z-10 shadow-2xl">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 truncate">
+                      <div
+                        className="w-2.5 h-2.5 rounded-full shrink-0"
+                        style={{ backgroundColor: tr.color }}
+                      />
+                      <span className="text-xs font-black text-stone-200 truncate max-w-[110px]" title={tr.name}>
+                        {tr.name}
+                      </span>
                     </div>
-                  );
-                })}
+                    <span className="text-[9px] font-mono text-neutral-500 uppercase">{tr.type}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-1">
+                    <div className="flex items-center gap-1 text-[9px] font-bold">
+                      <button
+                        onClick={() => {
+                          const updated = activeTracks.map((t) =>
+                            t.id === tr.id ? { ...t, isMuted: !t.isMuted } : t
+                          );
+                          updateTracksState(updated);
+                        }}
+                        className={`px-1.5 py-0.5 rounded border ${
+                          tr.isMuted
+                            ? 'bg-rose-950 text-rose-400 border-rose-800'
+                            : 'bg-neutral-800 text-neutral-400 border-neutral-700 hover:text-white'
+                        }`}
+                      >
+                        M
+                      </button>
+                      <button
+                        onClick={() => {
+                          const updated = activeTracks.map((t) =>
+                            t.id === tr.id ? { ...t, isSolo: !t.isSolo } : t
+                          );
+                          updateTracksState(updated);
+                        }}
+                        className={`px-1.5 py-0.5 rounded border ${
+                          tr.isSolo
+                            ? 'bg-amber-500 text-neutral-950 font-black border-amber-400'
+                            : 'bg-neutral-800 text-neutral-400 border-neutral-700 hover:text-white'
+                        }`}
+                      >
+                        S
+                      </button>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <Volume2 className="w-3 h-3 text-neutral-500" />
+                      <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        value={tr.volume}
+                        onChange={(e) => {
+                          const updated = activeTracks.map((t) =>
+                            t.id === tr.id ? { ...t, volume: Number(e.target.value) } : t
+                          );
+                          updateTracksState(updated);
+                        }}
+                        className="w-14 accent-amber-500 cursor-pointer h-1.5 bg-neutral-800 rounded"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Track Horizontal Region Clip Track Area */}
+                <div
+                  style={{ width: `${totalBars * pixelsPerBar}px` }}
+                  className="bg-neutral-900/40 h-full relative flex items-center shrink-0 border-b border-neutral-800/40"
+                >
+                  {/* Background Grid Lines */}
+                  {Array.from({ length: totalBars }).map((_, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        left: `${i * pixelsPerBar}px`,
+                        width: `${pixelsPerBar}px`,
+                      }}
+                      className="absolute top-0 bottom-0 border-r border-neutral-800/40 pointer-events-none"
+                    />
+                  ))}
+
+                  {/* Audio / MIDI Region Clips */}
+                  {tr.regions.map((reg) => {
+                    const leftPx = (reg.startBar - 1) * pixelsPerBar;
+                    const widthPx = reg.durationBars * pixelsPerBar;
+                    const isSelected = selectedRegionId === reg.id;
+
+                    return (
+                      <div
+                        key={reg.id}
+                        onClick={() => setSelectedRegionId(reg.id)}
+                        onDoubleClick={() => handleRegionDoubleClick(reg, tr)}
+                        style={{
+                          left: `${leftPx}px`,
+                          width: `${widthPx}px`,
+                          height: '82%',
+                          backgroundColor: `${tr.color}25`,
+                          borderColor: isSelected ? '#f59e0b' : tr.color,
+                        }}
+                        className={`absolute top-1 rounded-xl border-2 p-1.5 flex flex-col justify-between cursor-pointer transition shadow hover:brightness-125 select-none overflow-hidden ${
+                          isSelected ? 'ring-2 ring-amber-400 shadow-amber-500/30 z-20' : 'z-10'
+                        }`}
+                        title="Double-click to open AudioClipEditor waveform modal"
+                      >
+                        <div className="flex items-center justify-between text-[10px] font-black truncate">
+                          <span className="truncate text-white drop-shadow">{reg.title}</span>
+                          <span className="text-[8px] font-mono opacity-80 uppercase px-1 rounded bg-black/40">
+                            {reg.durationBars}B
+                          </span>
+                        </div>
+
+                        {/* Mini Waveform Visualization */}
+                        <div className="h-5 flex items-center gap-0.5 overflow-hidden opacity-90">
+                          {Array.from({ length: 24 }).map((_, idx) => (
+                            <div
+                              key={idx}
+                              style={{
+                                height: `${
+                                  Math.abs(Math.sin(idx * 0.4 + reg.waveSeed)) * 80 + 20
+                                }%`,
+                                backgroundColor: tr.color,
+                              }}
+                              className="w-1 rounded-full shrink-0"
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             ))}
           </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '../../i18n/LanguageContext';
 import {
   Play,
   Square,
@@ -26,6 +27,7 @@ interface StudioTransportProps {
   isFlipped: boolean;
   onToggleFlip: () => void;
   openAIGrooveModal: () => void;
+  onOpenKeyboard?: () => void;
 }
 
 export const StudioTransport: React.FC<StudioTransportProps> = ({
@@ -38,7 +40,9 @@ export const StudioTransport: React.FC<StudioTransportProps> = ({
   isFlipped,
   onToggleFlip,
   openAIGrooveModal,
+  onOpenKeyboard,
 }) => {
+  const { t } = useLanguage();
   const activeCount = connectedDevices.filter((d) => d.connected).length;
 
   return (
@@ -46,22 +50,22 @@ export const StudioTransport: React.FC<StudioTransportProps> = ({
       {/* Wooden/Metallic Edge Strip */}
       <div className="h-1 bg-gradient-to-r from-amber-900 via-amber-700 to-amber-900 border-b border-neutral-950 opacity-80" />
 
-      <div className="max-w-7xl mx-auto px-4 py-2 flex flex-wrap items-center justify-between gap-3">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 py-1.5 sm:py-2 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
         {/* Left Section: TAB Flip Toggle */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={onToggleFlip}
-            className={`px-3 py-1.5 rounded-md text-xs font-mono font-black uppercase transition-all flex items-center gap-1.5 shadow-lg border ${
+            className={`px-3 py-2 sm:py-1.5 rounded-lg text-xs font-mono font-black uppercase transition-all flex items-center gap-1.5 shadow-lg border min-h-[40px] ${
               isFlipped
                 ? 'bg-amber-500 text-neutral-950 border-amber-300 shadow-amber-500/40 ring-2 ring-amber-400 scale-105'
                 : 'bg-gradient-to-b from-neutral-700 to-neutral-800 text-neutral-200 hover:from-neutral-600 hover:to-neutral-700 border-neutral-600'
             }`}
           >
             <Radio className="w-3.5 h-3.5" />
-            <span>{isFlipped ? 'REAR CABLES' : 'FLIP RACK (TAB)'}</span>
+            <span>{isFlipped ? 'REAR' : 'FLIP (TAB)'}</span>
           </button>
 
-          <div className="hidden md:flex items-center gap-2 border-l border-neutral-800 pl-3">
+          <div className="hidden lg:flex items-center gap-2 border-l border-neutral-800 pl-3">
             <span className="text-[11px] font-mono font-black tracking-widest text-amber-500 uppercase">
               UNIVERSAL STUDIO VIRTUAL RACK
             </span>
@@ -69,20 +73,20 @@ export const StudioTransport: React.FC<StudioTransportProps> = ({
         </div>
 
         {/* Center Section: Iconic LCD Screen & Metallic Transport Buttons */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4 flex-wrap justify-center">
           {/* Digital Green LCD Screen */}
-          <div className="bg-emerald-950/90 border-2 border-emerald-800/80 rounded-lg px-3 py-1 flex items-center gap-4 shadow-[inset_0_2px_8px_rgba(0,0,0,0.8)] font-mono">
+          <div className="bg-emerald-950/90 border-2 border-emerald-800/80 rounded-lg px-2 sm:px-3 py-1 flex items-center gap-2 sm:gap-4 shadow-[inset_0_2px_8px_rgba(0,0,0,0.8)] font-mono">
             {/* Song Position Bar.Beat.Tick */}
             <div className="text-center">
-              <span className="text-[8px] text-emerald-600 block font-bold">POSITION</span>
-              <span className="text-xs font-black text-emerald-400 tracking-wider">
+              <span className="text-[8px] text-emerald-600 block font-bold">POS</span>
+              <span className="text-[10px] sm:text-xs font-black text-emerald-400 tracking-wider">
                 0001.01.01
               </span>
             </div>
 
             {/* BPM Counter */}
-            <div className="text-center border-x border-emerald-900/80 px-3">
-              <span className="text-[8px] text-emerald-600 block font-bold">TEMPO (BPM)</span>
+            <div className="text-center border-x border-emerald-900/80 px-2 sm:px-3">
+              <span className="text-[8px] text-emerald-600 block font-bold">BPM</span>
               <div className="flex items-center gap-1">
                 <input
                   type="number"
@@ -95,11 +99,11 @@ export const StudioTransport: React.FC<StudioTransportProps> = ({
                       bpm: Math.max(40, Math.min(240, Number(e.target.value))),
                     }))
                   }
-                  className="w-12 text-center text-xs font-bold bg-transparent text-emerald-300 focus:outline-none"
+                  className="w-10 sm:w-12 text-center text-xs font-bold bg-transparent text-emerald-300 focus:outline-none"
                 />
                 <button
                   onClick={onTapTempo}
-                  className="px-1.5 py-0.5 text-[9px] bg-emerald-900/60 hover:bg-emerald-800 text-emerald-300 rounded font-bold"
+                  className="px-1.5 py-1 text-[9px] bg-emerald-900/60 hover:bg-emerald-800 text-emerald-300 rounded font-bold min-h-[28px]"
                 >
                   TAP
                 </button>
@@ -107,17 +111,17 @@ export const StudioTransport: React.FC<StudioTransportProps> = ({
             </div>
 
             {/* Time Signature */}
-            <div className="text-center pr-1">
+            <div className="text-center pr-1 hidden sm:block">
               <span className="text-[8px] text-emerald-600 block font-bold">METER</span>
               <span className="text-xs font-bold text-emerald-400">4 / 4</span>
             </div>
           </div>
 
           {/* Big Metallic Transport Buttons */}
-          <div className="flex items-center gap-1.5 bg-neutral-950 p-1.5 rounded-xl border border-neutral-800 shadow-inner">
+          <div className="flex items-center gap-1 sm:gap-1.5 bg-neutral-950 p-1 sm:p-1.5 rounded-xl border border-neutral-800 shadow-inner">
             <button
               onClick={() => setMasterState((prev) => ({ ...prev, currentStep: 0 }))}
-              className="p-2 rounded-lg bg-gradient-to-b from-neutral-700 to-neutral-800 hover:from-neutral-600 hover:to-neutral-700 text-neutral-300 border border-neutral-600 shadow active:scale-95 transition"
+              className="p-2 rounded-lg bg-gradient-to-b from-neutral-700 to-neutral-800 hover:from-neutral-600 hover:to-neutral-700 text-neutral-300 border border-neutral-600 shadow active:scale-95 transition min-h-[40px] min-w-[40px] flex items-center justify-center"
               title="Return to Zero"
             >
               <SkipBack className="w-3.5 h-3.5" />
@@ -125,7 +129,7 @@ export const StudioTransport: React.FC<StudioTransportProps> = ({
 
             <button
               onClick={onTriggerPlayStop}
-              className={`px-3 py-2 rounded-lg font-black text-xs transition-all flex items-center gap-1.5 border shadow-lg ${
+              className={`px-3 py-2 rounded-lg font-black text-xs transition-all flex items-center gap-1.5 border shadow-lg min-h-[40px] ${
                 masterState.isPlaying
                   ? 'bg-gradient-to-b from-emerald-500 to-emerald-700 text-white border-emerald-400 shadow-emerald-500/40'
                   : 'bg-gradient-to-b from-neutral-700 to-neutral-800 text-neutral-200 hover:from-neutral-600 hover:to-neutral-700 border-neutral-600'
@@ -134,33 +138,33 @@ export const StudioTransport: React.FC<StudioTransportProps> = ({
               {masterState.isPlaying ? (
                 <>
                   <Square className="w-3.5 h-3.5 fill-current" />
-                  <span>STOP</span>
+                  <span>{t('transport.stop', 'STOP')}</span>
                 </>
               ) : (
                 <>
                   <Play className="w-3.5 h-3.5 fill-current" />
-                  <span>PLAY</span>
+                  <span>{t('transport.play', 'PLAY')}</span>
                 </>
               )}
             </button>
 
             <button
               onClick={onTriggerRecord}
-              className={`px-3 py-2 rounded-lg font-black text-xs transition-all flex items-center gap-1.5 border shadow-lg ${
+              className={`px-3 py-2 rounded-lg font-black text-xs transition-all flex items-center gap-1.5 border shadow-lg min-h-[40px] ${
                 masterState.isRecording
                   ? 'bg-gradient-to-b from-rose-600 to-rose-800 text-white border-rose-400 shadow-rose-600/50 animate-pulse'
                   : 'bg-gradient-to-b from-neutral-700 to-neutral-800 text-neutral-300 hover:from-neutral-600 hover:to-neutral-700 border-neutral-600'
               }`}
             >
               <Circle className="w-3.5 h-3.5 fill-current" />
-              <span>REC</span>
+              <span>{t('transport.record', 'REC')}</span>
             </button>
 
             <button
               onClick={() =>
                 setMasterState((prev) => ({ ...prev, metronome: !prev.metronome }))
               }
-              className={`px-2.5 py-2 rounded-lg text-xs font-mono font-bold border transition ${
+              className={`px-2.5 py-2 rounded-lg text-xs font-mono font-bold border transition min-h-[40px] ${
                 masterState.metronome
                   ? 'bg-amber-500/20 text-amber-300 border-amber-500/50'
                   : 'bg-neutral-800 text-neutral-500 border-neutral-700 hover:text-neutral-300'
@@ -168,6 +172,16 @@ export const StudioTransport: React.FC<StudioTransportProps> = ({
             >
               CLICK
             </button>
+
+            {onOpenKeyboard && (
+              <button
+                onClick={onOpenKeyboard}
+                className="px-2.5 py-2 rounded-lg text-xs font-mono font-black border transition min-h-[40px] bg-amber-500/20 text-amber-300 border-amber-500/50 hover:bg-amber-500 hover:text-neutral-950 flex items-center gap-1 shadow"
+                title="Open Onscreen Touch & QWERTY Piano Controller"
+              >
+                <span>🎹 KEYBOARD</span>
+              </button>
+            )}
           </div>
         </div>
 

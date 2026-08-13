@@ -553,208 +553,222 @@ export const CubaseLogicWaveformSequencer: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Multi-Track Waveform Song Timeline */}
-      <div className="bg-neutral-950 border-2 border-neutral-800 rounded-3xl p-4 shadow-2xl space-y-2 overflow-x-auto relative min-h-[380px]">
-        {/* Timeline Ruler Header Bar */}
-        <div className="flex items-center pl-64 border-b border-neutral-800 pb-2 relative h-8">
-          {Array.from({ length: 16 }).map((_, i) => (
-            <div
-              key={i}
-              style={{ width: `${65 * zoomLevel}px` }}
-              className="text-[10px] font-bold text-neutral-500 border-l border-neutral-800 pl-1 shrink-0"
-            >
-              BAR {i + 1}
+      {/* Main Multi-Track Waveform Song Timeline Container */}
+      <div className="bg-neutral-950 border-2 border-neutral-800 rounded-3xl p-2 sm:p-4 shadow-2xl space-y-2 overflow-auto max-w-full max-h-[600px] relative scrollbar-thin scrollbar-thumb-stone-700 touch-pan-x touch-pan-y">
+        <div className="min-w-max space-y-2">
+          {/* Timeline Ruler Header Bar */}
+          <div className="flex items-center sticky top-0 z-20 bg-neutral-950/95 backdrop-blur-md border-b-2 border-neutral-800 pb-2 pt-1">
+            {/* Sticky Top-Left Corner Box matching Track Header Column */}
+            <div className="w-60 shrink-0 sticky left-0 z-30 bg-neutral-950 px-3 py-1 text-[10px] font-black text-amber-400 uppercase tracking-wider flex items-center justify-between border-r border-neutral-800">
+              <span>TRACKS ({tracks.length})</span>
+              <span>16 BARS</span>
             </div>
-          ))}
 
-          {/* Animated Scrubber / Playhead Vertical Line */}
-          <div
-            style={{ left: `calc(16rem + ${playheadPos}%)` }}
-            className="absolute top-0 bottom-0 w-0.5 bg-amber-400 z-30 shadow-lg shadow-amber-400/50 pointer-events-none"
-          >
-            <div className="w-3.5 h-3.5 bg-amber-400 rotate-45 -translate-x-1.5 -translate-y-1 shadow-md" />
-          </div>
-        </div>
+            {/* Timeline Bar Ticks */}
+            <div className="flex items-center pl-2">
+              {Array.from({ length: 16 }).map((_, i) => (
+                <div
+                  key={i}
+                  style={{ width: `${65 * zoomLevel}px` }}
+                  className="text-[10px] font-bold text-neutral-400 border-l border-neutral-800 pl-1.5 shrink-0 flex items-center justify-between"
+                >
+                  <span className="text-amber-400 font-mono">BAR {i + 1}</span>
+                  <span className="text-[8px] text-neutral-600 font-mono">. .</span>
+                </div>
+              ))}
+            </div>
 
-        {/* Tracks List */}
-        <div className="space-y-3">
-          {tracks.map((tr) => (
+            {/* Animated Scrubber / Playhead Vertical Line */}
             <div
-              key={tr.id}
-              className="flex items-center gap-3 bg-neutral-900/90 border-2 border-neutral-800 rounded-2xl p-2 shadow-lg"
-              style={{ height: `${84 * verticalZoom}px` }}
+              style={{ left: `calc(15rem + ${playheadPos}%)` }}
+              className="absolute top-0 bottom-0 w-0.5 bg-amber-400 z-30 shadow-lg shadow-amber-400/50 pointer-events-none"
             >
-              {/* Left Track Control Header Box */}
-              <div className="w-60 shrink-0 bg-neutral-950 p-2.5 rounded-xl border border-neutral-800 flex flex-col justify-between h-full">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 truncate">
-                    <div
-                      className="w-3 h-3 rounded-full shrink-0 shadow"
-                      style={{ backgroundColor: tr.color }}
-                    />
-                    <span className="text-xs font-black text-neutral-100 truncate">{tr.name}</span>
-                  </div>
-                  <span className="text-[9px] font-mono text-neutral-500 uppercase shrink-0">
-                    {tr.type}
-                  </span>
-                </div>
+              <div className="w-3.5 h-3.5 bg-amber-400 rotate-45 -translate-x-1.5 -translate-y-1 shadow-md" />
+            </div>
+          </div>
 
-                <div className="flex items-center justify-between gap-1 pt-1">
-                  <div className="flex items-center gap-1">
-                    <button
-                      onClick={() =>
-                        setTracks((prev) =>
-                          prev.map((t) => (t.id === tr.id ? { ...t, isMuted: !t.isMuted } : t))
-                        )
-                      }
-                      className={`px-2 py-0.5 rounded text-[10px] font-black border ${
-                        tr.isMuted
-                          ? 'bg-rose-600 text-white border-rose-400'
-                          : 'bg-neutral-800 text-neutral-400 border-neutral-700'
-                      }`}
-                    >
-                      M
-                    </button>
-                    <button
-                      onClick={() =>
-                        setTracks((prev) =>
-                          prev.map((t) => (t.id === tr.id ? { ...t, isSolo: !t.isSolo } : t))
-                        )
-                      }
-                      className={`px-2 py-0.5 rounded text-[10px] font-black border ${
-                        tr.isSolo
-                          ? 'bg-amber-500 text-neutral-950 border-amber-300'
-                          : 'bg-neutral-800 text-neutral-400 border-neutral-700'
-                      }`}
-                    >
-                      S
-                    </button>
-                    <button
-                      onClick={() =>
-                        setTracks((prev) =>
-                          prev.map((t) => (t.id === tr.id ? { ...t, isArmed: !t.isArmed } : t))
-                        )
-                      }
-                      className={`px-2 py-0.5 rounded text-[10px] font-black border ${
-                        tr.isArmed
-                          ? 'bg-rose-500 text-white animate-pulse border-rose-300'
-                          : 'bg-neutral-800 text-neutral-400 border-neutral-700'
-                      }`}
-                    >
-                      REC
-                    </button>
+          {/* Tracks List */}
+          <div className="space-y-3">
+            {tracks.map((tr) => (
+              <div
+                key={tr.id}
+                className="flex items-center bg-neutral-900/90 border-2 border-neutral-800 rounded-2xl p-1.5 shadow-lg relative min-w-max"
+                style={{ height: `${84 * verticalZoom}px` }}
+              >
+                {/* Sticky Left Track Control Header Box */}
+                <div className="w-60 shrink-0 sticky left-0 z-20 bg-neutral-950 p-2 rounded-xl border border-neutral-800 flex flex-col justify-between h-full shadow-2xl">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 truncate">
+                      <div
+                        className="w-3 h-3 rounded-full shrink-0 shadow"
+                        style={{ backgroundColor: tr.color }}
+                      />
+                      <span className="text-xs font-black text-neutral-100 truncate max-w-[120px]" title={tr.name}>
+                        {tr.name}
+                      </span>
+                    </div>
+                    <span className="text-[9px] font-mono text-neutral-500 uppercase shrink-0">
+                      {tr.type}
+                    </span>
                   </div>
 
-                  {copiedRegion && (
-                    <button
-                      onClick={() => handlePasteRegion(tr.id)}
-                      className="p-1 rounded bg-stone-800 hover:bg-amber-500 hover:text-neutral-950 text-amber-400 text-[9px] font-bold border border-amber-500/30"
-                      title="Paste Copied Clip Here"
-                    >
-                      PASTE
-                    </button>
-                  )}
-                </div>
-
-                {/* Track Vol & Pan Sliders */}
-                <div className="flex items-center gap-2 pt-1 text-[9px]">
-                  <span className="text-neutral-500">VOL</span>
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={tr.volume}
-                    onChange={(e) =>
-                      setTracks((prev) =>
-                        prev.map((t) =>
-                          t.id === tr.id ? { ...t, volume: Number(e.target.value) } : t
-                        )
-                      )
-                    }
-                    className="w-full accent-amber-500 cursor-pointer h-1 bg-neutral-800 rounded"
-                  />
-                  <span className="font-mono text-neutral-400 font-bold">{tr.volume}</span>
-                </div>
-              </div>
-
-              {/* Right Timeline Grid & Waveform Clips */}
-              <div className="flex-1 h-full bg-neutral-950 rounded-xl border border-neutral-800/80 relative overflow-hidden flex items-center">
-                {/* Background Grid Lines */}
-                <div className="absolute inset-0 flex pointer-events-none">
-                  {Array.from({ length: 16 }).map((_, i) => (
-                    <div
-                      key={i}
-                      style={{ width: `${65 * zoomLevel}px` }}
-                      className="border-r border-neutral-900/80 h-full shrink-0"
-                    />
-                  ))}
-                </div>
-
-                {/* Render Audio / MIDI Regions */}
-                {tr.regions.map((reg) => {
-                  const isSelected = activeRegion?.region.id === reg.id;
-                  return (
-                    <div
-                      key={reg.id}
-                      onClick={() => {
-                        if (selectedTool === 'scissors') {
-                          handleSplitRegion(tr.id, reg.id);
-                        } else {
-                          setActiveRegion({ trackId: tr.id, region: { ...reg } });
-                        }
-                      }}
-                      onDoubleClick={() => handleDoubleClickRegion(tr.id, reg)}
-                      style={{
-                        left: `${(reg.startBar - 1) * 65 * zoomLevel}px`,
-                        width: `${reg.durationBars * 65 * zoomLevel}px`,
-                        borderColor: isSelected ? '#f59e0b' : tr.color,
-                      }}
-                      className={`absolute h-14 rounded-xl border-2 bg-neutral-900/90 shadow-xl overflow-hidden flex flex-col justify-between p-1.5 cursor-pointer transition ${
-                        isSelected ? 'ring-2 ring-amber-400/80 brightness-125 z-20' : 'hover:brightness-110'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between text-[10px] font-bold text-white z-10 px-1">
-                        <span className="truncate max-w-[140px] flex items-center gap-1">
-                          {reg.isMuted && <VolumeX className="w-3 h-3 text-rose-400 shrink-0" />}
-                          {reg.title}
-                        </span>
-                        <div className="flex items-center gap-1 text-[8px] font-mono text-neutral-400">
-                          {reg.gainDb !== 0 && (
-                            <span className="px-1 bg-neutral-800 rounded text-amber-300">
-                              {reg.gainDb > 0 ? `+${reg.gainDb}` : reg.gainDb}dB
-                            </span>
-                          )}
-                          {reg.pitchOffset !== 0 && (
-                            <span className="px-1 bg-neutral-800 rounded text-purple-300">
-                              {reg.pitchOffset > 0 ? `+${reg.pitchOffset}` : reg.pitchOffset}st
-                            </span>
-                          )}
-                          <span>{reg.durationBars}B</span>
-                        </div>
-                      </div>
-
-                      {/* Canvas Waveform Drawing */}
-                      <canvas
-                        ref={(el) =>
-                          drawWaveformCanvas(
-                            el,
-                            tr.color,
-                            reg.waveSeed,
-                            reg.isMuted,
-                            reg.isReversed,
-                            reg.type === 'midi'
+                  <div className="flex items-center justify-between gap-1 pt-1">
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() =>
+                          setTracks((prev) =>
+                            prev.map((t) => (t.id === tr.id ? { ...t, isMuted: !t.isMuted } : t))
                           )
                         }
-                        width={reg.durationBars * 65 * zoomLevel}
-                        height={32}
-                        className="w-full h-8 object-cover rounded"
-                      />
+                        className={`px-2 py-0.5 rounded text-[10px] font-black border ${
+                          tr.isMuted
+                            ? 'bg-rose-600 text-white border-rose-400'
+                            : 'bg-neutral-800 text-neutral-400 border-neutral-700 hover:text-white'
+                        }`}
+                      >
+                        M
+                      </button>
+                      <button
+                        onClick={() =>
+                          setTracks((prev) =>
+                            prev.map((t) => (t.id === tr.id ? { ...t, isSolo: !t.isSolo } : t))
+                          )
+                        }
+                        className={`px-2 py-0.5 rounded text-[10px] font-black border ${
+                          tr.isSolo
+                            ? 'bg-amber-500 text-neutral-950 border-amber-300'
+                            : 'bg-neutral-800 text-neutral-400 border-neutral-700 hover:text-white'
+                        }`}
+                      >
+                        S
+                      </button>
+                      <button
+                        onClick={() =>
+                          setTracks((prev) =>
+                            prev.map((t) => (t.id === tr.id ? { ...t, isArmed: !t.isArmed } : t))
+                          )
+                        }
+                        className={`px-2 py-0.5 rounded text-[10px] font-black border ${
+                          tr.isArmed
+                            ? 'bg-rose-500 text-white animate-pulse border-rose-300'
+                            : 'bg-neutral-800 text-neutral-400 border-neutral-700 hover:text-white'
+                        }`}
+                      >
+                        REC
+                      </button>
                     </div>
-                  );
-                })}
+
+                    {copiedRegion && (
+                      <button
+                        onClick={() => handlePasteRegion(tr.id)}
+                        className="p-1 rounded bg-stone-800 hover:bg-amber-500 hover:text-neutral-950 text-amber-400 text-[9px] font-bold border border-amber-500/30"
+                        title="Paste Copied Clip Here"
+                      >
+                        PASTE
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Track Vol & Pan Sliders */}
+                  <div className="flex items-center gap-2 pt-1 text-[9px]">
+                    <span className="text-neutral-500 font-bold">VOL</span>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={tr.volume}
+                      onChange={(e) =>
+                        setTracks((prev) =>
+                          prev.map((t) =>
+                            t.id === tr.id ? { ...t, volume: Number(e.target.value) } : t
+                          )
+                        )
+                      }
+                      className="w-full accent-amber-500 cursor-pointer h-1.5 bg-neutral-800 rounded"
+                    />
+                    <span className="font-mono text-neutral-400 font-bold">{tr.volume}</span>
+                  </div>
+                </div>
+
+                {/* Right Timeline Grid & Waveform Clips */}
+                <div className="flex-1 h-full bg-neutral-950 rounded-xl border border-neutral-800/80 relative overflow-hidden flex items-center ml-2 min-w-[1040px]">
+                  {/* Background Grid Lines */}
+                  <div className="absolute inset-0 flex pointer-events-none">
+                    {Array.from({ length: 16 }).map((_, i) => (
+                      <div
+                        key={i}
+                        style={{ width: `${65 * zoomLevel}px` }}
+                        className="border-r border-neutral-900/80 h-full shrink-0"
+                      />
+                    ))}
+                  </div>
+
+                  {/* Render Audio / MIDI Regions */}
+                  {tr.regions.map((reg) => {
+                    const isSelected = activeRegion?.region.id === reg.id;
+                    return (
+                      <div
+                        key={reg.id}
+                        onClick={() => {
+                          if (selectedTool === 'scissors') {
+                            handleSplitRegion(tr.id, reg.id);
+                          } else {
+                            setActiveRegion({ trackId: tr.id, region: { ...reg } });
+                          }
+                        }}
+                        onDoubleClick={() => handleDoubleClickRegion(tr.id, reg)}
+                        style={{
+                          left: `${(reg.startBar - 1) * 65 * zoomLevel}px`,
+                          width: `${reg.durationBars * 65 * zoomLevel}px`,
+                          borderColor: isSelected ? '#f59e0b' : tr.color,
+                        }}
+                        className={`absolute h-14 rounded-xl border-2 bg-neutral-900/90 shadow-xl overflow-hidden flex flex-col justify-between p-1.5 cursor-pointer transition ${
+                          isSelected ? 'ring-2 ring-amber-400/80 brightness-125 z-10' : 'hover:brightness-110'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between text-[10px] font-bold text-white z-10 px-1">
+                          <span className="truncate max-w-[140px] flex items-center gap-1">
+                            {reg.isMuted && <VolumeX className="w-3 h-3 text-rose-400 shrink-0" />}
+                            {reg.title}
+                          </span>
+                          <div className="flex items-center gap-1 text-[8px] font-mono text-neutral-400">
+                            {reg.gainDb !== 0 && (
+                              <span className="px-1 bg-neutral-800 rounded text-amber-300">
+                                {reg.gainDb > 0 ? `+${reg.gainDb}` : reg.gainDb}dB
+                              </span>
+                            )}
+                            {reg.pitchOffset !== 0 && (
+                              <span className="px-1 bg-neutral-800 rounded text-purple-300">
+                                {reg.pitchOffset > 0 ? `+${reg.pitchOffset}` : reg.pitchOffset}st
+                              </span>
+                            )}
+                            <span>{reg.durationBars}B</span>
+                          </div>
+                        </div>
+
+                        {/* Canvas Waveform Drawing */}
+                        <canvas
+                          ref={(el) =>
+                            drawWaveformCanvas(
+                              el,
+                              tr.color,
+                              reg.waveSeed,
+                              reg.isMuted,
+                              reg.isReversed,
+                              reg.type === 'midi'
+                            )
+                          }
+                          width={reg.durationBars * 65 * zoomLevel}
+                          height={32}
+                          className="w-full h-8 object-cover rounded"
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 

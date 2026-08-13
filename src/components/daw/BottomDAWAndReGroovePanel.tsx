@@ -41,8 +41,50 @@ export const BottomDAWAndReGroovePanel: React.FC<BottomDAWAndReGroovePanelProps>
   onDockKeyboard,
   onSimulateMIDI,
 }) => {
-  const [activeTab, setActiveTab] = useState<'daw' | 'regroove' | 'keyboard' | 'split'>('daw');
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<'daw' | 'regroove' | 'keyboard' | 'split'>(() => {
+    try {
+      const saved = localStorage.getItem('studio_bottom_panel_active_tab');
+      return (saved as any) || 'daw';
+    } catch {
+      return 'daw';
+    }
+  });
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem('studio_bottom_panel_collapsed');
+      return saved !== null ? JSON.parse(saved) : false;
+    } catch {
+      return false;
+    }
+  });
+
+  const [panelHeight, setPanelHeight] = useState<'compact' | 'medium' | 'large' | 'max'>(() => {
+    try {
+      const saved = localStorage.getItem('studio_bottom_panel_height');
+      return (saved as any) || 'large';
+    } catch {
+      return 'large';
+    }
+  });
+
+  React.useEffect(() => {
+    localStorage.setItem('studio_bottom_panel_active_tab', activeTab);
+  }, [activeTab]);
+
+  React.useEffect(() => {
+    localStorage.setItem('studio_bottom_panel_collapsed', JSON.stringify(isCollapsed));
+  }, [isCollapsed]);
+
+  React.useEffect(() => {
+    localStorage.setItem('studio_bottom_panel_height', panelHeight);
+  }, [panelHeight]);
+
+  const heightClasses = {
+    compact: 'max-h-64',
+    medium: 'max-h-96',
+    large: 'max-h-[520px]',
+    max: 'max-h-[80vh]',
+  };
 
   const allDetached = isDAWDetached && isReGrooveDetached && isKeyboardDetached;
 
@@ -155,8 +197,51 @@ export const BottomDAWAndReGroovePanel: React.FC<BottomDAWAndReGroovePanelProps>
           </button>
         </div>
 
-        {/* Right Actions: Fold & Detach Options */}
-        <div className="flex items-center gap-2">
+        {/* Right Actions: Height Selector, Fold & Detach Options */}
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Panel Resize Height Switcher */}
+          {!isCollapsed && (
+            <div className="flex items-center gap-1 bg-black/60 px-1.5 py-0.5 rounded-lg border border-stone-800 text-[9px] font-bold">
+              <span className="text-stone-500 uppercase tracking-wider hidden sm:inline">HEIGHT:</span>
+              <button
+                onClick={() => setPanelHeight('compact')}
+                className={`px-1.5 py-0.5 rounded transition ${
+                  panelHeight === 'compact' ? 'bg-amber-500 text-black font-black' : 'text-stone-400 hover:text-white'
+                }`}
+                title="Compact Height (250px)"
+              >
+                S
+              </button>
+              <button
+                onClick={() => setPanelHeight('medium')}
+                className={`px-1.5 py-0.5 rounded transition ${
+                  panelHeight === 'medium' ? 'bg-amber-500 text-black font-black' : 'text-stone-400 hover:text-white'
+                }`}
+                title="Medium Height (380px)"
+              >
+                M
+              </button>
+              <button
+                onClick={() => setPanelHeight('large')}
+                className={`px-1.5 py-0.5 rounded transition ${
+                  panelHeight === 'large' ? 'bg-amber-500 text-black font-black' : 'text-stone-400 hover:text-white'
+                }`}
+                title="Large View (520px)"
+              >
+                L
+              </button>
+              <button
+                onClick={() => setPanelHeight('max')}
+                className={`px-1.5 py-0.5 rounded transition ${
+                  panelHeight === 'max' ? 'bg-amber-500 text-black font-black' : 'text-stone-400 hover:text-white'
+                }`}
+                title="Full View (80vh)"
+              >
+                MAX
+              </button>
+            </div>
+          )}
+
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
             className="px-2 py-1 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded text-[10px] font-bold flex items-center gap-1 border border-stone-700 transition"
@@ -203,7 +288,7 @@ export const BottomDAWAndReGroovePanel: React.FC<BottomDAWAndReGroovePanelProps>
 
       {/* Panel Content Body */}
       {!isCollapsed && (
-        <div className="max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-stone-800 p-2 bg-stone-950">
+        <div className={`${heightClasses[panelHeight]} overflow-y-auto scrollbar-thin scrollbar-thumb-stone-800 p-2 bg-stone-950 transition-all duration-300`}>
           {activeTab === 'daw' && (
             <div>
               {isDAWDetached ? (

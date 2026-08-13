@@ -16,6 +16,7 @@ class AudioEngine {
   private mediaRecorder: MediaRecorder | null = null;
   private recordedChunks: Blob[] = [];
   private isRecordingInput = false;
+  private analyserNode: AnalyserNode | null = null;
 
   public initAudio() {
     if (this.ctx) {
@@ -32,6 +33,10 @@ class AudioEngine {
     this.masterGain = this.ctx.createGain();
     this.masterGain.gain.value = 0.85;
 
+    // Real-Time Analyser Node for Spectrum & VU Meters
+    this.analyserNode = this.ctx.createAnalyser();
+    this.analyserNode.fftSize = 128;
+
     // Delay Node setup
     this.delayNode = this.ctx.createDelay();
     this.delayNode.delayTime.value = 0.25; // 1/8 note approx at 120bpm
@@ -47,8 +52,9 @@ class AudioEngine {
     this.reverbNode.buffer = this.createImpulseResponse(2.0, 2.0);
     this.reverbNode.connect(this.masterGain);
 
-    // Master -> Destination
-    this.masterGain.connect(this.ctx.destination);
+    // Master -> Analyser -> Destination
+    this.masterGain.connect(this.analyserNode);
+    this.analyserNode.connect(this.ctx.destination);
 
     // Build synthesized factory sample buffers
     this.generateFactorySamples();
@@ -635,6 +641,154 @@ class AudioEngine {
     } catch (e) {
       console.error('Error in playSampleAudition', e);
     }
+  }
+
+  // Get Real-time Frequency / VU Meter Data
+  public getAnalyserData(): Uint8Array {
+    this.initAudio();
+    if (!this.analyserNode) return new Uint8Array(64);
+    const dataArray = new Uint8Array(this.analyserNode.frequencyBinCount);
+    this.analyserNode.getByteFrequencyData(dataArray);
+    return dataArray;
+  }
+
+  // Encodes AudioBuffer into clean 16-bit PCM Stereo WAV binary file Blob
+  public encodeWavFile(audioBuffer: AudioBuffer): Blob {
+    const numChannels = audioBuffer.numberOfChannels;
+    const sampleRate = audioBuffer.sampleRate;
+    const format = 1; // PCM
+    const bitDepth = 16;
+
+    const numSamples = audioBuffer.length * numChannels;
+    const buffer = new ArrayBuffer(44 + numSamples * 2);
+    const view = new DataView(buffer);
+
+    /* RIFF identifier */
+    const writeString = (offset: number, string: string) => {
+      for (let i = 0; i < string.length; i++) {
+        view.setUint8(offset + i, string.charCodeAt(i));
+      }
+    };
+
+    writeString(0, 'RIFF');
+    /* RIFF chunk length */
+    view.setUint32(4, 36 + numSamples * 2, true);
+    /* RIFF type */
+    writeString(8, 'WAVE');
+    /* format chunk identifier */
+    writeString(12, 'fmt ');
+    /* format chunk length */
+    view.setUint32(16, 16, true);
+    /* sample format (raw PCM) */
+    view.setUint16(20, format, true);
+    /* channel count */
+    view.setUint16(22, numChannels, true);
+    /* sample rate */
+    view.setUint32(24, sampleRate, true);
+    /* byte rate (sample rate * block align) */
+    view.setUint32(28, sampleRate * numChannels * 2, true);
+    /* block align (channel count * bytes per sample) */
+    view.setUint16(32, numChannels * 2, true);
+    /* bits per sample */
+    view.setUint16(34, bitDepth, true);
+    /* data chunk identifier */
+    writeString(36, 'data');
+    /* data chunk length */
+    view.setUint32(40, numSamples * 2, true);
+
+    /* Write interleaved PCM audio samples */
+    let offset = 44;
+    for (let i = 0; i < audioBuffer.length; i++) {
+      for (let channel = 0; channel < numChannels; channel++) {
+        const sample = Math.max(-1, Math.min(1, audioBuffer.getChannelData(channel)[i]));
+        const intSample = sample < 0 ? sample * 0x8000 : sample * 0x7fff;
+        view.setInt16(offset, intSample, true);
+        offset += 2;
+      }
+    }
+
+    return new Blob([buffer], { type: 'audio/wav' });
+  }
+
+  // Offline Render Master Song Audio Project to Downloadable WAV
+  public async renderProjectToWav(bpm = 120, durationSec = 16): Promise<Blob> {
+    const sampleRate = 44100;
+    const OfflineContextClass = window.OfflineAudioContext || (window as any).webkitOfflineAudioContext;
+    const offlineCtx = new OfflineContextClass(2, sampleRate * durationSec, sampleRate);
+
+    // Master Gain in Offline Context
+    const offlineMaster = offlineCtx.createGain();
+    offlineMaster.gain.value = 0.85;
+    offlineMaster.connect(offlineCtx.destination);
+
+    // Render rhythmic drum pattern beat sequence into offline context
+    const beatInterval = 60 / bpm;
+    const totalBeats = Math.floor(durationSec / beatInterval);
+
+    for (let b = 0; b < totalBeats; b++) {
+      const startTime = b * beatInterval;
+      
+      // Kick on beats 0, 2, 4, 6...
+      if (b % 2 === 0) {
+        const osc = offlineCtx.createOscillator();
+        const gain = offlineCtx.createGain();
+        osc.frequency.setValueAtTime(150, startTime);
+        osc.frequency.exponentialRampToValueAtTime(35, startTime + 0.15);
+        gain.gain.setValueAtTime(0.9, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.3);
+        osc.connect(gain);
+        gain.connect(offlineMaster);
+        osc.start(startTime);
+        osc.stop(startTime + 0.35);
+      }
+
+      // Snare on beats 1, 3, 5, 7...
+      if (b % 2 === 1) {
+        const noiseBuffer = offlineCtx.createBuffer(1, sampleRate * 0.2, sampleRate);
+        const data = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+        const noise = offlineCtx.createBufferSource();
+        noise.buffer = noiseBuffer;
+        const gain = offlineCtx.createGain();
+        gain.gain.setValueAtTime(0.6, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.2);
+        noise.connect(gain);
+        gain.connect(offlineMaster);
+        noise.start(startTime);
+      }
+
+      // Hi-Hat on every beat
+      const hatBuffer = offlineCtx.createBuffer(1, sampleRate * 0.05, sampleRate);
+      const hatData = hatBuffer.getChannelData(0);
+      for (let i = 0; i < hatData.length; i++) hatData[i] = (Math.random() * 2 - 1) * 0.3;
+      const hat = offlineCtx.createBufferSource();
+      hat.buffer = hatBuffer;
+      const hatGain = offlineCtx.createGain();
+      hatGain.gain.setValueAtTime(0.3, startTime);
+      hatGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.05);
+      hat.connect(hatGain);
+      hatGain.connect(offlineMaster);
+      hat.start(startTime);
+
+      // Melodic Synth Chords every 4 beats
+      if (b % 4 === 0) {
+        [261.63, 329.63, 392.00].forEach((freq) => {
+          const osc = offlineCtx.createOscillator();
+          const gain = offlineCtx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.2, startTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, startTime + beatInterval * 3.5);
+          osc.connect(gain);
+          gain.connect(offlineMaster);
+          osc.start(startTime);
+          osc.stop(startTime + beatInterval * 3.5);
+        });
+      }
+    }
+
+    const renderedBuffer = await offlineCtx.startRendering();
+    return this.encodeWavFile(renderedBuffer);
   }
 
   // Custom Sample Registration

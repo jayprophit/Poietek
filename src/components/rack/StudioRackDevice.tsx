@@ -14,8 +14,26 @@ import {
   Minimize2,
   Activity,
   Zap,
+  Sliders,
+  Plus,
+  X,
+  SlidersHorizontal,
+  Check,
 } from 'lucide-react';
 import { RackColorTag } from '../../types';
+
+interface MacroTarget {
+  id: string;
+  paramName: string;
+  weight: number; // 0 to 100%
+}
+
+interface MacroKnobConfig {
+  id: string;
+  label: string;
+  value: number; // 0 to 100
+  targets: MacroTarget[];
+}
 
 interface StudioRackDeviceProps {
   title: string;
@@ -44,6 +62,20 @@ const COLOR_MAP: Record<RackColorTag, { border: string; bg: string; text: string
   slate: { border: 'border-slate-500/80', bg: 'bg-slate-500', text: 'text-slate-400', ring: 'ring-slate-500/50' },
 };
 
+const AVAILABLE_PARAMS = [
+  'Filter Cutoff',
+  'Resonance',
+  'Reverb Wet/Dry',
+  'Delay Feedback',
+  'Distortion Drive',
+  'Amp Decay',
+  'Pitch Transpose',
+  'LFO Rate',
+  'Chorus Depth',
+  'Sub Bass Gain',
+  'Master Output Volume',
+];
+
 export const StudioRackDevice: React.FC<StudioRackDeviceProps> = ({
   title,
   subtitle,
@@ -62,6 +94,48 @@ export const StudioRackDevice: React.FC<StudioRackDeviceProps> = ({
   const [localIsFolded, setLocalIsFolded] = useState<boolean>(false);
   const [powerOn, setPowerOn] = useState<boolean>(true);
   const [contextMenuOpen, setContextMenuOpen] = useState<boolean>(false);
+  const [isMacroPanelOpen, setIsMacroPanelOpen] = useState<boolean>(false);
+  const [activeMappingMacroId, setActiveMappingMacroId] = useState<string | null>(null);
+
+  // Performance Macro Knobs State
+  const [macros, setMacros] = useState<MacroKnobConfig[]>([
+    {
+      id: 'macro_1',
+      label: 'MACRO 1: CUTOFF / BRIGHT',
+      value: 65,
+      targets: [
+        { id: 't1', paramName: 'Filter Cutoff', weight: 100 },
+        { id: 't2', paramName: 'Distortion Drive', weight: 40 },
+      ],
+    },
+    {
+      id: 'macro_2',
+      label: 'MACRO 2: SPACE / REVERB',
+      value: 40,
+      targets: [
+        { id: 't3', paramName: 'Reverb Wet/Dry', weight: 80 },
+        { id: 't4', paramName: 'Delay Feedback', weight: 50 },
+      ],
+    },
+    {
+      id: 'macro_3',
+      label: 'MACRO 3: PUNCH / DECAY',
+      value: 75,
+      targets: [
+        { id: 't5', paramName: 'Amp Decay', weight: 90 },
+        { id: 't6', paramName: 'Sub Bass Gain', weight: 60 },
+      ],
+    },
+    {
+      id: 'macro_4',
+      label: 'MACRO 4: MOTION / LFO',
+      value: 30,
+      targets: [
+        { id: 't7', paramName: 'LFO Rate', weight: 100 },
+        { id: 't8', paramName: 'Chorus Depth', weight: 50 },
+      ],
+    },
+  ]);
 
   const menuRef = useRef<HTMLDivElement>(null);
   const activeColor = COLOR_MAP[colorTag] || COLOR_MAP.amber;
@@ -74,6 +148,37 @@ export const StudioRackDevice: React.FC<StudioRackDeviceProps> = ({
     } else {
       setLocalIsFolded(!localIsFolded);
     }
+  };
+
+  const handleUpdateMacroValue = (macroId: string, newValue: number) => {
+    setMacros((prev) =>
+      prev.map((m) => (m.id === macroId ? { ...m, value: newValue } : m))
+    );
+  };
+
+  const handleAddTargetToMacro = (macroId: string, paramName: string) => {
+    setMacros((prev) =>
+      prev.map((m) => {
+        if (m.id !== macroId) return m;
+        if (m.targets.some((t) => t.paramName === paramName)) return m;
+        return {
+          ...m,
+          targets: [
+            ...m.targets,
+            { id: `target_${Date.now()}_${Math.random()}`, paramName, weight: 80 },
+          ],
+        };
+      })
+    );
+  };
+
+  const handleRemoveTargetFromMacro = (macroId: string, targetId: string) => {
+    setMacros((prev) =>
+      prev.map((m) => {
+        if (m.id !== macroId) return m;
+        return { ...m, targets: m.targets.filter((t) => t.id !== targetId) };
+      })
+    );
   };
 
   // Close context menu when clicking outside
@@ -177,6 +282,21 @@ export const StudioRackDevice: React.FC<StudioRackDeviceProps> = ({
 
         {/* Status Indicators & Quick Actions */}
         <div className="flex items-center gap-2 font-mono text-[10px] shrink-0">
+          {!isFolded && (
+            <button
+              onClick={() => setIsMacroPanelOpen(!isMacroPanelOpen)}
+              className={`px-2 py-0.5 rounded font-black transition flex items-center gap-1 border ${
+                isMacroPanelOpen
+                  ? 'bg-amber-500 text-neutral-950 border-amber-300 shadow-md'
+                  : 'bg-stone-800 hover:bg-neutral-700 text-amber-400 border-stone-700'
+              }`}
+              title="Toggle Performance Macro Knobs Panel"
+            >
+              <Sliders className="w-3 h-3" />
+              <span className="hidden sm:inline">MACROS</span>
+            </button>
+          )}
+
           <button
             onClick={handleToggleFold}
             className="px-2 py-0.5 rounded bg-stone-800 hover:bg-amber-500 hover:text-black text-amber-400 font-black transition flex items-center gap-1 border border-stone-700"
@@ -294,6 +414,143 @@ export const StudioRackDevice: React.FC<StudioRackDeviceProps> = ({
         </div>
       </div>
 
+      {/* EXPANDABLE PERFORMANCE MACRO PANEL */}
+      {!isFolded && isMacroPanelOpen && (
+        <div className="mx-10 my-2 p-3 bg-neutral-950/95 border-2 border-amber-500/80 rounded-2xl shadow-2xl space-y-3 font-mono animate-in fade-in duration-150">
+          <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
+            <div className="flex items-center gap-2">
+              <Zap className="w-4 h-4 text-amber-400" />
+              <span className="text-xs font-black text-amber-400 uppercase tracking-widest">
+                PERFORMANCE MACRO CONTROL PANEL
+              </span>
+            </div>
+            <span className="text-[10px] text-neutral-400">
+              Map multiple parameters to 1 knob for live performance expression
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+            {macros.map((macro) => {
+              const isEditingMapping = activeMappingMacroId === macro.id;
+              return (
+                <div
+                  key={macro.id}
+                  className="bg-neutral-900 p-2.5 rounded-xl border border-stone-800 flex flex-col justify-between space-y-2 relative"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[9px] font-black text-amber-300 uppercase truncate max-w-[120px]">
+                      {macro.label}
+                    </span>
+                    <button
+                      onClick={() => setActiveMappingMacroId(isEditingMapping ? null : macro.id)}
+                      className={`px-1.5 py-0.5 rounded text-[9px] font-bold transition flex items-center gap-0.5 ${
+                        isEditingMapping
+                          ? 'bg-amber-500 text-neutral-950 font-black'
+                          : 'bg-neutral-800 text-neutral-400 hover:text-white border border-neutral-700'
+                      }`}
+                      title="Configure Mapped Parameters for this Macro"
+                    >
+                      <SlidersHorizontal className="w-2.5 h-2.5" />
+                      <span>{macro.targets.length} MAPPED</span>
+                    </button>
+                  </div>
+
+                  {/* Rotary-styled macro knob slider */}
+                  <div className="flex flex-col items-center py-1">
+                    <div className="w-full relative flex items-center gap-2">
+                      <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        value={macro.value}
+                        onChange={(e) => handleUpdateMacroValue(macro.id, Number(e.target.value))}
+                        className="w-full accent-amber-500 cursor-pointer h-2 bg-neutral-950 rounded-lg"
+                      />
+                      <span className="text-xs font-mono font-black text-amber-400 w-10 text-right">
+                        {macro.value}%
+                      </span>
+                    </div>
+
+                    {/* Mapped Targets Live Values Readout */}
+                    <div className="w-full pt-1 flex flex-wrap gap-1">
+                      {macro.targets.map((t) => {
+                        const calculatedVal = Math.round((macro.value * t.weight) / 100);
+                        return (
+                          <span
+                            key={t.id}
+                            className="text-[8px] bg-neutral-950 px-1.5 py-0.5 rounded border border-neutral-800 text-stone-300 font-mono truncate max-w-full"
+                          >
+                            {t.paramName}: <strong className="text-amber-400">{calculatedVal}%</strong>
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Target Mapping Editor Drawer */}
+                  {isEditingMapping && (
+                    <div className="bg-neutral-950 p-2 rounded-lg border border-amber-500/60 space-y-2 mt-2">
+                      <div className="flex items-center justify-between text-[9px] font-bold text-neutral-400 uppercase">
+                        <span>Mapped Targets:</span>
+                        <button
+                          onClick={() => setActiveMappingMacroId(null)}
+                          className="text-stone-500 hover:text-white"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+
+                      {/* Active Mapped Targets List */}
+                      <div className="space-y-1 max-h-24 overflow-y-auto">
+                        {macro.targets.length === 0 ? (
+                          <div className="text-[9px] text-stone-500 italic p-1">No parameters mapped yet.</div>
+                        ) : (
+                          macro.targets.map((t) => (
+                            <div
+                              key={t.id}
+                              className="flex items-center justify-between text-[9px] bg-neutral-900 px-2 py-1 rounded text-stone-300"
+                            >
+                              <span className="truncate">{t.paramName}</span>
+                              <div className="flex items-center gap-1">
+                                <span className="text-amber-400 font-bold">{t.weight}% Depth</span>
+                                <button
+                                  onClick={() => handleRemoveTargetFromMacro(macro.id, t.id)}
+                                  className="text-rose-400 hover:text-rose-300 p-0.5"
+                                >
+                                  <X className="w-2.5 h-2.5" />
+                                </button>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+
+                      {/* Add New Target Parameter Selector */}
+                      <div className="pt-1 border-t border-neutral-800">
+                        <span className="text-[8px] text-stone-500 block mb-1 font-bold">ADD PARAMETER TARGET:</span>
+                        <div className="flex flex-wrap gap-1">
+                          {AVAILABLE_PARAMS.filter(
+                            (p) => !macro.targets.some((t) => t.paramName === p)
+                          ).map((paramName) => (
+                            <button
+                              key={paramName}
+                              onClick={() => handleAddTargetToMacro(macro.id, paramName)}
+                              className="text-[8px] px-1.5 py-0.5 bg-neutral-900 hover:bg-amber-500 hover:text-neutral-950 text-amber-300 rounded border border-neutral-800 transition font-bold"
+                            >
+                              + {paramName}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Main Content Area (Hidden if folded or powered off) */}
       {!isFolded && (
         <div className={`pl-8 pr-8 transition-opacity ${powerOn ? 'opacity-100' : 'opacity-40 pointer-events-none'}`}>
@@ -303,3 +560,4 @@ export const StudioRackDevice: React.FC<StudioRackDeviceProps> = ({
     </div>
   );
 };
+

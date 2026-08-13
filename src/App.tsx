@@ -38,6 +38,7 @@ import { DGrooveMixer } from './components/daw/DGrooveMixer';
 import { PianoRollSequencer } from './components/daw/PianoRollSequencer';
 import { DAWMenuBar } from './components/daw/DAWMenuBar';
 import { DAWBrowserSidebar } from './components/daw/DAWBrowserSidebar';
+import { DAWRightSidebar } from './components/daw/DAWRightSidebar';
 import { CubaseLogicWaveformSequencer } from './components/daw/CubaseLogicWaveformSequencer';
 import { FLStudioChannelRack } from './components/daw/FLStudioChannelRack';
 import { FloatingWindowManager } from './components/daw/FloatingWindowManager';
@@ -51,9 +52,13 @@ import { GuidedWalkthroughBanner } from './components/daw/GuidedWalkthroughBanne
 import { ReasonSSLConsole } from './components/rack/ReasonSSLConsole';
 import { BottomDAWAndReGroovePanel } from './components/daw/BottomDAWAndReGroovePanel';
 import { UnitDetachSelectorModal } from './components/daw/UnitDetachSelectorModal';
+import { ProjectManagerModal } from './components/system/ProjectManagerModal';
+import { VirtualPianoKeyboardModal } from './components/daw/VirtualPianoKeyboardModal';
 import { UserProfileModal } from './components/system/UserProfileModal';
 import { SettingsModal } from './components/system/SettingsModal';
 import { KeyboardShortcutsModal } from './components/system/KeyboardShortcutsModal';
+import { UniversalPlatformModal } from './components/system/UniversalPlatformModal';
+import { LanguageTranslatorModal } from './components/system/LanguageTranslatorModal';
 import { PluginStoreModal, SubscriptionTier } from './components/system/PluginStoreModal';
 import { Disc, Check } from 'lucide-react';
 
@@ -75,15 +80,52 @@ export default function App() {
   const [isRecorderOpen, setIsRecorderOpen] = useState<boolean>(false);
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
   const [isBrowserOpen, setIsBrowserOpen] = useState<boolean>(true);
+  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem('studio_right_sidebar_open');
+      return saved !== null ? JSON.parse(saved) : true;
+    } catch {
+      return true;
+    }
+  });
+  const [isQuickPaletteDocked, setIsQuickPaletteDocked] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem('studio_quick_palette_docked');
+      return saved !== null ? JSON.parse(saved) : false;
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('studio_right_sidebar_open', JSON.stringify(isRightSidebarOpen));
+  }, [isRightSidebarOpen]);
+
+  useEffect(() => {
+    localStorage.setItem('studio_quick_palette_docked', JSON.stringify(isQuickPaletteDocked));
+  }, [isQuickPaletteDocked]);
   const [detachedWorkspaces, setDetachedWorkspaces] = useState<WorkspaceType[]>([]);
   const [isUnitDetachModalOpen, setIsUnitDetachModalOpen] = useState<boolean>(false);
+  const [isProjectManagerOpen, setIsProjectManagerOpen] = useState<boolean>(false);
+  const [isVirtualKeyboardOpen, setIsVirtualKeyboardOpen] = useState<boolean>(false);
 
   const [isTemplatesOpen, setIsTemplatesOpen] = useState<boolean>(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState<boolean>(false);
+  const [isUniversalModalOpen, setIsUniversalModalOpen] = useState<boolean>(false);
+  const [isLanguageModalOpen, setIsLanguageModalOpen] = useState<boolean>(false);
   const [isStoreOpen, setIsStoreOpen] = useState<boolean>(false);
   const [userTier, setUserTier] = useState<SubscriptionTier>('producer_pass');
+
+  const [deviceProfile, setDeviceProfile] = useState<'desktop' | 'tablet' | 'mobile'>(() => {
+    try {
+      const saved = localStorage.getItem('studio_device_profile');
+      return (saved as any) || 'desktop';
+    } catch {
+      return 'desktop';
+    }
+  });
 
   const [isWalkthroughActive, setIsWalkthroughActive] = useState<boolean>(true);
   const [autoHideBars, setAutoHideBars] = useState<boolean>(false);
@@ -487,10 +529,14 @@ export default function App() {
           onToggleFlip={() => setIsFlipped((prev) => !prev)}
           openAIGrooveModal={() => setIsAIGrooveOpen(true)}
           openTemplatesModal={() => setIsTemplatesOpen(true)}
+          openProjectManagerModal={() => setIsProjectManagerOpen(true)}
+          openVirtualKeyboard={() => setIsVirtualKeyboardOpen(true)}
           openSettingsModal={() => setIsSettingsOpen(true)}
           openProfileModal={() => setIsProfileOpen(true)}
           openShortcutsModal={() => setIsShortcutsOpen(true)}
           openStoreModal={() => setIsStoreOpen(true)}
+          openUniversalModal={() => setIsUniversalModalOpen(true)}
+          openLanguageModal={() => setIsLanguageModalOpen(true)}
           bpm={masterState.bpm}
           detachedWorkspaces={detachedWorkspaces}
           onDetachWorkspace={handleDetachWorkspace}
@@ -534,6 +580,7 @@ export default function App() {
       {isWalkthroughActive && (
         <GuidedWalkthroughBanner
           onDismiss={() => setIsWalkthroughActive(false)}
+          openLanguageModal={() => setIsLanguageModalOpen(true)}
           onJumpToModule={(ws) => {
             setMasterState((prev) => ({ ...prev, activeWorkspace: ws as WorkspaceType }));
             handleAddModuleToRack(ws as ModuleType);
@@ -542,7 +589,7 @@ export default function App() {
       )}
 
       {/* Main Full-Screen DAW Workspace (Browser Left + Mahogany Wood Hardware Rack Center) */}
-      <div className="flex-1 flex overflow-hidden bg-stone-950 relative">
+      <div className="flex-1 flex min-h-0 min-w-0 overflow-hidden bg-stone-950 relative">
         {/* Left Studio DAW Browser Sidebar */}
         <DAWBrowserSidebar
           activeWorkspace={masterState.activeWorkspace}
@@ -559,7 +606,7 @@ export default function App() {
         />
 
         {/* Center Studio Workstation Container */}
-        <div className="flex-1 flex flex-col h-full overflow-hidden bg-stone-900 border-x-[14px] border-[#381e0e] shadow-[inset_0_0_50px_rgba(0,0,0,0.9)]">
+        <div className="flex-1 flex flex-col h-full min-h-0 min-w-0 overflow-hidden bg-stone-900 border-x-[14px] border-[#381e0e] shadow-[inset_0_0_50px_rgba(0,0,0,0.9)]">
           {/* 1U Studio Hardware Audio & MIDI Interface (Top Rack Unit) */}
           <div className="p-2 bg-stone-950 border-b-2 border-stone-800 flex items-center justify-between shrink-0">
             <HardwareInterfaceUnit
@@ -671,6 +718,37 @@ export default function App() {
             />
           </div>
         </div>
+
+        {/* Right Studio Dock & Widgets Sidebar */}
+        <DAWRightSidebar
+          isOpen={isRightSidebarOpen}
+          onToggle={() => setIsRightSidebarOpen((prev) => !prev)}
+          channels={channels}
+          setChannels={setChannels}
+          isQuickPaletteDocked={isQuickPaletteDocked}
+          setIsQuickPaletteDocked={setIsQuickPaletteDocked}
+          quickPaletteComponent={
+            <FloatingQuickPalette
+              onAddModule={handleAddModuleToRack}
+              onToggleFlip={() => setIsFlipped((prev) => !prev)}
+              isFlipped={isFlipped}
+              openAIGrooveModal={() => setIsAIGrooveOpen(true)}
+              openTemplatesModal={() => setIsTemplatesOpen(true)}
+              onDetachWorkspace={() => handleDetachWorkspace(masterState.activeWorkspace)}
+              autoHideBars={autoHideBars}
+              setAutoHideBars={setAutoHideBars}
+              activeWorkspace={masterState.activeWorkspace}
+              onUndo={handleUndo}
+              onRedo={handleRedo}
+              canUndo={canUndo}
+              canRedo={canRedo}
+            />
+          }
+          onAddModuleToRack={handleAddModuleToRack}
+          onDetachWorkspace={handleDetachWorkspace}
+          detachedWorkspaces={detachedWorkspaces}
+          bpm={masterState.bpm}
+        />
       </div>
 
       {/* Fixed Bottom Studio Transport Console */}
@@ -691,25 +769,28 @@ export default function App() {
           isFlipped={isFlipped}
           onToggleFlip={() => setIsFlipped((prev) => !prev)}
           openAIGrooveModal={() => setIsAIGrooveOpen(true)}
+          onOpenKeyboard={() => setIsVirtualKeyboardOpen(true)}
         />
       </div>
 
-      {/* Floating Quick Options Tool Palette */}
-      <FloatingQuickPalette
-        onAddModule={handleAddModuleToRack}
-        onToggleFlip={() => setIsFlipped((prev) => !prev)}
-        isFlipped={isFlipped}
-        openAIGrooveModal={() => setIsAIGrooveOpen(true)}
-        openTemplatesModal={() => setIsTemplatesOpen(true)}
-        onDetachWorkspace={() => handleDetachWorkspace(masterState.activeWorkspace)}
-        autoHideBars={autoHideBars}
-        setAutoHideBars={setAutoHideBars}
-        activeWorkspace={masterState.activeWorkspace}
-        onUndo={handleUndo}
-        onRedo={handleRedo}
-        canUndo={canUndo}
-        canRedo={canRedo}
-      />
+      {/* Floating Quick Options Tool Palette (when undocked) */}
+      {!isQuickPaletteDocked && (
+        <FloatingQuickPalette
+          onAddModule={handleAddModuleToRack}
+          onToggleFlip={() => setIsFlipped((prev) => !prev)}
+          isFlipped={isFlipped}
+          openAIGrooveModal={() => setIsAIGrooveOpen(true)}
+          openTemplatesModal={() => setIsTemplatesOpen(true)}
+          onDetachWorkspace={() => handleDetachWorkspace(masterState.activeWorkspace)}
+          autoHideBars={autoHideBars}
+          setAutoHideBars={setAutoHideBars}
+          activeWorkspace={masterState.activeWorkspace}
+          onUndo={handleUndo}
+          onRedo={handleRedo}
+          canUndo={canUndo}
+          canRedo={canRedo}
+        />
+      )}
 
       {/* Starter Songs & Custom Templates Modal */}
       <TemplatesModal
@@ -744,6 +825,32 @@ export default function App() {
         setMasterState={setMasterState}
         connectedDevices={connectedDevices}
         openAIGrooveModal={() => setIsAIGrooveOpen(true)}
+        channels={channels}
+        setChannels={setChannels}
+      />
+
+      {/* Onscreen Touch & QWERTY Virtual Piano Keyboard Modal */}
+      <VirtualPianoKeyboardModal
+        isOpen={isVirtualKeyboardOpen}
+        onClose={() => setIsVirtualKeyboardOpen(false)}
+        targetInstrumentName="Subtractor Polyphonic Synth"
+      />
+
+      {/* Project Manager Modal (New, Open, Save) */}
+      <ProjectManagerModal
+        isOpen={isProjectManagerOpen}
+        onClose={() => setIsProjectManagerOpen(false)}
+        onNewProject={(templateId) => {
+          if (templateId === 'blank') {
+            setRackModules([]);
+          } else {
+            handleResetProject();
+          }
+        }}
+        onSaveCurrentProject={handleTriggerManualSave}
+        onLoadProject={(id) => {
+          handleTriggerManualSave();
+        }}
       />
 
       {/* User Producer Profile & License Modal */}
@@ -769,6 +876,29 @@ export default function App() {
       <KeyboardShortcutsModal
         isOpen={isShortcutsOpen}
         onClose={() => setIsShortcutsOpen(false)}
+      />
+
+      {/* Universal Multi-Input & Cross-Platform Modal */}
+      <UniversalPlatformModal
+        isOpen={isUniversalModalOpen}
+        onClose={() => setIsUniversalModalOpen(false)}
+        activeProfile={deviceProfile}
+        onSelectProfile={setDeviceProfile}
+      />
+
+      {/* Universal Studio Language & AI Translator Modal */}
+      <LanguageTranslatorModal
+        isOpen={isLanguageModalOpen}
+        onClose={() => setIsLanguageModalOpen(false)}
+      />
+
+      {/* Reason Plugin Store & Extension Marketplace Modal */}
+      <PluginStoreModal
+        isOpen={isStoreOpen}
+        onClose={() => setIsStoreOpen(false)}
+        userTier={userTier}
+        setUserTier={setUserTier}
+        onInstallModule={(type) => handleAddModuleToRack(type as ModuleType)}
       />
     </div>
   );

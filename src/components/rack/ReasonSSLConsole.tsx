@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { audioEngine } from '../../audio/engine';
 import {
   Sliders,
   Volume2,
@@ -31,13 +32,43 @@ export const ReasonSSLConsole: React.FC<ReasonSSLConsoleProps> = ({
   onDetach,
   onDock,
 }) => {
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem('studio_ssl_console_collapsed');
+      return saved !== null ? JSON.parse(saved) : false;
+    } catch {
+      return false;
+    }
+  });
+
+  React.useEffect(() => {
+    localStorage.setItem('studio_ssl_console_collapsed', JSON.stringify(isCollapsed));
+  }, [isCollapsed]);
   const [selectedSection, setSelectedSection] = useState<'all' | 'eq' | 'dyn' | 'sends'>('all');
   const [masterBusCompThreshold, setMasterBusCompThreshold] = useState<number>(-8);
   const [masterBusCompRatio, setMasterBusCompRatio] = useState<number>(4);
   const [masterVolume, setMasterVolume] = useState<number>(0.9);
   const [isMasterMono, setIsMasterMono] = useState<boolean>(false);
   const [isMasterDim, setIsMasterDim] = useState<boolean>(false);
+  const [spectrumData, setSpectrumData] = useState<number[]>(Array(16).fill(0));
+
+  useEffect(() => {
+    let animId: number;
+    const updateSpectrum = () => {
+      const data = audioEngine.getAnalyserData();
+      if (data && data.length > 0) {
+        const sliced: number[] = [];
+        const step = Math.floor(data.length / 16) || 1;
+        for (let i = 0; i < 16; i++) {
+          sliced.push(data[i * step] || 0);
+        }
+        setSpectrumData(sliced);
+      }
+      animId = requestAnimationFrame(updateSpectrum);
+    };
+    updateSpectrum();
+    return () => cancelAnimationFrame(animId);
+  }, []);
 
   const updateChannel = (id: string, key: keyof TrackChannel, value: any) => {
     setChannels((prev) =>
@@ -539,6 +570,23 @@ export const ReasonSSLConsole: React.FC<ReasonSSLConsoleProps> = ({
                   SSL MASTER SECTION
                 </span>
                 <h4 className="font-black text-white text-xs mt-0.5">STEREO BUS</h4>
+              </div>
+
+              {/* Real-time FFT Audio Spectrum Analyzer */}
+              <div className="w-full bg-stone-900/90 border border-stone-800 rounded-lg p-1.5 space-y-1">
+                <div className="flex justify-between items-center text-[8px] font-black text-emerald-400 uppercase">
+                  <span>SPECTRUM FFT</span>
+                  <span>-14 LUFS</span>
+                </div>
+                <div className="h-10 bg-black rounded p-0.5 flex items-end justify-between gap-0.5 border border-stone-850 overflow-hidden">
+                  {spectrumData.map((val, idx) => (
+                    <div
+                      key={idx}
+                      className="flex-1 bg-gradient-to-t from-emerald-500 via-amber-400 to-rose-500 rounded-xs transition-all duration-75"
+                      style={{ height: `${Math.max(8, Math.min(100, Math.round((val / 255) * 100)))}%` }}
+                    />
+                  ))}
+                </div>
               </div>
 
               {/* SSL G-Master Bus Compressor Controls */}

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MasterState, RackModuleItem } from '../../types';
-import { Radio, RefreshCw, Trash2, ArrowRightLeft, Palette, Sliders, Zap } from 'lucide-react';
+import { Radio, RefreshCw, Trash2, ArrowRightLeft, Palette, Sliders, Zap, Wand2, Tag, X, Check, Edit3, Sparkles } from 'lucide-react';
 
 interface StudioRearPanelProps {
   masterState: MasterState;
@@ -21,6 +21,7 @@ interface PatchConnection {
   toX: number; // SVG pixel coordinate
   toY: number; // SVG pixel coordinate
   color: string;
+  label?: string; // Custom label text
 }
 
 interface JackPort {
@@ -54,6 +55,7 @@ export const StudioRearPanel: React.FC<StudioRearPanelProps> = ({
       toX: 180,
       toY: 480,
       color: '#ef4444',
+      label: 'Main Bus L',
     },
     {
       id: 'cable_2',
@@ -68,6 +70,7 @@ export const StudioRearPanel: React.FC<StudioRearPanelProps> = ({
       toX: 230,
       toY: 480,
       color: '#ef4444',
+      label: 'Main Bus R',
     },
     {
       id: 'cable_3',
@@ -82,12 +85,21 @@ export const StudioRearPanel: React.FC<StudioRearPanelProps> = ({
       toX: 300,
       toY: 370,
       color: '#eab308',
+      label: 'Subtractor -> Reverb',
     },
   ]);
 
   // Selected cable color for new patch cords
   const [activeColor, setActiveColor] = useState<string>('#ef4444');
-  const cableColors = ['#ef4444', '#f97316', '#eab308', '#10b981', '#06b6d4', '#8b5cf6', '#ec4899'];
+  const cableColors = ['#ef4444', '#f97316', '#eab308', '#10b981', '#06b6d4', '#8b5cf6', '#ec4899', '#ffffff'];
+
+  // Cable context menu state (for editing label and custom color)
+  const [activeCableMenu, setActiveCableMenu] = useState<{
+    cableId: string;
+    x: number;
+    y: number;
+  } | null>(null);
+  const [cableLabelInput, setCableLabelInput] = useState<string>('');
 
   // Dragging state for creating or moving cable connections
   const [dragging, setDragging] = useState<{
@@ -230,6 +242,169 @@ export const StudioRearPanel: React.FC<StudioRearPanelProps> = ({
     setDragging(null);
   };
 
+  // Auto-Route Cables Algorithm
+  const handleAutoRouteCables = () => {
+    const getJackPos = (unitId: string, jackName: string, fallbackX: number, fallbackY: number) => {
+      const key = `${unitId}_${jackName}`;
+      return jackCoordsRef.current.get(key) || { x: fallbackX, y: fallbackY };
+    };
+
+    const autoConns: PatchConnection[] = [];
+    let colorIdx = 0;
+
+    // 1. Hardware Interface -> SSL Mixer Main Bus
+    const hwL = getJackPos('hardware_host', 'Audio Out L', 180, 85);
+    const mixL = getJackPos('master_mixer', 'Main In L', 180, 480);
+    autoConns.push({
+      id: 'auto_hw_l',
+      fromUnitId: 'hardware_host',
+      fromUnitName: 'Hardware Interface',
+      fromJack: 'Audio Out L',
+      fromX: hwL.x,
+      fromY: hwL.y,
+      toUnitId: 'master_mixer',
+      toUnitName: 'Master SSL Mixer',
+      toJack: 'Main In L',
+      toX: mixL.x,
+      toY: mixL.y,
+      color: '#ef4444',
+      label: 'Master Stereo L',
+    });
+
+    const hwR = getJackPos('hardware_host', 'Audio Out R', 230, 85);
+    const mixR = getJackPos('master_mixer', 'Main In R', 230, 480);
+    autoConns.push({
+      id: 'auto_hw_r',
+      fromUnitId: 'hardware_host',
+      fromUnitName: 'Hardware Interface',
+      fromJack: 'Audio Out R',
+      fromX: hwR.x,
+      fromY: hwR.y,
+      toUnitId: 'master_mixer',
+      toUnitName: 'Master SSL Mixer',
+      toJack: 'Main In R',
+      toX: mixR.x,
+      toY: mixR.y,
+      color: '#ef4444',
+      label: 'Master Stereo R',
+    });
+
+    // 2. Hardware Gate Out -> Sync First Instrument
+    const activeModules = defaultRearModules;
+    if (activeModules.length > 0) {
+      const firstMod = activeModules[0];
+      const hwGate = getJackPos('hardware_host', 'Gate Out', 400, 85);
+      const modGate = getJackPos(firstMod.id, 'Gate In', 400, 260);
+      autoConns.push({
+        id: 'auto_gate_sync',
+        fromUnitId: 'hardware_host',
+        fromUnitName: 'Hardware Interface',
+        fromJack: 'Gate Out',
+        fromX: hwGate.x,
+        fromY: hwGate.y,
+        toUnitId: firstMod.id,
+        toUnitName: firstMod.title,
+        toJack: 'Gate In',
+        toX: modGate.x,
+        toY: modGate.y,
+        color: '#ec4899',
+        label: 'Gate Clock Sync',
+      });
+    }
+
+    // 3. Connect Instrument Modules -> Mixer Channels
+    let channelIdx = 1;
+    activeModules.forEach((mod, idx) => {
+      const isFX = mod.category.includes('reverb') || mod.category.includes('delay') || mod.category.includes('distortion') || mod.category.includes('comp');
+
+      if (!isFX && channelIdx <= 8) {
+        const modOutL = getJackPos(mod.id, 'Audio Out L', 150 + idx * 80, 260 + idx * 100);
+        const mixCh = getJackPos('master_mixer', `Ch ${channelIdx} In`, 120 + channelIdx * 40, 480);
+        autoConns.push({
+          id: `auto_mod_${mod.id}_ch${channelIdx}`,
+          fromUnitId: mod.id,
+          fromUnitName: mod.title,
+          fromJack: 'Audio Out L',
+          fromX: modOutL.x,
+          fromY: modOutL.y,
+          toUnitId: 'master_mixer',
+          toUnitName: 'Master SSL Mixer',
+          toJack: `Ch ${channelIdx} In`,
+          toX: mixCh.x,
+          toY: mixCh.y,
+          color: cableColors[(colorIdx++) % cableColors.length],
+          label: `${mod.title.split(' ')[0]} -> Ch ${channelIdx}`,
+        });
+        channelIdx++;
+      } else if (isFX) {
+        // Connect FX send / return loop
+        const mixAux = getJackPos('master_mixer', 'Aux Send 1', 400, 480);
+        const fxIn = getJackPos(mod.id, 'Audio In L', 300, 370);
+        autoConns.push({
+          id: `auto_fx_send_${mod.id}`,
+          fromUnitId: 'master_mixer',
+          fromUnitName: 'Master SSL Mixer',
+          fromJack: 'Aux Send 1',
+          fromX: mixAux.x,
+          fromY: mixAux.y,
+          toUnitId: mod.id,
+          toUnitName: mod.title,
+          toJack: 'Audio In L',
+          toX: fxIn.x,
+          toY: fxIn.y,
+          color: '#10b981',
+          label: `Aux Send -> ${mod.title.split(' ')[0]}`,
+        });
+
+        const fxOut = getJackPos(mod.id, 'Audio Out L', 250, 370);
+        const mixRet = getJackPos('master_mixer', 'Aux Return L/R', 450, 480);
+        autoConns.push({
+          id: `auto_fx_ret_${mod.id}`,
+          fromUnitId: mod.id,
+          fromUnitName: mod.title,
+          fromJack: 'Audio Out L',
+          fromX: fxOut.x,
+          fromY: fxOut.y,
+          toUnitId: 'master_mixer',
+          toUnitName: 'Master SSL Mixer',
+          toJack: 'Aux Return L/R',
+          toX: mixRet.x,
+          toY: mixRet.y,
+          color: '#10b981',
+          label: `${mod.title.split(' ')[0]} Return`,
+        });
+      }
+    });
+
+    setConnections(autoConns);
+  };
+
+  const handleCableContextMenu = (cableId: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const cable = connections.find((c) => c.id === cableId);
+    if (cable) {
+      setActiveCableMenu({ cableId, x: e.clientX, y: e.clientY });
+      setCableLabelInput(cable.label || '');
+    }
+  };
+
+  const handleSaveCableLabel = () => {
+    if (!activeCableMenu) return;
+    setConnections((prev) =>
+      prev.map((c) =>
+        c.id === activeCableMenu.cableId ? { ...c, label: cableLabelInput.trim() } : c
+      )
+    );
+    setActiveCableMenu(null);
+  };
+
+  const handleChangeCableColor = (cableId: string, color: string) => {
+    setConnections((prev) =>
+      prev.map((c) => (c.id === cableId ? { ...c, color } : c))
+    );
+  };
+
   // Build default rear devices if rackModules is empty
   const defaultRearModules: { id: string; title: string; category: string }[] =
     rackModules.length > 0
@@ -326,6 +501,15 @@ export const StudioRearPanel: React.FC<StudioRearPanelProps> = ({
         {/* Control Buttons */}
         <div className="flex items-center gap-2">
           <button
+            onClick={handleAutoRouteCables}
+            className="px-3 py-1.5 rounded bg-amber-500 hover:bg-amber-400 text-neutral-950 font-mono text-xs font-black transition flex items-center gap-1 shadow-md"
+            title="Automatically connect standard inputs and outputs based on module types"
+          >
+            <Wand2 className="w-3.5 h-3.5" />
+            <span>AUTO-ROUTE CABLES</span>
+          </button>
+
+          <button
             onClick={() => setConnections([])}
             className="px-3 py-1.5 rounded bg-rose-950/80 hover:bg-rose-900 text-rose-300 font-mono text-xs border border-rose-800 transition flex items-center gap-1"
           >
@@ -335,7 +519,7 @@ export const StudioRearPanel: React.FC<StudioRearPanelProps> = ({
 
           <button
             onClick={onToggleFlip}
-            className="px-4 py-1.5 rounded bg-amber-500 hover:bg-amber-400 text-neutral-950 font-black font-mono text-xs transition shadow-lg shadow-amber-500/20 flex items-center gap-1"
+            className="px-4 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-amber-400 border border-neutral-700 font-black font-mono text-xs transition shadow flex items-center gap-1"
           >
             <ArrowRightLeft className="w-3.5 h-3.5" />
             <span>FRONT RACK (TAB)</span>
@@ -348,27 +532,56 @@ export const StudioRearPanel: React.FC<StudioRearPanelProps> = ({
         {/* Render Established Connections */}
         {connections.map((c) => {
           const sagY = Math.max(c.fromY, c.toY) + 90;
+          const midX = 0.5 * c.fromX + 0.5 * c.toX;
+          const midY = 0.125 * c.fromY + 0.75 * sagY + 0.125 * c.toY;
+
           return (
-            <g key={c.id} className="pointer-events-auto cursor-pointer" onClick={() => setConnections((prev) => prev.filter((item) => item.id !== c.id))}>
-              {/* Outer Shadow */}
+            <g
+              key={c.id}
+              className="pointer-events-auto cursor-pointer group"
+              onClick={(e) => handleCableContextMenu(c.id, e)}
+              onContextMenu={(e) => handleCableContextMenu(c.id, e)}
+            >
+              {/* Cable Outer Shadow */}
               <path
                 d={`M ${c.fromX} ${c.fromY} C ${c.fromX} ${sagY}, ${c.toX} ${sagY}, ${c.toX} ${c.toY}`}
                 fill="none"
                 stroke="black"
-                strokeWidth="8"
+                strokeWidth="9"
                 strokeOpacity="0.5"
               />
-              {/* Main Cable Path */}
+              {/* Cable Body */}
               <path
                 d={`M ${c.fromX} ${c.fromY} C ${c.fromX} ${sagY}, ${c.toX} ${sagY}, ${c.toX} ${c.toY}`}
                 fill="none"
                 stroke={c.color}
-                strokeWidth="4.5"
+                strokeWidth="5"
                 strokeLinecap="round"
+                className="transition duration-150 group-hover:stroke-amber-400 group-hover:stroke-[6px]"
               />
               {/* Connectors */}
               <circle cx={c.fromX} cy={c.fromY} r="5.5" fill="#171717" stroke="#fbbf24" strokeWidth="1.5" />
               <circle cx={c.toX} cy={c.toY} r="5.5" fill="#171717" stroke="#fbbf24" strokeWidth="1.5" />
+
+              {/* Custom Text Label Tape Badge */}
+              {c.label && (
+                <foreignObject
+                  x={midX - 60}
+                  y={midY - 12}
+                  width="120"
+                  height="28"
+                  className="overflow-visible pointer-events-auto"
+                >
+                  <div
+                    onClick={(e) => handleCableContextMenu(c.id, e)}
+                    className="bg-amber-100 text-neutral-950 font-mono text-[9px] font-black px-2 py-0.5 rounded-md shadow-2xl border border-amber-400/90 tracking-tight text-center truncate max-w-[120px] mx-auto transform -rotate-1 hover:scale-110 transition cursor-pointer flex items-center justify-center gap-1 select-none"
+                    title="Right-click or click to edit cable label & color"
+                  >
+                    <Tag className="w-2.5 h-2.5 text-amber-800 flex-shrink-0" />
+                    <span className="truncate">{c.label}</span>
+                  </div>
+                </foreignObject>
+              )}
             </g>
           );
         })}
@@ -514,6 +727,81 @@ export const StudioRearPanel: React.FC<StudioRearPanelProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Interactive Cable Context Menu Popover */}
+      {activeCableMenu && (
+        <div
+          style={{
+            left: Math.min(activeCableMenu.x - 100, window.innerWidth - 280),
+            top: Math.min(activeCableMenu.y - 40, window.innerHeight - 240),
+          }}
+          className="fixed z-[300] bg-neutral-950 border-2 border-amber-500 rounded-2xl p-3.5 shadow-2xl text-white space-y-3 w-64 animate-in fade-in zoom-in-95 duration-100 backdrop-blur-md"
+        >
+          <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
+            <span className="font-mono text-[11px] font-black text-amber-400 uppercase flex items-center gap-1.5">
+              <Tag className="w-3.5 h-3.5" /> EDIT PATCH CABLE
+            </span>
+            <button
+              onClick={() => setActiveCableMenu(null)}
+              className="p-1 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-400 hover:text-white transition"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {/* Custom Label Input */}
+          <div className="space-y-1">
+            <label className="text-[10px] font-mono text-neutral-400 uppercase block font-bold">Cable Custom Label:</label>
+            <div className="flex gap-1.5">
+              <input
+                type="text"
+                value={cableLabelInput}
+                onChange={(e) => setCableLabelInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSaveCableLabel()}
+                placeholder="e.g. Lead Synth L..."
+                className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-2.5 py-1 text-xs text-white font-mono outline-none focus:border-amber-400 font-bold"
+                autoFocus
+              />
+              <button
+                onClick={handleSaveCableLabel}
+                className="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-neutral-950 font-black text-xs transition flex items-center justify-center shadow"
+              >
+                <Check className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Assign Custom Color */}
+          <div className="space-y-1">
+            <label className="text-[10px] font-mono text-neutral-400 uppercase block font-bold">Cable Custom Color:</label>
+            <div className="flex flex-wrap gap-1.5 p-1 bg-neutral-900/80 rounded-lg border border-neutral-800">
+              {cableColors.map((color) => (
+                <button
+                  key={color}
+                  onClick={() => handleChangeCableColor(activeCableMenu.cableId, color)}
+                  style={{ backgroundColor: color }}
+                  className="w-5 h-5 rounded-full border border-black/80 transition transform hover:scale-125 shadow"
+                  title={`Set cable color to ${color}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Unplug Button */}
+          <div className="pt-2 border-t border-neutral-800 flex justify-between">
+            <button
+              onClick={() => {
+                setConnections((prev) => prev.filter((c) => c.id !== activeCableMenu.cableId));
+                setActiveCableMenu(null);
+              }}
+              className="w-full py-1.5 rounded-lg bg-rose-950 hover:bg-rose-900 text-rose-300 text-xs font-mono font-bold border border-rose-800 flex items-center justify-center gap-1.5 transition"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>UNPLUG CABLE</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLanguage, SUPPORTED_LANGUAGES } from '../../i18n/LanguageContext';
 import {
   Settings,
   Sliders,
@@ -22,6 +23,8 @@ import {
   Folder,
   Layers,
   Music,
+  Globe,
+  CheckCircle2,
 } from 'lucide-react';
 
 interface SettingsModalProps {
@@ -43,7 +46,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   setAutoSaveInterval,
   onTriggerManualSave,
 }) => {
-  const [activeTab, setActiveTab] = useState<'audio' | 'midi' | 'visual' | 'autosave' | 'cables' | 'help'>('audio');
+  const { language, setLanguage, currentLanguageObj, t } = useLanguage();
+  const [activeTab, setActiveTab] = useState<'audio' | 'midi' | 'visual' | 'autosave' | 'cables' | 'language' | 'help'>('audio');
 
   // Audio & DSP Engine
   const [audioDriver, setAudioDriver] = useState<string>('webaudio_pro');
@@ -59,8 +63,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   const [velocityCurve, setVelocityCurve] = useState<string>('linear');
   const [selectedMidiDevice, setSelectedMidiDevice] = useState<string>('all_devices');
 
-  // Visual & Themes
+  // Visual & Themes & Theme Studio Editor
   const [themeStyle, setThemeStyle] = useState<string>('reason_amber');
+  const [woodTexture, setWoodTexture] = useState<string>('mahogany');
+  const [knobColorStyle, setKnobColorStyle] = useState<string>('vintage_cream');
+  const [ledBrightness, setLedBrightness] = useState<number>(85);
+  const [ledTint, setLedTint] = useState<string>('emerald');
   const [uiScale, setUiScale] = useState<string>('100');
   const [meterFps, setMeterFps] = useState<string>('60');
   const [cableBounce, setCableBounce] = useState<boolean>(true);
@@ -181,6 +189,18 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           >
             <Zap className="w-3.5 h-3.5" />
             <span>CABLE PHYSICS</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('language')}
+            className={`px-3 py-1.5 rounded-xl font-black text-[11px] transition flex items-center gap-1.5 ${
+              activeTab === 'language'
+                ? 'bg-amber-500 text-neutral-950 shadow'
+                : 'text-neutral-400 hover:text-neutral-200 hover:bg-neutral-800'
+            }`}
+          >
+            <Globe className="w-3.5 h-3.5" />
+            <span>LANGUAGE & TRANSLATOR</span>
           </button>
         </div>
 
@@ -558,6 +578,54 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     onChange={(e) => setCableOpacity(Number(e.target.value))}
                     className="w-full accent-indigo-500 cursor-pointer"
                   />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 6: LANGUAGE & UNIVERSAL TRANSLATOR */}
+          {activeTab === 'language' && (
+            <div className="space-y-4">
+              <div className="bg-neutral-900/80 border border-neutral-800 rounded-2xl p-4 space-y-4">
+                <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
+                  <div>
+                    <span className="font-bold text-neutral-200 text-xs block">
+                      UNIVERSAL NATIVE LANGUAGE & UI TRANSLATION
+                    </span>
+                    <span className="text-[10px] text-neutral-400">
+                      Select your preferred language. All menus, buttons, tooltips, and guides adapt instantly.
+                    </span>
+                  </div>
+                  <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-black uppercase flex items-center gap-1">
+                    <Globe className="w-3.5 h-3.5 text-amber-400" />
+                    <span>{currentLanguageObj.nativeName}</span>
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {SUPPORTED_LANGUAGES.map((lang) => {
+                    const isSelected = language === lang.code;
+                    return (
+                      <button
+                        key={lang.code}
+                        onClick={() => setLanguage(lang.code)}
+                        className={`p-3 rounded-xl border text-left transition flex items-center justify-between gap-2 ${
+                          isSelected
+                            ? 'bg-amber-500 text-neutral-950 border-amber-300 font-black shadow'
+                            : 'bg-neutral-950 text-neutral-300 border-neutral-800 hover:border-neutral-700'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="text-xl">{lang.flag}</span>
+                          <div>
+                            <span className="text-xs block leading-tight">{lang.name}</span>
+                            <span className="text-[9px] opacity-75 block">{lang.nativeName}</span>
+                          </div>
+                        </div>
+                        {isSelected && <CheckCircle2 className="w-4 h-4 shrink-0 text-neutral-950" />}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>

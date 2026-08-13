@@ -22,7 +22,8 @@ import {
   Tv,
   ExternalLink,
 } from 'lucide-react';
-import { WorkspaceType, MasterState, ConnectedDevice } from '../../types';
+import { WorkspaceType, MasterState, ConnectedDevice, TrackChannel } from '../../types';
+import { ReasonSSLConsole } from '../rack/ReasonSSLConsole';
 
 import { MPCWorkspace } from '../workspaces/MPCWorkspace';
 import { SP404Workspace } from '../workspaces/SP404Workspace';
@@ -64,6 +65,8 @@ interface FloatingWindowManagerProps {
   setMasterState: React.Dispatch<React.SetStateAction<MasterState>>;
   connectedDevices: ConnectedDevice[];
   openAIGrooveModal: () => void;
+  channels?: TrackChannel[];
+  setChannels?: React.Dispatch<React.SetStateAction<TrackChannel[]>>;
 }
 
 export const FloatingWindowManager: React.FC<FloatingWindowManagerProps> = ({
@@ -73,6 +76,8 @@ export const FloatingWindowManager: React.FC<FloatingWindowManagerProps> = ({
   setMasterState,
   connectedDevices,
   openAIGrooveModal,
+  channels = [],
+  setChannels = () => {},
 }) => {
   const [windows, setWindows] = useState<Record<string, FloatingWindow>>({});
   const [activeWindowId, setActiveWindowId] = useState<string | null>(null);
@@ -112,14 +117,26 @@ export const FloatingWindowManager: React.FC<FloatingWindowManagerProps> = ({
 
   const bringToFront = (ws: WorkspaceType) => {
     setActiveWindowId(ws);
+    const nextZ = topZIndex + 1;
+    setTopZIndex(nextZ);
+
     setWindows((prev) => {
-      if (!prev[ws]) return prev;
-      const nextZ = topZIndex + 1;
-      setTopZIndex(nextZ);
+      const existing = prev[ws] || {
+        id: ws,
+        title: getWorkspaceTitle(ws),
+        x: 80,
+        y: 80,
+        width: Math.min(850, window.innerWidth - 80),
+        height: Math.min(520, window.innerHeight - 120),
+        isMinimized: false,
+        isMaximized: false,
+        zIndex: nextZ,
+      };
+
       return {
         ...prev,
         [ws]: {
-          ...prev[ws],
+          ...existing,
           isMinimized: false,
           zIndex: nextZ,
         },
@@ -224,7 +241,7 @@ export const FloatingWindowManager: React.FC<FloatingWindowManagerProps> = ({
       case 'keyboard': return <KeyboardWorkspace onSimulateMIDI={() => {}} />;
       case 'edrum': return <EDrumWorkspace onSimulateMIDI={() => {}} />;
       case 'dj': return <DJWorkspace />;
-      case 'mixer': return <MixerWorkspace channels={[]} setChannels={() => {}} />;
+      case 'mixer': return <ReasonSSLConsole channels={channels} setChannels={setChannels} isDetached={true} onDock={() => onDockWorkspace('mixer')} />;
       case 'patchbay': return <StudioRearPanel masterState={masterState} onToggleFlip={() => {}} />;
       case 'drum_machines': return <BuiltInDrumMachines />;
       case 'mapper': return <UniversalHardwareMapper connectedDevices={connectedDevices} onSimulateMIDI={() => {}} />;
@@ -349,7 +366,8 @@ export const FloatingWindowManager: React.FC<FloatingWindowManagerProps> = ({
 
           {detachedWorkspaces.map((ws) => {
             const win = windows[ws];
-            const isActive = activeWindowId === ws && !win?.isMinimized;
+            const isMin = win?.isMinimized;
+            const isActive = activeWindowId === ws && !isMin;
 
             return (
               <button
@@ -358,10 +376,18 @@ export const FloatingWindowManager: React.FC<FloatingWindowManagerProps> = ({
                 className={`px-2.5 py-1 rounded-md text-[11px] font-bold flex items-center gap-1.5 transition whitespace-nowrap border ${
                   isActive
                     ? 'bg-amber-500 text-neutral-950 border-amber-300 shadow-lg'
+                    : isMin
+                    ? 'bg-neutral-900 text-amber-400 border-amber-500/50 hover:bg-neutral-800 animate-pulse'
                     : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700 border-neutral-700'
                 }`}
+                title={isMin ? 'Click to restore minimized window' : 'Bring window to front'}
               >
                 <span>{getWorkspaceTitle(ws)}</span>
+                {isMin && (
+                  <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/30 text-amber-300 font-mono font-black">
+                    MINIMIZED
+                  </span>
+                )}
                 <span
                   onClick={(e) => {
                     e.stopPropagation();

@@ -49,6 +49,7 @@ interface DAWBrowserSidebarProps {
   rackModules?: RackModuleItem[];
   currentBpm?: number;
   onLoadPreset?: (preset: PresetItem) => void;
+  onOpenAudioPreview?: () => void;
 }
 
 export const DAWBrowserSidebar: React.FC<DAWBrowserSidebarProps> = ({
@@ -60,6 +61,7 @@ export const DAWBrowserSidebar: React.FC<DAWBrowserSidebarProps> = ({
   rackModules = [],
   currentBpm = 92,
   onLoadPreset,
+  onOpenAudioPreview,
 }) => {
   const [activeTab, setActiveTab] = useState<'modules' | 'soundbank' | 'presets'>('soundbank');
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -200,8 +202,15 @@ export const DAWBrowserSidebar: React.FC<DAWBrowserSidebarProps> = ({
   }
 
   return (
-    <aside className="w-72 shrink-0 bg-stone-950 border-r-2 border-stone-800 flex flex-col h-full font-mono select-none shadow-2xl z-20">
-      {/* Browser Header Bar */}
+    <>
+      {/* Mobile/Tablet Backdrop Overlay */}
+      <div
+        className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 lg:hidden"
+        onClick={onToggle}
+      />
+
+      <aside className="fixed inset-y-0 left-0 z-50 lg:static lg:z-20 w-80 sm:w-80 lg:w-72 shrink-0 bg-stone-950 border-r-2 border-stone-800 flex flex-col h-full font-mono select-none shadow-2xl transition-transform duration-300">
+        {/* Browser Header Bar */}
       <div className="p-3 bg-stone-900 border-b border-stone-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <HardDrive className="w-4 h-4 text-amber-400" />
@@ -288,6 +297,17 @@ export const DAWBrowserSidebar: React.FC<DAWBrowserSidebarProps> = ({
       {/* TAB 1: REASON SOUND BANK & SAMPLES / LOOPS */}
       {activeTab === 'soundbank' && (
         <div className="flex-1 overflow-y-auto p-2 space-y-2 scrollbar-thin scrollbar-thumb-stone-800">
+          {/* External Audio Sample Preview Launcher Button */}
+          {onOpenAudioPreview && (
+            <button
+              onClick={onOpenAudioPreview}
+              className="w-full py-2 px-3 rounded-xl bg-amber-500/20 hover:bg-amber-500 hover:text-neutral-950 text-amber-300 font-black text-xs transition border border-amber-500/40 flex items-center justify-center gap-2 shadow"
+            >
+              <Activity className="w-4 h-4" />
+              <span>OPEN AUDIO SAMPLE PREVIEW PANEL</span>
+            </button>
+          )}
+
           {/* Sub-Category Filter Buttons */}
           <div className="flex items-center gap-1 overflow-x-auto pb-1 text-[9px] font-black">
             {(['all', 'patch', 'sample', 'loop'] as const).map((filter) => (
@@ -658,5 +678,6 @@ export const DAWBrowserSidebar: React.FC<DAWBrowserSidebarProps> = ({
         STUDIO FACTORY SOUNDS • EXPANSIONS ACTIVE
       </div>
     </aside>
+    </>
   );
 };

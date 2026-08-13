@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLanguage, SUPPORTED_LANGUAGES } from '../../i18n/LanguageContext';
 import {
   Compass,
   CheckCircle2,
@@ -12,17 +13,21 @@ import {
   FolderPlus,
   Activity,
   Plus,
+  Globe,
 } from 'lucide-react';
 
 interface GuidedWalkthroughBannerProps {
   onDismiss: () => void;
   onJumpToModule: (type: string) => void;
+  openLanguageModal?: () => void;
 }
 
 export const GuidedWalkthroughBanner: React.FC<GuidedWalkthroughBannerProps> = ({
   onDismiss,
   onJumpToModule,
+  openLanguageModal,
 }) => {
+  const { language, setLanguage, currentLanguageObj, t } = useLanguage();
   const [currentStep, setCurrentStep] = useState<number>(0);
 
   const steps = [
@@ -86,6 +91,30 @@ export const GuidedWalkthroughBanner: React.FC<GuidedWalkthroughBannerProps> = (
 
         {/* Right Navigation Controls */}
         <div className="flex items-center gap-2">
+          {/* Onboarding Language Switcher Button */}
+          {openLanguageModal ? (
+            <button
+              onClick={openLanguageModal}
+              className="px-2.5 py-1.5 rounded-xl bg-neutral-900 hover:bg-amber-500 hover:text-neutral-950 text-amber-300 border border-amber-500/40 text-xs font-black transition flex items-center gap-1.5 shadow"
+              title="Change Studio Language for Onboarding"
+            >
+              <span>{currentLanguageObj.flag}</span>
+              <span className="hidden sm:inline">{currentLanguageObj.name}</span>
+            </button>
+          ) : (
+            <select
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+              className="bg-neutral-900 border border-neutral-700 rounded-xl px-2 py-1 text-xs text-amber-300 font-bold focus:outline-none focus:border-amber-500"
+            >
+              {SUPPORTED_LANGUAGES.map((l) => (
+                <option key={l.code} value={l.code}>
+                  {l.flag} {l.name}
+                </option>
+              ))}
+            </select>
+          )}
+
           <button
             onClick={() => onJumpToModule(activeStepObj.moduleType)}
             className="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-black text-xs transition shadow-md flex items-center gap-1.5"

@@ -47,16 +47,20 @@ export const DirectToDiskRecorder: React.FC<DirectToDiskRecorderProps> = ({
     return () => clearInterval(timer);
   }, [isRecording]);
 
-  const startRecording = () => {
+  const [isExporting, setIsExporting] = useState<boolean>(false);
+
+  const startRecording = async () => {
     audioEngine.initAudio();
+    const success = await audioEngine.startAudioRecording();
     setIsRecording(true);
     setRecordedDurationSec(0);
     setHasRecordedTake(false);
   };
 
-  const stopRecording = () => {
+  const stopRecording = async () => {
     setIsRecording(false);
     setHasRecordedTake(true);
+    await audioEngine.stopAudioRecording();
   };
 
   const formatTime = (totalSec: number) => {
@@ -65,15 +69,22 @@ export const DirectToDiskRecorder: React.FC<DirectToDiskRecorderProps> = ({
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const handleExportWav = () => {
-    // Generate dummy WAV download for direct-to-disk take
-    const element = document.createElement('a');
-    const file = new Blob([`RIFF Direct-To-Disk Audio Take ${takeTitle}`], { type: 'audio/wav' });
-    element.href = URL.createObjectURL(file);
-    element.download = takeTitle;
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+  const handleExportWav = async () => {
+    setIsExporting(true);
+    try {
+      const duration = Math.max(4, recordedDurationSec || 8);
+      const wavBlob = await audioEngine.renderProjectToWav(bpm, duration);
+      const element = document.createElement('a');
+      element.href = URL.createObjectURL(wavBlob);
+      element.download = takeTitle || 'Master_Studio_Take_24Bit.wav';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    } catch (e) {
+      console.error('WAV export error', e);
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   const handleSendToTimeline = () => {
@@ -187,10 +198,11 @@ export const DirectToDiskRecorder: React.FC<DirectToDiskRecorderProps> = ({
 
               <button
                 onClick={handleExportWav}
-                className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs flex items-center gap-1.5 shadow"
+                disabled={isExporting}
+                className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs flex items-center gap-1.5 shadow disabled:opacity-50"
               >
-                <Download className="w-4 h-4" />
-                <span>EXPORT WAV</span>
+                {isExporting ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                <span>{isExporting ? 'RENDERING 24-BIT WAV...' : 'EXPORT WAV'}</span>
               </button>
 
               {onAddClipToSequencer && (
