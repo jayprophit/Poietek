@@ -9,7 +9,7 @@ const portArgument = process.argv.find((argument) => argument.startsWith('--port
 const port = portArgument?.slice('--port='.length) || '3000';
 
 console.log('Preparing the verified Poietek web preview…');
-const build = spawnSync(process.execPath, [viteEntry, 'build', '--configLoader', 'runner'], {
+const build = spawnSync(process.execPath, [path.join(projectRoot, 'scripts', 'build-web.mjs')], {
   cwd: projectRoot,
   stdio: 'inherit',
   windowsHide: true,

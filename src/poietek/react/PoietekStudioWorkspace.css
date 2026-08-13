@@ -1297,6 +1297,38 @@
 .poietek-honest-meter.is-master { min-height: 260px; margin: 10px; }
 
 @media (max-width: 760px) {
+  .poietek-workspace { border-width: 0; border-radius: 0; }
+  .poietek-workspace-header { min-height: 0; gap: 10px; padding: 10px 12px; }
+  .poietek-brand-mark { width: 36px; height: 36px; border-radius: 9px; font-size: 20px; }
+  .poietek-brand-block h1 { font-size: 17px; }
+  .poietek-runtime-badges { gap: 5px; }
+  .poietek-runtime-badge { min-height: 26px; padding: 5px 7px; font-size: 9px; }
+  .poietek-workspace-grid { min-height: 0; }
+  .poietek-project-rack {
+    display: grid;
+    grid-template-columns: minmax(150px, .7fr) minmax(210px, 1.3fr);
+    grid-template-rows: auto auto;
+    gap: 8px 10px;
+    padding: 10px;
+  }
+  .poietek-project-rack .poietek-panel-heading { grid-column: 1; }
+  .poietek-new-project { grid-column: 1; }
+  .poietek-project-list {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    display: flex;
+    max-height: 95px;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .poietek-project-card { min-width: 190px; }
+  .poietek-rack-note { display: none; }
+  .poietek-studio-main { padding: 8px; }
+  .poietek-session-strip { gap: 8px; margin-bottom: 8px; }
+  .poietek-session-strip h2 { font-size: 18px; }
+  .poietek-session-actions { width: 100%; flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; padding-bottom: 3px; }
+  .poietek-session-actions > * { flex: 0 0 auto; }
+  .poietek-persist-bar { margin-bottom: 6px; }
   .poietek-desk-tabs button { grid-template-columns: auto 1fr; }
   .poietek-desk-tabs button small { display: none; }
   .poietek-arranger-toolbar { align-items: flex-start; flex-direction: column; }
@@ -1305,4 +1337,24 @@
   .poietek-inspector-actions { width: 100%; margin-left: 0; }
   .poietek-console-header { flex-direction: column; }
   .poietek-console-buses { justify-content: flex-start; }
+}
+
+@media (max-width: 430px) {
+  .poietek-project-rack { grid-template-columns: 1fr; grid-template-rows: auto auto auto; }
+  .poietek-project-rack .poietek-panel-heading,
+  .poietek-new-project,
+  .poietek-project-list { grid-column: 1; }
+  .poietek-project-list { grid-row: 3; max-height: 82px; }
+  .poietek-panel-heading > span { display: none; }
+  .poietek-new-project > div { grid-template-columns: 1fr 38px; }
+  .poietek-runtime-badges .poietek-runtime-badge:not(.poietek-runtime-badge-online) { display: none; }
+  .poietek-studio-main { padding: 6px; }
+}
+
+@media (pointer: coarse) {
+  .poietek-workspace button,
+  .poietek-workspace input,
+  .poietek-import-button { min-height: 40px; }
+  .poietek-console-knob input,
+  .poietek-fader input { min-height: 24px; }
 }

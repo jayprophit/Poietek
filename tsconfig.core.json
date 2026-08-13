@@ -31,7 +31,8 @@
     "src/poietek/hardware/**/*.ts",
     "src/poietek/settings/**/*.ts",
     "src/poietek/library/**/*.ts",
-    "src/poietek/diagnostics/**/*.ts"
+    "src/poietek/diagnostics/**/*.ts",
+    "src/poietek/deployment/**/*.ts"
   ],
   "exclude": [
     "src/poietek/react/**",

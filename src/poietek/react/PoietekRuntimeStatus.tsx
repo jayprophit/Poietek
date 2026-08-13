@@ -4,6 +4,8 @@ import { usePoietekRuntime } from "./PoietekRuntimeProvider";
 export function PoietekRuntimeStatus() {
   const { project, status, error } = usePoietekRuntime();
 
+  if (status === "ready" && project) return null;
+
   return (
     <div
       aria-live="polite"
@@ -26,13 +28,10 @@ export function PoietekRuntimeStatus() {
     >
       <strong>Poietek Local Runtime</strong>
       <div style={{ opacity: 0.8, marginTop: 2 }}>
-        {status === "ready" && project
-          ? `${project.title} · saved locally`
-          : status === "error"
+        {status === "error"
             ? `Error: ${error}`
             : "Starting local project store…"}
       </div>
     </div>
   );
 }
-

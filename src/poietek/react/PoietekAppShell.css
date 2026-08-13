@@ -86,20 +86,118 @@
 .poietek-command-status i { width: 7px; height: 7px; border-radius: 50%; background: #62cbbf; box-shadow: 0 0 7px rgba(98,203,191,.72); }
 .poietek-command-status small { color: #737f82; font-size: 7px; }
 
+.poietek-offline-center {
+  position: relative;
+  min-width: 0;
+  border-left: 1px solid #343b3f;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+.poietek-offline-trigger {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 0;
+  color: #bcebe5;
+  background: transparent;
+  text-align: right;
+  cursor: pointer;
+}
+.poietek-offline-trigger:hover,
+.poietek-offline-trigger[aria-expanded='true'] { background: rgba(255,255,255,.045); }
+.poietek-offline-trigger > i {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #62cbbf;
+  box-shadow: 0 0 7px rgba(98,203,191,.72);
+}
+.poietek-offline-trigger.is-offline > i { background: #d89557; box-shadow: 0 0 7px rgba(216,149,87,.62); }
+.poietek-offline-trigger > span { min-width: 0; display: grid; gap: 2px; }
+.poietek-offline-trigger strong { font-size: 8px; text-transform: uppercase; letter-spacing: .1em; }
+.poietek-offline-trigger small { max-width: 230px; overflow: hidden; color: #737f82; font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
+
+.poietek-offline-panel {
+  position: fixed;
+  z-index: 12000;
+  top: 58px;
+  right: 10px;
+  width: min(470px, calc(100vw - 20px));
+  max-height: min(760px, calc(100dvh - 70px));
+  display: grid;
+  grid-template-rows: auto auto auto auto auto minmax(140px, 1fr) auto;
+  gap: 10px;
+  padding: 14px;
+  overflow: hidden;
+  border: 1px solid #5d4938;
+  border-radius: 12px;
+  color: #e8eeee;
+  background: linear-gradient(155deg, #171d20, #0c1114 58%, #101516);
+  box-shadow: 0 20px 60px rgba(0,0,0,.68);
+  text-align: left;
+}
+.poietek-offline-panel > header { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
+.poietek-offline-panel > header p { margin: 0 0 3px; color: #d89557; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .14em; }
+.poietek-offline-panel h2 { margin: 0; color: #f5e8d9; font: 700 17px/1.1 ui-sans-serif, system-ui, sans-serif; }
+.poietek-offline-panel > header button { width: 30px; height: 30px; border: 1px solid #3d474b; border-radius: 6px; color: #b5c0c0; background: #151c1f; font-size: 19px; cursor: pointer; }
+.poietek-offline-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.poietek-offline-summary > span { min-width: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 6px; padding: 8px; border: 1px solid #2d383c; border-radius: 7px; color: #8f9c9f; font-size: 7px; text-transform: uppercase; letter-spacing: .05em; }
+.poietek-offline-summary i { width: 7px; height: 7px; border-radius: 50%; background: #d89557; }
+.poietek-offline-summary i.is-ready { background: #62cbbf; box-shadow: 0 0 5px rgba(98,203,191,.6); }
+.poietek-offline-summary b { grid-column: 2; overflow: hidden; color: #e1eaea; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.poietek-offline-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.poietek-offline-actions button { min-height: 34px; padding: 7px 10px; border: 1px solid rgba(216,149,87,.42); border-radius: 7px; color: #25170b; background: linear-gradient(#e0a36c,#b66f3a); font-size: 9px; font-weight: 900; cursor: pointer; }
+.poietek-install-guidance,
+.poietek-storage-usage { margin: 0; color: #9ca9ab; font-size: 9px; line-height: 1.45; }
+.poietek-install-guidance { padding: 8px 10px; border-left: 3px solid #d89557; background: rgba(216,149,87,.07); }
+.poietek-engine-list { min-height: 0; display: grid; gap: 5px; overflow: auto; padding-right: 3px; }
+.poietek-engine-list article { display: grid; grid-template-columns: 9px minmax(0,1fr) auto; align-items: center; gap: 8px; padding: 8px 9px; border: 1px solid #293438; border-radius: 7px; background: rgba(255,255,255,.018); }
+.poietek-engine-list article > i { width: 8px; height: 8px; border-radius: 50%; background: #667276; }
+.poietek-engine-list article > i.is-available { background: #62cbbf; }
+.poietek-engine-list article > i.is-fallback,
+.poietek-engine-list article > i.is-permission-required,
+.poietek-engine-list article > i.is-not-initialized { background: #d89557; }
+.poietek-engine-list article > div { min-width: 0; display: grid; gap: 2px; }
+.poietek-engine-list article strong { color: #e1eaea; font-size: 9px; }
+.poietek-engine-list article small { overflow: hidden; color: #7f8d90; font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
+.poietek-engine-list article > span { max-width: 100px; color: #879598; font-size: 7px; text-align: right; text-transform: uppercase; }
+.poietek-offline-panel > footer { padding-top: 9px; border-top: 1px solid #293438; color: #839093; font-size: 8px; line-height: 1.5; }
+
 .poietek-shell-stage,
 .poietek-rack-host,
 .poietek-arrange-host { min-width: 0; min-height: 0; overflow: hidden; }
 .poietek-rack-host > div { height: 100%; }
 .poietek-arrange-host { height: 100%; overflow: auto; background: #080c0e; }
 .poietek-shell-loading { padding: 28px; color: #a9b5b4; font: 11px ui-monospace, Consolas, monospace; }
+.poietek-rack-mobile-note { display: none; }
 
 @media (max-width: 760px) {
-  .poietek-app-shell { grid-template-rows: 50px minmax(0, 1fr); }
-  .poietek-command-bar { grid-template-columns: auto 1fr; }
-  .poietek-command-brand { padding: 6px 8px; }
+  .poietek-app-shell { grid-template-rows: calc(50px + env(safe-area-inset-top, 0px)) minmax(0, 1fr); }
+  .poietek-command-bar { grid-template-columns: auto minmax(0, 1fr) 48px; padding-top: env(safe-area-inset-top, 0px); }
+  .poietek-command-brand { padding: 6px; }
   .poietek-command-brand > div { display: none; }
+  .poietek-command-brand > span { width: 34px; height: 34px; }
   .poietek-command-bar nav button { min-width: 0; flex: 1; padding: 5px 8px; }
   .poietek-command-bar nav button small { display: none; }
-  .poietek-command-status { display: none; }
+  .poietek-command-bar nav button > span { display: none; }
+  .poietek-offline-center { min-width: 0; }
+  .poietek-offline-trigger { justify-content: center; padding: 5px; }
+  .poietek-offline-trigger > span { display: none; }
+  .poietek-offline-panel { top: calc(54px + env(safe-area-inset-top, 0px)); right: 6px; width: calc(100vw - 12px); max-height: calc(100dvh - 62px - env(safe-area-inset-top, 0px)); padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+  .poietek-offline-summary { grid-template-columns: 1fr; }
+  .poietek-offline-summary > span { grid-template-columns: auto minmax(0,1fr) auto; }
+  .poietek-offline-summary b { grid-column: 3; }
+  .poietek-rack-host { overflow: auto; }
+  .poietek-rack-host > div { min-width: 900px; }
+  .poietek-rack-mobile-note { position: sticky; z-index: 20; top: 0; left: 0; width: 100vw; display: block; margin: 0; padding: 7px 10px; border-bottom: 1px solid #5d4938; color: #f2d3b4; background: #21170f; font: 9px ui-monospace, Consolas, monospace; }
 }
 
+@media (pointer: coarse) {
+  .poietek-command-bar nav button,
+  .poietek-offline-trigger,
+  .poietek-offline-panel button { min-height: 44px; }
+}

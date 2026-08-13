@@ -1,5 +1,6 @@
 import {lazy, Suspense, useEffect, useState, type ReactNode} from 'react';
 import './PoietekAppShell.css';
+import {OfflineInstallCenter} from './OfflineInstallCenter';
 
 const PoietekStudioWorkspace = lazy(async () => {
   const module = await import('./PoietekStudioWorkspace');
@@ -10,6 +11,10 @@ type StudioArea = 'arrange' | 'rack';
 
 export function PoietekAppShell({children}: {children: ReactNode}) {
   const [area, setArea] = useState<StudioArea>(() => {
+    if (typeof location !== 'undefined') {
+      const requested = new URLSearchParams(location.search).get('area');
+      if (requested === 'rack' || requested === 'arrange') return requested;
+    }
     if (typeof sessionStorage === 'undefined') return 'arrange';
     return sessionStorage.getItem('poietek-active-area') === 'rack' ? 'rack' : 'arrange';
   });
@@ -56,15 +61,15 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
             <small>devices · patching · sampling</small>
           </button>
         </nav>
-        <div className="poietek-command-status">
-          <span><i /> Local-first</span>
-          <small>Project media stays available offline</small>
-        </div>
+        <OfflineInstallCenter />
       </header>
 
       <div className="poietek-shell-stage">
         {area === 'rack' ? (
-          <div className="poietek-rack-host">{children}</div>
+          <div className="poietek-rack-host">
+            <p className="poietek-rack-mobile-note">Rack view is widest in landscape. Swipe sideways to reach every device.</p>
+            {children}
+          </div>
         ) : (
           <div className="poietek-arrange-host">
             <Suspense fallback={<div className="poietek-shell-loading" role="status">Opening the local production workspace…</div>}>

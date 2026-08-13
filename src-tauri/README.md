@@ -1,31 +1,30 @@
-# Poietek native shell status
+# Poietek native shell
 
-This directory is a deliberately minimal Tauri 2 scaffold. It is not yet an
-installer-ready desktop release.
+The Tauri 2 shell now has production bundle metadata, offline WebView2 installer
+configuration for Windows, responsive window limits, icons, a strict content
+security policy and an empty native capability. It packages the same local-first
+web runtime used by the browser portal and PWA.
 
-Current guarantees:
+It does not claim native audio, VST/AU hosting, unrestricted filesystem access or
+hardware control. Those remain behind reviewed adapters. Projects and media use
+the browser-compatible `ProjectRepository` and `AssetStore` contracts inside the
+webview until native implementations are added and migrated safely.
 
-- the shell loads the existing Vite application from port 3000 in development
-  and from `../dist` in a production build;
-- the main window has an explicit empty capability, so the webview receives no
-  native IPC permissions;
-- production and development CSPs are enabled rather than set to `null`;
-- no Rust commands, filesystem scopes, device permissions, plugins, updater,
-  signing identity, file associations or remote origins are enabled;
-- application bundling is disabled until icons, installer metadata, signing and
-  platform smoke tests exist.
+Run `npm run native:doctor` before native work. On this checkout, installer output
+requires all of the following external build prerequisites:
 
-The production CSP intentionally blocks external network origins. Supabase,
-Firebase, AI or other provider endpoints must remain unavailable in the native
-shell until their exact trusted origins are reviewed and added to `connect-src`.
-Do not replace that boundary with an unrestricted `https:` source.
+- `@tauri-apps/cli` installed as a local development dependency;
+- Rust stable with the platform target;
+- the platform's native build tools and webview;
+- Android Studio/SDK/NDK for Android packages;
+- macOS, Xcode and CocoaPods for iOS packages.
 
-Before native development can run, a separate reviewed package update must add
-the Tauri 2 JavaScript CLI (and the API package only when the frontend actually
-uses it), plus desktop scripts. That package change is intentionally outside this
-scaffold-only integration slice.
+The package scripts never download those toolchains automatically. The Windows
+bundle uses Tauri's offline WebView2 installer mode so the resulting NSIS setup can
+install without a network connection. Code signing and platform smoke tests are
+still release gates; an unsigned local build must not be described as a published
+release.
 
-Native project and asset storage must be introduced behind the existing
-`ProjectRepository` and `AssetStore` contracts. Hardware, time-preserving pitch,
-standards loudness and true-peak support must each remain explicitly unavailable
-until a real implementation is negotiated or validated.
+The production CSP deliberately blocks arbitrary remote origins. Add only exact,
+reviewed provider endpoints when a configured Supabase, Firebase or AI adapter is
+actually enabled. Do not replace this boundary with unrestricted `https:`.
