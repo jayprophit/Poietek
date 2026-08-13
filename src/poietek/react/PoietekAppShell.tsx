@@ -1,6 +1,10 @@
-import {lazy, Suspense, useEffect, useState, type ReactNode} from 'react';
+import {lazy, Suspense, useCallback, useEffect, useState, type ReactNode} from 'react';
 import './PoietekAppShell.css';
 import {OfflineInstallCenter} from './OfflineInstallCenter';
+import {StudioMenuBar} from './StudioMenuBar';
+import {dispatchStudioCommand, type StudioArea, type StudioCommandDetail} from './studioCommands';
+import {BrowserStudioSettingsRepository, type StudioPreferences} from '../settings';
+import type {StudioSetupTab} from './StudioSetupModal';
 
 const PoietekStudioWorkspace = lazy(async () => {
   const module = await import('./PoietekStudioWorkspace');
@@ -17,7 +21,10 @@ const PoietekAiCenter = lazy(async () => {
   return {default: module.PoietekAiCenter};
 });
 
-type StudioArea = 'arrange' | 'rack' | 'ecosystem' | 'ai';
+const StudioSetupModal = lazy(async () => {
+  const module = await import('./StudioSetupModal');
+  return {default: module.StudioSetupModal};
+});
 
 export function PoietekAppShell({children}: {children: ReactNode}) {
   const [area, setArea] = useState<StudioArea>(() => {
@@ -29,6 +36,21 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
     const stored = sessionStorage.getItem('poietek-active-area');
     return stored === 'rack' || stored === 'ecosystem' || stored === 'ai' ? stored : 'arrange';
   });
+  const [setupTab, setSetupTab] = useState<StudioSetupTab>('profiles');
+  const [setupOpen, setSetupOpen] = useState(false);
+  const [pendingCommand, setPendingCommand] = useState<{detail: StudioCommandDetail; area: StudioArea} | null>(null);
+
+  const applyStudioPreferences = useCallback((preferences: StudioPreferences) => {
+    document.documentElement.dataset.poietekTheme = preferences.appearance.theme;
+    document.documentElement.dataset.poietekDensity = preferences.appearance.density;
+    document.documentElement.dataset.poietekReduceMotion = String(preferences.appearance.reduceMotion);
+    document.documentElement.style.setProperty('--poietek-ui-scale', String(preferences.appearance.interfaceScalePercent / 100));
+    window.dispatchEvent(new CustomEvent<StudioPreferences>('poietek:preferences-applied', {detail: preferences}));
+  }, []);
+
+  useEffect(() => {
+    applyStudioPreferences(new BrowserStudioSettingsRepository().load().preferences);
+  }, [applyStudioPreferences]);
 
   useEffect(() => {
     sessionStorage.setItem('poietek-active-area', area);
@@ -53,13 +75,78 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
         event.preventDefault();
         setArea('ai');
       }
+      if ((event.ctrlKey || event.metaKey) && event.key === ',') {
+        event.preventDefault();
+        setSetupTab('profiles');
+        setSetupOpen(true);
+      }
     };
     window.addEventListener('keydown', switchArea);
     return () => window.removeEventListener('keydown', switchArea);
   }, []);
 
+  useEffect(() => {
+    if (!pendingCommand || pendingCommand.area !== area) return;
+    dispatchStudioCommand(pendingCommand.detail);
+    setPendingCommand(null);
+  }, [area, pendingCommand]);
+
+  const runCommand = useCallback((detail: StudioCommandDetail, targetArea?: StudioArea) => {
+    if (targetArea && targetArea !== area) {
+      setPendingCommand({detail, area: targetArea});
+      setArea(targetArea);
+      return;
+    }
+    dispatchStudioCommand(detail);
+  }, [area]);
+
+  const openSetup = useCallback((tab: StudioSetupTab) => {
+    setSetupTab(tab);
+    setSetupOpen(true);
+  }, []);
+
+  useEffect(() => {
+    const handleStudioShortcut = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target?.isContentEditable || target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement) return;
+      const commandKey = event.ctrlKey || event.metaKey;
+      const key = event.key.toLowerCase();
+      let detail: StudioCommandDetail | null = null;
+      let targetArea: StudioArea | undefined;
+
+      if (commandKey && key === 'n') { detail = {id: 'project-new'}; targetArea = 'arrange'; }
+      else if (commandKey && key === 'o') { detail = {id: 'project-open'}; targetArea = 'arrange'; }
+      else if (commandKey && key === 's') { detail = {id: 'project-save'}; targetArea = 'arrange'; }
+      else if (commandKey && key === 'i') { detail = {id: 'audio-import'}; targetArea = 'arrange'; }
+      else if (commandKey && key === 'e') { detail = {id: 'audio-export-wav'}; targetArea = 'arrange'; }
+      else if (commandKey && key === 'z') {
+        detail = {id: event.shiftKey ? 'edit-redo' : 'edit-undo'};
+        targetArea = area === 'rack' ? 'rack' : 'arrange';
+      } else if (!commandKey && event.code === 'Space') {
+        detail = {id: 'transport-play-toggle'};
+        targetArea = area === 'rack' ? 'rack' : 'arrange';
+      } else if (!commandKey && key === 'r') {
+        detail = {id: 'transport-record-toggle'};
+        targetArea = 'arrange';
+      }
+
+      if (!detail) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      runCommand(detail, targetArea);
+    };
+    window.addEventListener('keydown', handleStudioShortcut, {capture: true});
+    return () => window.removeEventListener('keydown', handleStudioShortcut, {capture: true});
+  }, [area, runCommand]);
+
   return (
     <div className="poietek-app-shell">
+      <StudioMenuBar
+        activeArea={area}
+        onAreaChange={setArea}
+        onCommand={runCommand}
+        onOpenSetup={openSetup}
+      />
       <header className="poietek-command-bar">
         <div className="poietek-command-brand">
           <span aria-hidden="true">P</span>
@@ -119,6 +206,17 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
           </div>
         )}
       </div>
+
+      {setupOpen && (
+        <Suspense fallback={<div className="poietek-setup-loading" role="status">Opening Studio Setup…</div>}>
+          <StudioSetupModal
+            isOpen
+            initialTab={setupTab}
+            onClose={() => setSetupOpen(false)}
+            onApplied={applyStudioPreferences}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

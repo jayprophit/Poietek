@@ -2,10 +2,21 @@
   width: 100vw;
   height: 100vh;
   display: grid;
-  grid-template-rows: 54px minmax(0, 1fr);
+  grid-template-rows: 30px 54px minmax(0, 1fr);
   overflow: hidden;
   color: #e7efee;
   background: #070a0c;
+}
+
+.poietek-setup-loading {
+  position: fixed;
+  z-index: 14500;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #efbd85;
+  background: rgba(0,0,0,.82);
+  font: 11px ui-monospace, Consolas, monospace;
 }
 
 .poietek-command-bar {
@@ -124,7 +135,7 @@
 .poietek-offline-panel {
   position: fixed;
   z-index: 12000;
-  top: 58px;
+  top: 88px;
   right: 10px;
   width: min(470px, calc(100vw - 20px));
   max-height: min(760px, calc(100dvh - 70px));
@@ -180,8 +191,9 @@
 .poietek-rack-mobile-note { display: none; }
 
 @media (max-width: 760px) {
-  .poietek-app-shell { grid-template-rows: calc(50px + env(safe-area-inset-top, 0px)) minmax(0, 1fr); }
-  .poietek-command-bar { grid-template-columns: auto minmax(0, 1fr) 48px; padding-top: env(safe-area-inset-top, 0px); }
+  .poietek-app-shell { grid-template-rows: calc(30px + env(safe-area-inset-top, 0px)) 50px minmax(0, 1fr); }
+  .poietek-menu-bar { padding-top: env(safe-area-inset-top, 0px); }
+  .poietek-command-bar { grid-template-columns: auto minmax(0, 1fr) 48px; }
   .poietek-command-brand { padding: 6px; }
   .poietek-command-brand > div { display: none; }
   .poietek-command-brand > span { width: 34px; height: 34px; }
@@ -191,7 +203,7 @@
   .poietek-offline-center { min-width: 0; }
   .poietek-offline-trigger { justify-content: center; padding: 5px; }
   .poietek-offline-trigger > span { display: none; }
-  .poietek-offline-panel { top: calc(54px + env(safe-area-inset-top, 0px)); right: 6px; width: calc(100vw - 12px); max-height: calc(100dvh - 62px - env(safe-area-inset-top, 0px)); padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+  .poietek-offline-panel { top: calc(84px + env(safe-area-inset-top, 0px)); right: 6px; width: calc(100vw - 12px); max-height: calc(100dvh - 92px - env(safe-area-inset-top, 0px)); padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
   .poietek-offline-summary { grid-template-columns: 1fr; }
   .poietek-offline-summary > span { grid-template-columns: auto minmax(0,1fr) auto; }
   .poietek-offline-summary b { grid-column: 3; }

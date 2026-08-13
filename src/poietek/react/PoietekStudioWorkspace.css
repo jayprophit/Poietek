@@ -510,6 +510,14 @@
   background: rgba(95, 209, 196, 0.1);
 }
 
+.poietek-transport-controls > .poietek-record-button { color: #be7d78; }
+.poietek-transport-controls > .poietek-record-button.is-recording {
+  color: #fff;
+  border-color: #e16d67;
+  background: linear-gradient(#d65a55, #8f2f2c);
+  box-shadow: 0 0 0 2px rgba(224,91,85,.18), 0 0 18px rgba(224,91,85,.35);
+}
+
 .poietek-time-display {
   min-width: 146px;
   display: grid;

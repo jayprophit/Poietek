@@ -8,7 +8,6 @@ import {
 } from './types';
 import { audioEngine } from './audio/engine';
 import { midiManager } from './midi/manager';
-import { Navigation } from './components/Navigation';
 import { HardwareInterfaceUnit } from './components/rack/HardwareInterfaceUnit';
 import { StudioTransport } from './components/rack/StudioTransport';
 import { StudioRearPanel } from './components/rack/StudioRearPanel';
@@ -34,7 +33,6 @@ import { CircleOfFifthsWheel } from './components/daw/CircleOfFifthsWheel';
 import { VocalContourEditor } from './components/daw/VocalContourEditor';
 import { HumanPulseGroovePool } from './components/daw/HumanPulseGroovePool';
 import { PianoRollSequencer } from './components/daw/PianoRollSequencer';
-import { DAWMenuBar } from './components/daw/DAWMenuBar';
 import { DAWBrowserSidebar } from './components/daw/DAWBrowserSidebar';
 import { HorizonWaveformSequencer } from './components/daw/HorizonWaveformSequencer';
 import { BeatLoomChannelRack } from './components/daw/BeatLoomChannelRack';
@@ -45,11 +43,8 @@ import { RackStackManager } from './components/rack/RackStackManager';
 import { FloatingQuickPalette } from './components/daw/FloatingQuickPalette';
 import { TemplatesModal } from './components/daw/TemplatesModal';
 import { GuidedWalkthroughBanner } from './components/daw/GuidedWalkthroughBanner';
+import {subscribeStudioCommands} from './poietek/react/studioCommands';
 import {BrowserStudioSettingsRepository, type StudioPreferences} from './poietek/settings';
-
-const StudioSetupModal = React.lazy(() =>
-  import('./poietek/react/StudioSetupModal').then((module) => ({default: module.StudioSetupModal})),
-);
 
 export default function App() {
   // Master Global App State
@@ -73,7 +68,6 @@ export default function App() {
   const [detachedWorkspaces, setDetachedWorkspaces] = useState<WorkspaceType[]>([]);
 
   const [isTemplatesOpen, setIsTemplatesOpen] = useState<boolean>(false);
-  const [isStudioSetupOpen, setIsStudioSetupOpen] = useState<boolean>(false);
   const [isWalkthroughActive, setIsWalkthroughActive] = useState<boolean>(true);
   const [autoHideBars, setAutoHideBars] = useState<boolean>(false);
 
@@ -297,12 +291,6 @@ export default function App() {
     setMasterState((prev) => ({ ...prev, isPlaying: !prev.isPlaying }));
   }, []);
 
-  // Handle Record
-  const handleToggleRecord = useCallback(() => {
-    audioEngine.initAudio();
-    setMasterState((prev) => ({ ...prev, isRecording: !prev.isRecording }));
-  }, []);
-
   // Tap Tempo calculation
   const [tapTimes, setTapTimes] = useState<number[]>([]);
   const handleTapTempo = useCallback(() => {
@@ -338,17 +326,51 @@ export default function App() {
     setMasterState((prev) => ({ ...prev, bpm: newBpm }));
   };
 
-  const handleApplyStudioPreferences = useCallback((preferences: StudioPreferences) => {
-    setAutoHideBars(preferences.appearance.autoHideTransportBars);
-    document.documentElement.dataset.poietekTheme = preferences.appearance.theme;
-    document.documentElement.dataset.poietekDensity = preferences.appearance.density;
-    document.documentElement.dataset.poietekReduceMotion = String(preferences.appearance.reduceMotion);
-    document.documentElement.style.setProperty('--poietek-ui-scale', String(preferences.appearance.interfaceScalePercent / 100));
-  }, []);
+  useEffect(() => subscribeStudioCommands((command) => {
+    switch (command.id) {
+      case 'edit-undo':
+        handleUndo();
+        break;
+      case 'edit-redo':
+        handleRedo();
+        break;
+      case 'transport-play-toggle':
+        handleTogglePlayStop();
+        break;
+      case 'transport-stop':
+        setMasterState((current) => ({...current, isPlaying: false, currentStep: 0}));
+        break;
+      case 'transport-return-zero':
+        setMasterState((current) => ({...current, currentStep: 0}));
+        break;
+      case 'transport-metronome-toggle':
+        setMasterState((current) => ({...current, metronome: !current.metronome}));
+        break;
+      case 'rack-flip':
+        setIsFlipped((current) => !current);
+        break;
+      case 'rack-templates':
+        setIsTemplatesOpen(true);
+        break;
+      case 'rack-workspace': {
+        if (!command.value) break;
+        const workspace = command.value as WorkspaceType;
+        setMasterState((current) => ({...current, activeWorkspace: workspace}));
+        handleAddModuleToRack(workspace);
+        break;
+      }
+    }
+  }), [handleRedo, handleTogglePlayStop, handleUndo]);
 
   useEffect(() => {
-    handleApplyStudioPreferences(new BrowserStudioSettingsRepository().load().preferences);
-  }, [handleApplyStudioPreferences]);
+    setAutoHideBars(new BrowserStudioSettingsRepository().load().preferences.appearance.autoHideTransportBars);
+    const applyAppearance = (event: Event) => {
+      const preferences = (event as CustomEvent<StudioPreferences>).detail;
+      setAutoHideBars(preferences.appearance.autoHideTransportBars);
+    };
+    window.addEventListener('poietek:preferences-applied', applyAppearance);
+    return () => window.removeEventListener('poietek:preferences-applied', applyAppearance);
+  }, []);
 
   const getRackTitle = (ws: WorkspaceType) => {
     switch (ws) {
@@ -402,47 +424,6 @@ export default function App() {
 
   return (
     <div className="h-screen w-screen bg-stone-950 text-neutral-100 flex flex-col font-mono selection:bg-amber-500 selection:text-neutral-950 antialiased overflow-hidden select-none relative">
-      {/* Auto-Hiding Top Navigation & Menu Container */}
-      <div
-        className={`transition-all duration-300 z-[200] ${
-          autoHideBars
-            ? 'h-2 hover:h-auto overflow-hidden opacity-30 hover:opacity-100 bg-amber-500/30'
-            : ''
-        }`}
-      >
-        {/* Top DAW Desktop Unified Menu Bar (Studio DAW Suite) */}
-        <DAWMenuBar
-          activeWorkspace={masterState.activeWorkspace}
-          setActiveWorkspace={(ws) => {
-            setMasterState((prev) => ({ ...prev, activeWorkspace: ws }));
-            handleAddModuleToRack(ws);
-          }}
-          isFlipped={isFlipped}
-          onToggleFlip={() => setIsFlipped((prev) => !prev)}
-          openAIGrooveModal={() => setIsAIGrooveOpen(true)}
-          openTemplatesModal={() => setIsTemplatesOpen(true)}
-          openStudioSetup={() => setIsStudioSetupOpen(true)}
-          bpm={masterState.bpm}
-          detachedWorkspaces={detachedWorkspaces}
-          onDetachWorkspace={handleDetachWorkspace}
-          onUndo={handleUndo}
-          onRedo={handleRedo}
-          canUndo={canUndo}
-          canRedo={canRedo}
-        />
-
-        {/* Top Header / Studio Hardware Bar */}
-        <Navigation
-          masterState={masterState}
-          setMasterState={setMasterState}
-          connectedDevices={connectedDevices}
-          onTriggerPlayStop={handleTogglePlayStop}
-          onTriggerRecord={handleToggleRecord}
-          onTapTempo={handleTapTempo}
-          openAIGrooveModal={() => setIsAIGrooveOpen(true)}
-        />
-      </div>
-
       {/* Starter Song Interactive Walkthrough Banner */}
       {isWalkthroughActive && (
         <GuidedWalkthroughBanner
@@ -534,7 +515,6 @@ export default function App() {
           setMasterState={setMasterState}
           connectedDevices={connectedDevices}
           onTriggerPlayStop={handleTogglePlayStop}
-          onTriggerRecord={handleToggleRecord}
           onTapTempo={handleTapTempo}
           isFlipped={isFlipped}
           onToggleFlip={() => setIsFlipped((prev) => !prev)}
@@ -567,16 +547,6 @@ export default function App() {
         currentRackModules={rackModules}
         bpm={masterState.bpm}
       />
-
-      {isStudioSetupOpen && (
-        <React.Suspense fallback={<div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/80 text-amber-300">Opening Studio Setup…</div>}>
-          <StudioSetupModal
-            isOpen
-            onClose={() => setIsStudioSetupOpen(false)}
-            onApplied={handleApplyStudioPreferences}
-          />
-        </React.Suspense>
-      )}
 
       {/* Previewable local groove-assistant concept */}
       <GenerativeGrooveModal

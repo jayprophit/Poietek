@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Play,
   Square,
-  Circle,
   SkipBack,
   SkipForward,
   RotateCcw,
@@ -21,7 +20,6 @@ interface StudioTransportProps {
   setMasterState: React.Dispatch<React.SetStateAction<MasterState>>;
   connectedDevices: ConnectedDevice[];
   onTriggerPlayStop: () => void;
-  onTriggerRecord: () => void;
   onTapTempo: () => void;
   isFlipped: boolean;
   onToggleFlip: () => void;
@@ -33,7 +31,6 @@ export const StudioTransport: React.FC<StudioTransportProps> = ({
   setMasterState,
   connectedDevices,
   onTriggerPlayStop,
-  onTriggerRecord,
   onTapTempo,
   isFlipped,
   onToggleFlip,
@@ -142,18 +139,6 @@ export const StudioTransport: React.FC<StudioTransportProps> = ({
                   <span>PLAY</span>
                 </>
               )}
-            </button>
-
-            <button
-              onClick={onTriggerRecord}
-              className={`px-3 py-2 rounded-lg font-black text-xs transition-all flex items-center gap-1.5 border shadow-lg ${
-                masterState.isRecording
-                  ? 'bg-gradient-to-b from-rose-600 to-rose-800 text-white border-rose-400 shadow-rose-600/50 animate-pulse'
-                  : 'bg-gradient-to-b from-neutral-700 to-neutral-800 text-neutral-300 hover:from-neutral-600 hover:to-neutral-700 border-neutral-600'
-              }`}
-            >
-              <Circle className="w-3.5 h-3.5 fill-current" />
-              <span>REC</span>
             </button>
 
             <button

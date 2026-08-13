@@ -19,6 +19,9 @@ import {
 } from "../project/editOperations";
 import type { ProjectSummary } from "../project/ProjectRepository";
 import { secondsToTicks, ticksToSeconds } from "../timeline/tempo";
+import {BrowserAudioRecorder, type ActiveBrowserRecording} from '../capture/BrowserAudioRecorder';
+import {WavTimelineExportService} from '../export/WavTimelineExportService';
+import {WebOfflineTimelineRenderer} from '../export/WebOfflineTimelineRenderer';
 import { usePoietekRuntime } from "./PoietekRuntimeProvider";
 import { decodeBasicAudioHealth } from "./decodeBasicAudioHealth";
 import {
@@ -37,6 +40,7 @@ import {
 import "./PoietekStudioWorkspace.css";
 import {StudioArrangerView} from './StudioArrangerView';
 import {StudioConsoleView} from './StudioConsoleView';
+import {subscribeStudioCommands, type StudioCommandDetail} from './studioCommands';
 
 type TransportState = "stopped" | "starting" | "playing" | "paused";
 type SaveState = "loading" | "saving" | "saved" | "error";
@@ -108,6 +112,12 @@ export function PoietekStudioWorkspace({
     error: runtimeError,
   } = usePoietekRuntime();
   const adoptedProviderProject = useRef(false);
+  const newProjectInputRef = useRef<HTMLInputElement>(null);
+  const importInputRef = useRef<HTMLInputElement>(null);
+  const projectRackRef = useRef<HTMLElement>(null);
+  const activeRecordingRef = useRef<ActiveBrowserRecording | null>(null);
+  const recordingStartTickRef = useRef(0);
+  const commandHandlerRef = useRef<(detail: StudioCommandDetail) => void>(() => undefined);
   const [project, setProject] = useState<PoietekProject | null>(null);
   const [projects, setProjects] = useState<ProjectSummary[]>([]);
   const [newProjectTitle, setNewProjectTitle] = useState("New Session");
@@ -119,6 +129,8 @@ export function PoietekStudioWorkspace({
   const [transport, setTransport] = useState<TransportState>("stopped");
   const [playheadSeconds, setPlayheadSeconds] = useState(0);
   const [activeDesk, setActiveDesk] = useState<'arrange' | 'console' | 'health'>('arrange');
+  const [isRecording, setIsRecording] = useState(false);
+  const recorder = useMemo(() => new BrowserAudioRecorder(runtime.importAudio), [runtime]);
 
   const refreshProjectList = useCallback(async () => {
     const summaries = await runtime.projects.list();
@@ -356,6 +368,77 @@ export function PoietekStudioWorkspace({
     }
   };
 
+  const toggleRecording = async () => {
+    if (!project || busyAction) return;
+    const active = activeRecordingRef.current;
+    if (!active) {
+      beginAction('Opening audio input');
+      try {
+        await pauseForEdit();
+        const started = await recorder.start({monitorInput: false});
+        activeRecordingRef.current = started;
+        recordingStartTickRef.current = secondsToTicks(
+          playheadSeconds,
+          project.tempoMap,
+          project.settings.ppq,
+        );
+        setIsRecording(true);
+        setNotice(`Recording from the selected browser/system input as ${started.mimeType || 'the browser default format'}.`);
+      } catch (reason) {
+        setError(messageFrom(reason));
+      } finally {
+        setBusyAction(null);
+      }
+      return;
+    }
+
+    activeRecordingRef.current = null;
+    setIsRecording(false);
+    beginAction('Finishing and importing recording');
+    setSaveState('saving');
+    let importedAssetId: string | null = null;
+    try {
+      const result = await active.stop();
+      importedAssetId = result.importedAudio.asset.id;
+      const waveformPreview = createStoredWaveformPreview(result.importedAudio.waveform);
+      let health;
+      try {
+        health = storeBasicAudioHealth(await decodeBasicAudioHealth(result.recordedBlob));
+      } catch (healthError) {
+        health = storeUnavailableBasicAudioHealth(messageFrom(healthError));
+      }
+      const durableAsset: Asset = {
+        ...result.importedAudio.asset,
+        metadata: {
+          ...result.importedAudio.asset.metadata,
+          ...(waveformPreview ? {[WAVEFORM_PREVIEW_METADATA_KEY]: waveformPreview} : {}),
+          [BASIC_HEALTH_METADATA_KEY]: health,
+          captureMethod: 'browser_media_recorder',
+          monitoringWasEnabled: result.monitoringWasEnabled,
+        },
+      };
+      const next = await runtime.getSession().mutate((current) => {
+        let changed = addAsset(current, durableAsset);
+        changed = addAudioTrack(changed, trackDisplayName(result.fileName));
+        const targetTrack = [...changed.tracks].reverse().find((track) => track.type === 'audio');
+        if (!targetTrack) throw new Error('Could not create a track for the recording.');
+        return addAudioClip({
+          project: changed,
+          trackId: targetTrack.id,
+          asset: durableAsset,
+          startTick: recordingStartTickRef.current,
+        });
+      });
+      importedAssetId = null;
+      await markSaved(next, `Recorded “${result.fileName}”, created an audio track, and saved the take locally.`);
+    } catch (reason) {
+      if (importedAssetId) await runtime.assets.remove(importedAssetId).catch(() => undefined);
+      failAction(reason);
+    } finally {
+      setBusyAction(null);
+    }
+  };
+
   const analyzeAsset = async (asset: Asset) => {
     if (!project || busyAction) return;
     beginAction("Analyzing audio health");
@@ -538,6 +621,57 @@ export function PoietekStudioWorkspace({
     }
   };
 
+  const saveProject = async () => {
+    if (!project || busyAction) return;
+    beginAction('Saving project');
+    setSaveState('saving');
+    try {
+      await runtime.projects.save(project);
+      await refreshProjectList();
+      const now = new Date().toISOString();
+      setSavedAt(now);
+      setSaveState('saved');
+      setNotice('Project is saved in the local project store.');
+    } catch (reason) {
+      failAction(reason);
+    } finally {
+      setBusyAction(null);
+    }
+  };
+
+  const exportWav = async () => {
+    if (!project || busyAction) return;
+    if (!hasClips) {
+      setError('Import or record audio before exporting a WAV file.');
+      return;
+    }
+    beginAction('Rendering PCM WAV');
+    try {
+      await pauseForEdit();
+      const service = new WavTimelineExportService(new WebOfflineTimelineRenderer(runtime.assets));
+      const capability = service.getCapability();
+      if (capability.state === 'unavailable') throw new Error(capability.reason || 'Offline WAV rendering is unavailable.');
+      const result = await service.export(project, {
+        sampleRate: project.settings.sampleRate,
+        channelCount: 2,
+        onProgress: (progress) => {
+          setBusyAction(progress.phase === 'render' ? 'Rendering audio timeline' : 'Encoding PCM16 WAV');
+        },
+      });
+      const url = URL.createObjectURL(result.blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = result.fileName;
+      anchor.click();
+      setTimeout(() => URL.revokeObjectURL(url), 0);
+      setNotice(`Exported “${result.fileName}” as verified PCM16 WAV. ${result.renderLimitations.join(' ')}`);
+    } catch (reason) {
+      setError(messageFrom(reason));
+    } finally {
+      setBusyAction(null);
+    }
+  };
+
   const seek = async (seconds: number) => {
     if (!project) return;
     const target = Math.max(0, Math.min(timelineSpan, seconds));
@@ -555,6 +689,63 @@ export function PoietekStudioWorkspace({
     if (!bounds.width) return;
     void seek(((event.clientX - bounds.left) / bounds.width) * timelineSpan);
   };
+
+  commandHandlerRef.current = (command) => {
+    switch (command.id) {
+      case 'project-new':
+        newProjectInputRef.current?.focus();
+        newProjectInputRef.current?.select();
+        break;
+      case 'project-open':
+        projectRackRef.current?.scrollIntoView({block: 'nearest'});
+        projectRackRef.current?.querySelector<HTMLButtonElement>('.poietek-project-open:not(:disabled)')?.focus();
+        break;
+      case 'project-save':
+        void saveProject();
+        break;
+      case 'audio-import':
+        importInputRef.current?.click();
+        break;
+      case 'audio-export-wav':
+        void exportWav();
+        break;
+      case 'edit-undo':
+        void undo();
+        break;
+      case 'edit-redo':
+        void redo();
+        break;
+      case 'transport-play-toggle':
+        void (transport === 'playing' ? pause() : play());
+        break;
+      case 'transport-stop':
+        void stop();
+        break;
+      case 'transport-return-zero':
+        void seek(0);
+        break;
+      case 'transport-record-toggle':
+        void toggleRecording();
+        break;
+      case 'arrange-show-timeline':
+        setActiveDesk('arrange');
+        break;
+      case 'arrange-show-console':
+        setActiveDesk('console');
+        break;
+      case 'arrange-show-health':
+        setActiveDesk('health');
+        break;
+    }
+  };
+
+  useEffect(() => subscribeStudioCommands((command) => commandHandlerRef.current(command)), []);
+
+  useEffect(() => () => {
+    const active = activeRecordingRef.current;
+    activeRecordingRef.current = null;
+    if (active) void active.cancel().catch(() => undefined);
+  }, []);
 
   const storageLabel =
     typeof indexedDB === "undefined"
@@ -608,7 +799,7 @@ export function PoietekStudioWorkspace({
       </header>
 
       <div className="poietek-workspace-grid">
-        <aside className="poietek-project-rack" aria-label="Local projects">
+        <aside className="poietek-project-rack" aria-label="Local projects" ref={projectRackRef}>
           <div className="poietek-panel-heading">
             <div>
               <p className="poietek-eyebrow">Local-first</p>
@@ -628,6 +819,7 @@ export function PoietekStudioWorkspace({
             <div>
               <input
                 id="poietek-new-project-name"
+                ref={newProjectInputRef}
                 value={newProjectTitle}
                 onChange={(event) => setNewProjectTitle(event.target.value)}
                 disabled={Boolean(busyAction)}
@@ -694,6 +886,7 @@ export function PoietekStudioWorkspace({
                 <span>Import audio</span>
                 <input
                   type="file"
+                  ref={importInputRef}
                   accept="audio/*,.wav,.wave,.aif,.aiff,.flac,.mp3,.m4a,.ogg,.opus"
                   onChange={(event) => void importAudio(event)}
                   disabled={Boolean(busyAction)}
@@ -738,6 +931,16 @@ export function PoietekStudioWorkspace({
               </button>
               <button type="button" onClick={() => void stop()} disabled={Boolean(busyAction) || transport === "stopped"} aria-label="Stop">
                 ■
+              </button>
+              <button
+                type="button"
+                className={`poietek-record-button ${isRecording ? 'is-recording' : ''}`}
+                onClick={() => void toggleRecording()}
+                disabled={(Boolean(busyAction) && !isRecording) || recorder.getCapability().state === 'unavailable'}
+                aria-label={isRecording ? 'Stop recording' : 'Record audio input'}
+                title={recorder.getCapability().state === 'available' ? 'Record the selected browser/system audio input' : recorder.getCapability().reason || 'Recording unavailable'}
+              >
+                ●
               </button>
               <div className="poietek-time-display" aria-label={`Playhead ${formatClock(playheadSeconds)}`}>
                 <span>{formatClock(playheadSeconds)}</span>

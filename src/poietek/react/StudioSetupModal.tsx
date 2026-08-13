@@ -28,15 +28,16 @@ import {
   validateStudioSettingsDocument,
 } from '../settings';
 
-type SetupTab = 'profiles' | 'audio' | 'midi' | 'recording' | 'editing' | 'files' | 'plugins' | 'library' | 'appearance' | 'privacy' | 'diagnostics';
+export type StudioSetupTab = 'profiles' | 'audio' | 'midi' | 'recording' | 'editing' | 'files' | 'plugins' | 'library' | 'appearance' | 'privacy' | 'diagnostics';
 
 export interface StudioSetupModalProps {
   isOpen: boolean;
   onClose: () => void;
   onApplied?: (preferences: StudioPreferences) => void;
+  initialTab?: StudioSetupTab;
 }
 
-const tabs: Array<{id: SetupTab; label: string; icon: React.ComponentType<{className?: string}>}> = [
+const tabs: Array<{id: StudioSetupTab; label: string; icon: React.ComponentType<{className?: string}>}> = [
   {id: 'profiles', label: 'Profiles', icon: UserRoundCog},
   {id: 'audio', label: 'Audio', icon: Sliders},
   {id: 'midi', label: 'MIDI & Sync', icon: Music},
@@ -88,9 +89,9 @@ function downloadJson(filename: string, value: unknown): void {
   URL.revokeObjectURL(url);
 }
 
-export const StudioSetupModal: React.FC<StudioSetupModalProps> = ({isOpen, onClose, onApplied}) => {
+export const StudioSetupModal: React.FC<StudioSetupModalProps> = ({isOpen, onClose, onApplied, initialTab = 'profiles'}) => {
   const repository = useMemo(() => new BrowserStudioSettingsRepository(), []);
-  const [activeTab, setActiveTab] = useState<SetupTab>('profiles');
+  const [activeTab, setActiveTab] = useState<StudioSetupTab>(initialTab);
   const [settings, setSettings] = useState<StudioSettingsDocument>(() => repository.load());
   const [audioDevices, setAudioDevices] = useState<MediaDeviceInfo[]>([]);
   const [audioReport, setAudioReport] = useState('Not inspected in this session.');
@@ -106,13 +107,14 @@ export const StudioSetupModal: React.FC<StudioSetupModalProps> = ({isOpen, onClo
   useEffect(() => midiManager.subscribeState(setMidiState), []);
   useEffect(() => {
     if (!isOpen) return;
+    setActiveTab(initialTab);
     setSettings(repository.load());
     const keydown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', keydown);
     return () => window.removeEventListener('keydown', keydown);
-  }, [isOpen, onClose, repository]);
+  }, [initialTab, isOpen, onClose, repository]);
 
   if (!isOpen) return null;
 
