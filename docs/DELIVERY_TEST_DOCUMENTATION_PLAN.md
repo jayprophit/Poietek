@@ -196,6 +196,10 @@ button or serializable contract is not completion of the underlying service.
 
 ## 7. Documentation system
 
+The professional publication is organized as fourteen numbered volumes under
+`docs/volumes/`, with the master specification retaining requirement and status
+control across the series.
+
 ### 7.1 Audience sets
 
 - **Creator guide:** first launch, projects, recording, arranging, editing,

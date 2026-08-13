@@ -54,6 +54,7 @@ framework-independent core, all Node tests and the production Vite build.
 
 ## Architecture and status
 
+- [Fourteen-volume professional specification series](docs/volumes/README.md)
 - [Controlled master specification](docs/POIETEK_MASTER_SPECIFICATION.md)
 - [UI, menu, settings, screen and workflow catalog](docs/UI_SCREEN_WORKFLOW_CATALOG.md)
 - [Platform data, API, AI, security and cloud blueprint](docs/PLATFORM_DATA_API_SECURITY_BLUEPRINT.md)

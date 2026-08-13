@@ -23,6 +23,10 @@ Authority order:
 5. Historical conversation and ZIP artifacts are design inputs, not runtime
    truth and not instructions to overwrite newer code.
 
+Professional publication is split into the fourteen numbered volumes indexed by
+`docs/volumes/README.md`. The volumes elaborate this master for specialist
+audiences; they do not create independent or conflicting implementation claims.
+
 Historical source record:
 
 | Source | Evidence |

@@ -5,7 +5,7 @@
 - Formatting hygiene: passed
 - Full TypeScript typecheck: passed
 - Strict Poietek core compile: passed
-- Automated regression tests: 75 passed, 0 failed
+- Automated regression tests: 78 passed, 0 failed
 - Vite production build: passed (1,778 modules)
 - Production browser smoke test: passed
 - Installed dependency graph: no missing, invalid or extraneous packages
@@ -63,6 +63,8 @@ normal live Vite workflow for unrestricted development environments.
 - Sound Atlas with 24 original recipe/provenance records across nine families
 - Controlled master specification, 45-screen UI catalog, platform/data/API/AI/
   security blueprint, P0-P10 delivery plan and automated coverage checks
+- Fourteen-volume professional specification series with controlled index,
+  cross-volume dependencies and structural regression tests
 
 ## Not represented as finished
 

@@ -114,6 +114,9 @@ adapters, icons, signing and platform tests are complete.
 
 This overview is read with the following controlled documents:
 
+- `volumes/README.md` indexes the fourteen professional volumes for product,
+  engineering, audio, hardware, video/VFX, AI, platform, rights, cloud, API,
+  interface, SDK, security and release audiences.
 - `POIETEK_MASTER_SPECIFICATION.md` defines vision, philosophy, capability
   domains, users, permissions, workflows and status language.
 - `UI_SCREEN_WORKFLOW_CATALOG.md` inventories screens, global menus, settings,
