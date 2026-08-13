@@ -1,5 +1,13 @@
 import {useMemo, useState} from 'react';
 import {
+  INDUSTRY_QUALIFICATION_ASSESSMENTS,
+  INDUSTRY_REFERENCE_PLATFORMS,
+  searchIndustryQualification,
+  summarizeIndustryQualification,
+  type QualificationLaneKind,
+  type QualificationState,
+} from '../diagnostics';
+import {
   CORE_ECOSYSTEM_PILLARS,
   DEVELOPMENT_LIBRARY_APPENDICES,
   DEVELOPMENT_LIBRARY_PARTS,
@@ -15,7 +23,8 @@ import {
 import './PoietekEcosystemCenter.css';
 
 type StatusFilter = 'all' | VisionCapabilityStatus;
-type EcosystemView = 'capabilities' | 'library';
+type EcosystemView = 'capabilities' | 'library' | 'benchmark';
+type BenchmarkKindFilter = 'all' | QualificationLaneKind;
 
 const statusLabels: Record<VisionCapabilityStatus, string> = {
   operational: 'Working now',
@@ -24,32 +33,51 @@ const statusLabels: Record<VisionCapabilityStatus, string> = {
   blocked_external: 'External gate',
 };
 
+const qualificationLabels: Record<QualificationState, string> = {
+  verified: 'Verified',
+  working: 'Working slice',
+  foundation: 'Foundation',
+  specified: 'Specified',
+  external_gate: 'External gate',
+};
+
 export function PoietekEcosystemCenter() {
   const [view, setView] = useState<EcosystemView>('capabilities');
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState<StatusFilter>('all');
+  const [benchmarkKind, setBenchmarkKind] = useState<BenchmarkKindFilter>('all');
   const summary = useMemo(() => summarizeVisionCatalog(), []);
+  const qualificationSummary = useMemo(() => summarizeIndustryQualification(), []);
+  const benchmarkReferences = useMemo(
+    () => new Map(INDUSTRY_REFERENCE_PLATFORMS.map((item) => [item.id, item])),
+    [],
+  );
   const areas = useMemo(() => searchVisionCatalog(query).filter((area) => status === 'all' || area.status === status), [query, status]);
   const libraryVolumes = useMemo(() => searchDevelopmentLibrary(query).filter((volume) => status === 'all' || volume.status === status), [query, status]);
+  const benchmarkLanes = useMemo(
+    () => searchIndustryQualification(query, benchmarkKind),
+    [query, benchmarkKind],
+  );
 
   return (
     <main className="poietek-ecosystem" aria-label="Poietek ecosystem architecture">
       <header className="poietek-ecosystem-hero">
         <div>
           <p>Creative operating system · controlled catalogue {SDS_VISION_CATALOG_VERSION}</p>
-          <h1>{view === 'library' ? 'The complete development library.' : 'One studio. Thirteen connected systems.'}</h1>
-          <span>{view === 'library' ? 'Every attached source volume is cross-walked to working evidence, staged architecture, professional documentation and honest gates.' : 'The SDS vision is tracked here as executable capability, foundation, next slice, and honest release gate.'}</span>
+          <h1>{view === 'library' ? 'The complete development library.' : view === 'benchmark' ? 'Five stars must be proven.' : 'One studio. Thirteen connected systems.'}</h1>
+          <span>{view === 'library' ? 'Every attached source volume is cross-walked to working evidence, staged architecture, professional documentation and honest gates.' : view === 'benchmark' ? 'Twenty-seven qualification lanes compare the thirteen-system product and fourteen professional volumes with official category-leader capabilities. Working code, tests and independent acceptance—not ambition—control the rating.' : 'The SDS vision is tracked here as executable capability, foundation, next slice, and honest release gate.'}</span>
         </div>
         <div className="poietek-ecosystem-totals" aria-label="Capability totals">
-          <strong>{view === 'library' ? DEVELOPMENT_LIBRARY_VOLUMES.length : SDS_VISION_CATALOG.length}</strong>
-          <span>{view === 'library' ? 'source volumes mapped' : 'architecture areas'}</span>
-          <b>{view === 'library' ? '20 core · 51–53 intelligence' : `${summary.operational} working · ${summary.foundation} foundations`}</b>
+          <strong>{view === 'library' ? DEVELOPMENT_LIBRARY_VOLUMES.length : view === 'benchmark' ? `${qualificationSummary.stars.toFixed(1)}★` : SDS_VISION_CATALOG.length}</strong>
+          <span>{view === 'library' ? 'source volumes mapped' : view === 'benchmark' ? 'current evidence rating' : 'architecture areas'}</span>
+          <b>{view === 'library' ? '20 core · 51–53 intelligence' : view === 'benchmark' ? `${qualificationSummary.qualifiedLanes}/${qualificationSummary.laneCount} lanes five-star qualified` : `${summary.operational} working · ${summary.foundation} foundations`}</b>
         </div>
       </header>
 
       <nav className="poietek-ecosystem-tabs" aria-label="Ecosystem views">
         <button type="button" className={view === 'capabilities' ? 'is-active' : ''} onClick={() => setView('capabilities')}>Capability architecture</button>
         <button type="button" className={view === 'library' ? 'is-active' : ''} onClick={() => setView('library')}>Development library</button>
+        <button type="button" className={view === 'benchmark' ? 'is-active' : ''} onClick={() => setView('benchmark')}>Industry qualification</button>
       </nav>
 
       {view === 'capabilities' && <><section className="poietek-pillar-section" aria-labelledby="ecosystem-pillars-heading">
@@ -184,6 +212,87 @@ export function PoietekEcosystemCenter() {
           <div className="poietek-library-appendix-grid">
             {DEVELOPMENT_LIBRARY_APPENDICES.map((appendix) => <article key={appendix.id}><h3>{appendix.title}</h3><p>{appendix.topics.join(' · ')}</p></article>)}
           </div>
+        </section>
+      </>}
+
+      {view === 'benchmark' && <>
+        <section className="poietek-benchmark-summary" aria-labelledby="industry-qualification-heading">
+          <div className="poietek-benchmark-score">
+            <p>Evidence assessment · {qualificationSummary.assessedAt}</p>
+            <h2 id="industry-qualification-heading">Current {qualificationSummary.stars.toFixed(1)} / 5.0</h2>
+            <span>Target 5.0 · qualification is withheld until every mandatory criterion in every lane is verified.</span>
+          </div>
+          <dl>
+            <div><dt>Overall score</dt><dd>{qualificationSummary.score}/100</dd></div>
+            <div><dt>Five-star lanes</dt><dd>{qualificationSummary.qualifiedLanes}/{qualificationSummary.laneCount}</dd></div>
+            <div><dt>Verified gates</dt><dd>{qualificationSummary.verifiedCriteria}/{qualificationSummary.requiredCriteria}</dd></div>
+            <div><dt>Externally blocked</dt><dd>{qualificationSummary.blockedLanes} lanes</dd></div>
+          </dl>
+          <aside>
+            <strong>Two different benchmarks</strong>
+            <span>This qualification measures product maturity against published capabilities and release evidence. Studio Setup → Benchmark separately measures this device’s browser DSP, scheduler, offline-render and local-storage paths.</span>
+          </aside>
+        </section>
+
+        <section className="poietek-vision-section" aria-labelledby="qualification-lanes-heading">
+          <div className="poietek-ecosystem-heading">
+            <div><p>Current versus target</p><h2 id="qualification-lanes-heading">Thirteen systems plus fourteen controlled volumes</h2></div>
+            <span>{benchmarkLanes.length} of {INDUSTRY_QUALIFICATION_ASSESSMENTS.length} lanes shown</span>
+          </div>
+          <div className="poietek-vision-controls poietek-benchmark-controls">
+            <label>
+              <span>Search criteria, evidence, gaps and reference platforms</span>
+              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="automation, MIDI, rights, WCAG, render…" />
+            </label>
+            <div role="group" aria-label="Qualification lane filter">
+              {(['all', 'system', 'volume'] as const).map((item) => (
+                <button key={item} type="button" className={benchmarkKind === item ? 'is-active' : ''} onClick={() => setBenchmarkKind(item)}>
+                  {item === 'all' ? 'All 27' : item === 'system' ? '13 systems' : '14 volumes'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="poietek-benchmark-grid">
+            {benchmarkLanes.map((item) => (
+              <article key={item.id} className={`poietek-benchmark-card ${item.fiveStarQualified ? 'is-qualified' : ''}`}>
+                <header>
+                  <div><span>{item.kind === 'system' ? `System ${String(item.order).padStart(2, '0')}` : `Volume ${String(item.order).padStart(2, '0')}`}</span><h3>{item.name}</h3></div>
+                  <div className="poietek-benchmark-rating" aria-label={`${item.stars.toFixed(1)} out of five stars`}><strong>{item.stars.toFixed(1)}★</strong><small>{item.score}/100</small></div>
+                </header>
+                <p>{item.purpose}</p>
+                <div className="poietek-benchmark-peers">
+                  <b>Official reference set</b>
+                  <div>{item.peerIds.map((id) => {
+                    const reference = benchmarkReferences.get(id);
+                    return reference ? <a key={id} href={reference.officialUrl} target="_blank" rel="noreferrer" title={reference.benchmarkSignal}>{reference.name}</a> : null;
+                  })}</div>
+                </div>
+                <div className="poietek-benchmark-criteria">
+                  {item.criteria.map((entry) => (
+                    <details key={entry.id} className={`is-${entry.state}`}>
+                      <summary><span>{entry.title}</span><small>{qualificationLabels[entry.state]}</small></summary>
+                      <div><b>Current evidence</b><ul>{entry.evidence.map((evidence) => <li key={evidence}>{evidence}</li>)}</ul></div>
+                      <div className="poietek-benchmark-exit"><b>Five-star exit</b><p>{entry.fiveStarExit}</p></div>
+                    </details>
+                  ))}
+                </div>
+                <footer><span>{item.verifiedCriteria}/{item.requiredCriteria} mandatory criteria verified</span><b>{item.fiveStarQualified ? 'Five-star qualified' : item.blockers ? `${item.blockers} external gate${item.blockers === 1 ? '' : 's'}` : 'Evidence incomplete'}</b></footer>
+              </article>
+            ))}
+          </div>
+          {!benchmarkLanes.length && <div className="poietek-vision-empty"><strong>No matching qualification lane</strong><span>Try a system, volume, reference platform, requirement or gate.</span></div>}
+        </section>
+
+        <section className="poietek-benchmark-method" aria-labelledby="benchmark-method-heading">
+          <div><p>Qualification method</p><h2 id="benchmark-method-heading">No purchased review score. No marketing shortcut.</h2></div>
+          <ol>
+            <li><strong>Specified · 20 points</strong><span>A controlled requirement and acceptance path exist.</span></li>
+            <li><strong>Foundation · 40 points</strong><span>Versioned contracts, validators or safe defaults exist.</span></li>
+            <li><strong>Working · 75 points</strong><span>A useful integrated slice works, but full release acceptance is incomplete.</span></li>
+            <li><strong>Verified · 100 points</strong><span>Implementation and repeatable acceptance evidence satisfy the criterion.</span></li>
+          </ol>
+          <p>An external gate contributes zero until the device, provider, legal authority, codec, payment rail or independent test is genuinely connected and evidenced. A lane receives five stars only when every mandatory criterion is verified.</p>
         </section>
       </>}
 

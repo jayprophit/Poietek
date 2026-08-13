@@ -1,12 +1,12 @@
-# Build status — 2026-08-13
+# Build status — 2026-08-14
 
 ## Verified
 
 - Formatting hygiene: passed
 - Full TypeScript typecheck: passed
 - Strict Poietek core compile: passed
-- Automated regression tests: 82 passed, 0 failed
-- Vite production build: passed (1,779 modules)
+- Automated regression tests: 88 passed, 0 failed
+- Vite production build: passed (1,780 modules)
 - Production browser smoke test: passed
 - Installed dependency graph: no missing, invalid or extraneous packages
 - Git whitespace/conflict check: passed
@@ -32,6 +32,20 @@ UI timer jitter, 25.58x offline render speed and 32.68 MB/s temporary IndexedDB
 write/read. This is a machine/browser observation, not a commercial-product
 comparison or hardware round-trip measurement.
 
+The latest browser pass added the industry qualification centre and verified all
+27 lanes: thirteen product systems and fourteen professional volumes. The
+evidence baseline is 53/100 (2.5/5.0), 33/108 mandatory criteria verified,
+0/27 lanes five-star qualified and 12 lanes with explicit external gates. Search,
+system/volume filters, evidence disclosure and five-star exit details worked on
+desktop and at a 390-pixel mobile viewport with no horizontal overflow or console
+errors. This result is deliberately separate from the local machine benchmark.
+
+The local machine benchmark was rerun on 2026-08-14 and scored 100/100: 130.72x
+deterministic DSP throughput, 2.52 ms average UI timer jitter, 23.78x offline
+render speed and 84.57 MB/s temporary IndexedDB write/read. These are browser and
+computer observations, not audio-interface, plug-in, LUFS, true-peak or
+commercial-product measurements.
+
 The managed Codex Windows sandbox does not permit Vite's development dependency
 optimizer to traverse its normal resolution boundary. `npm run dev` therefore
 builds and serves the verified bundle on port 3000. `npm run dev:hmr` retains the
@@ -54,6 +68,8 @@ normal live Vite workflow for unrestricted development environments.
 - Audio/MIDI/sync/recording/editing/file/plugin/appearance/privacy setup UI
 - Honest 21-item original module/content catalog and procedural one-shot kit
 - Repeatable DSP/scheduler/offline-audio/storage benchmark with derived stars
+- Evidence-based industry qualification across 13 systems and 14 volumes, with
+  official references and five-star release exits
 - Original visible/source component naming with legacy ids retained for migration
 - Unified Arrange/Rack application shell with F7/F6 navigation
 - Horizon multitrack arranger using canonical clips and real stored waveforms

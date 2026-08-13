@@ -37,6 +37,12 @@ Appendices A–E and Creative OS Volumes 51–53. Search results show what is wo
 what is only specified, which professional volume owns it and what real gate
 remains.
 
+Select **Industry qualification** in the same screen for the evidence-based
+comparison across all thirteen product systems and fourteen professional
+volumes. The current baseline is 53/100 (2.5/5.0), with zero lanes falsely
+labelled five-star complete. Every card links its official reference set, shows
+current repository evidence and states the acceptance work needed to reach 5.0.
+
 ## Run and verify
 
 ```text
@@ -71,6 +77,7 @@ framework-independent core, all Node tests and the production Vite build.
 - [Integration baseline](docs/INTEGRATION_BASELINE.md)
 - [Archive policy](docs/ARCHIVE_POLICY.md)
 - [Professional workstation comparison](docs/PRO_DAW_COMPARISON.md)
+- [Industry qualification and five-star evidence baseline](docs/INDUSTRY_QUALIFICATION.md)
 - [Native scaffold boundary](src-tauri/README.md)
 
 ## Non-negotiable truth rules
