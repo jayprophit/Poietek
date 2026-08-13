@@ -18,14 +18,21 @@ Status: integrated and testable.
 
 ## Stage 2 — editor depth and recovery UX
 
-Status: contracts or partial foundations; implementation remains.
+Status: active implementation; first editor/console slice verified.
 
-- Non-destructive trim, split, slip, fades, crossfades and snapping
-- Mixer graph, automation, metering and rendered waveform cache workers
+- Non-destructive position, duration trim, split, gain, panorama, fades, mute and
+  clip removal are implemented; slip, crossfades, drag handles and comping remain
+- Track gain, panorama, mute and solo are implemented in the mixer/audio graph;
+  inserts, sends, buses, automation, metering and waveform cache workers remain
 - Recording/export/recovery controls wired into the production workspace
 - Versioned project migrations and orphan-media management
 - Real BS.1770 LUFS and true-peak analyzer with conformance fixtures
 - App icons, signing, Tauri native storage/dialog adapters and installer tests
+
+The visual presentation now uses a unified Arrange/Rack command bar, dense
+multitrack waveform lanes, a clip inspector, and the expanded Summit console.
+The rack is preserved as a primary workspace rather than hidden behind the old
+floating project button.
 
 ## Stage 3 — hardware and interoperability
 

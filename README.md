@@ -5,10 +5,21 @@ local-first creative audio workspace that preserves the useful hardware/rack UX
 while moving durable projects, media, playback and platform capabilities into a
 versioned architecture.
 
+The application now opens in the **Arrange** desk: real imported audio, stored
+waveforms, clip editing and the track-linked console. Select **Rack** (or press
+F6) for the modular device stack and rear patching; press F7 to return to the
+arranger. This preserves the tactile rack workflow while making the canonical
+song timeline the center of the production experience.
+
+The bundled Sound Atlas contains original sound-design recipes and a procedural
+one-shot kit. It does not include copied commercial factory banks, presets or
+recordings. Designs that require new multisampling or unfinished engines are
+labelled accordingly in Studio Setup.
+
 ## Current working vertical slice
 
-Open the SDS interface, then choose **PROJECT · REAL AUDIO** at the lower left.
-The production workspace can create/open local projects, import and decode real
+Open the application in **Arrange**. The production workspace can create/open
+local projects, import and decode real
 audio, persist media, display real waveform peaks, place clips on the timeline,
 play/pause/stop/seek, save/reopen, undo/redo and run honest basic PCM health
 checks. Recording, offline rendering, PCM WAV export and crash recovery are

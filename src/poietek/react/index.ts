@@ -6,3 +6,5 @@ export {
   type PoietekStudioWorkspaceProps,
 } from "./PoietekStudioWorkspace";
 export {StudioSetupModal, type StudioSetupModalProps} from './StudioSetupModal';
+export {StudioArrangerView} from './StudioArrangerView';
+export {StudioConsoleView} from './StudioConsoleView';

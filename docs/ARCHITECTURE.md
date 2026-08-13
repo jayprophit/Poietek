@@ -31,7 +31,8 @@ src/
     │                         privacy, learning, interoperability, plugin,
     │                         video/VFX and AI contracts
     ├── pwa/                  Install/offline shell integration
-    └── react/                Production project/audio workspace and SDS bridge
+    └── react/                Unified Arrange/Rack shell, Horizon arranger,
+                              Summit console, setup and SDS bridge
 ```
 
 The public API for production modules is `src/poietek/index.ts`. Subsystems may
@@ -61,6 +62,26 @@ flowchart LR
 The immediate success condition is a durable local commit. Cloud sync, AI,
 registration, blockchain evidence, payments and federation are asynchronous and
 optional. No external provider is allowed to make the editor unusable offline.
+
+## Unified studio presentation
+
+The main window now opens into the canonical **Arrange** desk. **Rack** remains a
+first-class area rather than a modal prototype; F7 selects Arrange and F6 selects
+Rack. The visual system is original but combines useful interaction principles:
+
+- track selection connects clips, mixer state and eventual per-track rack chains;
+- the Horizon arranger reads actual `PoietekProject` clips and stored waveform
+  previews;
+- the Summit console commits gain, panorama, mute and solo through
+  `ProjectSession`, so those controls affect Web Audio playback and undo/redo;
+- insert, send, meter and record-arm surfaces are explicitly bypassed or
+  unavailable until an adapter supplies real processing or measurement;
+- the SDS hardware rack, rear patching, device folding and detachable workspaces
+  remain available while their durable state is progressively migrated.
+
+Clip position, duration trim, gain, panorama, fades, mute, split and removal are
+validated pure operations. Fade envelopes are scheduled on the actual Web Audio
+gain node. Removing a clip retains its source asset for safety.
 
 ## Truth and capability rules
 

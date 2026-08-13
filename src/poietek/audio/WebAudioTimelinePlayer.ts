@@ -15,6 +15,22 @@ interface PlayableClip {
   trackPan: number;
 }
 
+export function clipFadeGainAtTime(
+  clipDurationSeconds: number,
+  fadeInSeconds: number,
+  fadeOutSeconds: number,
+  elapsedSeconds: number,
+): number {
+  if (!Number.isFinite(clipDurationSeconds) || clipDurationSeconds <= 0) return 0;
+  const elapsed = Math.max(0, Math.min(clipDurationSeconds, elapsedSeconds));
+  const fadeIn = Math.max(0, Math.min(clipDurationSeconds, fadeInSeconds));
+  const fadeOut = Math.max(0, Math.min(clipDurationSeconds, fadeOutSeconds));
+  const fadeInGain = fadeIn > 0 ? Math.min(1, elapsed / fadeIn) : 1;
+  const fadeOutGain =
+    fadeOut > 0 ? Math.min(1, (clipDurationSeconds - elapsed) / fadeOut) : 1;
+  return Math.max(0, Math.min(1, fadeInGain, fadeOutGain));
+}
+
 export class WebAudioTimelinePlayer {
   private context: AudioContext | null = null;
   private resolver: AssetAudioResolver | null = null;
@@ -208,8 +224,59 @@ export class WebAudioTimelinePlayer {
 
     const gain = context.createGain();
     const pan = context.createStereoPanner();
-    gain.gain.value = Math.pow(10, (clip.gainDb + trackGainDb) / 20);
+    const baseGain = Math.pow(10, (clip.gainDb + trackGainDb) / 20);
     pan.pan.value = Math.max(-1, Math.min(1, clip.pan + trackPan));
+
+    const startAt = this.startedAtContextSeconds + delay;
+    const endElapsed = elapsedIntoClip + duration;
+    gain.gain.setValueAtTime(
+      baseGain *
+        clipFadeGainAtTime(
+          clipDuration,
+          clip.fadeInSeconds,
+          clip.fadeOutSeconds,
+          elapsedIntoClip,
+        ),
+      startAt,
+    );
+
+    const fadeInBoundary = clip.fadeInSeconds;
+    if (fadeInBoundary > elapsedIntoClip && fadeInBoundary < endElapsed) {
+      gain.gain.linearRampToValueAtTime(
+        baseGain *
+          clipFadeGainAtTime(
+            clipDuration,
+            clip.fadeInSeconds,
+            clip.fadeOutSeconds,
+            fadeInBoundary,
+          ),
+        startAt + fadeInBoundary - elapsedIntoClip,
+      );
+    }
+
+    const fadeOutBoundary = clipDuration - clip.fadeOutSeconds;
+    if (fadeOutBoundary > elapsedIntoClip && fadeOutBoundary < endElapsed) {
+      gain.gain.setValueAtTime(
+        baseGain *
+          clipFadeGainAtTime(
+            clipDuration,
+            clip.fadeInSeconds,
+            clip.fadeOutSeconds,
+            fadeOutBoundary,
+          ),
+        startAt + fadeOutBoundary - elapsedIntoClip,
+      );
+    }
+    gain.gain.linearRampToValueAtTime(
+      baseGain *
+        clipFadeGainAtTime(
+          clipDuration,
+          clip.fadeInSeconds,
+          clip.fadeOutSeconds,
+          endElapsed,
+        ),
+      startAt + duration,
+    );
 
     source.connect(gain).connect(pan).connect(context.destination);
 
@@ -231,7 +298,7 @@ export class WebAudioTimelinePlayer {
     };
 
     try {
-      source.start(this.startedAtContextSeconds + delay, sourceOffset, duration);
+      source.start(startAt, sourceOffset, duration);
       this.scheduled.push(scheduled);
     } catch (error) {
       source.onended = null;

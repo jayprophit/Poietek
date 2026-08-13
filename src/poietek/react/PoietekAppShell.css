@@ -1,0 +1,105 @@
+.poietek-app-shell {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 54px minmax(0, 1fr);
+  overflow: hidden;
+  color: #e7efee;
+  background: #070a0c;
+}
+
+.poietek-command-bar {
+  position: relative;
+  z-index: 500;
+  display: grid;
+  grid-template-columns: minmax(190px, 260px) minmax(360px, 1fr) minmax(190px, 270px);
+  align-items: stretch;
+  border-bottom: 1px solid #4a3a2d;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.055), transparent 48%),
+    #161a1c;
+  box-shadow: 0 3px 14px rgba(0,0,0,.38);
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+
+.poietek-command-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 12px;
+  border-right: 1px solid #343b3f;
+}
+.poietek-command-brand > span {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e2aa71;
+  border-radius: 6px;
+  color: #211308;
+  background: linear-gradient(145deg, #efbd85, #b76f39);
+  font-family: Georgia, serif;
+  font-size: 20px;
+  font-weight: 900;
+  box-shadow: inset 0 1px rgba(255,255,255,.42), 0 3px 8px rgba(0,0,0,.35);
+}
+.poietek-command-brand > div { display: grid; gap: 1px; }
+.poietek-command-brand strong { color: #f0e3d3; font-size: 11px; letter-spacing: .08em; }
+.poietek-command-brand small { color: #7f8a8c; font-size: 7px; text-transform: uppercase; letter-spacing: .11em; }
+
+.poietek-command-bar nav { display: flex; align-items: stretch; justify-content: center; }
+.poietek-command-bar nav button {
+  min-width: 190px;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-content: center;
+  justify-content: center;
+  gap: 1px 8px;
+  padding: 5px 18px;
+  border: 0;
+  border-right: 1px solid #30373b;
+  color: #8f9a9c;
+  background: transparent;
+  cursor: pointer;
+}
+.poietek-command-bar nav button:first-child { border-left: 1px solid #30373b; }
+.poietek-command-bar nav button:hover { color: #e9efef; background: rgba(255,255,255,.035); }
+.poietek-command-bar nav button.is-active {
+  color: #fff0df;
+  background: linear-gradient(180deg, rgba(205,129,63,.22), rgba(91,52,26,.2));
+  box-shadow: inset 0 -3px #dc914d;
+}
+.poietek-command-bar nav button > span { grid-row: 1 / 3; align-self: center; padding: 3px 4px; border: 1px solid #4a5255; border-radius: 3px; color: #b88253; font-size: 7px; }
+.poietek-command-bar nav button strong { font-size: 10px; text-align: left; text-transform: uppercase; letter-spacing: .08em; }
+.poietek-command-bar nav button small { color: #737f82; font-size: 7px; text-align: left; }
+
+.poietek-command-status {
+  display: grid;
+  align-content: center;
+  justify-content: end;
+  gap: 3px;
+  padding: 6px 12px;
+  border-left: 1px solid #343b3f;
+  text-align: right;
+}
+.poietek-command-status span { display: flex; align-items: center; justify-content: end; gap: 6px; color: #bcebe5; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; }
+.poietek-command-status i { width: 7px; height: 7px; border-radius: 50%; background: #62cbbf; box-shadow: 0 0 7px rgba(98,203,191,.72); }
+.poietek-command-status small { color: #737f82; font-size: 7px; }
+
+.poietek-shell-stage,
+.poietek-rack-host,
+.poietek-arrange-host { min-width: 0; min-height: 0; overflow: hidden; }
+.poietek-rack-host > div { height: 100%; }
+.poietek-arrange-host { height: 100%; overflow: auto; background: #080c0e; }
+.poietek-shell-loading { padding: 28px; color: #a9b5b4; font: 11px ui-monospace, Consolas, monospace; }
+
+@media (max-width: 760px) {
+  .poietek-app-shell { grid-template-rows: 50px minmax(0, 1fr); }
+  .poietek-command-bar { grid-template-columns: auto 1fr; }
+  .poietek-command-brand { padding: 6px 8px; }
+  .poietek-command-brand > div { display: none; }
+  .poietek-command-bar nav button { min-width: 0; flex: 1; padding: 5px 8px; }
+  .poietek-command-bar nav button small { display: none; }
+  .poietek-command-status { display: none; }
+}
+

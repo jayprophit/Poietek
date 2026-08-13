@@ -76,6 +76,30 @@ Actual third-party hardware names may appear only in device profiles and mapping
 suggestions. A name match is not treated as verified capability. Third-party
 plug-ins remain user-supplied and require their own licences.
 
+## Implemented hybrid workspace response
+
+The comparison informed an original track-centric presentation rather than a
+visual clone:
+
+- a persistent Arrange/Rack switch keeps a modular device stack beside the song
+  timeline;
+- the arranger uses dense, scalable waveform lanes and a clip inspector;
+- every imported file creates a separate audio track by default;
+- real clip operations include position, duration trim, split, gain, panorama,
+  fades, mute and removal, all committed through project history;
+- the console exposes professional signal-flow sections—input, inserts,
+  four-band tone, sends, panorama, fader, buses and main output—while only the
+  existing gain/pan/mute/solo graph is active;
+- note/pitch editing and sampler surfaces remain available in the rack, but
+  visual controls are not described as analysis or DSP where none exists.
+
+The Sound Atlas covers familiar production categories with 24 newly named,
+original recipes. Four one-shots render locally now. Synth recipes remain preset
+designs until their state becomes canonical, and acoustic/orchestral/vocal/guitar
+families are marked `recording-required` until Poietek owns or licenses new
+recordings. Category equivalence is allowed; copying another application's
+waveforms, presets, recordings, product names or patch data is not.
+
 ## Benchmark interpretation
 
 The Studio Setup benchmark measures deterministic JavaScript DSP throughput,

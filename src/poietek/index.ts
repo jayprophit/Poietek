@@ -16,6 +16,12 @@ export {ImportAudioService} from './assets/ImportAudioService';
 export {WebLocalAssetStore} from './assets/WebLocalAssetStore';
 
 export {ProjectSession} from './project/ProjectSession';
+export {
+  removeAudioClip,
+  splitAudioClipAtTick,
+  updateAudioClip,
+  updateTrackMixer,
+} from './project/editOperations';
 export type {ProjectRepository} from './project/ProjectRepository';
 export {IndexedDbProjectRepository} from './project/IndexedDbProjectRepository';
 

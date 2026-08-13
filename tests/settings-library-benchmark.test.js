@@ -79,6 +79,20 @@ test("procedural original kit is deterministic and remains within digital full s
   }
 });
 
+test('original sound atlas separates renderable recipes from recordings still required', () => {
+  const summary = library.summarizeOriginalSoundRecipes();
+  assert.equal(summary.total, 24);
+  assert.equal(summary.renderableNow, 4);
+  assert.ok(summary.presetDesigns > 0);
+  assert.ok(summary.recordingsRequired > 0);
+  assert.equal(
+    library.ORIGINAL_SOUND_RECIPES.every(
+      (recipe) => recipe.provenance === 'Poietek original recipe',
+    ),
+    true,
+  );
+});
+
 test("benchmark rating is derived from metrics instead of a fixed five-star claim", () => {
   const excellent = diagnostics.scoreStudioBenchmark({
     dspRealtimeFactor: { state: "measured", value: 25, unit: "x", detail: "" },

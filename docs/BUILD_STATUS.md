@@ -5,28 +5,28 @@
 - Formatting hygiene: passed
 - Full TypeScript typecheck: passed
 - Strict Poietek core compile: passed
-- Pure/core regression tests: 45 passed, 0 failed
-- Vite production build: passed (1,748 modules)
+- Pure/core regression tests: 49 passed, 0 failed
+- Vite production build: passed (1,753 modules)
 - Production browser smoke test: passed
 - Installed dependency graph: no missing, invalid or extraneous packages
 - Git whitespace/conflict check: passed
 
 Production output is code-split so the real project/audio workspace and Studio
 Setup load only when opened. The latest main bundle is approximately 490 kB
-minified / 129 kB gzip; the audio workspace is approximately 23 kB / 8 kB gzip
-and Studio Setup is approximately 52 kB / 14 kB gzip.
+minified / 129 kB gzip; the unified audio workspace is approximately 41 kB /
+12 kB gzip and Studio Setup is approximately 52 kB / 14 kB gzip.
 
-The browser smoke test opened the production bundle, confirmed the complete SDS
-rack, waited for the local project repository to report a durable saved project,
-opened **PROJECT · REAL AUDIO**, verified the project rack/import/timeline/audio
-health workspace, and returned to the SDS rack. No application error was emitted.
-Web MIDI permission was denied by the test browser and was reported as an honest
-unavailable warning; the app remained usable.
+The latest browser smoke test opened the production bundle directly in Arrange,
+confirmed the project rack, transport, scalable multitrack lane, clip inspector,
+console and honest empty-project states, switched to the complete modular Rack,
+and returned without application errors. Web MIDI permission was denied by the
+test browser and was reported as an honest unavailable warning; the app remained
+usable.
 
 The second browser pass verified the repaired `npm run dev` preview path, the
 responsive Studio Setup menu, all eleven settings categories, audio-device
 enumeration, reported Web Audio context values, local settings persistence, the
-honest 20-item module/content catalog, and the evidence-based benchmark. That run
+honest 21-item module/content catalog, and the evidence-based benchmark. That run
 scored 90/100 (five stars): 121.21x deterministic DSP throughput, 3.92 ms average
 UI timer jitter, 25.58x offline render speed and 32.68 MB/s temporary IndexedDB
 write/read. This is a machine/browser observation, not a commercial-product
@@ -55,6 +55,12 @@ normal live Vite workflow for unrestricted development environments.
 - Honest 20-item original module/content catalog and procedural one-shot kit
 - Repeatable DSP/scheduler/offline-audio/storage benchmark with derived stars
 - Original visible/source component naming with legacy ids retained for migration
+- Unified Arrange/Rack application shell with F7/F6 navigation
+- Horizon multitrack arranger using canonical clips and real stored waveforms
+- Undoable clip move/duration trim, gain/pan, fades, mute, split and removal
+- Fade-aware Web Audio scheduling
+- Summit console with active track gain/pan/mute/solo and honest bypass states
+- Sound Atlas with 24 original recipe/provenance records across nine families
 
 ## Not represented as finished
 

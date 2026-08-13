@@ -8,9 +8,15 @@ import {
   type CSSProperties,
   type MouseEvent,
 } from "react";
-import type { Asset, PoietekProject } from "../domain/types";
+import type { Asset, AudioClip, PoietekProject, Track } from "../domain/types";
 import { createBlankProject } from "../domain/projectFactory";
 import { addAsset, addAudioClip, addAudioTrack } from "../project/operations";
+import {
+  removeAudioClip,
+  splitAudioClipAtTick,
+  updateAudioClip,
+  updateTrackMixer,
+} from "../project/editOperations";
 import type { ProjectSummary } from "../project/ProjectRepository";
 import { secondsToTicks, ticksToSeconds } from "../timeline/tempo";
 import { usePoietekRuntime } from "./PoietekRuntimeProvider";
@@ -29,6 +35,8 @@ import {
   type StoredWaveformPreview,
 } from "./audioWorkspaceModel";
 import "./PoietekStudioWorkspace.css";
+import {StudioArrangerView} from './StudioArrangerView';
+import {StudioConsoleView} from './StudioConsoleView';
 
 type TransportState = "stopped" | "starting" | "playing" | "paused";
 type SaveState = "loading" | "saving" | "saved" | "error";
@@ -110,6 +118,7 @@ export function PoietekStudioWorkspace({
   const [error, setError] = useState<string | null>(null);
   const [transport, setTransport] = useState<TransportState>("stopped");
   const [playheadSeconds, setPlayheadSeconds] = useState(0);
+  const [activeDesk, setActiveDesk] = useState<'arrange' | 'console' | 'health'>('arrange');
 
   const refreshProjectList = useCallback(async () => {
     const summaries = await runtime.projects.list();
@@ -315,11 +324,10 @@ export function PoietekStudioWorkspace({
       );
       const next = await runtime.getSession().mutate((current) => {
         let changed = addAsset(current, durableAsset);
-        let targetTrack = changed.tracks.find((track) => track.type === "audio");
-        if (!targetTrack) {
-          changed = addAudioTrack(changed, trackDisplayName(file.name));
-          targetTrack = changed.tracks.find((track) => track.type === "audio");
-        }
+        changed = addAudioTrack(changed, trackDisplayName(file.name));
+        const targetTrack = [...changed.tracks]
+          .reverse()
+          .find((track) => track.type === "audio");
         if (!targetTrack) throw new Error("Could not create an audio track.");
         return addAudioClip({
           project: changed,
@@ -421,6 +429,60 @@ export function PoietekStudioWorkspace({
     } finally {
       setBusyAction(null);
     }
+  };
+
+  const commitProjectEdit = async (
+    edit: (current: PoietekProject) => PoietekProject,
+    statusMessage: string,
+  ) => {
+    if (!project || busyAction) return;
+    beginAction('Applying edit');
+    setSaveState('saving');
+    try {
+      await pauseForEdit();
+      await markSaved(await runtime.getSession().mutate(edit), statusMessage);
+    } catch (reason) {
+      failAction(reason);
+    } finally {
+      setBusyAction(null);
+    }
+  };
+
+  const setTrackMixer = (
+    trackId: string,
+    patch: Partial<Track['mixer']>,
+    statusMessage: string,
+  ) => {
+    void commitProjectEdit(
+      (current) => updateTrackMixer(current, trackId, patch),
+      statusMessage,
+    );
+  };
+
+  const setClip = (
+    trackId: string,
+    clipId: string,
+    patch: Partial<AudioClip>,
+    statusMessage: string,
+  ) => {
+    void commitProjectEdit(
+      (current) => updateAudioClip(current, trackId, clipId, patch),
+      statusMessage,
+    );
+  };
+
+  const splitClip = (trackId: string, clipId: string, splitTick: number) => {
+    void commitProjectEdit(
+      (current) => splitAudioClipAtTick(current, trackId, clipId, splitTick),
+      'Clip split at the playhead and saved locally.',
+    );
+  };
+
+  const removeClip = (trackId: string, clipId: string) => {
+    void commitProjectEdit(
+      (current) => removeAudioClip(current, trackId, clipId),
+      'Clip removed from the arrangement. Its source asset was retained.',
+    );
   };
 
   const play = async () => {
@@ -695,7 +757,44 @@ export function PoietekStudioWorkspace({
             />
           </section>
 
-          <section className="poietek-timeline-panel" aria-labelledby="poietek-timeline-title">
+          <nav className="poietek-desk-tabs" aria-label="Production workspace views">
+            <button type="button" className={activeDesk === 'arrange' ? 'is-active' : ''} onClick={() => setActiveDesk('arrange')}>
+              <span>01</span> Arrange
+              <small>clips · waves · edits</small>
+            </button>
+            <button type="button" className={activeDesk === 'console' ? 'is-active' : ''} onClick={() => setActiveDesk('console')}>
+              <span>02</span> Console
+              <small>tracks · buses · routing</small>
+            </button>
+            <button type="button" className={activeDesk === 'health' ? 'is-active' : ''} onClick={() => setActiveDesk('health')}>
+              <span>03</span> Inspect
+              <small>audio health · standards</small>
+            </button>
+          </nav>
+
+          {activeDesk === 'arrange' ? (
+            <StudioArrangerView
+              project={project}
+              timelineSpan={timelineSpan}
+              playheadSeconds={playheadSeconds}
+              busy={Boolean(busyAction)}
+              onSeek={(seconds) => void seek(seconds)}
+              onSetTrackMixer={setTrackMixer}
+              onSetClip={setClip}
+              onSplitClip={splitClip}
+              onRemoveClip={removeClip}
+            />
+          ) : null}
+
+          {activeDesk === 'console' ? (
+            <StudioConsoleView
+              project={project}
+              busy={Boolean(busyAction)}
+              onSetTrackMixer={setTrackMixer}
+            />
+          ) : null}
+
+          <section className="poietek-timeline-panel" aria-labelledby="poietek-timeline-title" hidden>
             <div className="poietek-panel-heading poietek-timeline-heading">
               <div>
                 <p className="poietek-eyebrow">Arrangement</p>
@@ -767,7 +866,7 @@ export function PoietekStudioWorkspace({
             )}
           </section>
 
-          <section className="poietek-health-panel" aria-labelledby="poietek-health-title">
+          <section className="poietek-health-panel" aria-labelledby="poietek-health-title" hidden={activeDesk !== 'health'}>
             <div className="poietek-panel-heading">
               <div>
                 <p className="poietek-eyebrow">Measured from decoded PCM</p>
