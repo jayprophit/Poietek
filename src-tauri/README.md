@@ -10,20 +10,24 @@ hardware control. Those remain behind reviewed adapters. Projects and media use
 the browser-compatible `ProjectRepository` and `AssetStore` contracts inside the
 webview until native implementations are added and migrated safely.
 
-Run `npm run native:doctor` before native work. On this checkout, installer output
-requires all of the following external build prerequisites:
+Run `npm run native:bootstrap`, then run the target-aware doctor before native
+work, for example `npm run native:doctor -- --target=android`. Controlled versions
+are stored in `deployment/toolchains.json`, `.node-version` and
+`rust-toolchain.toml`. Installer output requires the target platform's external
+build prerequisites:
 
-- `@tauri-apps/cli` installed as a local development dependency;
+- repository-local `@tauri-apps/cli` 2.11.4 installed by the bootstrap command;
 - Rust stable with the platform target;
 - the platform's native build tools and webview;
 - Android Studio/SDK/NDK for Android packages;
 - macOS, Xcode and CocoaPods for iOS packages.
 
-The package scripts never download those toolchains automatically. The Windows
-bundle uses Tauri's offline WebView2 installer mode so the resulting NSIS setup can
+The local package scripts never install operating-system toolchains automatically.
+GitHub runners install them inside disposable build machines. The Windows bundle
+uses Tauri's offline WebView2 installer mode so the resulting NSIS setup can
 install without a network connection. Code signing and platform smoke tests are
-still release gates; an unsigned local build must not be described as a published
-release.
+still release gates; an unsigned build must not be described as a published
+release. See `docs/NATIVE_DISTRIBUTION.md` for the full package and signing matrix.
 
 The production CSP deliberately blocks arbitrary remote origins. Add only exact,
 reviewed provider endpoints when a configured Supabase, Firebase or AI adapter is

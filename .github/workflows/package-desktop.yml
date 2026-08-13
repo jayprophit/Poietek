@@ -1,0 +1,112 @@
+name: Package desktop installers
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: desktop-packages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  package:
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows x64
+            os: windows-2022
+            doctor: windows
+            target: x86_64-pc-windows-msvc
+            bundles: nsis,msi
+            artifact: poietek-windows-x64
+            preview: false
+          - name: Windows ARM64 preview
+            os: windows-11-arm
+            doctor: windows
+            target: aarch64-pc-windows-msvc
+            bundles: nsis,msi
+            artifact: poietek-windows-arm64
+            preview: true
+          - name: macOS Apple silicon
+            os: macos-latest
+            doctor: macos
+            target: aarch64-apple-darwin
+            bundles: app,dmg
+            artifact: poietek-macos-arm64
+            preview: false
+          - name: macOS Intel
+            os: macos-15-intel
+            doctor: macos
+            target: x86_64-apple-darwin
+            bundles: app,dmg
+            artifact: poietek-macos-x64
+            preview: false
+          - name: Linux x64
+            os: ubuntu-22.04
+            doctor: linux
+            target: x86_64-unknown-linux-gnu
+            bundles: appimage,deb,rpm
+            artifact: poietek-linux-x64
+            preview: false
+          - name: Linux ARM64 preview
+            os: ubuntu-22.04-arm
+            doctor: linux
+            target: aarch64-unknown-linux-gnu
+            bundles: appimage,deb,rpm
+            artifact: poietek-linux-arm64
+            preview: true
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.preview }}
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - name: Install Rust 1.97.1 and target
+        uses: dtolnay/rust-toolchain@1.97.1
+        with:
+          targets: ${{ matrix.target }}
+      - name: Install Linux native dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            curl \
+            file \
+            libayatana-appindicator3-dev \
+            libssl-dev \
+            librsvg2-dev \
+            libwebkit2gtk-4.1-dev \
+            libxdo-dev \
+            patchelf \
+            wget
+      - name: Install locked JavaScript dependencies
+        run: npm ci
+      - name: Install pinned repository-local Tauri CLI
+        run: npm run native:bootstrap
+      - name: Verify shared application
+        run: npm run verify
+      - name: Check host prerequisites
+        run: npm run native:doctor -- --target=${{ matrix.doctor }}
+      - name: Build unsigned test installers
+        run: >-
+          npm run native:build --
+          --target ${{ matrix.target }}
+          --bundles ${{ matrix.bundles }}
+          --no-sign
+      - name: Upload installer artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: src-tauri/target/${{ matrix.target }}/release/bundle/**/*
+          if-no-files-found: error
+          retention-days: 14

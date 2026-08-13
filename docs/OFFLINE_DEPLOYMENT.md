@@ -7,7 +7,7 @@ Poietek has four execution modes backed by the same canonical project schema:
 | Browser portal | Visit an HTTPS deployment | Local projects remain usable after the production shell is cached | Web build is implemented |
 | Installed web app | Browser **Install app** / **Add to Home Screen** | Standalone icon launch with cached shell and local storage | PWA assets and update flow are implemented |
 | Local repository launcher | Double-click `Poietek Studio.cmd` on this Windows checkout | Starts the production bundle on loopback port 4173 | Implemented; requires Node.js for this developer launcher |
-| Native desktop/mobile | OS icon launches the Tauri bundle | Frontend ships inside the application package | Configuration is ready; platform toolchains and signed packages are external release gates |
+| Native desktop/mobile | OS icon launches the Tauri bundle | Frontend ships inside the application package | Pinned toolchains and packaging workflows are configured; remote runner and signing gates remain |
 
 ## What works without a network
 
@@ -45,13 +45,21 @@ still refuse them.
 1. `npm run verify` validates formatting, types, tests and the content-hashed
    offline web bundle.
 2. `npm run local` opens the production loopback build.
-3. `npm run native:doctor` reports native prerequisites without installing or
-   changing the machine.
-4. With the official prerequisites installed, add the pinned Tauri CLI and run
-   `npm run native:icons`, then `npm run native:build` on each desktop platform.
-5. Initialize and build Android on a configured Android host. Build iOS only on
-   macOS with Xcode. Signing, permissions review and physical-device testing are
-   mandatory release gates.
+3. `npm run native:bootstrap` installs the exact repository-local Tauri CLI
+   without changing the web dependency lock.
+4. `npm run native:doctor -- --target=<platform>` reports platform prerequisites
+   without installing system toolchains.
+5. The GitHub desktop workflow emits NSIS/MSI, app/DMG, AppImage, Debian and RPM
+   validation artifacts on their native operating-system runners.
+6. The mobile workflow emits Android debug APKs and an iOS simulator app. A
+   manually approved run using the protected `native-signing` environment can
+   emit an owner-signed Android AAB and iOS IPA.
+7. Store submission, permissions review, privacy declarations and physical-device
+   testing remain mandatory release gates.
+
+See `docs/NATIVE_DISTRIBUTION.md` for the target matrix, secrets, local commands
+and GitHub environment setup. Packaging does not automatically grant native audio,
+plug-in or hardware capabilities.
 
 No current package should be advertised as providing native low-latency audio,
 desktop plugin hosting, measured latency, validated LUFS/dBTP or time-preserving

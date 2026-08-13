@@ -1,14 +1,17 @@
-import {existsSync} from 'node:fs';
+import {existsSync, readFileSync} from 'node:fs';
 import {spawnSync} from 'node:child_process';
 import path from 'node:path';
 import process from 'node:process';
 import {fileURLToPath} from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const toolchains = JSON.parse(
+  readFileSync(path.join(root, 'deployment', 'toolchains.json'), 'utf8'),
+);
 const cli = path.join(root, 'node_modules', '@tauri-apps', 'cli', 'tauri.js');
 if (!existsSync(cli)) {
   console.error('The Tauri CLI is not installed in this repository.');
-  console.error('Run: npm install --save-dev @tauri-apps/cli@2.11.4');
+  console.error(`Run: npm run native:bootstrap (Tauri ${toolchains.tauri.cliVersion})`);
   console.error('Then run npm run native:doctor before building a package.');
   process.exit(1);
 }

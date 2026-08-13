@@ -4,13 +4,16 @@ version = "0.1.0"
 description = "Poietek Studio native shell"
 authors = ["Poietek"]
 edition = "2021"
+rust-version = "1.85"
+publish = false
+homepage = "https://github.com/jayprophit/Studio-Daw-Station-SDS-"
 
 [lib]
 name = "poietek_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
-tauri-build = { version = "2", features = [] }
+tauri-build = { version = "=2.6.3", features = [] }
 
 [dependencies]
-tauri = { version = "2", features = [] }
+tauri = { version = "=2.11.5", features = [] }

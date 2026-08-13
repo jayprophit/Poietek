@@ -5,7 +5,8 @@
 - Formatting hygiene: passed
 - Full TypeScript typecheck: passed
 - Strict Poietek core compile: passed
-- Automated regression tests: 95 passed, 0 failed
+- Native deployment configuration consistency: passed
+- Automated regression tests: 100 passed, 0 failed
 - Vite production build: passed (1,782 modules)
 - Production browser smoke test: passed
 - Installed dependency graph: no missing, invalid or extraneous packages
@@ -56,6 +57,17 @@ and no page-level horizontal overflow. Pure profile tests additionally cover
 touch-phone portrait/landscape, hybrid tablet, narrow desktop and unidentified
 access points without inventing hardware.
 
+The native-distribution pass added controlled Node 24.18.0 LTS, Rust 1.97.1,
+Tauri CLI 2.11.4, Tauri runtime 2.11.5, Java 17, Android SDK/NDK and Apple target
+contracts. GitHub workflows now describe Windows x64/ARM64, macOS Apple
+silicon/Intel, Linux x64/ARM64, Android APK/AAB and iOS simulator/IPA builds.
+Stable and preview architectures are separated, signed mobile jobs require the
+protected `native-signing` environment, signing files are ignored and written
+with restricted permissions, and no workflow performs a store upload. These
+workflows are source-validated but have not run remotely in this local task;
+macOS/iOS, Linux and signing results remain external gates until their first
+successful GitHub runner and physical-device evidence exists.
+
 The managed Codex Windows sandbox does not permit Vite's development dependency
 optimizer to traverse its normal resolution boundary. `npm run dev` therefore
 builds and serves the verified bundle on port 3000. `npm run dev:hmr` retains the
@@ -74,6 +86,8 @@ normal live Vite workflow for unrestricted development environments.
 - Rights/team/provenance/commerce/privacy/learning/interoperability/plugin/video/AI contracts
 - Destination profiles, A432 derivative boundary, local community/feed/store contracts
 - PWA shell and least-privilege Tauri scaffold
+- Versioned multi-platform native toolchain manifest, target-aware doctor and
+  GitHub packaging workflows for Windows, macOS, Linux, Android and iOS
 - Versioned active-device detection with expanded desktop, compact tablet and
   handheld mobile presentation from one application shell
 - Versioned global settings, four named profiles and JSON import/export
@@ -104,6 +118,7 @@ normal live Vite workflow for unrestricted development environments.
 - Authenticated cloud sync, real-time collaboration or conflict transport
 - External registration, rights approval, payments or blockchain transactions
 - Plugin hosting, video/VFX rendering or AI inference adapters
-- Signed native installers or app-store packages
+- Executed remote native-package workflows, signed installers or store-accepted
+  packages
 
 Those items have explicit contracts/unavailable states and remain staged work.

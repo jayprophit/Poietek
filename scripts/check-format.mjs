@@ -1,7 +1,16 @@
 import {readdir, readFile} from 'node:fs/promises';
 import path from 'node:path';
 
-const roots = ['src', 'tests', 'docs', 'public', 'src-tauri'];
+const roots = [
+  '.github',
+  'deployment',
+  'docs',
+  'public',
+  'scripts',
+  'src',
+  'src-tauri',
+  'tests',
+];
 const textExtensions = new Set([
   '.css',
   '.html',
@@ -13,6 +22,8 @@ const textExtensions = new Set([
   '.toml',
   '.ts',
   '.tsx',
+  '.yaml',
+  '.yml',
 ]);
 const ignoredDirectories = new Set(['.compiled-core', 'target']);
 const problems = [];

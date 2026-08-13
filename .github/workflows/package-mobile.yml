@@ -1,0 +1,198 @@
+name: Package mobile applications
+
+on:
+  workflow_dispatch:
+    inputs:
+      signed_release:
+        description: Build signed AAB and IPA using the protected native-signing environment
+        required: true
+        default: false
+        type: boolean
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mobile-packages-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  ANDROID_NDK_VERSION: 27.2.12479018
+
+jobs:
+  android-validation:
+    name: Android installable validation APK
+    runs-on: ubuntu-22.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+      - uses: android-actions/setup-android@v3
+      - name: Install Android SDK, build tools, and NDK
+        run: |
+          sdkmanager \
+            'platform-tools' \
+            'platforms;android-35' \
+            'build-tools;35.0.0' \
+            "ndk;${ANDROID_NDK_VERSION}"
+          echo "NDK_HOME=${ANDROID_HOME}/ndk/${ANDROID_NDK_VERSION}" >> "$GITHUB_ENV"
+      - name: Install Android Rust targets
+        uses: dtolnay/rust-toolchain@1.97.1
+        with:
+          targets: aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android
+      - run: npm ci
+      - run: npm run native:bootstrap
+      - run: npm run verify
+      - run: npm run mobile:android:init -- --ci
+      - name: Build debug-signed APKs for physical-device testing
+        run: >-
+          npm run mobile:android:build --
+          --debug --apk --split-per-abi
+          --target aarch64 --target armv7 --ci
+      - uses: actions/upload-artifact@v4
+        with:
+          name: poietek-android-validation-apk
+          path: src-tauri/gen/android/app/build/outputs/apk/**/*.apk
+          if-no-files-found: error
+          retention-days: 14
+
+  ios-simulator-validation:
+    name: iOS simulator validation app
+    runs-on: macos-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - name: Install iOS Rust targets
+        uses: dtolnay/rust-toolchain@1.97.1
+        with:
+          targets: aarch64-apple-ios,aarch64-apple-ios-sim,x86_64-apple-ios
+      - run: npm ci
+      - run: npm run native:bootstrap
+      - run: npm run verify
+      - run: npm run mobile:ios:init -- --ci
+      - run: npm run mobile:ios:build:simulator -- --ci
+      - uses: actions/upload-artifact@v4
+        with:
+          name: poietek-ios-simulator-app
+          path: src-tauri/gen/apple/build/**/*.app
+          if-no-files-found: error
+          retention-days: 14
+
+  android-signed:
+    name: Signed Android App Bundle
+    if: github.event_name == 'workflow_dispatch' && inputs.signed_release
+    environment: native-signing
+    runs-on: ubuntu-22.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+      - uses: android-actions/setup-android@v3
+      - name: Install Android SDK, build tools, and NDK
+        run: |
+          sdkmanager \
+            'platform-tools' \
+            'platforms;android-35' \
+            'build-tools;35.0.0' \
+            "ndk;${ANDROID_NDK_VERSION}"
+          echo "NDK_HOME=${ANDROID_HOME}/ndk/${ANDROID_NDK_VERSION}" >> "$GITHUB_ENV"
+      - uses: dtolnay/rust-toolchain@1.97.1
+        with:
+          targets: aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android
+      - run: npm ci
+      - run: npm run native:bootstrap
+      - run: npm run mobile:android:init -- --ci
+      - name: Configure signing without logging key material
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+        run: node scripts/configure-android-signing.mjs
+      - name: Build signed Play Store AAB
+        run: npm run mobile:android:build:aab -- --ci
+      - uses: actions/upload-artifact@v4
+        with:
+          name: poietek-android-signed-aab
+          path: src-tauri/gen/android/app/build/outputs/bundle/**/*.aab
+          if-no-files-found: error
+          retention-days: 7
+
+  ios-signed:
+    name: Signed iOS IPA
+    if: github.event_name == 'workflow_dispatch' && inputs.signed_release
+    environment: native-signing
+    runs-on: macos-latest
+    timeout-minutes: 90
+    env:
+      CI_KEYCHAIN_PASSWORD: poietek-ci-${{ github.run_id }}
+      APPLE_DEVELOPMENT_TEAM: ${{ secrets.APPLE_DEVELOPMENT_TEAM }}
+      APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - uses: dtolnay/rust-toolchain@1.97.1
+        with:
+          targets: aarch64-apple-ios,aarch64-apple-ios-sim,x86_64-apple-ios
+      - run: npm ci
+      - run: npm run native:bootstrap
+      - name: Materialize protected Apple signing files
+        env:
+          APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
+          APPLE_PROVISIONING_PROFILE_BASE64: ${{ secrets.APPLE_PROVISIONING_PROFILE_BASE64 }}
+        run: node scripts/materialize-apple-signing.mjs
+      - name: Import certificate into an ephemeral keychain
+        run: |
+          security create-keychain -p "$CI_KEYCHAIN_PASSWORD" poietek-ci.keychain
+          security set-keychain-settings -lut 21600 poietek-ci.keychain
+          security unlock-keychain -p "$CI_KEYCHAIN_PASSWORD" poietek-ci.keychain
+          security import "$RUNNER_TEMP/poietek-signing.p12" \
+            -k poietek-ci.keychain \
+            -P "$APPLE_CERTIFICATE_PASSWORD" \
+            -T /usr/bin/codesign
+          security set-key-partition-list \
+            -S apple-tool:,apple: \
+            -s \
+            -k "$CI_KEYCHAIN_PASSWORD" \
+            poietek-ci.keychain
+          security list-keychain -d user -s poietek-ci.keychain
+      - run: npm run mobile:ios:init -- --ci
+      - name: Build signed App Store Connect IPA
+        run: npm run mobile:ios:build:app-store -- --ci
+      - uses: actions/upload-artifact@v4
+        with:
+          name: poietek-ios-signed-ipa
+          path: src-tauri/gen/apple/build/**/*.ipa
+          if-no-files-found: error
+          retention-days: 7
+      - name: Remove ephemeral signing material
+        if: always()
+        run: |
+          security delete-keychain poietek-ci.keychain || true
+          rm -f "$RUNNER_TEMP/poietek-signing.p12"
+          rm -f "$HOME/Library/MobileDevice/Provisioning Profiles/Poietek.mobileprovision"

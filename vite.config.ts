@@ -7,6 +7,8 @@ import {defineConfig} from 'vite';
 const projectRoot = fileURLToPath(new URL('.', import.meta.url));
 
 export default defineConfig(() => {
+  const mobileDevHost = process.env.TAURI_DEV_HOST;
+
   return {
     plugins: [react(), tailwindcss()],
     resolve: {
@@ -15,11 +17,18 @@ export default defineConfig(() => {
       },
     },
     server: {
-      // HMR is disabled in AI Studio via DISABLE_HMR env var.
-      // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
-      hmr: process.env.DISABLE_HMR !== 'true',
+      host: mobileDevHost || '127.0.0.1',
+      strictPort: true,
+      // File watching can be disabled in constrained development environments.
       // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
+      hmr: mobileDevHost
+        ? {
+            protocol: 'ws',
+            host: mobileDevHost,
+            port: 3001,
+          }
+        : process.env.DISABLE_HMR !== 'true',
     },
   };
 });

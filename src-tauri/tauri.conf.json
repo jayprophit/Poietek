@@ -53,6 +53,10 @@
     "active": true,
     "targets": "all",
     "category": "Music",
+    "publisher": "Poietek",
+    "copyright": "Copyright Poietek. All rights reserved.",
+    "homepage": "https://github.com/jayprophit/Studio-Daw-Station-SDS-",
+    "license": "Proprietary",
     "shortDescription": "Local-first audio production studio",
     "longDescription": "Poietek Studio is a local-first arranging, rack, mixing and production workspace.",
     "icon": [
@@ -68,6 +72,16 @@
         "displayLanguageSelector": true,
         "installMode": "currentUser"
       }
+    },
+    "macOS": {
+      "minimumSystemVersion": "10.15",
+      "hardenedRuntime": true
+    },
+    "android": {
+      "minSdkVersion": 24
+    },
+    "iOS": {
+      "minimumSystemVersion": "14.0"
     }
   }
 }

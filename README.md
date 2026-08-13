@@ -68,7 +68,11 @@ npm run verify
 ```
 
 The verification command checks formatting hygiene, full TypeScript, the strict
-framework-independent core, all Node tests and the production Vite build.
+framework-independent core, native packaging contracts, all Node tests and the
+production Vite build. GitHub workflows can then emit Windows, macOS, Linux,
+Android and iOS validation artifacts from the operating systems that own those
+toolchains. Signed mobile packages require the publisher's protected credentials;
+no workflow silently uploads to a store.
 
 ## Architecture and status
 
@@ -85,6 +89,7 @@ framework-independent core, all Node tests and the production Vite build.
 - [Professional workstation comparison](docs/PRO_DAW_COMPARISON.md)
 - [Industry qualification and five-star evidence baseline](docs/INDUSTRY_QUALIFICATION.md)
 - [One-app device-aware access architecture](docs/DEVICE_AWARE_ACCESS.md)
+- [Native installers, mobile packages and signing architecture](docs/NATIVE_DISTRIBUTION.md)
 - [Native scaffold boundary](src-tauri/README.md)
 
 ## Non-negotiable truth rules
