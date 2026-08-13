@@ -3,7 +3,7 @@ import { SamplePad, SequencePattern } from '../../types';
 import { audioEngine } from '../../audio/engine';
 import { Sliders, Volume2, RotateCcw, Grid, Music2, Sparkles } from 'lucide-react';
 
-interface MPCWorkspaceProps {
+interface CanvasDrumGridWorkspaceProps {
   pads: SamplePad[];
   setPads: React.Dispatch<React.SetStateAction<SamplePad[]>>;
   bpm: number;
@@ -11,7 +11,7 @@ interface MPCWorkspaceProps {
   onSimulateMIDI: (type: 'note_on' | 'note_off', channel: number, note: number, velocity: number) => void;
 }
 
-export const MPCWorkspace: React.FC<MPCWorkspaceProps> = ({
+export const CanvasDrumGridWorkspace: React.FC<CanvasDrumGridWorkspaceProps> = ({
   pads,
   setPads,
   bpm,
@@ -98,20 +98,20 @@ export const MPCWorkspace: React.FC<MPCWorkspaceProps> = ({
 
   return (
     <div className="p-4 max-w-7xl mx-auto space-y-6">
-      {/* MPC Hardware Header Banner */}
+      {/* Canvas Grid header */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl relative overflow-hidden">
         <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-gradient-to-br from-indigo-500/10 to-purple-500/10 blur-2xl pointer-events-none" />
         <div className="flex flex-wrap items-center justify-between gap-4 relative z-10">
           <div>
             <div className="flex items-center gap-2">
               <Grid className="w-5 h-5 text-indigo-400" />
-              <h2 className="text-xl font-bold text-white tracking-tight">Akai MPC Hardware Workspace</h2>
+              <h2 className="text-xl font-bold text-white tracking-tight">Canvas Drum Grid Workspace</h2>
               <span className="text-xs font-mono px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
                 16 RGB Velocity Pads
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-1">
-              Supports Akai MPC Live, One, X, Key, and pad controllers. Keyboard shortcuts: [Z-V], [A-F], [Q-R], [1-4].
+              Original pad-sampler workspace with generic MIDI mapping. Keyboard shortcuts: [Z-V], [A-F], [Q-R], [1-4].
             </p>
           </div>
 
@@ -135,7 +135,7 @@ export const MPCWorkspace: React.FC<MPCWorkspaceProps> = ({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Column: 4x4 MPC RGB Pad Grid */}
+            {/* Left column: 4x4 RGB pad grid */}
         <div className="lg:col-span-6 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-col justify-between">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-bold text-slate-200 flex items-center gap-2">
@@ -145,7 +145,7 @@ export const MPCWorkspace: React.FC<MPCWorkspaceProps> = ({
             <span className="text-xs text-slate-500 font-mono">MIDI Ch: 10</span>
           </div>
 
-          {/* 4x4 Grid (Pads 13-16 on top, Pads 1-4 on bottom like real MPC) */}
+                {/* 4x4 performance grid */}
           <div className="grid grid-cols-4 gap-3 aspect-square">
             {[12, 13, 14, 15, 8, 9, 10, 11, 4, 5, 6, 7, 0, 1, 2, 3].map((gridIndex) => {
               const pad = currentBankPads[gridIndex] || {
@@ -305,7 +305,7 @@ export const MPCWorkspace: React.FC<MPCWorkspaceProps> = ({
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
                 <Music2 className="w-4 h-4 text-emerald-400" />
-                MPC Step Sequencer — Bank {selectedBank}
+                  Canvas Step Sequencer — Bank {selectedBank}
               </h3>
               <span className="text-xs text-slate-400 font-mono">1/16 Note Step Grid</span>
             </div>

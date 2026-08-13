@@ -12,7 +12,7 @@ export const ChopLab: React.FC<ChopLabProps> = ({ pads, setPads }) => {
   const [sliceCount, setSliceCount] = useState<number>(16);
   const [pitch, setPitch] = useState<number>(0);
   const [reverse, setReverse] = useState<boolean>(false);
-  const [statusMessage, setStatusMessage] = useState<string>('Sample loaded. Choose slice count and assign to MPC pads.');
+  const [statusMessage, setStatusMessage] = useState<string>('Sample loaded. Choose slice count and assign to Canvas Grid pads.');
 
   const handleApplyChopToPads = () => {
     setPads((prev) =>
@@ -43,7 +43,7 @@ export const ChopLab: React.FC<ChopLabProps> = ({ pads, setPads }) => {
             Chop Lab & Sample Stem Slicer
           </h2>
           <p className="text-xs text-slate-400">
-            Automated transient and equal region sample chopping directly onto MPC & SP-404 pads.
+          Automated transient and equal-region sample chopping directly onto Canvas Grid and Grain Deck pads.
           </p>
         </div>
 

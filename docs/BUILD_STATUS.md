@@ -1,19 +1,20 @@
-# Build status — 2026-08-12
+# Build status — 2026-08-13
 
 ## Verified
 
 - Formatting hygiene: passed
 - Full TypeScript typecheck: passed
 - Strict Poietek core compile: passed
-- Pure/core regression tests: 39 passed, 0 failed
-- Vite production build: passed (1,736 modules)
+- Pure/core regression tests: 45 passed, 0 failed
+- Vite production build: passed (1,748 modules)
 - Production browser smoke test: passed
 - Installed dependency graph: no missing, invalid or extraneous packages
 - Git whitespace/conflict check: passed
 
-Production output is code-split so the real project/audio workspace loads only
-when opened. The main bundle is approximately 480 kB minified / 126 kB gzip; the
-workspace chunk is approximately 23 kB minified / 8 kB gzip plus its CSS.
+Production output is code-split so the real project/audio workspace and Studio
+Setup load only when opened. The latest main bundle is approximately 490 kB
+minified / 129 kB gzip; the audio workspace is approximately 23 kB / 8 kB gzip
+and Studio Setup is approximately 52 kB / 14 kB gzip.
 
 The browser smoke test opened the production bundle, confirmed the complete SDS
 rack, waited for the local project repository to report a durable saved project,
@@ -22,10 +23,19 @@ health workspace, and returned to the SDS rack. No application error was emitted
 Web MIDI permission was denied by the test browser and was reported as an honest
 unavailable warning; the app remained usable.
 
-The managed Codex Windows sandbox does not permit Vite's development esbuild
-subprocess to traverse its normal resolution boundary, so interactive browser QA
-used the real production bundle through `vite preview`. The source dev command
-remains the normal Vite configuration for use outside that sandbox.
+The second browser pass verified the repaired `npm run dev` preview path, the
+responsive Studio Setup menu, all eleven settings categories, audio-device
+enumeration, reported Web Audio context values, local settings persistence, the
+honest 20-item module/content catalog, and the evidence-based benchmark. That run
+scored 90/100 (five stars): 121.21x deterministic DSP throughput, 3.92 ms average
+UI timer jitter, 25.58x offline render speed and 32.68 MB/s temporary IndexedDB
+write/read. This is a machine/browser observation, not a commercial-product
+comparison or hardware round-trip measurement.
+
+The managed Codex Windows sandbox does not permit Vite's development dependency
+optimizer to traverse its normal resolution boundary. `npm run dev` therefore
+builds and serves the verified bundle on port 3000. `npm run dev:hmr` retains the
+normal live Vite workflow for unrestricted development environments.
 
 ## Implemented core
 
@@ -40,6 +50,11 @@ remains the normal Vite configuration for use outside that sandbox.
 - Rights/team/provenance/commerce/privacy/learning/interoperability/plugin/video/AI contracts
 - Destination profiles, A432 derivative boundary, local community/feed/store contracts
 - PWA shell and least-privilege Tauri scaffold
+- Versioned global settings, four named profiles and JSON import/export
+- Audio/MIDI/sync/recording/editing/file/plugin/appearance/privacy setup UI
+- Honest 20-item original module/content catalog and procedural one-shot kit
+- Repeatable DSP/scheduler/offline-audio/storage benchmark with derived stars
+- Original visible/source component naming with legacy ids retained for migration
 
 ## Not represented as finished
 

@@ -25,7 +25,7 @@ export const StudioRearPanel: React.FC<StudioRearPanelProps> = ({ masterState, o
   const [connections, setConnections] = useState<PatchConnection[]>([
     {
       id: 'cable_1',
-      fromUnit: 'MPC Drum Sampler',
+      fromUnit: 'Canvas Drum Grid',
       fromJack: 'Main Audio Out L',
       fromX: 25,
       fromY: 180,
@@ -37,7 +37,7 @@ export const StudioRearPanel: React.FC<StudioRearPanelProps> = ({ masterState, o
     },
     {
       id: 'cable_2',
-      fromUnit: 'MPC Drum Sampler',
+      fromUnit: 'Canvas Drum Grid',
       fromJack: 'Main Audio Out R',
       fromX: 30,
       fromY: 180,
@@ -61,7 +61,7 @@ export const StudioRearPanel: React.FC<StudioRearPanelProps> = ({ masterState, o
     },
     {
       id: 'cable_4',
-      fromUnit: 'SP-404 FX Unit',
+      fromUnit: 'Grain Deck FX',
       fromJack: 'Send FX 1 Out',
       fromX: 82,
       fromY: 180,
@@ -116,7 +116,7 @@ export const StudioRearPanel: React.FC<StudioRearPanelProps> = ({ masterState, o
     setConnections([
       { id: 'c1', fromUnit: 'Active Unit', fromJack: 'Main Out L', fromX: 20, fromY: 180, toUnit: 'Hardware Interface', toJack: 'In 1', toX: 18, toY: 60, color: '#ef4444' },
       { id: 'c2', fromUnit: 'Active Unit', fromJack: 'Main Out R', fromX: 25, fromY: 180, toUnit: 'Hardware Interface', toJack: 'In 2', toX: 23, toY: 60, color: '#ef4444' },
-      { id: 'c3', fromUnit: 'Studio Mixer', fromJack: 'Send 1', fromX: 70, fromY: 340, toUnit: 'SP-404 FX', toJack: 'FX In', toX: 80, toY: 180, color: '#3b82f6' },
+      { id: 'c3', fromUnit: 'Studio Mixer', fromJack: 'Send 1', fromX: 70, fromY: 340, toUnit: 'Grain Deck FX', toJack: 'FX In', toX: 80, toY: 180, color: '#3b82f6' },
     ]);
   };
 
@@ -324,11 +324,11 @@ export const StudioRearPanel: React.FC<StudioRearPanelProps> = ({ masterState, o
           </div>
         </div>
 
-        {/* Unit 3: Master Studio SSL Mixer & FX Rack Unit (Rear) */}
+          {/* Unit 3: Summit master mixer and effect rack rear */}
         <div className="bg-gradient-to-r from-neutral-900 via-stone-900 to-neutral-900 border-2 border-neutral-700 rounded-2xl p-5 shadow-2xl relative">
           <div className="flex items-center justify-between border-b border-neutral-800 pb-2 mb-4">
             <span className="font-mono text-xs font-bold text-emerald-400 uppercase tracking-wider">
-              3. SSL MASTER MIXING CONSOLE & BUS COMPRESSOR (REAR)
+              3. SUMMIT MASTER CONSOLE & BUS PROCESSING (REAR)
             </span>
             <span className="text-[10px] font-mono text-neutral-500">ANALOG BUS INSERTION & REVERB/DELAY SENDS</span>
           </div>

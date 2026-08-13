@@ -13,6 +13,8 @@ Status: integrated and testable.
 - Capability-gated recording, offline timeline render and PCM16 WAV export
 - Crash-recovery repository and Recover/Skip/Discard semantics
 - PWA shell and security-minimal Tauri scaffold
+- Versioned global settings, named profiles, original module/content catalog and
+  repeatable local browser benchmark
 
 ## Stage 2 — editor depth and recovery UX
 

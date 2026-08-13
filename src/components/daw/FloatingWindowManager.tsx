@@ -24,8 +24,8 @@ import {
 } from 'lucide-react';
 import { WorkspaceType, MasterState, ConnectedDevice } from '../../types';
 
-import { MPCWorkspace } from '../workspaces/MPCWorkspace';
-import { SP404Workspace } from '../workspaces/SP404Workspace';
+import { CanvasDrumGridWorkspace } from '../workspaces/CanvasDrumGridWorkspace';
+import { GrainDeckWorkspace } from '../workspaces/GrainDeckWorkspace';
 import { KeyboardWorkspace } from '../workspaces/KeyboardWorkspace';
 import { EDrumWorkspace } from '../workspaces/EDrumWorkspace';
 import { DJWorkspace } from '../workspaces/DJWorkspace';
@@ -39,11 +39,11 @@ import { DeviceHealthModal } from '../system/DeviceHealthModal';
 import { MixerWorkspace } from '../workspaces/MixerWorkspace';
 import { StudioRearPanel } from '../rack/StudioRearPanel';
 import { CircleOfFifthsWheel } from './CircleOfFifthsWheel';
-import { MelodynePitchEditor } from './MelodynePitchEditor';
-import { DGrooveMixer } from './DGrooveMixer';
+import { VocalContourEditor } from './VocalContourEditor';
+import { HumanPulseGroovePool } from './HumanPulseGroovePool';
 import { PianoRollSequencer } from './PianoRollSequencer';
-import { CubaseLogicWaveformSequencer } from './CubaseLogicWaveformSequencer';
-import { FLStudioChannelRack } from './FLStudioChannelRack';
+import { HorizonWaveformSequencer } from './HorizonWaveformSequencer';
+import { BeatLoomChannelRack } from './BeatLoomChannelRack';
 
 interface FloatingWindow {
   id: WorkspaceType;
@@ -194,12 +194,12 @@ export const FloatingWindowManager: React.FC<FloatingWindowManagerProps> = ({
 
   function getWorkspaceTitle(ws: WorkspaceType): string {
     switch (ws) {
-      case 'mpc': return 'MPC Studio Drum Pad';
-      case 'sp404': return 'SP-404 MKII Sampler';
+      case 'mpc': return 'Canvas Drum Grid';
+      case 'sp404': return 'Grain Deck Sampler';
       case 'keyboard': return 'Analog Subtractive Synth';
       case 'edrum': return 'E-Drum Mesh Trigger Kit';
       case 'dj': return 'DJ Performance Decks';
-      case 'mixer': return 'SSL 9000 Pro Master Console';
+      case 'mixer': return 'Summit Master Console';
       case 'patchbay': return 'Audio & CV Hardware Patch Bay';
       case 'drum_machines': return 'Studio Drum Computer';
       case 'mapper': return 'Universal Hardware Mapper';
@@ -219,8 +219,8 @@ export const FloatingWindowManager: React.FC<FloatingWindowManagerProps> = ({
 
   const renderWorkspaceComponent = (ws: WorkspaceType) => {
     switch (ws) {
-      case 'mpc': return <MPCWorkspace pads={[]} setPads={() => {}} bpm={masterState.bpm} isPlaying={masterState.isPlaying} onSimulateMIDI={() => {}} />;
-      case 'sp404': return <SP404Workspace pads={[]} setPads={() => {}} onSimulateMIDI={() => {}} />;
+      case 'mpc': return <CanvasDrumGridWorkspace pads={[]} setPads={() => {}} bpm={masterState.bpm} isPlaying={masterState.isPlaying} onSimulateMIDI={() => {}} />;
+      case 'sp404': return <GrainDeckWorkspace pads={[]} setPads={() => {}} onSimulateMIDI={() => {}} />;
       case 'keyboard': return <KeyboardWorkspace onSimulateMIDI={() => {}} />;
       case 'edrum': return <EDrumWorkspace onSimulateMIDI={() => {}} />;
       case 'dj': return <DJWorkspace />;
@@ -233,11 +233,11 @@ export const FloatingWindowManager: React.FC<FloatingWindowManagerProps> = ({
       case 'chop_lab': return <ChopLab pads={[]} setPads={() => {}} />;
       case 'health_latency': return <DeviceHealthModal connectedDevices={connectedDevices} />;
       case 'circle_fifths': return <CircleOfFifthsWheel />;
-      case 'melodyne_pitch': return <MelodynePitchEditor />;
-      case 'd_groove': return <DGrooveMixer />;
+      case 'melodyne_pitch': return <VocalContourEditor />;
+      case 'd_groove': return <HumanPulseGroovePool />;
       case 'piano_roll': return <PianoRollSequencer />;
-      case 'wave_sequencer': return <CubaseLogicWaveformSequencer />;
-      case 'fl_channel_rack': return <FLStudioChannelRack />;
+      case 'wave_sequencer': return <HorizonWaveformSequencer />;
+      case 'fl_channel_rack': return <BeatLoomChannelRack />;
       default: return null;
     }
   };

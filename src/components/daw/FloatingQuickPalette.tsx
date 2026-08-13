@@ -97,14 +97,14 @@ export const FloatingQuickPalette: React.FC<FloatingQuickPaletteProps> = ({
 
   const moduleOptions: { type: ModuleType; label: string; icon: React.FC<{ className?: string }>; category: string }[] = [
     { type: 'folder_combinator', label: 'Combinator Bus Folder', icon: FolderPlus, category: 'BUS & GROUPS' },
-    { type: 'mpc', label: 'MPC Studio Drum Pad', icon: Grid, category: 'SAMPLERS' },
-    { type: 'sp404', label: 'SP-404 MKII Sampler', icon: Flame, category: 'SAMPLERS' },
+      { type: 'mpc', label: 'Canvas Drum Grid', icon: Grid, category: 'SAMPLERS' },
+      { type: 'sp404', label: 'Grain Deck Sampler', icon: Flame, category: 'SAMPLERS' },
     { type: 'keyboard', label: 'Analog Subtractive Synth', icon: Music, category: 'SYNTHS' },
     { type: 'drum_machines', label: 'Studio Drum Computer', icon: Zap, category: 'SEQUENCERS' },
-    { type: 'mixer', label: 'SSL 9000 Master Mixer', icon: Sliders, category: 'MIXING' },
+      { type: 'mixer', label: 'Summit Master Console', icon: Sliders, category: 'MIXING' },
     { type: 'wave_sequencer', label: 'Multi-Track Audio Sequencer', icon: Layers, category: 'SEQUENCERS' },
     { type: 'fl_channel_rack', label: 'Pattern Step Channel Rack', icon: Zap, category: 'SEQUENCERS' },
-    { type: 'melodyne_pitch', label: 'Pro Vocal Pitch Editor', icon: Activity, category: 'PITCH & HARMONY' },
+      { type: 'melodyne_pitch', label: 'Vocal Contour Editor', icon: Activity, category: 'PITCH & HARMONY' },
     { type: 'chop_lab', label: 'Chop Lab Stem Slicer', icon: Layers, category: 'SAMPLERS' },
   ];
 

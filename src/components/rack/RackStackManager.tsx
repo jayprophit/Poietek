@@ -20,8 +20,8 @@ import { RackModuleItem, WorkspaceType, ModuleType, MasterState, SamplePad, Trac
 import { StudioRackDevice } from './StudioRackDevice';
 import { CombinatorFolderDevice } from './CombinatorFolderDevice';
 
-import { MPCWorkspace } from '../workspaces/MPCWorkspace';
-import { SP404Workspace } from '../workspaces/SP404Workspace';
+import { CanvasDrumGridWorkspace } from '../workspaces/CanvasDrumGridWorkspace';
+import { GrainDeckWorkspace } from '../workspaces/GrainDeckWorkspace';
 import { KeyboardWorkspace } from '../workspaces/KeyboardWorkspace';
 import { EDrumWorkspace } from '../workspaces/EDrumWorkspace';
 import { DJWorkspace } from '../workspaces/DJWorkspace';
@@ -35,11 +35,11 @@ import { ChopLab } from '../sampler/ChopLab';
 import { DeviceHealthModal } from '../system/DeviceHealthModal';
 
 import { CircleOfFifthsWheel } from '../daw/CircleOfFifthsWheel';
-import { MelodynePitchEditor } from '../daw/MelodynePitchEditor';
-import { DGrooveMixer } from '../daw/DGrooveMixer';
+import { VocalContourEditor } from '../daw/VocalContourEditor';
+import { HumanPulseGroovePool } from '../daw/HumanPulseGroovePool';
 import { PianoRollSequencer } from '../daw/PianoRollSequencer';
-import { CubaseLogicWaveformSequencer } from '../daw/CubaseLogicWaveformSequencer';
-import { FLStudioChannelRack } from '../daw/FLStudioChannelRack';
+import { HorizonWaveformSequencer } from '../daw/HorizonWaveformSequencer';
+import { BeatLoomChannelRack } from '../daw/BeatLoomChannelRack';
 
 interface RackStackManagerProps {
   rackModules: RackModuleItem[];
@@ -125,11 +125,11 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
         tapeLabel = 'BUS FOLDER';
         break;
       case 'mpc':
-        title = 'MPC Studio Drum Pad';
+        title = 'Canvas Drum Grid';
         tapeLabel = 'DRUM SAMPLER';
         break;
       case 'sp404':
-        title = 'SP-404 MKII Sampler';
+        title = 'Grain Deck Sampler';
         tapeLabel = 'MFX SAMPLER';
         break;
       case 'keyboard':
@@ -145,7 +145,7 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
         tapeLabel = 'DJ CONSOLE';
         break;
       case 'mixer':
-        title = 'SSL 9000 Master Mixer';
+        title = 'Summit Master Console';
         tapeLabel = 'MASTER CONSOLE';
         break;
       case 'drum_machines':
@@ -233,9 +233,9 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
   const renderModuleContent = (type: ModuleType) => {
     switch (type) {
       case 'mpc':
-        return <MPCWorkspace pads={pads} setPads={setPads} bpm={masterState.bpm} isPlaying={masterState.isPlaying} onSimulateMIDI={handleSimulateMIDI} />;
+        return <CanvasDrumGridWorkspace pads={pads} setPads={setPads} bpm={masterState.bpm} isPlaying={masterState.isPlaying} onSimulateMIDI={handleSimulateMIDI} />;
       case 'sp404':
-        return <SP404Workspace pads={pads} setPads={setPads} onSimulateMIDI={handleSimulateMIDI} />;
+        return <GrainDeckWorkspace pads={pads} setPads={setPads} onSimulateMIDI={handleSimulateMIDI} />;
       case 'keyboard':
         return <KeyboardWorkspace onSimulateMIDI={handleSimulateMIDI} />;
       case 'edrum':
@@ -261,15 +261,15 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
       case 'circle_fifths':
         return <CircleOfFifthsWheel />;
       case 'melodyne_pitch':
-        return <MelodynePitchEditor />;
+        return <VocalContourEditor />;
       case 'd_groove':
-        return <DGrooveMixer />;
+        return <HumanPulseGroovePool />;
       case 'piano_roll':
         return <PianoRollSequencer />;
       case 'wave_sequencer':
-        return <CubaseLogicWaveformSequencer />;
+        return <HorizonWaveformSequencer />;
       case 'fl_channel_rack':
-        return <FLStudioChannelRack />;
+        return <BeatLoomChannelRack />;
       default:
         return null;
     }
@@ -491,18 +491,18 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
           <div className="absolute left-0 right-0 bottom-full mb-2 bg-neutral-950 border-2 border-neutral-700 rounded-2xl shadow-2xl p-3 z-50 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 max-h-72 overflow-y-auto scrollbar-thin scrollbar-thumb-stone-700">
             {[
               { type: 'folder_combinator', name: 'Combinator Bus Folder' },
-              { type: 'mpc', name: 'MPC Studio Drum Pad' },
-              { type: 'sp404', name: 'SP-404 MKII Sampler' },
+            { type: 'mpc', name: 'Canvas Drum Grid' },
+            { type: 'sp404', name: 'Grain Deck Sampler' },
               { type: 'keyboard', name: 'Analog Subtractive Synth' },
               { type: 'edrum', name: 'E-Drum Mesh Kit' },
               { type: 'drum_machines', name: 'Studio Drum Computer' },
               { type: 'wave_sequencer', name: 'Multi-Track Audio Sequencer' },
               { type: 'fl_channel_rack', name: 'Pattern Step Channel Rack' },
-              { type: 'melodyne_pitch', name: 'Pro Vocal Pitch Editor' },
+            { type: 'melodyne_pitch', name: 'Vocal Contour Editor' },
               { type: 'circle_fifths', name: 'Circle of Fifths Harmony' },
               { type: 'piano_roll', name: 'Universal Piano Roll' },
               { type: 'chop_lab', name: 'Chop Lab Stem Slicer' },
-              { type: 'mixer', name: 'SSL 9000 Master Mixer' },
+            { type: 'mixer', name: 'Summit Master Console' },
             ].map((item, idx) => (
               <button
                 key={idx}

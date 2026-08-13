@@ -5,3 +5,4 @@ export {
   PoietekStudioWorkspace,
   type PoietekStudioWorkspaceProps,
 } from "./PoietekStudioWorkspace";
+export {StudioSetupModal, type StudioSetupModalProps} from './StudioSetupModal';

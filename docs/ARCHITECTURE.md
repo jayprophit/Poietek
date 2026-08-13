@@ -24,6 +24,9 @@ src/
     ├── health/ and release/  Basic PCM checks and destination readiness
     ├── player/               Time-preserving tuning DSP boundary
     ├── providers/            Provider-neutral capability routing
+    ├── settings/             Versioned global preferences and portable profiles
+    ├── library/              Original modules, content and availability catalog
+    ├── diagnostics/          Evidence-based local benchmark
     ├── platform/             Collaboration, rights, provenance, commerce,
     │                         privacy, learning, interoperability, plugin,
     │                         video/VFX and AI contracts

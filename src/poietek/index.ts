@@ -46,4 +46,7 @@ export {SupabaseRestProvider} from './providers/SupabaseRestProvider';
 export * from './platform/index';
 export * from './community/index';
 export * as hardware from './hardware/index';
+export * from './settings/index';
+export * from './library/index';
+export * from './diagnostics/index';
 export * from './react/index';

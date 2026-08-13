@@ -23,7 +23,7 @@ interface Channel {
   steps: boolean[];
 }
 
-export const FLStudioChannelRack: React.FC = () => {
+export const BeatLoomChannelRack: React.FC = () => {
   const [selectedPattern, setSelectedPattern] = useState<string>('Pattern 1');
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [swing, setSwing] = useState<number>(55); // %
@@ -171,7 +171,7 @@ export const FLStudioChannelRack: React.FC = () => {
         <div className="space-y-2">
           {channels.map((ch) => (
             <div key={ch.id} className="flex items-center gap-2 bg-neutral-900 border-2 border-neutral-800 rounded-2xl p-2 shadow-lg">
-              {/* Left Channel Controls (FL Studio Style) */}
+            {/* Left channel controls */}
               <div className="w-60 shrink-0 bg-neutral-950 p-2.5 rounded-xl border border-neutral-800 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full" style={{ backgroundColor: ch.color }} />
@@ -183,7 +183,7 @@ export const FLStudioChannelRack: React.FC = () => {
                 </div>
               </div>
 
-              {/* 16 Step Buttons (4 blocks of 4 - Classic FL Studio Look) */}
+            {/* 16 step buttons grouped into four blocks */}
               <div className="flex-1 flex gap-1 h-10">
                 {ch.steps.map((active, stepIdx) => {
                   const isBeatGroup = Math.floor(stepIdx / 4) % 2 === 0;

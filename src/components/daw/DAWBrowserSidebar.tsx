@@ -44,8 +44,8 @@ export const DAWBrowserSidebar: React.FC<DAWBrowserSidebarProps> = ({
       id: 'instruments',
       title: 'Instruments & Samplers',
       items: [
-        { id: 'mpc', name: 'MPC Studio Drum Pad', type: 'Sampler Pad', icon: Grid, color: 'text-amber-400', category: 'instruments', tags: ['mpc', 'drum', 'pad', 'sampler', 'hiphop', 'boom bap'] },
-        { id: 'sp404', name: 'SP-404 MKII Sampler', type: 'MFX Sampler', icon: Flame, color: 'text-orange-400', category: 'instruments', tags: ['sp404', 'lofi', 'sampler', 'mfx', 'effects', 'tape'] },
+        { id: 'mpc', name: 'Canvas Drum Grid', type: 'Sampler Pad', icon: Grid, color: 'text-amber-400', category: 'instruments', tags: ['drum', 'pad', 'sampler', 'hiphop', 'boom bap'] },
+        { id: 'sp404', name: 'Grain Deck Sampler', type: 'Texture Sampler', icon: Flame, color: 'text-orange-400', category: 'instruments', tags: ['lofi', 'sampler', 'effects', 'tape'] },
         { id: 'keyboard', name: 'Analog Subtractive Synth', type: 'Poly Synth', icon: Music, color: 'text-purple-400', category: 'instruments', tags: ['synth', 'keyboard', 'analog', 'lead', 'subtractive', 'bass'] },
         { id: 'drum_machines', name: 'Studio Drum Computer', type: 'Step Seq', icon: Zap, color: 'text-rose-400', category: 'instruments', tags: ['808', '909', 'drum computer', 'step', 'sequencer', 'drums'] },
         { id: 'edrum', name: 'E-Drum Mesh Kit', type: 'Mesh Kit', icon: Disc, color: 'text-yellow-400', category: 'instruments', tags: ['edrum', 'mesh', 'acoustic', 'percussion', 'cymbals'] },
@@ -56,9 +56,9 @@ export const DAWBrowserSidebar: React.FC<DAWBrowserSidebarProps> = ({
       id: 'kits',
       title: 'Factory Drum Kits & Sample Packs',
       items: [
-        { id: 'mpc', name: '808 Heavy Trap Drum Kit', type: 'Kit Patch', icon: Grid, color: 'text-rose-400', category: 'kits', tags: ['808', 'trap', 'kit', 'drums', 'sub', 'hihat'] },
+        { id: 'mpc', name: 'Deep Circuit Drum Kit', type: 'Kit Patch', icon: Grid, color: 'text-rose-400', category: 'kits', tags: ['sub', 'trap', 'kit', 'drums', 'hihat'] },
         { id: 'mpc', name: '909 Vintage Techno Kit', type: 'Kit Patch', icon: Disc, color: 'text-yellow-400', category: 'kits', tags: ['909', 'techno', 'house', 'kit', 'snare', 'kick'] },
-        { id: 'sp404', name: 'Lo-Fi Vinyl Dust Sample Pack', type: 'Sample Pack', icon: Flame, color: 'text-orange-400', category: 'kits', tags: ['lofi', 'vinyl', 'dust', 'samples', 'chops'] },
+        { id: 'sp404', name: 'Foundry Texture Sample Pack', type: 'Procedural Pack', icon: Flame, color: 'text-orange-400', category: 'kits', tags: ['lofi', 'texture', 'samples', 'chops'] },
         { id: 'edrum', name: 'Acoustic Studio Mesh Drums', type: 'Mesh Preset', icon: Disc, color: 'text-amber-400', category: 'kits', tags: ['acoustic', 'drums', 'mesh', 'studio', 'real'] },
         { id: 'chop_lab', name: 'Golden Era Vocal Chops Pack', type: 'Stem Pack', icon: Scissors, color: 'text-emerald-400', category: 'kits', tags: ['vocal', 'chops', 'stem', 'soul', 'rnb'] },
       ],
@@ -69,7 +69,7 @@ export const DAWBrowserSidebar: React.FC<DAWBrowserSidebarProps> = ({
       items: [
         { id: 'keyboard', name: 'Warm Analog Saw Lead Patch', type: 'Synth Preset', icon: Music, color: 'text-purple-400', category: 'patches', tags: ['saw', 'synth', 'lead', 'warm', 'analog'] },
         { id: 'keyboard', name: 'Sub Bass Wobble 808 Patch', type: 'Synth Preset', icon: Music, color: 'text-indigo-400', category: 'patches', tags: ['sub', 'bass', 'wobble', '808', 'patch'] },
-        { id: 'melodyne_pitch', name: 'Pro Vocal Auto-Tuner (C-Minor)', type: 'Pitch Edit', icon: Activity, color: 'text-purple-400', category: 'patches', tags: ['vocal', 'autotune', 'pitch', 'melodyne', 'scale'] },
+        { id: 'melodyne_pitch', name: 'Vocal Contour Guide (C Minor)', type: 'Pitch Edit', icon: Activity, color: 'text-purple-400', category: 'patches', tags: ['vocal', 'pitch', 'scale'] },
         { id: 'circle_fifths', name: 'Circle of Fifths Harmony Wheel', type: 'Harmony AI', icon: Compass, color: 'text-amber-400', category: 'patches', tags: ['chords', 'harmony', 'fifths', 'theory', 'ai'] },
       ],
     },
@@ -77,10 +77,10 @@ export const DAWBrowserSidebar: React.FC<DAWBrowserSidebarProps> = ({
       id: 'sequencers',
       title: 'Sequencers & Pattern Racks',
       items: [
-        { id: 'wave_sequencer', name: 'Multi-Track Audio Waveforms', type: 'Multi-Track', icon: Layers, color: 'text-blue-400', category: 'mix_fx', tags: ['wave', 'audio', 'timeline', 'multitrack', 'logic'] },
+        { id: 'wave_sequencer', name: 'Horizon Multi-Track Waveforms', type: 'Multi-Track', icon: Layers, color: 'text-blue-400', category: 'mix_fx', tags: ['wave', 'audio', 'timeline', 'multitrack'] },
         { id: 'piano_roll', name: 'Universal Piano Roll Grid', type: 'MIDI Grid', icon: Grid, color: 'text-indigo-400', category: 'mix_fx', tags: ['piano roll', 'midi', 'notes', 'grid'] },
         { id: 'fl_channel_rack', name: 'Pattern Step Channel Rack', type: '16-Step Beat', icon: Zap, color: 'text-orange-400', category: 'mix_fx', tags: ['fl', 'channel rack', 'step', 'pattern'] },
-        { id: 'd_groove', name: 'D-Groove Shuffle Pool', type: 'ReGroove', icon: Sliders, color: 'text-amber-400', category: 'mix_fx', tags: ['groove', 'shuffle', 'swing', 'timing'] },
+        { id: 'd_groove', name: 'Human Pulse Groove Pool', type: 'Timing Pool', icon: Sliders, color: 'text-amber-400', category: 'mix_fx', tags: ['groove', 'shuffle', 'swing', 'timing'] },
       ],
     },
     {
@@ -88,7 +88,7 @@ export const DAWBrowserSidebar: React.FC<DAWBrowserSidebarProps> = ({
       title: 'Mixers, Bus Folders & CV Patch Bay',
       items: [
         { id: 'folder_combinator', name: 'Combinator Bus Folder FX', type: 'Group Folder', icon: Folder, color: 'text-amber-400', category: 'mix_fx', tags: ['folder', 'combinator', 'bus', 'group', 'fx'] },
-        { id: 'mixer', name: 'SSL 9000 Studio Master Console', type: 'Console', icon: Sliders, color: 'text-emerald-400', category: 'mix_fx', tags: ['mixer', 'ssl', 'console', 'eq', 'compressor'] },
+        { id: 'mixer', name: 'Summit Studio Master Console', type: 'Console', icon: Sliders, color: 'text-emerald-400', category: 'mix_fx', tags: ['mixer', 'console', 'eq', 'compressor'] },
         { id: 'patchbay', name: 'Audio & CV Patch Bay', type: 'Hardware CV', icon: Radio, color: 'text-cyan-400', category: 'mix_fx', tags: ['patchbay', 'cv', 'cable', 'routing'] },
         { id: 'dj', name: 'DJ Decks Performance Console', type: 'Performance', icon: Disc, color: 'text-blue-400', category: 'mix_fx', tags: ['dj', 'deck', 'crossfader', 'scratch'] },
       ],

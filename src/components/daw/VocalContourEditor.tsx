@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Activity, Sliders, Volume2, Wand2, RefreshCw, Sparkles, ShieldCheck } from 'lucide-react';
 
-export const MelodynePitchEditor: React.FC = () => {
+export const VocalContourEditor: React.FC = () => {
   const [pitchCorrection, setPitchCorrection] = useState<number>(85); // %
   const [formantShift, setFormantShift] = useState<number>(0); // semitones
   const [vibratoAmount, setVibratoAmount] = useState<number>(50); // %

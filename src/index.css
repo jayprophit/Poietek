@@ -1,1 +1,24 @@
 @import "tailwindcss";
+
+:root {
+  --poietek-ui-scale: 1;
+  font-size: calc(16px * var(--poietek-ui-scale));
+  color-scheme: dark;
+}
+
+html[data-poietek-theme='graphite'] body {
+  filter: saturate(0.82);
+}
+
+html[data-poietek-theme='high-contrast'] body {
+  filter: contrast(1.14) saturate(0.92);
+}
+
+html[data-poietek-reduce-motion='true'] *,
+html[data-poietek-reduce-motion='true'] *::before,
+html[data-poietek-reduce-motion='true'] *::after {
+  scroll-behavior: auto !important;
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}

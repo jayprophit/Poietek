@@ -38,7 +38,7 @@ interface Track {
   }[];
 }
 
-export const CubaseLogicWaveformSequencer: React.FC = () => {
+export const HorizonWaveformSequencer: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [zoomLevel, setZoomLevel] = useState<number>(1);
   const [playheadPos, setPlayheadPos] = useState<number>(0); // 0 to 100%
@@ -76,7 +76,7 @@ export const CubaseLogicWaveformSequencer: React.FC = () => {
     },
     {
       id: 'tr_3',
-      name: 'MPC Studio Drum Master Bus',
+      name: 'Canvas Drum Master Bus',
       type: 'audio',
       color: '#f59e0b',
       isMuted: false,
@@ -90,7 +90,7 @@ export const CubaseLogicWaveformSequencer: React.FC = () => {
     },
     {
       id: 'tr_4',
-      name: 'Acoustic Guitar Strum (Logic Audio)',
+      name: 'Acoustic Guitar Strum',
       type: 'audio',
       color: '#10b981',
       isMuted: false,
@@ -258,7 +258,7 @@ export const CubaseLogicWaveformSequencer: React.FC = () => {
         <div className="space-y-3">
           {tracks.map((tr) => (
             <div key={tr.id} className="flex items-center gap-3 bg-neutral-900 border-2 border-neutral-800 rounded-2xl p-2 h-24 shadow-lg">
-              {/* Left Track Control Strip (Cubase / Logic Style) */}
+        {/* Left track control strip */}
               <div className="w-60 shrink-0 bg-neutral-950 p-3 rounded-xl border border-neutral-800 space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-black text-white truncate max-w-[120px]">{tr.name}</span>

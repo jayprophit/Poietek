@@ -43,6 +43,7 @@ interface DAWMenuBarProps {
   onToggleFlip: () => void;
   openAIGrooveModal: () => void;
   openTemplatesModal?: () => void;
+  openStudioSetup: () => void;
   bpm: number;
   detachedWorkspaces?: WorkspaceType[];
   onDetachWorkspace?: (ws: WorkspaceType) => void;
@@ -59,6 +60,7 @@ export const DAWMenuBar: React.FC<DAWMenuBarProps> = ({
   onToggleFlip,
   openAIGrooveModal,
   openTemplatesModal,
+  openStudioSetup,
   bpm,
   detachedWorkspaces = [],
   onDetachWorkspace,
@@ -211,18 +213,18 @@ export const DAWMenuBar: React.FC<DAWMenuBarProps> = ({
               {activeMenu === 'rack' && (
                 <div className="absolute top-full left-0 mt-1 w-64 bg-neutral-900 border-2 border-neutral-700 rounded-xl shadow-2xl py-1 text-xs text-neutral-200 z-50">
                   <button onClick={() => { setActiveWorkspace('mpc'); closeMenu(); }} className="w-full text-left px-3 py-1.5 hover:bg-amber-500 hover:text-neutral-950 flex items-center justify-between font-bold">
-                    <span>MPC Studio Drum Pad</span>
+                    <span>Canvas Drum Grid</span>
                     <span className="text-[10px] opacity-60">SAMPLER</span>
                   </button>
                   <button onClick={() => { setActiveWorkspace('keyboard'); closeMenu(); }} className="w-full text-left px-3 py-1.5 hover:bg-amber-500 hover:text-neutral-950 flex items-center justify-between font-bold">
-                    <span>Analog Subtractive Synth</span>
+                    <span>Prism Poly Synth</span>
                     <span className="text-[10px] opacity-60">SYNTH</span>
                   </button>
                   <button onClick={() => { setActiveWorkspace('sp404'); closeMenu(); }} className="w-full text-left px-3 py-1.5 hover:bg-amber-500 hover:text-neutral-950 flex items-center justify-between">
-                    <span>SP-404 MKII MFX Sampler</span>
+                    <span>Grain Deck Sampler</span>
                   </button>
                   <button onClick={() => { setActiveWorkspace('mixer'); closeMenu(); }} className="w-full text-left px-3 py-1.5 hover:bg-amber-500 hover:text-neutral-950 flex items-center justify-between font-bold">
-                    <span>SSL 9000 Master Mixer</span>
+                    <span>Summit Master Console</span>
                     <span className="text-[10px] text-emerald-400">MIX</span>
                   </button>
                   <button onClick={() => { setActiveWorkspace('patchbay'); closeMenu(); }} className="w-full text-left px-3 py-1.5 hover:bg-amber-500 hover:text-neutral-950 flex items-center justify-between">
@@ -249,20 +251,20 @@ export const DAWMenuBar: React.FC<DAWMenuBarProps> = ({
                     <span className="text-[10px] text-indigo-400">AUDIO</span>
                   </button>
                   <button onClick={() => { setActiveWorkspace('fl_channel_rack'); closeMenu(); }} className="w-full text-left px-3 py-1.5 hover:bg-orange-600 hover:text-white flex items-center justify-between font-bold">
-                    <span>Pattern Step Channel Rack</span>
+                    <span>Beat Loom Step Rack</span>
                     <span className="text-[10px] text-orange-400">STEPS</span>
                   </button>
                   <button onClick={() => { setActiveWorkspace('piano_roll'); closeMenu(); }} className="w-full text-left px-3 py-1.5 hover:bg-indigo-600 hover:text-white flex items-center justify-between">
                     <span>Timeline Piano Roll</span>
                   </button>
                   <button onClick={() => { setActiveWorkspace('melodyne_pitch'); closeMenu(); }} className="w-full text-left px-3 py-1.5 hover:bg-purple-600 hover:text-white flex items-center justify-between">
-                    <span>Pro Vocal Pitch Editor</span>
+                    <span>Vocal Contour Editor</span>
                   </button>
                   <button onClick={() => { setActiveWorkspace('circle_fifths'); closeMenu(); }} className="w-full text-left px-3 py-1.5 hover:bg-amber-500 hover:text-neutral-950 flex items-center justify-between">
                     <span>Circle of Fifths Harmony Matrix</span>
                   </button>
                   <button onClick={() => { setActiveWorkspace('d_groove'); closeMenu(); }} className="w-full text-left px-3 py-1.5 hover:bg-amber-500 hover:text-neutral-950 flex items-center justify-between">
-                    <span>ReGroove / D-Groove Shuffle Pool</span>
+                    <span>Human Pulse Groove Pool</span>
                   </button>
                 </div>
               )}
@@ -288,19 +290,31 @@ export const DAWMenuBar: React.FC<DAWMenuBarProps> = ({
               <Sparkles className="w-3 h-3" />
               <span>AI Groove Assistant</span>
             </button>
+
+            <button
+              onClick={() => {
+                openStudioSetup();
+                closeMenu();
+              }}
+              className="px-2.5 py-1 rounded bg-stone-800 text-stone-100 hover:bg-amber-500 hover:text-stone-950 transition font-black flex items-center gap-1.5 border border-stone-700"
+              title="Audio, MIDI, recording, plug-in, profile, privacy, and benchmark settings"
+            >
+              <Settings className="w-3 h-3" />
+              <span>Studio Setup</span>
+            </button>
           </div>
         </div>
 
         {/* Right Status Info */}
         <div className="flex items-center gap-3 text-[11px]">
           <span className="text-neutral-400">BPM: <strong className="text-amber-400">{bpm}</strong></span>
-          <span className="hidden sm:inline text-neutral-400">Driver: <strong className="text-emerald-400">Studio Pro 64</strong></span>
+          <span className="hidden sm:inline text-neutral-400">Audio: <strong className="text-amber-400">Detect in Setup</strong></span>
         </div>
       </div>
 
       {/* CASCADING BURGER SLIDE-OUT DRAWER (For Touch, Tablet, or Compact Mobile) */}
       {isBurgerOpen && (
-        <div className="fixed inset-0 top-9 bg-neutral-950/95 z-[100] p-4 font-mono text-xs overflow-y-auto backdrop-blur-lg animate-in slide-in-from-top-2 duration-200 border-b-2 border-amber-500">
+        <div className="fixed inset-0 top-9 bg-neutral-950/95 z-[220] p-4 font-mono text-xs overflow-y-auto backdrop-blur-lg animate-in slide-in-from-top-2 duration-200 border-b-2 border-amber-500">
           <div className="max-w-xl mx-auto space-y-4">
             <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
               <span className="text-xs font-black text-amber-400 uppercase tracking-widest flex items-center gap-2">
@@ -340,6 +354,16 @@ export const DAWMenuBar: React.FC<DAWMenuBarProps> = ({
                   <ExternalLink className="w-4 h-4 text-amber-400" />
                 </button>
               )}
+              <button
+                onClick={() => {
+                  openStudioSetup();
+                  setIsBurgerOpen(false);
+                }}
+                className="p-3 rounded-xl bg-stone-800 border border-stone-700 text-stone-200 font-bold hover:bg-amber-500 hover:text-neutral-950 transition flex items-center justify-between"
+              >
+                <span>Studio Setup</span>
+                <Settings className="w-4 h-4 text-amber-400" />
+              </button>
             </div>
 
             {/* Cascading Categories */}
@@ -390,7 +414,7 @@ export const DAWMenuBar: React.FC<DAWMenuBarProps> = ({
                     className="p-2.5 rounded-xl bg-neutral-900 hover:bg-amber-500 hover:text-neutral-950 border border-neutral-800 text-left font-bold flex items-center gap-2"
                   >
                     <Grid className="w-4 h-4 text-amber-400" />
-                    <span>MPC Studio Drum Pad</span>
+                <span>Canvas Drum Grid</span>
                   </button>
                   <button
                     onClick={() => { setActiveWorkspace('keyboard'); setIsBurgerOpen(false); }}
@@ -404,14 +428,14 @@ export const DAWMenuBar: React.FC<DAWMenuBarProps> = ({
                     className="p-2.5 rounded-xl bg-neutral-900 hover:bg-amber-500 hover:text-neutral-950 border border-neutral-800 text-left font-bold flex items-center gap-2"
                   >
                     <Flame className="w-4 h-4 text-orange-400" />
-                    <span>SP-404 MKII MFX Sampler</span>
+                <span>Grain Deck Sampler</span>
                   </button>
                   <button
                     onClick={() => { setActiveWorkspace('mixer'); setIsBurgerOpen(false); }}
                     className="p-2.5 rounded-xl bg-neutral-900 hover:bg-amber-500 hover:text-neutral-950 border border-neutral-800 text-left font-bold flex items-center gap-2"
                   >
                     <Sliders className="w-4 h-4 text-emerald-400" />
-                    <span>SSL 9000 Studio Mixer</span>
+                <span>Summit Master Console</span>
                   </button>
                 </div>
               </div>

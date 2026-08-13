@@ -58,11 +58,11 @@ export const HardwareInterfaceUnit: React.FC<HardwareInterfaceUnitProps> = ({
 
           <div className="hidden sm:flex flex-col">
             <span className="text-[10px] font-mono font-black text-amber-500 uppercase tracking-widest flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              64 CHANNEL AUDIO & MIDI DRIVER
+              <span className={`w-1.5 h-1.5 rounded-full ${activeDevs.length ? 'bg-emerald-400' : 'bg-amber-400'}`} />
+              {activeDevs.length ? `${activeDevs.length} MIDI ENDPOINT${activeDevs.length === 1 ? '' : 'S'} ACTIVE` : 'DEVICE CAPABILITY NOT INITIALIZED'}
             </span>
             <span className="text-[9px] text-neutral-400 font-mono">
-              ASIO / WEB AUDIO ENGINE @ 48.0 kHz 24-BIT
+              Configure and inspect the active engine in Studio Setup
             </span>
           </div>
         </div>
@@ -71,14 +71,14 @@ export const HardwareInterfaceUnit: React.FC<HardwareInterfaceUnitProps> = ({
         <div className="flex items-center gap-6 bg-neutral-950/90 border border-neutral-800 rounded-lg px-4 py-1.5 shadow-inner">
           {/* Audio Out Meters */}
           <div className="flex items-center gap-1.5">
-            <span className="text-[9px] font-mono font-bold text-neutral-400 uppercase">OUT 1-2</span>
+            <span className="text-[9px] font-mono font-bold text-neutral-400 uppercase">METER OFFLINE</span>
             <div className="flex gap-0.5">
               {[...Array(8)].map((_, i) => (
                 <div
                   key={i}
                   className={`w-1.5 h-3 rounded-xs ${
-                    i < 6 ? 'bg-emerald-500' : i < 7 ? 'bg-amber-400' : 'bg-rose-500'
-                  } opacity-90 shadow-sm shadow-emerald-500/50`}
+                    'bg-neutral-700'
+                  } opacity-70`}
                 />
               ))}
             </div>
@@ -88,15 +88,15 @@ export const HardwareInterfaceUnit: React.FC<HardwareInterfaceUnitProps> = ({
           <div className="flex items-center gap-3 border-x border-neutral-800 px-3">
             <div className="flex flex-col items-center">
               <span className="text-[8px] font-mono text-neutral-500">MIDI IN</span>
-              <div className="w-2 h-2 rounded-full bg-amber-400 shadow-md shadow-amber-400/80 animate-ping" />
+              <div className={`w-2 h-2 rounded-full ${activeDevs.length ? 'bg-emerald-400' : 'bg-neutral-700'}`} />
             </div>
             <div className="flex flex-col items-center">
               <span className="text-[8px] font-mono text-neutral-500">MIDI OUT</span>
-              <div className="w-2 h-2 rounded-full bg-indigo-400 shadow-md shadow-indigo-400/80" />
+              <div className="w-2 h-2 rounded-full bg-neutral-700" title="MIDI output scheduler unavailable" />
             </div>
             <div className="flex flex-col items-center">
               <span className="text-[8px] font-mono text-neutral-500">SYNC</span>
-              <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-md shadow-emerald-400/80" />
+              <div className="w-2 h-2 rounded-full bg-neutral-700" title="External synchronization unavailable" />
             </div>
           </div>
 

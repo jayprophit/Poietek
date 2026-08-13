@@ -50,8 +50,8 @@ export const Navigation: React.FC<NavigationProps> = ({
     : 'not measured';
 
   const navItems: { id: WorkspaceType; label: string; icon: React.FC<{ className?: string }> }[] = [
-    { id: 'mpc', label: 'MPC Sampler', icon: Grid },
-    { id: 'sp404', label: 'SP-404MKII', icon: Flame },
+    { id: 'mpc', label: 'Canvas Grid', icon: Grid },
+    { id: 'sp404', label: 'Grain Deck', icon: Flame },
     { id: 'keyboard', label: 'Keyboard', icon: Music },
     { id: 'edrum', label: 'E-Drum Kit', icon: Disc },
     { id: 'dj', label: 'DJ Decks', icon: Disc3 },
@@ -169,7 +169,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           </div>
         </div>
 
-        {/* Hardware Status & Gemini AI Assistant Button */}
+          {/* Hardware status and previewable assistant button */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 bg-slate-950/60 px-3 py-1.5 rounded-xl border border-slate-800/80 text-xs">
             <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />

@@ -4,9 +4,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "node ./node_modules/vite/bin/vite.js --configLoader runner --port=3000 --host=0.0.0.0",
+    "dev": "node ./scripts/web-preview.mjs --port=3000",
+    "dev:hmr": "node ./node_modules/vite/bin/vite.js --configLoader runner --port=3000 --host=0.0.0.0",
     "build": "node ./node_modules/vite/bin/vite.js build --configLoader runner",
-    "preview": "node ./node_modules/vite/bin/vite.js preview --configLoader runner",
+    "preview": "node ./scripts/web-preview.mjs --port=4173",
     "clean": "node -e \"const fs=require('fs');fs.existsSync('dist')&&fs.rmSync('dist',{recursive:true,force:true});fs.existsSync('server.js')&&fs.unlinkSync('server.js');\"",
     "format:check": "node ./scripts/check-format.mjs",
     "typecheck": "node ./node_modules/typescript/bin/tsc --noEmit --pretty false",

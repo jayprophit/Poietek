@@ -37,7 +37,7 @@ export const GenerativeGrooveModal: React.FC<GenerativeGrooveModalProps> = ({
         style: prompt,
         suggestedBpm: bpm,
         swing: 58,
-        description: `Generated AI groove pattern optimized for MPC Bank A & SP-404 MFX Vinyl Sim. Includes syncopated kick, ghost snares, and 1/16 shuffle hats.`,
+        description: `Generated local groove preview for Canvas Bank A and Grain Deck texture effects. Includes syncopated kick, ghost snares, and 1/16 shuffle hats.`,
       });
       setIsGenerating(false);
     }, 1200);
@@ -51,7 +51,7 @@ export const GenerativeGrooveModal: React.FC<GenerativeGrooveModalProps> = ({
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center text-white">
               <Wand2 className="w-4 h-4" />
             </div>
-            <h3 className="text-base font-bold text-white">Gemini AI Groove & Rhythm Assistant</h3>
+            <h3 className="text-base font-bold text-white">Poietek Groove Preview Assistant</h3>
           </div>
           <button onClick={onClose} className="p-1 rounded-lg text-slate-400 hover:text-white">
             <X className="w-5 h-5" />

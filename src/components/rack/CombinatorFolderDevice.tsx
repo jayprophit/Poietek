@@ -257,11 +257,11 @@ export const CombinatorFolderDevice: React.FC<CombinatorFolderDeviceProps> = ({
             {isAddMenuOpen && (
               <div className="absolute left-0 right-0 top-full mt-1 bg-neutral-950 border-2 border-neutral-700 rounded-xl shadow-2xl p-2 z-50 grid grid-cols-2 gap-1.5">
                 {[
-                  { type: 'mpc', name: 'MPC Studio Drum Pad' },
-                  { type: 'sp404', name: 'SP-404 MKII Sampler' },
+                      { type: 'mpc', name: 'Canvas Drum Grid' },
+                      { type: 'sp404', name: 'Grain Deck Sampler' },
                   { type: 'keyboard', name: 'Analog Subtractive Synth' },
                   { type: 'drum_machines', name: 'Studio Drum Computer' },
-                  { type: 'mixer', name: 'SSL Master Mixer Channel' },
+                      { type: 'mixer', name: 'Summit Mixer Channel' },
                   { type: 'melodyne_pitch', name: 'Pro Vocal Pitch Editor' },
                 ].map((item, idx) => (
                   <button

@@ -9,7 +9,7 @@ export const PatchBayWorkspace: React.FC = () => {
   const inputs = [
     { id: 'in_1', name: 'Input 1 (Mic XLR / Instrument)', type: 'mic', active: true, gain: 0.8, targetTrack: 'Vocal Track' },
     { id: 'in_2', name: 'Input 2 (Guitar Hi-Z Line)', type: 'instrument', active: true, gain: 0.7, targetTrack: 'Bass Synth Track' },
-    { id: 'in_3', name: 'Input 3/4 (SP-404 Stereo Line)', type: 'line', active: true, gain: 0.9, targetTrack: 'Sampler Track' },
+    { id: 'in_3', name: 'Input 3/4 (Grain Deck Stereo Line)', type: 'line', active: true, gain: 0.9, targetTrack: 'Sampler Track' },
     { id: 'in_4', name: 'Input 5/6 (E-Drum Kit L/R)', type: 'line', active: false, gain: 0.5, targetTrack: 'Drum Track' },
   ];
 
@@ -28,7 +28,7 @@ export const PatchBayWorkspace: React.FC = () => {
       setIsRecording(false);
       if (buffer) {
         audioEngine.registerCustomSample('user_rec_sample', buffer);
-        setRecordingStatus('Live Sample Captured! Sent to Chop Lab & MPC Pad A01.');
+    setRecordingStatus('Live sample captured. Sent to Chop Lab and Canvas Pad A01.');
       } else {
         setRecordingStatus('Recording completed.');
       }

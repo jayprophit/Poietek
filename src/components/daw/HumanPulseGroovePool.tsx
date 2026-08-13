@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Sliders, Zap, Flame, RefreshCw, Layers } from 'lucide-react';
 
-export const DGrooveMixer: React.FC = () => {
+export const HumanPulseGroovePool: React.FC = () => {
   const [grooveChannels, setGrooveChannels] = useState([
-    { id: 'ch_a', name: 'ReGroove Channel A1 (16 Shuffle)', swing: 58, timingJitter: 12, velocityJitter: 18, preset: 'MPC 3000 16-Swing' },
-    { id: 'ch_b', name: 'ReGroove Channel B1 (8 Shuffle)', swing: 62, timingJitter: 8, velocityJitter: 10, preset: 'SP-1200 Boom Bap' },
-    { id: 'ch_c', name: 'ReGroove Channel C1 (Push/Pull)', swing: 50, timingJitter: 22, velocityJitter: 25, preset: 'Dilla Human Push' },
-    { id: 'ch_d', name: 'ReGroove Channel D1 (Straight)', swing: 50, timingJitter: 0, velocityJitter: 0, preset: 'Quantized Straight' },
+  { id: 'ch_a', name: 'Human Pulse Channel A1 (16 Shuffle)', swing: 58, timingJitter: 12, velocityJitter: 18, preset: 'Foundry 16-Swing' },
+  { id: 'ch_b', name: 'Human Pulse Channel B1 (8 Shuffle)', swing: 62, timingJitter: 8, velocityJitter: 10, preset: 'Dust Pocket' },
+  { id: 'ch_c', name: 'Human Pulse Channel C1 (Push/Pull)', swing: 50, timingJitter: 22, velocityJitter: 25, preset: 'Late Pocket Push' },
+  { id: 'ch_d', name: 'Human Pulse Channel D1 (Straight)', swing: 50, timingJitter: 0, velocityJitter: 0, preset: 'Quantized Straight' },
   ]);
 
   const updateGroove = (id: string, field: string, val: number | string) => {
@@ -25,10 +25,10 @@ export const DGrooveMixer: React.FC = () => {
           </div>
           <div>
             <h2 className="text-lg font-black text-amber-400 uppercase tracking-widest flex items-center gap-2">
-              D-GROOVE & REGROOVE MIXER GROOVE POOL
+          HUMAN PULSE GROOVE POOL
             </h2>
             <p className="text-xs text-neutral-400">
-              Pro ReGroove Mixer & Ableton Groove Pool real-time swing, micro-timing push/pull & velocity humanization.
+          Real-time swing, micro-timing push/pull, and velocity humanization.
             </p>
           </div>
         </div>
@@ -37,7 +37,7 @@ export const DGrooveMixer: React.FC = () => {
       {/* Channels Matrix */}
       <div className="bg-neutral-950 border-2 border-neutral-700 rounded-3xl p-6 shadow-2xl space-y-4">
         <h3 className="text-xs font-bold text-neutral-300 uppercase border-b border-neutral-800 pb-2">
-          Active ReGroove Channel Channels (A1 - D1)
+          Active Human Pulse Channels (A1 - D1)
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

@@ -15,8 +15,8 @@ import { StudioRearPanel } from './components/rack/StudioRearPanel';
 import { StudioRackDevice } from './components/rack/StudioRackDevice';
 import { StudioRackNav } from './components/rack/StudioRackNav';
 
-import { MPCWorkspace } from './components/workspaces/MPCWorkspace';
-import { SP404Workspace } from './components/workspaces/SP404Workspace';
+import { CanvasDrumGridWorkspace } from './components/workspaces/CanvasDrumGridWorkspace';
+import { GrainDeckWorkspace } from './components/workspaces/GrainDeckWorkspace';
 import { KeyboardWorkspace } from './components/workspaces/KeyboardWorkspace';
 import { EDrumWorkspace } from './components/workspaces/EDrumWorkspace';
 import { DJWorkspace } from './components/workspaces/DJWorkspace';
@@ -31,13 +31,13 @@ import { DeviceHealthModal } from './components/system/DeviceHealthModal';
 import { GenerativeGrooveModal } from './components/ai/GenerativeGrooveModal';
 
 import { CircleOfFifthsWheel } from './components/daw/CircleOfFifthsWheel';
-import { MelodynePitchEditor } from './components/daw/MelodynePitchEditor';
-import { DGrooveMixer } from './components/daw/DGrooveMixer';
+import { VocalContourEditor } from './components/daw/VocalContourEditor';
+import { HumanPulseGroovePool } from './components/daw/HumanPulseGroovePool';
 import { PianoRollSequencer } from './components/daw/PianoRollSequencer';
 import { DAWMenuBar } from './components/daw/DAWMenuBar';
 import { DAWBrowserSidebar } from './components/daw/DAWBrowserSidebar';
-import { CubaseLogicWaveformSequencer } from './components/daw/CubaseLogicWaveformSequencer';
-import { FLStudioChannelRack } from './components/daw/FLStudioChannelRack';
+import { HorizonWaveformSequencer } from './components/daw/HorizonWaveformSequencer';
+import { BeatLoomChannelRack } from './components/daw/BeatLoomChannelRack';
 import { FloatingWindowManager } from './components/daw/FloatingWindowManager';
 
 import { RackModuleItem, StudioTemplate, ModuleType } from './types';
@@ -45,6 +45,11 @@ import { RackStackManager } from './components/rack/RackStackManager';
 import { FloatingQuickPalette } from './components/daw/FloatingQuickPalette';
 import { TemplatesModal } from './components/daw/TemplatesModal';
 import { GuidedWalkthroughBanner } from './components/daw/GuidedWalkthroughBanner';
+import {BrowserStudioSettingsRepository, type StudioPreferences} from './poietek/settings';
+
+const StudioSetupModal = React.lazy(() =>
+  import('./poietek/react/StudioSetupModal').then((module) => ({default: module.StudioSetupModal})),
+);
 
 export default function App() {
   // Master Global App State
@@ -68,13 +73,14 @@ export default function App() {
   const [detachedWorkspaces, setDetachedWorkspaces] = useState<WorkspaceType[]>([]);
 
   const [isTemplatesOpen, setIsTemplatesOpen] = useState<boolean>(false);
+  const [isStudioSetupOpen, setIsStudioSetupOpen] = useState<boolean>(false);
   const [isWalkthroughActive, setIsWalkthroughActive] = useState<boolean>(true);
   const [autoHideBars, setAutoHideBars] = useState<boolean>(false);
 
   // Infinite Rack Modules State with Undo/Redo History Stack
   const [rackHistory, setRackHistory] = useState<RackModuleItem[][]>([
     [
-      { id: 'start_mpc', type: 'mpc', title: 'MPC Studio Drum Pad', tapeLabel: 'BOOM BAP KIT' },
+      { id: 'start_mpc', type: 'mpc', title: 'Canvas Drum Grid', tapeLabel: 'FOUNDRY KIT' },
       { id: 'start_synth', type: 'keyboard', title: 'Analog Subtractive Synth', tapeLabel: 'LEAD SYNTH' },
       {
         id: 'start_bus',
@@ -83,9 +89,9 @@ export default function App() {
         tapeLabel: 'COMBINATOR BUS',
         subModuleIds: ['start_sp404'],
       },
-      { id: 'start_sp404', type: 'sp404', title: 'SP-404 MKII Sampler', tapeLabel: 'LO-FI MFX', groupId: 'start_bus' },
-      { id: 'start_pitch', type: 'melodyne_pitch', title: 'Pro Vocal Pitch Editor', tapeLabel: 'AUTO TUNER' },
-      { id: 'start_mixer', type: 'mixer', title: 'SSL 9000 Master Mixer', tapeLabel: 'MASTER CONSOLE' },
+      { id: 'start_sp404', type: 'sp404', title: 'Grain Deck Sampler', tapeLabel: 'TEXTURE FX', groupId: 'start_bus' },
+      { id: 'start_pitch', type: 'melodyne_pitch', title: 'Vocal Contour Editor', tapeLabel: 'PITCH MAP' },
+      { id: 'start_mixer', type: 'mixer', title: 'Summit Master Console', tapeLabel: 'MASTER CONSOLE' },
     ],
   ]);
   const [historyIndex, setHistoryIndex] = useState<number>(0);
@@ -250,8 +256,8 @@ export default function App() {
 
   // Initialize 8 Studio Track Mixer Channels
   const [channels, setChannels] = useState<TrackChannel[]>([
-    { id: 'ch_1', name: 'MPC Bank A', color: '#6366f1', volume: 0.85, pan: 0, mute: false, solo: false, eqLow: 0, eqMid: 0, eqHigh: 0, sendReverb: 0.2, sendDelay: 0.1, assignedPadIds: [], instrumentType: 'sampler' },
-    { id: 'ch_2', name: 'SP-404 Sampler', color: '#f97316', volume: 0.9, pan: 0, mute: false, solo: false, eqLow: 2, eqMid: -1, eqHigh: 1, sendReverb: 0.3, sendDelay: 0.2, assignedPadIds: [], instrumentType: 'sampler' },
+    { id: 'ch_1', name: 'Canvas Grid Bank A', color: '#6366f1', volume: 0.85, pan: 0, mute: false, solo: false, eqLow: 0, eqMid: 0, eqHigh: 0, sendReverb: 0.2, sendDelay: 0.1, assignedPadIds: [], instrumentType: 'sampler' },
+    { id: 'ch_2', name: 'Grain Deck Sampler', color: '#f97316', volume: 0.9, pan: 0, mute: false, solo: false, eqLow: 2, eqMid: -1, eqHigh: 1, sendReverb: 0.3, sendDelay: 0.2, assignedPadIds: [], instrumentType: 'sampler' },
     { id: 'ch_3', name: 'MIDI Synth Lead', color: '#a855f7', volume: 0.8, pan: -0.2, mute: false, solo: false, eqLow: 0, eqMid: 2, eqHigh: 2, sendReverb: 0.4, sendDelay: 0.3, assignedPadIds: [], instrumentType: 'synth' },
     { id: 'ch_4', name: 'E-Drum Kit', color: '#eab308', volume: 0.9, pan: 0, mute: false, solo: false, eqLow: 3, eqMid: 0, eqHigh: 1, sendReverb: 0.1, sendDelay: 0, assignedPadIds: [], instrumentType: 'e_drum' },
     { id: 'ch_5', name: 'DJ Deck A', color: '#3b82f6', volume: 0.85, pan: -0.5, mute: false, solo: false, eqLow: 0, eqMid: 0, eqHigh: 0, sendReverb: 0, sendDelay: 0, assignedPadIds: [], instrumentType: 'dj_deck' },
@@ -332,25 +338,37 @@ export default function App() {
     setMasterState((prev) => ({ ...prev, bpm: newBpm }));
   };
 
+  const handleApplyStudioPreferences = useCallback((preferences: StudioPreferences) => {
+    setAutoHideBars(preferences.appearance.autoHideTransportBars);
+    document.documentElement.dataset.poietekTheme = preferences.appearance.theme;
+    document.documentElement.dataset.poietekDensity = preferences.appearance.density;
+    document.documentElement.dataset.poietekReduceMotion = String(preferences.appearance.reduceMotion);
+    document.documentElement.style.setProperty('--poietek-ui-scale', String(preferences.appearance.interfaceScalePercent / 100));
+  }, []);
+
+  useEffect(() => {
+    handleApplyStudioPreferences(new BrowserStudioSettingsRepository().load().preferences);
+  }, [handleApplyStudioPreferences]);
+
   const getRackTitle = (ws: WorkspaceType) => {
     switch (ws) {
-      case 'mpc': return 'KONG / MPC SAMPLER STUDIO';
-      case 'sp404': return 'SP-404 MKII MULTI-EFFECTS SAMPLER';
-      case 'keyboard': return 'SUBTRACTOR ANALOG SYNTHESIZER';
-      case 'drum_machines': return 'REDRUM & MATRIX PATTERN SEQUENCER';
+      case 'mpc': return 'CANVAS DRUM GRID SAMPLER';
+      case 'sp404': return 'GRAIN DECK MULTI-EFFECTS SAMPLER';
+      case 'keyboard': return 'PRISM POLY SYNTHESIZER';
+      case 'drum_machines': return 'PULSE DRUM LINE & PATTERN SEQUENCER';
       case 'edrum': return 'E-DRUM MESH TRIGGER MODULE';
       case 'dj': return 'DJ PERFORMANCE DECKS CONSOLE';
-      case 'mixer': return 'SSL 9000 MASTER STUDIO MIXER';
+      case 'mixer': return 'SUMMIT MASTER STUDIO CONSOLE';
       case 'patchbay': return 'AUDIO & CV HARDWARE PATCH BAY';
       case 'mapper': return 'UNIVERSAL MIDI HARDWARE MAPPER';
       case 'visual_editor': return 'DIY VISUAL CONTROLLER BUILDER';
       case 'midi_matrix': return 'REALTIME MIDI SIGNAL PROCESSOR';
       case 'circle_fifths': return 'CIRCLE OF FIFTHS HARMONY WHEEL & CHORD GENERATOR';
-      case 'melodyne_pitch': return 'MELODYNE & FL PITCHER VOCAL TUNER';
-      case 'd_groove': return 'D-GROOVE & REGROOVE SHUFFLE POOL';
+      case 'melodyne_pitch': return 'VOCAL CONTOUR PITCH EDITOR';
+      case 'd_groove': return 'HUMAN PULSE GROOVE POOL';
       case 'piano_roll': return 'PIANO ROLL & PATTERN SEQUENCER';
-      case 'wave_sequencer': return 'CUBASE & LOGIC MULTI-TRACK WAVEFORM SEQUENCER';
-      case 'fl_channel_rack': return 'FL STUDIO PATTERN STEP CHANNEL RACK';
+      case 'wave_sequencer': return 'HORIZON MULTI-TRACK WAVEFORM SEQUENCER';
+      case 'fl_channel_rack': return 'BEAT LOOM PATTERN STEP RACK';
       case 'chop_lab': return 'CHOP LAB STEM SAMPLING UNIT';
       case 'health_latency': return 'SYSTEM LATENCY & DIAGNOSTICS';
       default: return 'VIRTUAL STUDIO RACK MODULE';
@@ -359,23 +377,23 @@ export default function App() {
 
   const getTapeLabel = (ws: WorkspaceType) => {
     switch (ws) {
-      case 'mpc': return 'KONG DRUM PAD 1';
-      case 'sp404': return 'SP-404 MFX';
-      case 'keyboard': return 'SUBTRACTOR 1';
-      case 'drum_machines': return 'REDRUM 1';
+      case 'mpc': return 'CANVAS GRID 1';
+      case 'sp404': return 'GRAIN DECK 1';
+      case 'keyboard': return 'PRISM POLY 1';
+      case 'drum_machines': return 'PULSE LINE 1';
       case 'edrum': return 'E-KIT 1';
       case 'dj': return 'DJ CONSOLE';
-      case 'mixer': return 'SSL MIXER 1';
+      case 'mixer': return 'SUMMIT MIXER 1';
       case 'patchbay': return 'PATCH BAY 1';
       case 'mapper': return 'MIDI MAPPER';
       case 'visual_editor': return 'DIY BUILDER';
       case 'midi_matrix': return 'MIDI MATRIX';
       case 'circle_fifths': return 'CIRCLE 5THS';
-      case 'melodyne_pitch': return 'MELODYNE 1';
-      case 'd_groove': return 'D-GROOVE 1';
+      case 'melodyne_pitch': return 'VOCAL CONTOUR 1';
+      case 'd_groove': return 'HUMAN PULSE 1';
       case 'piano_roll': return 'PIANO ROLL 1';
-      case 'wave_sequencer': return 'CUBASE AUDIO';
-      case 'fl_channel_rack': return 'FL RACK 1';
+      case 'wave_sequencer': return 'HORIZON AUDIO';
+      case 'fl_channel_rack': return 'BEAT LOOM 1';
       case 'chop_lab': return 'CHOP LAB 1';
       case 'health_latency': return 'HEALTH DIAG';
       default: return 'RACK UNIT';
@@ -386,7 +404,7 @@ export default function App() {
     <div className="h-screen w-screen bg-stone-950 text-neutral-100 flex flex-col font-mono selection:bg-amber-500 selection:text-neutral-950 antialiased overflow-hidden select-none relative">
       {/* Auto-Hiding Top Navigation & Menu Container */}
       <div
-        className={`transition-all duration-300 z-50 ${
+        className={`transition-all duration-300 z-[200] ${
           autoHideBars
             ? 'h-2 hover:h-auto overflow-hidden opacity-30 hover:opacity-100 bg-amber-500/30'
             : ''
@@ -403,6 +421,7 @@ export default function App() {
           onToggleFlip={() => setIsFlipped((prev) => !prev)}
           openAIGrooveModal={() => setIsAIGrooveOpen(true)}
           openTemplatesModal={() => setIsTemplatesOpen(true)}
+          openStudioSetup={() => setIsStudioSetupOpen(true)}
           bpm={masterState.bpm}
           detachedWorkspaces={detachedWorkspaces}
           onDetachWorkspace={handleDetachWorkspace}
@@ -478,7 +497,7 @@ export default function App() {
                 onToggleFlip={() => setIsFlipped(false)}
               />
             ) : (
-              /* INFINITE REASON-STYLE STACKED RACK MODULES */
+              /* Infinite hardware-inspired stacked rack modules */
               <RackStackManager
                 rackModules={rackModules}
                 setRackModules={setRackModules}
@@ -549,7 +568,17 @@ export default function App() {
         bpm={masterState.bpm}
       />
 
-      {/* Gemini AI Groove Generator Assistant Modal */}
+      {isStudioSetupOpen && (
+        <React.Suspense fallback={<div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/80 text-amber-300">Opening Studio Setup…</div>}>
+          <StudioSetupModal
+            isOpen
+            onClose={() => setIsStudioSetupOpen(false)}
+            onApplied={handleApplyStudioPreferences}
+          />
+        </React.Suspense>
+      )}
+
+      {/* Previewable local groove-assistant concept */}
       <GenerativeGrooveModal
         isOpen={isAIGrooveOpen}
         onClose={() => setIsAIGrooveOpen(false)}

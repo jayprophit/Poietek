@@ -3,13 +3,13 @@ import { SamplePad } from '../../types';
 import { audioEngine } from '../../audio/engine';
 import { Flame, Disc, Radio, Sliders, Play, RefreshCw, Volume2 } from 'lucide-react';
 
-interface SP404WorkspaceProps {
+interface GrainDeckWorkspaceProps {
   pads: SamplePad[];
   setPads: React.Dispatch<React.SetStateAction<SamplePad[]>>;
   onSimulateMIDI: (type: 'note_on' | 'note_off', channel: number, note: number, velocity: number) => void;
 }
 
-export const SP404Workspace: React.FC<SP404WorkspaceProps> = ({
+export const GrainDeckWorkspace: React.FC<GrainDeckWorkspaceProps> = ({
   pads,
   setPads,
   onSimulateMIDI,
@@ -37,7 +37,7 @@ export const SP404Workspace: React.FC<SP404WorkspaceProps> = ({
 
   return (
     <div className="p-4 max-w-7xl mx-auto space-y-6">
-      {/* SP-404 Hardware Console Frame */}
+      {/* Grain Deck performance console */}
       <div className="bg-slate-950 border-2 border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
         {/* SP Brand Label & OLED Display Header */}
         <div className="flex flex-wrap items-center justify-between gap-6 pb-6 border-b border-slate-800">
@@ -47,7 +47,7 @@ export const SP404Workspace: React.FC<SP404WorkspaceProps> = ({
             </div>
             <div>
               <h2 className="text-xl font-black tracking-widest text-white uppercase flex items-center gap-2">
-                Roland SP-404MKII Studio
+              Grain Deck Performance Sampler
               </h2>
               <p className="text-xs text-slate-400">
                 10 Sample Banks (A-J) • Dual MFX Processor • Live Resampling Engine
@@ -111,7 +111,7 @@ export const SP404Workspace: React.FC<SP404WorkspaceProps> = ({
           {/* MFX Effect Selector Buttons */}
           <div className="md:col-span-6 bg-slate-900/90 border border-slate-800 p-4 rounded-2xl">
             <span className="text-xs font-bold text-slate-300 block mb-2 uppercase tracking-wide">
-              SP-404 MFX Effect Pads
+              Grain Deck Effect Pads
             </span>
             <div className="grid grid-cols-3 gap-2">
               {spEffects.map((fx) => (

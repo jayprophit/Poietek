@@ -28,7 +28,10 @@
     "src/poietek/app/**/*.ts",
     "src/poietek/platform/**/*.ts",
     "src/poietek/community/**/*.ts",
-    "src/poietek/hardware/**/*.ts"
+    "src/poietek/hardware/**/*.ts",
+    "src/poietek/settings/**/*.ts",
+    "src/poietek/library/**/*.ts",
+    "src/poietek/diagnostics/**/*.ts"
   ],
   "exclude": [
     "src/poietek/react/**",

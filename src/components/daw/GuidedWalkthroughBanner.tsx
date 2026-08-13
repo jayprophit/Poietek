@@ -28,9 +28,9 @@ export const GuidedWalkthroughBanner: React.FC<GuidedWalkthroughBannerProps> = (
   const steps = [
     {
       title: 'Step 1: Audition Beat & Drum Sampler',
-      desc: 'Start by auditioning the MPC Studio Drum Pad & SP-404 Sampler. Click pads or press keys 1-8 to trigger samples.',
+      desc: 'Start by auditioning the Canvas Drum Grid and Grain Deck. Click pads or press keys 1-8 to trigger samples.',
       moduleType: 'mpc',
-      buttonText: 'View MPC Sampler',
+      buttonText: 'View Canvas Grid',
     },
     {
       title: 'Step 2: Play Analog Synth Lead',
