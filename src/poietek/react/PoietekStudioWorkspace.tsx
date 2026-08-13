@@ -1,0 +1,848 @@
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type CSSProperties,
+  type MouseEvent,
+} from "react";
+import type { Asset, PoietekProject } from "../domain/types";
+import { createBlankProject } from "../domain/projectFactory";
+import { addAsset, addAudioClip, addAudioTrack } from "../project/operations";
+import type { ProjectSummary } from "../project/ProjectRepository";
+import { secondsToTicks, ticksToSeconds } from "../timeline/tempo";
+import { usePoietekRuntime } from "./PoietekRuntimeProvider";
+import { decodeBasicAudioHealth } from "./decodeBasicAudioHealth";
+import {
+  BASIC_HEALTH_METADATA_KEY,
+  WAVEFORM_PREVIEW_METADATA_KEY,
+  createStoredWaveformPreview,
+  formatClock,
+  formatDb,
+  projectDurationSeconds,
+  readBasicAudioHealth,
+  readWaveformPreview,
+  storeBasicAudioHealth,
+  storeUnavailableBasicAudioHealth,
+  type StoredWaveformPreview,
+} from "./audioWorkspaceModel";
+import "./PoietekStudioWorkspace.css";
+
+type TransportState = "stopped" | "starting" | "playing" | "paused";
+type SaveState = "loading" | "saving" | "saved" | "error";
+
+export interface PoietekStudioWorkspaceProps {
+  className?: string;
+}
+
+function messageFrom(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+function projectDate(value: string): string {
+  const date = new Date(value);
+  return Number.isNaN(date.valueOf())
+    ? "Unknown date"
+    : new Intl.DateTimeFormat(undefined, {
+        dateStyle: "medium",
+        timeStyle: "short",
+      }).format(date);
+}
+
+function trackDisplayName(fileName: string): string {
+  const withoutExtension = fileName.replace(/\.[^./\\]+$/, "").trim();
+  return withoutExtension || "Audio Track";
+}
+
+function WaveformPreview({ preview }: { preview: StoredWaveformPreview | null }) {
+  const path = useMemo(() => {
+    if (!preview) return "";
+    const length = preview.min.length;
+    if (!length) return "";
+
+    let result = "";
+    for (let index = 0; index < length; index += 1) {
+      const x = length === 1 ? 500 : (index / (length - 1)) * 1000;
+      const top = 50 - preview.max[index] * 44;
+      const bottom = 50 - preview.min[index] * 44;
+      result += `M${x.toFixed(2)} ${top.toFixed(2)}L${x.toFixed(2)} ${bottom.toFixed(2)}`;
+    }
+    return result;
+  }, [preview]);
+
+  if (!path) {
+    return <span className="poietek-waveform-unavailable">Waveform unavailable</span>;
+  }
+
+  return (
+    <svg
+      className="poietek-waveform"
+      viewBox="0 0 1000 100"
+      preserveAspectRatio="none"
+      role="img"
+      aria-label="Waveform preview generated from decoded audio peaks"
+    >
+      <line className="poietek-waveform-axis" x1="0" x2="1000" y1="50" y2="50" />
+      <path className="poietek-waveform-peaks" d={path} />
+    </svg>
+  );
+}
+
+export function PoietekStudioWorkspace({
+  className = "",
+}: PoietekStudioWorkspaceProps) {
+  const {
+    runtime,
+    project: providerProject,
+    status: runtimeStatus,
+    error: runtimeError,
+  } = usePoietekRuntime();
+  const adoptedProviderProject = useRef(false);
+  const [project, setProject] = useState<PoietekProject | null>(null);
+  const [projects, setProjects] = useState<ProjectSummary[]>([]);
+  const [newProjectTitle, setNewProjectTitle] = useState("New Session");
+  const [busyAction, setBusyAction] = useState<string | null>(null);
+  const [saveState, setSaveState] = useState<SaveState>("loading");
+  const [savedAt, setSavedAt] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [transport, setTransport] = useState<TransportState>("stopped");
+  const [playheadSeconds, setPlayheadSeconds] = useState(0);
+
+  const refreshProjectList = useCallback(async () => {
+    const summaries = await runtime.projects.list();
+    setProjects(summaries);
+    return summaries;
+  }, [runtime]);
+
+  useEffect(() => {
+    if (!providerProject || adoptedProviderProject.current) return;
+    adoptedProviderProject.current = true;
+    setProject(providerProject);
+    setSavedAt(providerProject.updatedAt);
+    setSaveState("saved");
+    void refreshProjectList().catch((reason) => setError(messageFrom(reason)));
+  }, [providerProject, refreshProjectList]);
+
+  const projectDuration = useMemo(
+    () => (project ? projectDurationSeconds(project) : 0),
+    [project],
+  );
+  const timelineSpan = Math.max(10, Math.ceil(projectDuration));
+  const hasClips = Boolean(project?.tracks.some((track) => track.clips.length));
+  const canUndo = project ? runtime.getSession().canUndo() : false;
+  const canRedo = project ? runtime.getSession().canRedo() : false;
+
+  useEffect(() => {
+    if (transport !== "playing") return;
+    let frame = 0;
+
+    const update = () => {
+      const current = runtime.player.getPlayheadSeconds();
+      if (projectDuration > 0 && current >= projectDuration - 0.005) {
+        setPlayheadSeconds(projectDuration);
+        setTransport("stopped");
+        return;
+      }
+      setPlayheadSeconds(current);
+      frame = requestAnimationFrame(update);
+    };
+
+    frame = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(frame);
+  }, [projectDuration, runtime, transport]);
+
+  const markSaved = useCallback(
+    async (next: PoietekProject, statusMessage: string) => {
+      setProject(next);
+      setSavedAt(next.updatedAt);
+      setSaveState("saved");
+      setNotice(statusMessage);
+      await refreshProjectList();
+    },
+    [refreshProjectList],
+  );
+
+  const beginAction = (label: string) => {
+    setBusyAction(label);
+    setError(null);
+    setNotice(null);
+  };
+
+  const failAction = (reason: unknown) => {
+    setSaveState("error");
+    setError(messageFrom(reason));
+  };
+
+  const pauseForEdit = useCallback(async () => {
+    if (transport === "playing" || transport === "starting") {
+      await runtime.player.pause();
+      setPlayheadSeconds(runtime.player.getPlayheadSeconds());
+      setTransport("paused");
+    }
+  }, [runtime, transport]);
+
+  const openProject = async (id: string) => {
+    if (id === project?.id || busyAction) return;
+    beginAction("Opening project");
+    try {
+      await runtime.player.stop();
+      setTransport("stopped");
+      setPlayheadSeconds(0);
+      const opened = await runtime.openProject(id);
+      await markSaved(opened, `Reopened “${opened.title}” from local storage.`);
+    } catch (reason) {
+      failAction(reason);
+    } finally {
+      setBusyAction(null);
+    }
+  };
+
+  const createProject = async () => {
+    if (busyAction) return;
+    const title = newProjectTitle.trim();
+    if (!title) {
+      setError("Enter a project name before creating it.");
+      return;
+    }
+
+    beginAction("Creating project");
+    setSaveState("saving");
+    try {
+      await runtime.player.stop();
+      setTransport("stopped");
+      setPlayheadSeconds(0);
+      const created = createBlankProject(title);
+      await runtime.projects.save(created);
+      const opened = await runtime.openProject(created.id);
+      setNewProjectTitle("New Session");
+      await markSaved(opened, `Created “${opened.title}” and saved it locally.`);
+    } catch (reason) {
+      failAction(reason);
+    } finally {
+      setBusyAction(null);
+    }
+  };
+
+  const deleteProject = async (summary: ProjectSummary) => {
+    if (busyAction) return;
+    const confirmed =
+      typeof window === "undefined" ||
+      window.confirm(
+        `Delete the local project record “${summary.title}”? Imported audio blobs are retained for safety.`,
+      );
+    if (!confirmed) return;
+
+    beginAction("Deleting project");
+    setSaveState("saving");
+    try {
+      const deletingCurrent = project?.id === summary.id;
+      if (deletingCurrent) {
+        await runtime.player.stop();
+        setTransport("stopped");
+        setPlayheadSeconds(0);
+      }
+
+      await runtime.projects.delete(summary.id);
+      const remaining = await runtime.projects.list();
+
+      if (deletingCurrent) {
+        let next: PoietekProject;
+        if (remaining[0]) {
+          next = await runtime.openProject(remaining[0].id);
+        } else {
+          const replacement = createBlankProject("Untitled Project");
+          await runtime.projects.save(replacement);
+          next = await runtime.openProject(replacement.id);
+        }
+        await markSaved(
+          next,
+          `Deleted “${summary.title}”. Media blobs were retained for safe recovery.`,
+        );
+      } else {
+        setProjects(remaining);
+        setSaveState("saved");
+        setNotice(
+          `Deleted “${summary.title}”. Media blobs were retained for safe recovery.`,
+        );
+      }
+    } catch (reason) {
+      failAction(reason);
+    } finally {
+      setBusyAction(null);
+    }
+  };
+
+  const importAudio = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.currentTarget.files?.[0];
+    event.currentTarget.value = "";
+    if (!file || !project || busyAction) return;
+
+    beginAction("Decoding and importing audio");
+    setSaveState("saving");
+    let importedAssetId: string | null = null;
+
+    try {
+      await pauseForEdit();
+      const imported = await runtime.importAudio.import(file);
+      importedAssetId = imported.asset.id;
+      const waveformPreview = createStoredWaveformPreview(imported.waveform);
+
+      let health;
+      try {
+        health = storeBasicAudioHealth(await decodeBasicAudioHealth(file));
+      } catch (healthError) {
+        health = storeUnavailableBasicAudioHealth(messageFrom(healthError));
+      }
+
+      const durableAsset: Asset = {
+        ...imported.asset,
+        metadata: {
+          ...imported.asset.metadata,
+          ...(waveformPreview
+            ? { [WAVEFORM_PREVIEW_METADATA_KEY]: waveformPreview }
+            : {}),
+          [BASIC_HEALTH_METADATA_KEY]: health,
+        },
+      };
+
+      const startTick = secondsToTicks(
+        playheadSeconds,
+        project.tempoMap,
+        project.settings.ppq,
+      );
+      const next = await runtime.getSession().mutate((current) => {
+        let changed = addAsset(current, durableAsset);
+        let targetTrack = changed.tracks.find((track) => track.type === "audio");
+        if (!targetTrack) {
+          changed = addAudioTrack(changed, trackDisplayName(file.name));
+          targetTrack = changed.tracks.find((track) => track.type === "audio");
+        }
+        if (!targetTrack) throw new Error("Could not create an audio track.");
+        return addAudioClip({
+          project: changed,
+          trackId: targetTrack.id,
+          asset: durableAsset,
+          startTick,
+        });
+      });
+
+      importedAssetId = null;
+      const healthNote =
+        health.availability === "available"
+          ? `Basic health: ${health.status}.`
+          : "Basic health could not be measured on this platform.";
+      await markSaved(
+        next,
+        `Imported “${file.name}” at ${formatClock(playheadSeconds)}. ${healthNote}`,
+      );
+    } catch (reason) {
+      if (importedAssetId) {
+        await runtime.assets.remove(importedAssetId).catch(() => undefined);
+      }
+      failAction(reason);
+    } finally {
+      setBusyAction(null);
+    }
+  };
+
+  const analyzeAsset = async (asset: Asset) => {
+    if (!project || busyAction) return;
+    beginAction("Analyzing audio health");
+    setSaveState("saving");
+    try {
+      await pauseForEdit();
+      const blob = await runtime.assets.get(asset.id);
+      let health;
+      if (!blob) {
+        health = storeUnavailableBasicAudioHealth(
+          "The local audio blob is missing, so decoded-sample analysis cannot run.",
+        );
+      } else {
+        try {
+          health = storeBasicAudioHealth(await decodeBasicAudioHealth(blob));
+        } catch (reason) {
+          health = storeUnavailableBasicAudioHealth(messageFrom(reason));
+        }
+      }
+
+      const next = await runtime.getSession().mutate((current) => ({
+        ...current,
+        assets: current.assets.map((candidate) =>
+          candidate.id === asset.id
+            ? {
+                ...candidate,
+                metadata: {
+                  ...candidate.metadata,
+                  [BASIC_HEALTH_METADATA_KEY]: health,
+                },
+              }
+            : candidate,
+        ),
+      }));
+      await markSaved(
+        next,
+        health.availability === "available"
+          ? `Basic audio-health analysis completed: ${health.status}.`
+          : `Audio-health analysis is unavailable: ${health.reason}`,
+      );
+    } catch (reason) {
+      failAction(reason);
+    } finally {
+      setBusyAction(null);
+    }
+  };
+
+  const undo = async () => {
+    if (!project || busyAction || !runtime.getSession().canUndo()) return;
+    beginAction("Undoing change");
+    setSaveState("saving");
+    try {
+      await pauseForEdit();
+      await markSaved(await runtime.getSession().undo(), "Change undone and saved locally.");
+    } catch (reason) {
+      failAction(reason);
+    } finally {
+      setBusyAction(null);
+    }
+  };
+
+  const redo = async () => {
+    if (!project || busyAction || !runtime.getSession().canRedo()) return;
+    beginAction("Redoing change");
+    setSaveState("saving");
+    try {
+      await pauseForEdit();
+      await markSaved(await runtime.getSession().redo(), "Change redone and saved locally.");
+    } catch (reason) {
+      failAction(reason);
+    } finally {
+      setBusyAction(null);
+    }
+  };
+
+  const play = async () => {
+    if (!project || busyAction) return;
+    const anySolo = project.tracks.some((track) => track.mixer.solo);
+    const hasPlayableClip = project.tracks.some(
+      (track) =>
+        !track.mixer.mute &&
+        (!anySolo || track.mixer.solo) &&
+        track.clips.some((clip) => !clip.muted),
+    );
+    if (!hasPlayableClip) {
+      setError("There are no unmuted audio clips available to play.");
+      return;
+    }
+
+    setError(null);
+    setTransport("starting");
+    try {
+      const from =
+        projectDuration > 0 && playheadSeconds >= projectDuration - 0.005
+          ? 0
+          : playheadSeconds;
+      await runtime.player.play(project, from);
+      setPlayheadSeconds(from);
+      setTransport("playing");
+      setNotice("Playing from the local audio store.");
+    } catch (reason) {
+      setTransport("paused");
+      setError(messageFrom(reason));
+    }
+  };
+
+  const pause = async () => {
+    try {
+      await runtime.player.pause();
+      setPlayheadSeconds(runtime.player.getPlayheadSeconds());
+      setTransport("paused");
+      setNotice("Playback paused.");
+    } catch (reason) {
+      setError(messageFrom(reason));
+    }
+  };
+
+  const stop = async () => {
+    try {
+      await runtime.player.stop();
+      setPlayheadSeconds(0);
+      setTransport("stopped");
+      setNotice("Playback stopped.");
+    } catch (reason) {
+      setError(messageFrom(reason));
+    }
+  };
+
+  const seek = async (seconds: number) => {
+    if (!project) return;
+    const target = Math.max(0, Math.min(timelineSpan, seconds));
+    setPlayheadSeconds(target);
+    try {
+      await runtime.player.seek(project, target);
+    } catch (reason) {
+      setTransport("paused");
+      setError(messageFrom(reason));
+    }
+  };
+
+  const seekFromLane = (event: MouseEvent<HTMLDivElement>) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    if (!bounds.width) return;
+    void seek(((event.clientX - bounds.left) / bounds.width) * timelineSpan);
+  };
+
+  const storageLabel =
+    typeof indexedDB === "undefined"
+      ? "Local storage unavailable"
+      : typeof navigator !== "undefined" && navigator.storage?.getDirectory
+        ? "Local media store · OPFS eligible"
+        : "Local media store · IndexedDB fallback";
+
+  if (runtimeStatus !== "ready" || !project) {
+    return (
+      <section className={`poietek-workspace ${className}`} aria-label="Poietek studio">
+        <div className="poietek-workspace-boot" role="status" aria-live="polite">
+          <span className="poietek-boot-light" aria-hidden="true" />
+          <div>
+            <strong>
+              {runtimeStatus === "error"
+                ? "Local studio could not start"
+                : "Starting the local studio"}
+            </strong>
+            <p>
+              {runtimeStatus === "error"
+                ? runtimeError
+                : "Opening the durable project and media stores…"}
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  const playheadPercent = (playheadSeconds / timelineSpan) * 100;
+
+  return (
+    <section className={`poietek-workspace ${className}`} aria-label="Poietek studio">
+      <header className="poietek-workspace-header">
+        <div className="poietek-brand-block">
+          <span className="poietek-brand-mark" aria-hidden="true">P</span>
+          <div>
+            <p className="poietek-eyebrow">SDS production runtime</p>
+            <h1>Poietek Studio</h1>
+          </div>
+        </div>
+        <div className="poietek-runtime-badges" aria-label="Local runtime status">
+          <span className="poietek-runtime-badge poietek-runtime-badge-online">
+            <i aria-hidden="true" /> Project store ready
+          </span>
+          <span className="poietek-runtime-badge" title="OPFS is attempted first when the browser permits it; IndexedDB is the fallback.">
+            {storageLabel}
+          </span>
+        </div>
+      </header>
+
+      <div className="poietek-workspace-grid">
+        <aside className="poietek-project-rack" aria-label="Local projects">
+          <div className="poietek-panel-heading">
+            <div>
+              <p className="poietek-eyebrow">Local-first</p>
+              <h2>Project rack</h2>
+            </div>
+            <span>{projects.length}</span>
+          </div>
+
+          <form
+            className="poietek-new-project"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void createProject();
+            }}
+          >
+            <label htmlFor="poietek-new-project-name">New project name</label>
+            <div>
+              <input
+                id="poietek-new-project-name"
+                value={newProjectTitle}
+                onChange={(event) => setNewProjectTitle(event.target.value)}
+                disabled={Boolean(busyAction)}
+                maxLength={120}
+              />
+              <button type="submit" disabled={Boolean(busyAction)} title="Create local project">
+                +
+              </button>
+            </div>
+          </form>
+
+          <div className="poietek-project-list">
+            {projects.map((summary) => (
+              <article
+                className={`poietek-project-card ${summary.id === project.id ? "is-current" : ""}`}
+                key={summary.id}
+              >
+                <button
+                  className="poietek-project-open"
+                  type="button"
+                  onClick={() => void openProject(summary.id)}
+                  disabled={Boolean(busyAction) || summary.id === project.id}
+                >
+                  <span>{summary.title}</span>
+                  <small>{summary.id === project.id ? "Open now" : projectDate(summary.updatedAt)}</small>
+                </button>
+                <button
+                  className="poietek-project-delete"
+                  type="button"
+                  onClick={() => void deleteProject(summary)}
+                  disabled={Boolean(busyAction)}
+                  aria-label={`Delete ${summary.title}`}
+                  title="Delete project record; media is retained"
+                >
+                  ×
+                </button>
+              </article>
+            ))}
+          </div>
+
+          <div className="poietek-rack-note">
+            <strong>Offline is a normal mode.</strong>
+            <p>Project edits commit locally first. Cloud providers are not required for this workspace.</p>
+          </div>
+        </aside>
+
+        <main className="poietek-studio-main">
+          <div className="poietek-session-strip">
+            <div>
+              <p className="poietek-eyebrow">Current session</p>
+              <h2>{project.title}</h2>
+              <p>
+                {project.settings.sampleRate.toLocaleString()} Hz · {project.settings.tuning.referenceHz} Hz reference · {project.tempoMap[0].bpm} BPM
+              </p>
+            </div>
+            <div className="poietek-session-actions">
+              <button type="button" onClick={() => void undo()} disabled={!canUndo || Boolean(busyAction)}>
+                ↶ Undo
+              </button>
+              <button type="button" onClick={() => void redo()} disabled={!canRedo || Boolean(busyAction)}>
+                ↷ Redo
+              </button>
+              <label className={`poietek-import-button ${busyAction ? "is-disabled" : ""}`}>
+                <span>Import audio</span>
+                <input
+                  type="file"
+                  accept="audio/*,.wav,.wave,.aif,.aiff,.flac,.mp3,.m4a,.ogg,.opus"
+                  onChange={(event) => void importAudio(event)}
+                  disabled={Boolean(busyAction)}
+                />
+              </label>
+            </div>
+          </div>
+
+          <div className={`poietek-persist-bar is-${saveState}`} aria-live="polite">
+            <span className="poietek-persist-light" aria-hidden="true" />
+            <strong>
+              {busyAction ??
+                (saveState === "saved"
+                  ? "Saved locally"
+                  : saveState === "error"
+                    ? "Local save needs attention"
+                    : "Opening local project")}
+            </strong>
+            <span>
+              {savedAt && saveState === "saved" ? `Last commit ${projectDate(savedAt)}` : ""}
+            </span>
+          </div>
+
+          {(error || notice) && (
+            <div className={`poietek-message ${error ? "is-error" : "is-notice"}`} role={error ? "alert" : "status"}>
+              <span aria-hidden="true">{error ? "!" : "✓"}</span>
+              <p>{error ?? notice}</p>
+              <button type="button" onClick={() => { setError(null); setNotice(null); }} aria-label="Dismiss message">×</button>
+            </div>
+          )}
+
+          <section className="poietek-transport-rack" aria-label="Timeline transport">
+            <div className="poietek-transport-controls">
+              <button
+                className="poietek-transport-primary"
+                type="button"
+                onClick={() => void (transport === "playing" ? pause() : play())}
+                disabled={Boolean(busyAction) || !hasClips || transport === "starting"}
+                aria-label={transport === "playing" ? "Pause" : "Play"}
+              >
+                {transport === "playing" ? "Ⅱ" : transport === "starting" ? "…" : "▶"}
+              </button>
+              <button type="button" onClick={() => void stop()} disabled={Boolean(busyAction) || transport === "stopped"} aria-label="Stop">
+                ■
+              </button>
+              <div className="poietek-time-display" aria-label={`Playhead ${formatClock(playheadSeconds)}`}>
+                <span>{formatClock(playheadSeconds)}</span>
+                <small>UI position · Web Audio transport</small>
+              </div>
+            </div>
+            <input
+              className="poietek-seek"
+              type="range"
+              min="0"
+              max={timelineSpan}
+              step="0.01"
+              value={Math.min(playheadSeconds, timelineSpan)}
+              onChange={(event) => void seek(Number(event.target.value))}
+              disabled={Boolean(busyAction) || !hasClips}
+              aria-label="Timeline playhead"
+            />
+          </section>
+
+          <section className="poietek-timeline-panel" aria-labelledby="poietek-timeline-title">
+            <div className="poietek-panel-heading poietek-timeline-heading">
+              <div>
+                <p className="poietek-eyebrow">Arrangement</p>
+                <h2 id="poietek-timeline-title">Audio timeline</h2>
+              </div>
+              <span>{project.tracks.length} {project.tracks.length === 1 ? "track" : "tracks"}</span>
+            </div>
+
+            <div className="poietek-ruler-row">
+              <div className="poietek-ruler-label">Time</div>
+              <div className="poietek-ruler">
+                {[0, 0.25, 0.5, 0.75, 1].map((ratio) => (
+                  <span key={ratio} style={{ left: `${ratio * 100}%` }}>
+                    {formatClock(timelineSpan * ratio)}
+                  </span>
+                ))}
+                <i style={{ left: `${playheadPercent}%` }} aria-hidden="true" />
+              </div>
+            </div>
+
+            {project.tracks.length === 0 ? (
+              <div className="poietek-empty-timeline">
+                <strong>No tracks yet</strong>
+                <p>Import an audio file to create a real audio track, durable asset, clip, and decoded waveform.</p>
+              </div>
+            ) : (
+              <div className="poietek-track-list">
+                {[...project.tracks]
+                  .sort((a, b) => a.order - b.order)
+                  .map((track) => (
+                    <div className="poietek-track-row" key={track.id}>
+                      <div className="poietek-track-header">
+                        <span className="poietek-track-type">{track.type}</span>
+                        <strong>{track.name}</strong>
+                        <small>
+                          {track.mixer.mute ? "Muted" : track.mixer.solo ? "Solo" : `${track.mixer.gainDb.toFixed(1)} dB`}
+                        </small>
+                      </div>
+                      <div
+                        className="poietek-track-lane"
+                        onClick={seekFromLane}
+                        role="presentation"
+                      >
+                        <div className="poietek-lane-grid" aria-hidden="true" />
+                        {track.clips.map((clip) => {
+                          const asset = project.assets.find((candidate) => candidate.id === clip.assetId);
+                          const clipStart = ticksToSeconds(clip.startTick, project.tempoMap, project.settings.ppq);
+                          const clipEnd = ticksToSeconds(
+                            clip.startTick + clip.durationTicks,
+                            project.tempoMap,
+                            project.settings.ppq,
+                          );
+                          const style: CSSProperties = {
+                            left: `${(clipStart / timelineSpan) * 100}%`,
+                            width: `${Math.max(0.7, ((clipEnd - clipStart) / timelineSpan) * 100)}%`,
+                          };
+                          return (
+                            <div className="poietek-audio-clip" key={clip.id} style={style} title={`${clip.name} · ${formatClock(clipStart)} to ${formatClock(clipEnd)}`}>
+                              <WaveformPreview preview={asset ? readWaveformPreview(asset) : null} />
+                              <span>{clip.name}</span>
+                            </div>
+                          );
+                        })}
+                        <i className="poietek-track-playhead" style={{ left: `${playheadPercent}%` }} aria-hidden="true" />
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            )}
+          </section>
+
+          <section className="poietek-health-panel" aria-labelledby="poietek-health-title">
+            <div className="poietek-panel-heading">
+              <div>
+                <p className="poietek-eyebrow">Measured from decoded PCM</p>
+                <h2 id="poietek-health-title">Audio health</h2>
+              </div>
+              <span>Basic checks</span>
+            </div>
+            <div className="poietek-standards-note">
+              <strong>LUFS and true peak are not measured here.</strong>
+              <p>These cards report sample peak, RMS, clipping, DC offset, and stereo correlation only. A validated BS.1770 analyzer is required before showing LUFS or dBTP.</p>
+            </div>
+
+            {project.assets.filter((asset) => asset.mediaType === "audio").length === 0 ? (
+              <div className="poietek-health-empty">Import audio to run exact decoded-sample checks.</div>
+            ) : (
+              <div className="poietek-health-grid">
+                {project.assets
+                  .filter((asset) => asset.mediaType === "audio")
+                  .map((asset) => {
+                    const health = readBasicAudioHealth(asset);
+                    return (
+                      <article className={`poietek-health-card ${health?.availability === "available" ? `is-${health.status}` : "is-unavailable"}`} key={asset.id}>
+                        <div className="poietek-health-card-title">
+                          <div>
+                            <strong>{asset.originalName}</strong>
+                            <small>
+                              {asset.durationSeconds == null ? "Duration unavailable" : formatClock(asset.durationSeconds)} · {asset.channels ?? "?"} ch · {asset.sampleRate?.toLocaleString() ?? "?"} Hz decoded
+                            </small>
+                          </div>
+                          <span>{health?.availability === "available" ? health.status : "unavailable"}</span>
+                        </div>
+
+                        {health?.availability === "available" ? (
+                          <>
+                            <dl className="poietek-health-metrics">
+                              <div>
+                                <dt>Sample peak</dt>
+                                <dd>{formatDb(health.combinedSamplePeakDbfs)}</dd>
+                              </div>
+                              <div>
+                                <dt>Channel RMS</dt>
+                                <dd>{health.channels.map((channel) => formatDb(channel.rmsDbfs)).join(" / ")}</dd>
+                              </div>
+                              <div>
+                                <dt>Clipped samples</dt>
+                                <dd>{health.channels.reduce((sum, channel) => sum + channel.clippedSampleCount, 0).toLocaleString()}</dd>
+                              </div>
+                              <div>
+                                <dt>Stereo correlation</dt>
+                                <dd>{health.stereoCorrelation == null ? "Not applicable" : health.stereoCorrelation.toFixed(3)}</dd>
+                              </div>
+                            </dl>
+                            <ul>
+                              {health.recommendations.map((recommendation) => (
+                                <li key={recommendation}>{recommendation}</li>
+                              ))}
+                            </ul>
+                          </>
+                        ) : (
+                          <p className="poietek-health-unavailable">
+                            {health?.reason ?? "This asset has not been analyzed in the local workspace yet."}
+                          </p>
+                        )}
+
+                        <button type="button" onClick={() => void analyzeAsset(asset)} disabled={Boolean(busyAction)}>
+                          {health ? "Run basic checks again" : "Run basic checks"}
+                        </button>
+                      </article>
+                    );
+                  })}
+              </div>
+            )}
+          </section>
+        </main>
+      </div>
+    </section>
+  );
+}

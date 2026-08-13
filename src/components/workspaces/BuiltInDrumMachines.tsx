@@ -6,7 +6,7 @@ import { Zap, Music2, Grid, Sparkles, RefreshCw, Volume2 } from 'lucide-react';
 export const BuiltInDrumMachines: React.FC = () => {
   const [activeMachine, setActiveMachine] = useState<MachineType>('classic_808');
   const [activeStep, setActiveStep] = useState<number>(0);
-  
+
   const machines: { id: MachineType; label: string; desc: string }[] = [
     { id: 'classic_808', label: 'Classic 808 Machine', desc: 'Analog style sub kick, snare, hats, clap, rim' },
     { id: 'step_sequencer', label: '32-Step Matrix', desc: 'Detailed velocity, probability & swing controls' },

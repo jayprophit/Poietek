@@ -11,7 +11,7 @@ class AudioEngine {
   private channelEQs: Map<string, { low: BiquadFilterNode; mid: BiquadFilterNode; high: BiquadFilterNode }> = new Map();
   private sampleBuffers: Map<string, AudioBuffer> = new Map();
   private activeSources: Map<string, AudioBufferSourceNode> = new Map();
-  
+
   // Audio recording
   private mediaRecorder: MediaRecorder | null = null;
   private recordedChunks: Blob[] = [];
@@ -443,7 +443,7 @@ class AudioEngine {
     if (!this.channelGains.has(track.id)) {
       const gain = this.ctx.createGain();
       const panner = this.ctx.createStereoPanner();
-      
+
       const low = this.ctx.createBiquadFilter();
       low.type = 'lowshelf';
       low.frequency.value = 250;
@@ -536,21 +536,12 @@ class AudioEngine {
     return this.sampleBuffers.get(id);
   }
 
-  // Test Latency Signal
-  public measureRoundtripLatency(): Promise<number> {
-    return new Promise((resolve) => {
-      const start = performance.now();
-      this.initAudio();
-      if (!this.ctx) {
-        resolve(5.2);
-        return;
-      }
-      setTimeout(() => {
-        const elapsed = performance.now() - start;
-        // Estimate roundtrip audio buffer latency (approx 2ms to 8ms)
-        resolve(Math.max(1.8, Math.round(elapsed * 0.15 * 10) / 10));
-      }, 20);
-    });
+  public getRoundtripLatencyCapability() {
+    return {
+      status: 'not_measured' as const,
+      message:
+        'Round-trip audio latency requires a calibrated physical loopback or a trusted driver report.',
+    };
   }
 }
 

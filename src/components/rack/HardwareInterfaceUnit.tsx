@@ -16,10 +16,13 @@ export const HardwareInterfaceUnit: React.FC<HardwareInterfaceUnitProps> = ({
   onToggleFlip,
 }) => {
   const activeDevs = connectedDevices.filter((d) => d.connected);
-  const avgLat =
-    activeDevs.length > 0
-      ? (activeDevs.reduce((s, d) => s + d.latencyMs, 0) / activeDevs.length).toFixed(1)
-      : '1.2';
+  const measuredLatencies = activeDevs
+    .filter((device) => device.latencyMeasurement?.status === 'measured')
+    .map((device) => device.latencyMeasurement?.roundTripMs)
+    .filter((value): value is number => typeof value === 'number');
+  const avgLat = measuredLatencies.length
+    ? `${(measuredLatencies.reduce((sum, value) => sum + value, 0) / measuredLatencies.length).toFixed(1)} ms`
+    : 'Not measured';
 
   return (
     <div className="relative bg-gradient-to-r from-slate-900 via-neutral-900 to-slate-900 border-y-2 border-slate-700/80 shadow-2xl overflow-hidden select-none my-1">
@@ -100,7 +103,7 @@ export const HardwareInterfaceUnit: React.FC<HardwareInterfaceUnitProps> = ({
           {/* Latency / Driver Specs */}
           <div className="text-right font-mono">
             <span className="text-[9px] text-neutral-400 block">BUFFER LATENCY</span>
-            <span className="text-xs font-bold text-emerald-400">{avgLat} ms</span>
+            <span className="text-xs font-bold text-emerald-400">{avgLat}</span>
           </div>
         </div>
 

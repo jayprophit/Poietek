@@ -4,7 +4,7 @@ import { Disc3, Volume2, Play, Sliders, Repeat, Zap } from 'lucide-react';
 
 export const DJWorkspace: React.FC = () => {
   const [crossfader, setCrossfader] = useState<number>(50); // 0 (Deck A) to 100 (Deck B)
-  
+
   // Deck A State
   const [deckA, setDeckA] = useState({
     playing: false,

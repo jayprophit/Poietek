@@ -55,6 +55,8 @@ export default function App() {
     currentStep: 0,
     metronome: false,
     masterVolume: 0.85,
+    reverbLevel: 0.25,
+    delayLevel: 0.15,
     activeWorkspace: 'mpc',
     learningModeActive: false,
   });

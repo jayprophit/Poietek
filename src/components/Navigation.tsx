@@ -41,13 +41,13 @@ export const Navigation: React.FC<NavigationProps> = ({
   openAIGrooveModal,
 }) => {
   const activeDevCount = connectedDevices.filter((d) => d.connected).length;
-  const avgLatency =
-    activeDevCount > 0
-      ? (
-          connectedDevices.reduce((sum, d) => sum + d.latencyMs, 0) /
-          activeDevCount
-        ).toFixed(1)
-      : '0.0';
+  const measuredLatencies = connectedDevices
+    .filter((device) => device.connected && device.latencyMeasurement?.status === 'measured')
+    .map((device) => device.latencyMeasurement?.roundTripMs)
+    .filter((value): value is number => typeof value === 'number');
+  const avgLatency = measuredLatencies.length
+    ? `${(measuredLatencies.reduce((sum, value) => sum + value, 0) / measuredLatencies.length).toFixed(1)}ms`
+    : 'not measured';
 
   const navItems: { id: WorkspaceType; label: string; icon: React.FC<{ className?: string }> }[] = [
     { id: 'mpc', label: 'MPC Sampler', icon: Grid },
@@ -176,7 +176,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             <span className="font-semibold text-slate-300">
               {activeDevCount} Device{activeDevCount !== 1 ? 's' : ''} Connected
             </span>
-            <span className="text-slate-500 font-mono">({avgLatency}ms)</span>
+            <span className="text-slate-500 font-mono">({avgLatency})</span>
           </div>
 
           <button

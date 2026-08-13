@@ -91,6 +91,35 @@ export interface DeviceProfile {
   rating?: number;
 }
 
+export type MIDIAccessStatus =
+  | 'uninitialized'
+  | 'requesting'
+  | 'available'
+  | 'unsupported'
+  | 'denied'
+  | 'error';
+
+export type MIDISysExStatus = 'not_requested' | 'available' | 'denied' | 'unavailable';
+
+export interface MIDICapabilityState {
+  status: MIDIAccessStatus;
+  sysex: MIDISysExStatus;
+  message: string;
+  errorName?: string;
+  updatedAt: number;
+}
+
+export type DeviceLatencyStatus = 'not_measured' | 'measured' | 'unsupported' | 'error';
+
+export interface DeviceLatencyMeasurement {
+  status: DeviceLatencyStatus;
+  /** Present only after a real loopback or trusted driver measurement. */
+  roundTripMs?: number;
+  method?: 'physical_loopback' | 'trusted_driver_report';
+  measuredAt?: number;
+  message?: string;
+}
+
 export interface ConnectedDevice {
   id: string;
   name: string;
@@ -98,11 +127,25 @@ export interface ConnectedDevice {
   type: 'web_midi' | 'virtual_sim' | 'network' | 'usb';
   connected: boolean;
   portName?: string;
-  latencyMs: number;
+  /**
+   * Legacy display field. It is intentionally absent until latency has actually
+   * been measured; consumers should prefer latencyMeasurement.
+   */
+  latencyMs?: number;
+  latencyMeasurement?: DeviceLatencyMeasurement;
+  profileMatch?: 'generic' | 'name_hint' | 'user_selected' | 'simulator_definition';
+  /** A non-binding suggestion inferred from a port name; never a capability claim. */
+  suggestedProfileId?: string;
   assignedLogicalTargetId?: string;
   activeScene?: string;
   lastEventTimestamp?: number;
   eventsCount?: number;
+}
+
+export interface MIDIManagerStateSnapshot {
+  capability: MIDICapabilityState;
+  connectedDevices: ConnectedDevice[];
+  simulatedDevicesEnabled: boolean;
 }
 
 export interface ControlMapping {

@@ -17,7 +17,7 @@ export const SP404Workspace: React.FC<SP404WorkspaceProps> = ({
   const [activeBank, setActiveBank] = useState<string>('A');
   const [selectedEffect, setSelectedEffect] = useState<string>('Vinyl Sim');
   const [resampleMode, setResampleMode] = useState<boolean>(false);
-  
+
   // CTRL Knob values
   const [ctrl1, setCtrl1] = useState<number>(64);
   const [ctrl2, setCtrl2] = useState<number>(80);

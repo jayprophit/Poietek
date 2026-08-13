@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "noEmitOnError": true,
+    "rootDir": "./src/poietek",
+    "outDir": "./tests/.compiled-core"
+  },
+  "include": [
+    "src/poietek/domain/**/*.ts",
+    "src/poietek/project/**/*.ts",
+    "src/poietek/assets/**/*.ts",
+    "src/poietek/capture/**/*.ts",
+    "src/poietek/export/**/*.ts",
+    "src/poietek/recovery/**/*.ts",
+    "src/poietek/timeline/**/*.ts",
+    "src/poietek/audio/**/*.ts",
+    "src/poietek/health/**/*.ts",
+    "src/poietek/player/**/*.ts",
+    "src/poietek/release/**/*.ts",
+    "src/poietek/providers/**/*.ts",
+    "src/poietek/app/**/*.ts",
+    "src/poietek/platform/**/*.ts",
+    "src/poietek/community/**/*.ts",
+    "src/poietek/hardware/**/*.ts"
+  ],
+  "exclude": [
+    "src/poietek/react/**",
+    "src/poietek/pwa/**"
+  ]
+}
