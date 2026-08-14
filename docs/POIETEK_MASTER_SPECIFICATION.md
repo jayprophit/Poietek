@@ -96,6 +96,7 @@ The product combines thirteen systems around one versioned creative data model:
 | `PHI-010` | Accessibility, privacy, portability, sustainability and creator agency are architecture requirements, not later cosmetic additions. |
 | `PHI-011` | Unsupported plugins, devices and formats retain serialized intent and an honest fallback rather than silently disappearing. |
 | `PHI-012` | Capability state is derived from evidence and observation time, and can degrade or become unavailable. |
+| `PHI-013` | A tier catalogue is policy, not runtime truth: reference pricing never enables checkout, payment initiation is not settlement, purchased content follows its licence, and local creation survives provider failure. |
 
 ## 5. Complete requirement domains
 
@@ -130,6 +131,7 @@ owned and traceable. Detailed screens and controls live in
 | `DOM-USERS` | Creator, performer, engineer, producer, editor, collaborator, rights/publishing, buyer/seller, educator/student, moderator, administrator and developer | Section 6 |
 | `DOM-PERMISSIONS` | Project roles, organization roles, capability grants, consent scopes, device/browser permissions and privileged actions | Section 7; platform blueprint |
 | `DOM-ROADMAP` | Every delivery phase, dependency, gate, acceptance test and non-goal | `ROADMAP.md`; delivery plan |
+| `DOM-BUSINESS` | Tiers, price books, licences, subscriptions, entitlements, usage, seats, receipts, refunds, marketplace revenue and commercial release gates | `BUSINESS_TIER_ARCHITECTURE.md`; business contracts |
 
 ## 6. User types
 
@@ -203,6 +205,7 @@ Permission classes:
 | `WF-016` | Learn | Assess goal → recommend lesson → practice in safe project → explain evidence → private progress → optional sharing. |
 | `WF-017` | Video/VFX delivery | Ingest/proxy → shared timeline → edit/caption/grade/composite → render job → validated output package. |
 | `WF-018` | Cross-device handoff | Commit → inventory/hash → route replicas → open supported state → relink/freeze missing capabilities → continue offline. |
+| `WF-019` | Purchase or restore entitlement | Approved regional price → secure provider checkout or restore → verified event → durable receipt → signed entitlement snapshot → offline grace without locking local projects. |
 
 ## 9. AI product requirements
 

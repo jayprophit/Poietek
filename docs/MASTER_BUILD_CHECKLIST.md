@@ -246,7 +246,7 @@ License and deliver original or authorized assets, plugins and services.
   - Current evidence: Original recipes are identified; purchase evidence is not equated with ownership.
   - Professional exit: Require licence, territory, version, attribution and takedown metadata for every listing.
 - [ ] **PARTLY DONE — Store, licence and fulfilment contracts**
-  - Current evidence: Validators reject fulfilment without payment evidence and reject ownership invention.
+  - Current evidence: Validators reject fulfilment without payment evidence and reject ownership invention.; The seven-tier B0 reference catalogue versions inheritance, allowances, fair-use boundaries and commercial release gates while checkout remains disabled.
   - Professional exit: Integrate carts, taxes, refunds, entitlements, download integrity and licence receipts.
 - [ ] **EXTERNAL GATE — Payment and payout providers**
   - Current evidence: No payment processor is connected or reported available.
@@ -543,4 +543,3 @@ Professional Volume 14 controls the requirements, evidence, decisions and releas
 ## Update rule
 
 Change a status only with repository or external evidence. Rerun `npm run verify`; automated tests compare this document with the machine-readable tracker so percentages, item counts and lane names cannot drift silently.
-

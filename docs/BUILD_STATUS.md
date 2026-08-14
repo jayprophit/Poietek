@@ -6,8 +6,8 @@
 - Full TypeScript typecheck: passed
 - Strict Poietek core compile: passed
 - Native deployment configuration consistency: passed
-- Automated regression tests: 106 passed, 0 failed
-- Vite production build: passed (1,784 modules)
+- Automated regression tests: 113 passed, 0 failed
+- Vite production build: passed (1,788 modules)
 - Production browser smoke test: passed
 - Installed dependency graph: no missing, invalid or extraneous packages
 - Git whitespace/conflict check: passed
@@ -77,6 +77,17 @@ are 67% weighted / 50% strict. There are 33 complete, 36 partly done, 27 missing
 and 12 externally gated criteria. Zero of 27 lanes is five-star qualified. The
 two percentages remain separate so documentation and foundations cannot be
 presented as a completed professional product.
+
+The business-foundation pass imported the supplied seven-tier monetization
+reference as a versioned, validated and searchable catalogue. Free, perpetual,
+Basic, Pro, Premium, Teams and Enterprise structures retain their planning
+amounts, allowances, inheritance, restrictions and release gates, while checkout,
+price approval and entitlement enforcement remain hard-disabled. Local creation
+survives provider failure, unbounded service wording is converted to fair-use or
+device-resource boundaries, and payment, rights, marketplace, cloud, team and
+enterprise promises remain external gates. The current commercial implementation
+is B0 catalogue foundation only—not a live offer, billing system or entitlement
+service.
 
 The managed Codex Windows sandbox does not permit Vite's development dependency
 optimizer to traverse its normal resolution boundary. `npm run dev` therefore

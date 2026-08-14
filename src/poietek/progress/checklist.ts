@@ -280,5 +280,5 @@ export function renderMasterBuildChecklistMarkdown() {
     'Change a status only with repository or external evidence. Rerun `npm run verify`; automated tests compare this document with the machine-readable tracker so percentages, item counts and lane names cannot drift silently.',
     '',
   );
-  return `${lines.join('\n')}\n`;
+  return lines.join('\n');
 }

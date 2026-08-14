@@ -56,7 +56,7 @@ of truth for implementation claims.
 | Rights management | Foundation built | Contributor passports, splits, agreements, clearances/registrations, correction history model and optional evidence receipts | User workflows, signatures, authority adapters, royalty accounting and jurisdictional legal review |
 | AI creative assistant | Working locally | Independent offline Studio Brain, project-aware evidence findings, optional secure provider router, local Ollama adapter, per-request consent, preview/accept/undo rules and Creative Intent Lock | Native secret service, operational remote proxy, cross-modal models, reference licensing and provider-specific acceptance tests |
 | Social network | Foundation built | Private local hub/feed/catalog, visibility/trust/moderation gates and creator/remix/tuning architecture | Identity, messaging, feeds/channels, moderation operations, live rooms and abuse/safety systems |
-| Marketplace | Foundation built | Listings/orders, licence evidence boundaries, private catalogue and payment/fulfilment validation | Payment provider, seller/buyer UI, disputes, tax/consumer compliance and secure delivery |
+| Marketplace | Foundation built | Listings/orders, licence evidence boundaries, private catalogue, seven-tier B0 monetization catalogue and payment/fulfilment validation | Approved price book, billing/entitlement provider, seller/buyer UI, disputes, tax/consumer compliance and secure delivery |
 | Cloud platform | Foundation built | Local/Supabase/Firebase provider adapters, capability routing, offline PWA, replica/storage policy and cross-device handoff | Configured encrypted sync, selective backup, key vault, conflict service, remote compute and operations |
 
 ## Cross-cutting SDS volumes

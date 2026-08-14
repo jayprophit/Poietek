@@ -283,7 +283,7 @@ const systemLanes: QualificationLaneDefinition[] = [
   ]),
   lane('system-marketplace', 'system', 12, 'Marketplace', 'License and deliver original or authorized assets, plugins and services.', ['splice'], [
     criterion('catalog-provenance', 'Original and licensed catalogue provenance', 'working', ['Original recipes are identified; purchase evidence is not equated with ownership.'], 'Require licence, territory, version, attribution and takedown metadata for every listing.'),
-    criterion('store-contracts', 'Store, licence and fulfilment contracts', 'foundation', ['Validators reject fulfilment without payment evidence and reject ownership invention.'], 'Integrate carts, taxes, refunds, entitlements, download integrity and licence receipts.'),
+    criterion('store-contracts', 'Store, licence and fulfilment contracts', 'foundation', ['Validators reject fulfilment without payment evidence and reject ownership invention.', 'The seven-tier B0 reference catalogue versions inheritance, allowances, fair-use boundaries and commercial release gates while checkout remains disabled.'], 'Integrate carts, taxes, refunds, entitlements, download integrity and licence receipts.'),
     criterion('payments', 'Payment and payout providers', 'external_gate', ['No payment processor is connected or reported available.'], 'Complete provider, KYC/tax, fraud, dispute, refund and reconciliation acceptance.'),
     criterion('seller-platform', 'Seller and developer operations', 'specified', ['Developer and marketplace volumes define staged governance.'], 'Ship onboarding, review, analytics, support, versioning, deprecation and dispute workflows.'),
   ]),

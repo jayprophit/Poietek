@@ -25,10 +25,19 @@ import {
   summarizeMasterBuildProgress,
   type BuildChecklistStatus,
 } from '../progress';
+import {
+  BUSINESS_TIER_CATALOG,
+  BUSINESS_TIER_GOVERNANCE,
+  formatReferencePrice,
+  resolveTierEntitlements,
+  searchBusinessTiers,
+  type EntitlementLimit,
+  type TierEntitlement,
+} from '../business';
 import './PoietekEcosystemCenter.css';
 
 type StatusFilter = 'all' | VisionCapabilityStatus;
-type EcosystemView = 'capabilities' | 'library' | 'progress' | 'benchmark';
+type EcosystemView = 'capabilities' | 'library' | 'business' | 'progress' | 'benchmark';
 type BenchmarkKindFilter = 'all' | QualificationLaneKind;
 type ProgressStatusFilter = 'all' | BuildChecklistStatus;
 
@@ -52,6 +61,23 @@ const progressLabels: Record<BuildChecklistStatus, string> = {
   partly_done: 'Partly done',
   missing: 'Missing',
   blocked_external: 'External gate',
+};
+
+const entitlementLabels: Record<TierEntitlement['state'], string> = {
+  included: 'Proposed included',
+  limited: 'Reference allowance',
+  not_included: 'Not included',
+  add_on: 'Separate add-on',
+  configurable: 'Decision required',
+  requires_provider: 'External service gate',
+};
+
+const describeLimit = (limit: EntitlementLimit | null) => {
+  if (!limit) return null;
+  if (limit.kind === 'included_count') return `${limit.quantity} ${limit.unit} per ${limit.period}`;
+  if (limit.kind === 'subject_to_fair_use') return 'Subject to an approved fair-use policy';
+  if (limit.kind === 'device_resource_limited') return 'Limited by verified device and engine capacity';
+  return 'Configured by an approved contract or price book';
 };
 
 export function PoietekEcosystemCenter() {
@@ -78,25 +104,27 @@ export function PoietekEcosystemCenter() {
     () => searchMasterBuildChecklist(query, progressKind, progressStatus),
     [query, progressKind, progressStatus],
   );
+  const businessTiers = useMemo(() => searchBusinessTiers(query), [query]);
 
   return (
     <main className="poietek-ecosystem" aria-label="Poietek ecosystem architecture">
       <header className="poietek-ecosystem-hero">
         <div>
           <p>Creative operating system · controlled catalogue {SDS_VISION_CATALOG_VERSION}</p>
-          <h1>{view === 'library' ? 'The complete development library.' : view === 'progress' ? 'Build to 100%, evidence first.' : view === 'benchmark' ? 'Five stars must be proven.' : 'One studio. Thirteen connected systems.'}</h1>
-          <span>{view === 'library' ? 'Every attached source volume is cross-walked to working evidence, staged architecture, professional documentation and honest gates.' : view === 'progress' ? 'All 108 mandatory criteria from the thirteen product systems and fourteen professional volumes are tracked as complete, partly done, missing or externally blocked.' : view === 'benchmark' ? 'Twenty-seven qualification lanes compare the thirteen-system product and fourteen professional volumes with official category-leader capabilities. Working code, tests and independent acceptance—not ambition—control the rating.' : 'The SDS vision is tracked here as executable capability, foundation, next slice, and honest release gate.'}</span>
+          <h1>{view === 'library' ? 'The complete development library.' : view === 'business' ? 'A business structure, before a price book.' : view === 'progress' ? 'Build to 100%, evidence first.' : view === 'benchmark' ? 'Five stars must be proven.' : 'One studio. Thirteen connected systems.'}</h1>
+          <span>{view === 'library' ? 'Every attached source volume is cross-walked to working evidence, staged architecture, professional documentation and honest gates.' : view === 'business' ? 'Seven proposed tiers preserve the supplied commercial shape while pricing, checkout, entitlement enforcement and service promises remain explicitly unapproved.' : view === 'progress' ? 'All 108 mandatory criteria from the thirteen product systems and fourteen professional volumes are tracked as complete, partly done, missing or externally blocked.' : view === 'benchmark' ? 'Twenty-seven qualification lanes compare the thirteen-system product and fourteen professional volumes with official category-leader capabilities. Working code, tests and independent acceptance—not ambition—control the rating.' : 'The SDS vision is tracked here as executable capability, foundation, next slice, and honest release gate.'}</span>
         </div>
         <div className="poietek-ecosystem-totals" aria-label="Capability totals">
-          <strong>{view === 'library' ? DEVELOPMENT_LIBRARY_VOLUMES.length : view === 'progress' ? `${progressSummary.strictCompletionPercent}%` : view === 'benchmark' ? `${qualificationSummary.stars.toFixed(1)}★` : SDS_VISION_CATALOG.length}</strong>
-          <span>{view === 'library' ? 'source volumes mapped' : view === 'progress' ? 'strictly verified complete' : view === 'benchmark' ? 'current evidence rating' : 'architecture areas'}</span>
-          <b>{view === 'library' ? '20 core · 51–53 intelligence' : view === 'progress' ? `${progressSummary.overallProgressPercent}% weighted delivery progress` : view === 'benchmark' ? `${qualificationSummary.qualifiedLanes}/${qualificationSummary.laneCount} lanes five-star qualified` : `${summary.operational} working · ${summary.foundation} foundations`}</b>
+          <strong>{view === 'library' ? DEVELOPMENT_LIBRARY_VOLUMES.length : view === 'business' ? BUSINESS_TIER_CATALOG.length : view === 'progress' ? `${progressSummary.strictCompletionPercent}%` : view === 'benchmark' ? `${qualificationSummary.stars.toFixed(1)}★` : SDS_VISION_CATALOG.length}</strong>
+          <span>{view === 'library' ? 'source volumes mapped' : view === 'business' ? 'reference tiers · checkout off' : view === 'progress' ? 'strictly verified complete' : view === 'benchmark' ? 'current evidence rating' : 'architecture areas'}</span>
+          <b>{view === 'library' ? '20 core · 51–53 intelligence' : view === 'business' ? 'B0 catalogue foundation only' : view === 'progress' ? `${progressSummary.overallProgressPercent}% weighted delivery progress` : view === 'benchmark' ? `${qualificationSummary.qualifiedLanes}/${qualificationSummary.laneCount} lanes five-star qualified` : `${summary.operational} working · ${summary.foundation} foundations`}</b>
         </div>
       </header>
 
       <nav className="poietek-ecosystem-tabs" aria-label="Ecosystem views">
         <button type="button" className={view === 'capabilities' ? 'is-active' : ''} onClick={() => setView('capabilities')}>Capability architecture</button>
         <button type="button" className={view === 'library' ? 'is-active' : ''} onClick={() => setView('library')}>Development library</button>
+        <button type="button" className={view === 'business' ? 'is-active' : ''} onClick={() => setView('business')}>Business tiers</button>
         <button type="button" className={view === 'progress' ? 'is-active' : ''} onClick={() => setView('progress')}>Build checklist</button>
         <button type="button" className={view === 'benchmark' ? 'is-active' : ''} onClick={() => setView('benchmark')}>Industry qualification</button>
       </nav>
@@ -233,6 +261,43 @@ export function PoietekEcosystemCenter() {
           <div className="poietek-library-appendix-grid">
             {DEVELOPMENT_LIBRARY_APPENDICES.map((appendix) => <article key={appendix.id}><h3>{appendix.title}</h3><p>{appendix.topics.join(' · ')}</p></article>)}
           </div>
+        </section>
+      </>}
+
+      {view === 'business' && <>
+        <section className="poietek-business-notice" aria-labelledby="business-tier-heading">
+          <div><p>Monetization foundation · schema {BUSINESS_TIER_GOVERNANCE.schemaVersion}</p><h2 id="business-tier-heading">Prices are planning references—not live offers</h2><span>Checkout is disabled. Pricing is unapproved. No account entitlement, payment, subscription, marketplace order or provider service is represented as active.</span></div>
+          <dl>
+            <div><dt>Reference tiers</dt><dd>{BUSINESS_TIER_CATALOG.length}</dd></div>
+            <div><dt>Checkout</dt><dd>Off</dd></div>
+            <div><dt>Pricing</dt><dd>Unapproved</dd></div>
+            <div><dt>Current phase</dt><dd>B0</dd></div>
+          </dl>
+        </section>
+
+        <section className="poietek-vision-section" aria-labelledby="business-catalog-heading">
+          <div className="poietek-ecosystem-heading"><div><p>Reference commercial structure</p><h2 id="business-catalog-heading">Free, perpetual, membership, teams and enterprise</h2></div><span>{businessTiers.length} of {BUSINESS_TIER_CATALOG.length} tiers shown</span></div>
+          <div className="poietek-vision-controls"><label><span>Search tiers, entitlements and gates</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="AI, collaboration, cloud, marketplace, support…" /></label></div>
+          <div className="poietek-business-grid">
+            {businessTiers.map((tier) => {
+              const entitlements = resolveTierEntitlements(tier.id);
+              return <article key={tier.id} className="poietek-business-card">
+                <header><div><span>Tier {String(tier.order).padStart(2, '0')} · {tier.model.replaceAll('_', ' ')}</span><h3>{tier.name}</h3></div><strong>{formatReferencePrice(tier.referencePrice)}</strong></header>
+                <p>{tier.audience}</p>
+                {tier.inheritsFrom && <small className="poietek-business-inherits">Extends {BUSINESS_TIER_CATALOG.find((item) => item.id === tier.inheritsFrom)?.name}</small>}
+                <div className="poietek-business-entitlements">
+                  {entitlements.map((item) => <details key={item.id} className={`is-${item.state}`}><summary><span>{item.label}</span><small>{entitlementLabels[item.state]}</small></summary><div>{describeLimit(item.limit) && <b>{describeLimit(item.limit)}</b>}<p>{item.notes}</p>{item.externalGates.length > 0 && <ul>{item.externalGates.map((gate) => <li key={gate}>{gate}</li>)}</ul>}</div></details>)}
+                </div>
+                <details className="poietek-business-terms"><summary>Restrictions and release gates</summary><div><h4>Restrictions</h4><ul>{tier.restrictions.map((item) => <li key={item}>{item}</li>)}</ul><h4>External gates</h4><ul>{tier.externalGates.map((item) => <li key={item}>{item}</li>)}</ul></div></details>
+              </article>;
+            })}
+          </div>
+          {!businessTiers.length && <div className="poietek-vision-empty"><strong>No matching business tier</strong><span>Try a service, audience, allowance or external gate.</span></div>}
+        </section>
+
+        <section className="poietek-business-decisions" aria-labelledby="business-decisions-heading">
+          <div><p>Owner, legal and operational decisions</p><h2 id="business-decisions-heading">What must be settled before any sale</h2></div>
+          <div><article><h3>Open decisions</h3><ol>{BUSINESS_TIER_GOVERNANCE.unresolvedDecisions.map((item) => <li key={item}>{item}</li>)}</ol></article><article><h3>Release gates</h3><ol>{BUSINESS_TIER_GOVERNANCE.requiredReleaseGates.map((item) => <li key={item}>{item}</li>)}</ol></article></div>
         </section>
       </>}
 

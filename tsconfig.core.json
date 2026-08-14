@@ -27,6 +27,7 @@
     "src/poietek/providers/**/*.ts",
     "src/poietek/app/**/*.ts",
     "src/poietek/platform/**/*.ts",
+    "src/poietek/business/**/*.ts",
     "src/poietek/community/**/*.ts",
     "src/poietek/hardware/**/*.ts",
     "src/poietek/settings/**/*.ts",
