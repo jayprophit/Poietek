@@ -185,7 +185,7 @@ export const PUBLIC_RELEASE_GATES: readonly PublicReleaseGate[] = [
     'Connect selected providers, validate metadata/assets, prove retry/reconciliation and require provider evidence for submitted, accepted or paid states.'),
 
   gate('release-ai-local', 'ai', 'Independent local AI runtime', 'foundation',
-    ['Local/third-party provider catalogue, route policy and user-controlled enablement'],
+    ['Local/third-party provider catalogue, route policy and user-controlled enablement', 'Optional generative-audio lab has fail-closed commercial API, local sidecar, external-product and decentralized-subnet boundaries'],
     'Integrate a distributable local model/runtime with licensing, offline operation, hardware-aware limits, cancellation and quality/safety evaluation.', [ASVS]),
   gate('release-ai-providers', 'ai', 'Third-party AI provider safety', 'foundation',
     ['Providers are disabled until configured; secrets are not exposed through Vite', 'AI changes require preview, acceptance and undoable application'],

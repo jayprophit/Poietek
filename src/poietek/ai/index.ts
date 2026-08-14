@@ -5,3 +5,4 @@ export * from './validation';
 export * from './localAssistant';
 export * from './adapters';
 export * from './repository';
+export * from './generativeAudio';

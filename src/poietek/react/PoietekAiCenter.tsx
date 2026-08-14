@@ -1,12 +1,19 @@
 import {useEffect, useMemo, useState} from 'react';
 import {
   AI_PROVIDER_CATALOG,
+  GENERATIVE_AUDIO_PROVIDERS,
+  GENERATIVE_AUDIO_WORKFLOWS,
   AiSettingsRepository,
   LocalStudioAiAdapter,
   OllamaAiAdapter,
   SecureProxyAiAdapter,
   createDefaultAiSettings,
+  createGenerativeAudioDraft,
+  createUnavailableGenerativeAudioRoute,
+  getGenerativeAudioProvider,
+  getGenerativeAudioWorkflow,
   getAiProviderDefinition,
+  planGenerativeAudioDraft,
   validateAiProviderConfiguration,
   type AiAssistantMode,
   type AiAssistantResponse,
@@ -15,6 +22,9 @@ import {
   type AiProviderHealth,
   type AiProviderKind,
   type AiSettingsDocument,
+  type GenerativeAudioDraft,
+  type GenerativeAudioProviderId,
+  type GenerativeAudioWorkflowId,
 } from '../ai';
 import {usePoietekRuntime} from './PoietekRuntimeProvider';
 import './PoietekAiCenter.css';
@@ -66,6 +76,8 @@ export function PoietekAiCenter() {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('Private defaults loaded.');
   const [remoteConsent, setRemoteConsent] = useState(false);
+  const [generationDraft, setGenerationDraft] = useState<GenerativeAudioDraft>(() => createGenerativeAudioDraft(project?.id ?? ''));
+  const [generationMessage, setGenerationMessage] = useState('Optional instrument. No generation route is connected.');
 
   useEffect(() => {
     let active = true;
@@ -79,10 +91,19 @@ export function PoietekAiCenter() {
     return () => { active = false; };
   }, [repository]);
 
+  useEffect(() => {
+    setGenerationDraft((current) => current.projectId === (project?.id ?? '') ? current : {...current, projectId: project?.id ?? ''});
+  }, [project?.id]);
+
   const activeConfiguration = settings.configurations.find((configuration) => configuration.id === settings.activeConfigurationId);
   const selectedConfiguration = settings.configurations.find((configuration) => configuration.provider === selectedProvider);
   const selectedDefinition = getAiProviderDefinition(selectedProvider);
   const validation = selectedConfiguration ? validateAiProviderConfiguration(selectedConfiguration) : null;
+  const generationProvider = getGenerativeAudioProvider(generationDraft.providerId);
+  const generationWorkflow = getGenerativeAudioWorkflow(generationDraft.workflowId);
+  const generationRoute = useMemo(() => createUnavailableGenerativeAudioRoute(generationDraft.providerId), [generationDraft.providerId]);
+  const generationPlan = useMemo(() => planGenerativeAudioDraft(generationDraft, generationRoute), [generationDraft, generationRoute]);
+  const audioAssets = project?.assets.filter((asset) => asset.mediaType === 'audio') ?? [];
 
   const updateConfiguration = (changes: Partial<AiProviderConfiguration>) => {
     if (!selectedConfiguration) return;
@@ -140,6 +161,14 @@ export function PoietekAiCenter() {
     finally { setBusy(false); }
   };
 
+  const updateGenerationDraft = (changes: Partial<GenerativeAudioDraft>) => {
+    setGenerationDraft((current) => ({...current, ...changes}));
+  };
+
+  const reviewGenerationDraft = () => {
+    setGenerationMessage(generationPlan.message);
+  };
+
   return (
     <main className="poietek-ai" aria-label="Poietek independent AI studio">
       <section className="poietek-ai-hero"><div><p>Independent intelligence · optional providers</p><h1>Your studio brain stays yours.</h1><span>Poietek works offline by itself. External models are optional, user-selected and capability-gated.</span></div><dl><div><dt>Independent core</dt><dd>Ready offline</dd></div><div><dt>Active route</dt><dd>{activeConfiguration?.displayName ?? 'None'}</dd></div><div><dt>Project access</dt><dd>{project ? `${project.tracks.length} tracks · ${project.assets.length} assets` : runtimeStatus}</dd></div></dl></section>
@@ -163,6 +192,42 @@ export function PoietekAiCenter() {
             {validation && !validation.valid ? <ul className="poietek-ai-validation">{validation.issues.map((issue) => <li key={`${issue.path}-${issue.message}`}>{issue.message}</li>)}</ul> : null}<ul className="poietek-ai-notes">{selectedDefinition.notes.map((note) => <li key={note}>{note}</li>)}</ul>{selectedDefinition.documentationUrl ? <a href={selectedDefinition.documentationUrl} target="_blank" rel="noreferrer">Provider documentation</a> : null}</section>
         </aside>
       </div>
+      <section className="poietek-genaudio" aria-labelledby="generative-audio-heading">
+        <header>
+          <div><p>Optional production instrument · disabled by default</p><h2 id="generative-audio-heading">Generative Audio Lab</h2><span>Draft samples, sections, cues or demos for audition. The DAW, project and creator decisions remain primary.</span></div>
+          <dl><div><dt>Connected routes</dt><dd>0</dd></div><div><dt>Project changes</dt><dd>None</dd></div><div><dt>Output rule</dt><dd>Preview first</dd></div></dl>
+        </header>
+        <div className="poietek-genaudio-layout">
+          <form className="poietek-genaudio-draft" onSubmit={(event) => { event.preventDefault(); reviewGenerationDraft(); }}>
+            <header><div><p>Generation draft</p><h3>Define a production need</h3></div><span>{generationPlan.state.replaceAll('_', ' ')}</span></header>
+            <div className="poietek-genaudio-fields">
+              <label>Workflow<select value={generationDraft.workflowId} onChange={(event) => { const workflowId = event.target.value as GenerativeAudioWorkflowId; const providerId = GENERATIVE_AUDIO_PROVIDERS.find((item) => item.workflows.includes(workflowId))?.id ?? generationDraft.providerId; updateGenerationDraft({workflowId, providerId, sourceAssetIds: [], remoteConsent: false, rights: {...generationDraft.rights, sourceAudio: 'not_used'}}); }}>{GENERATIVE_AUDIO_WORKFLOWS.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
+              <label>Generation route<select value={generationDraft.providerId} onChange={(event) => updateGenerationDraft({providerId: event.target.value as GenerativeAudioProviderId, remoteConsent: false})}>{GENERATIVE_AUDIO_PROVIDERS.filter((item) => item.workflows.includes(generationDraft.workflowId)).map((item) => <option key={item.id} value={item.id}>{item.name} · {item.integrationState.replaceAll('_', ' ')}</option>)}</select></label>
+              <label className="is-wide">Production direction<textarea rows={3} value={generationDraft.prompt} onChange={(event) => updateGenerationDraft({prompt: event.target.value})} placeholder="Describe purpose, instrumentation, mood, structure, tempo/key guidance and what should remain editable…" /></label>
+              {generationDraft.workflowId === 'lyrics_to_demo' && <label className="is-wide">Creator-supplied lyrics<textarea rows={4} value={generationDraft.lyrics ?? ''} onChange={(event) => updateGenerationDraft({lyrics: event.target.value || null})} /></label>}
+              <label>Duration (seconds)<input type="number" min="1" max="600" value={generationDraft.durationSeconds} onChange={(event) => updateGenerationDraft({durationSeconds: Number(event.target.value)})} /></label>
+              <label>Alternatives<input type="number" min="1" max="8" value={generationDraft.variationCount} onChange={(event) => updateGenerationDraft({variationCount: Number(event.target.value)})} /></label>
+              <label>Seed (optional)<input type="number" value={generationDraft.seed ?? ''} onChange={(event) => updateGenerationDraft({seed: event.target.value ? Number(event.target.value) : null})} placeholder="Provider permitting" /></label>
+              <label>Variation <output>{Math.round(generationDraft.variance * 100)}%</output><input type="range" min="0" max="1" step="0.05" value={generationDraft.variance} onChange={(event) => updateGenerationDraft({variance: Number(event.target.value)})} /></label>
+            </div>
+            {generationWorkflow.supportsSourceAudio && <fieldset className="poietek-genaudio-assets"><legend>{generationWorkflow.requiresSourceAudio ? 'Required owned source audio' : 'Optional owned source audio'}</legend>{audioAssets.length ? <div>{audioAssets.map((asset) => <label key={asset.id}><input type="checkbox" checked={generationDraft.sourceAssetIds.includes(asset.id)} onChange={(event) => { const sourceAssetIds = event.target.checked ? [...generationDraft.sourceAssetIds, asset.id] : generationDraft.sourceAssetIds.filter((id) => id !== asset.id); updateGenerationDraft({sourceAssetIds, rights: {...generationDraft.rights, sourceAudio: sourceAssetIds.length ? 'not_attested' : 'not_used'}}); }} /><span>{asset.originalName}</span><small>{asset.durationSeconds.toFixed(1)}s · {asset.contentHash.slice(0, 10)}…</small></label>)}</div> : <p>Import creator-owned audio in Arrange to make source-led workflows available.</p>}</fieldset>}
+            <div className="poietek-genaudio-safety">
+              <strong>Creator and data controls</strong>
+              <label><input type="checkbox" checked={generationDraft.rights.creativeDirection === 'reviewed_no_named_imitation'} onChange={(event) => updateGenerationDraft({rights: {...generationDraft.rights, creativeDirection: event.target.checked ? 'reviewed_no_named_imitation' : 'not_reviewed'}})} />I reviewed the direction: it does not ask to imitate a named living artist or protected recording.</label>
+              {generationDraft.sourceAssetIds.length > 0 && <label><input type="checkbox" checked={generationDraft.rights.sourceAudio === 'user_attested'} onChange={(event) => updateGenerationDraft({rights: {...generationDraft.rights, sourceAudio: event.target.checked ? 'user_attested' : 'not_attested'}})} />I attest that I may send and transform every selected source asset. This records my statement; it is not external rights verification.</label>}
+              {generationProvider.execution.some((item) => ['secure_proxy', 'external_product', 'decentralized_gateway'].includes(item)) && <label><input type="checkbox" checked={generationDraft.remoteConsent} onChange={(event) => updateGenerationDraft({remoteConsent: event.target.checked})} />Allow the declared prompt, lyrics and selected media to leave this device for this draft only.</label>}
+            </div>
+            <div className="poietek-genaudio-actions"><button type="submit">Review draft</button><button type="button" disabled>Queue unavailable</button></div>
+            <p className="poietek-genaudio-message" role="status">{generationMessage}</p>
+            <div className={`poietek-genaudio-plan is-${generationPlan.safeToQueue ? 'ready' : 'blocked'}`}><header><strong>{generationRoute.message}</strong><small>source preserved · project unchanged · preview-only output</small></header>{generationPlan.issues.length > 0 && <ul>{generationPlan.issues.map((issue) => <li key={`${issue.path}-${issue.message}`}><b>{issue.path}</b>{issue.message}</li>)}</ul>}</div>
+          </form>
+          <aside className="poietek-genaudio-catalog" aria-labelledby="audio-routes-heading">
+            <header><div><p>Capability references and adapter candidates</p><h3 id="audio-routes-heading">Optional audio routes</h3></div><span>{GENERATIVE_AUDIO_PROVIDERS.length} reviewed references</span></header>
+            <p className="poietek-genaudio-boundary">Provider names identify optional third parties only. No account, model, API, wallet, terms, licence, output quality or availability is bundled or implied.</p>
+            <div>{GENERATIVE_AUDIO_PROVIDERS.map((item) => <article key={item.id} className={item.id === generationDraft.providerId ? 'is-active' : ''}><header><div><strong>{item.name}</strong><small>{item.family.replaceAll('_', ' ')} · {item.integrationState.replaceAll('_', ' ')}</small></div><button type="button" disabled={!item.workflows.includes(generationDraft.workflowId)} onClick={() => updateGenerationDraft({providerId: item.id, remoteConsent: false})}>{item.id === generationDraft.providerId ? 'Selected' : item.workflows.includes(generationDraft.workflowId) ? 'Select' : 'Not for mode'}</button></header><p>{item.summary}</p><footer><span>{item.workflows.length ? `${item.workflows.length} declared workflows` : 'Reference only'}</span><a href={item.officialUrl} target="_blank" rel="noreferrer">Official source</a></footer></article>)}</div>
+          </aside>
+        </div>
+      </section>
     </main>
   );
 }

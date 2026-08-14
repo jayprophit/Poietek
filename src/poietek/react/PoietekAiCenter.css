@@ -62,3 +62,59 @@
 @media (max-width: 980px) { .poietek-ai-grid { grid-template-columns: 1fr; } .poietek-ai-provider-list { max-height: 280px; } }
 @media (max-width: 600px) { .poietek-ai { padding: 8px; } .poietek-ai-hero { grid-template-columns: 1fr; gap: 17px; padding: 16px; } .poietek-ai-hero dl { min-width: 0; } .poietek-ai-assistant, .poietek-ai-providers { padding: 11px; } .poietek-ai-modes { grid-template-columns: repeat(2,1fr); } .poietek-ai-fields { grid-template-columns: 1fr; } .poietek-ai-fields label { grid-column: 1 !important; } }
 @media (prefers-reduced-motion: reduce) { .poietek-ai * { scroll-behavior: auto !important; transition: none !important; } }
+
+.poietek-genaudio { margin-top: 14px; padding: 18px; border: 1px solid #344247; border-radius: 14px; background: linear-gradient(150deg,rgba(21,31,34,.98),rgba(10,15,17,.98)); }
+.poietek-genaudio > header { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 22px; align-items: end; padding-bottom: 14px; border-bottom: 1px solid #2d393d; }
+.poietek-genaudio > header p, .poietek-genaudio-draft header p, .poietek-genaudio-catalog header p { margin: 0 0 5px; color: #d69054; font: 800 8px ui-monospace,Consolas,monospace; letter-spacing: .12em; text-transform: uppercase; }
+.poietek-genaudio > header h2 { margin: 0; color: #fff0df; font-size: 24px; }
+.poietek-genaudio > header > div > span { display: block; margin-top: 6px; color: #91a0a2; font-size: 10px; }
+.poietek-genaudio > header dl { min-width: 360px; display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; margin: 0; }
+.poietek-genaudio > header dl div { padding: 8px; border: 1px solid #344247; border-radius: 6px; background: #0b1113; text-align: center; }
+.poietek-genaudio > header dt { color: #77878a; font: 700 6px ui-monospace,Consolas,monospace; text-transform: uppercase; }
+.poietek-genaudio > header dd { margin: 4px 0 0; color: #77cfc5; font: 800 8px ui-monospace,Consolas,monospace; }
+.poietek-genaudio-layout { display: grid; grid-template-columns: minmax(520px,1.12fr) minmax(390px,.88fr); gap: 12px; margin-top: 14px; }
+.poietek-genaudio-draft, .poietek-genaudio-catalog { min-width: 0; padding: 14px; border: 1px solid #2e3a3e; border-radius: 10px; background: #0b1113; }
+.poietek-genaudio-draft > header, .poietek-genaudio-catalog > header { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+.poietek-genaudio h3 { margin: 0; color: #edf4f3; font-size: 16px; }
+.poietek-genaudio-draft > header > span, .poietek-genaudio-catalog > header > span { padding: 5px 7px; border: 1px solid #654b34; border-radius: 999px; color: #dba06d; font: 700 7px ui-monospace,Consolas,monospace; text-transform: uppercase; }
+.poietek-genaudio-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; margin-top: 12px; }
+.poietek-genaudio-fields label { min-width: 0; display: grid; gap: 5px; color: #8c9a9d; font: 700 7px ui-monospace,Consolas,monospace; letter-spacing: .06em; text-transform: uppercase; }
+.poietek-genaudio-fields label.is-wide { grid-column: 1 / -1; }
+.poietek-genaudio-fields input, .poietek-genaudio-fields select, .poietek-genaudio-fields textarea { width: 100%; min-height: 37px; padding: 9px; border: 1px solid #354348; border-radius: 6px; color: #eaf2f1; background: #070c0e; outline: none; resize: vertical; }
+.poietek-genaudio-fields input:focus, .poietek-genaudio-fields select:focus, .poietek-genaudio-fields textarea:focus { border-color: #cf8a50; box-shadow: 0 0 0 2px rgba(207,138,80,.12); }
+.poietek-genaudio-fields output { justify-self: end; margin-top: -14px; color: #77cfc5; }
+.poietek-genaudio-assets { margin: 11px 0 0; padding: 10px; border: 1px solid #334045; border-radius: 7px; }
+.poietek-genaudio-assets legend { padding: 0 5px; color: #a9b5b6; font: 800 7px ui-monospace,Consolas,monospace; text-transform: uppercase; }
+.poietek-genaudio-assets > div { max-height: 135px; display: grid; gap: 4px; overflow: auto; }
+.poietek-genaudio-assets label { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 7px; align-items: center; padding: 6px; border: 1px solid #2d393d; border-radius: 5px; color: #c7d1d1; font-size: 8px; }
+.poietek-genaudio-assets small, .poietek-genaudio-assets > p { color: #758588; font-size: 7px; }
+.poietek-genaudio-safety { display: grid; gap: 7px; margin-top: 11px; padding: 10px; border: 1px solid rgba(217,112,94,.25); border-radius: 7px; background: rgba(217,112,94,.045); }
+.poietek-genaudio-safety > strong { color: #e1a06e; font: 800 7px ui-monospace,Consolas,monospace; letter-spacing: .08em; text-transform: uppercase; }
+.poietek-genaudio-safety label { display: flex; align-items: start; gap: 7px; color: #aeb9ba; font-size: 8px; line-height: 1.45; }
+.poietek-genaudio-safety input { margin-top: 1px; }
+.poietek-genaudio-actions { display: flex; gap: 6px; margin-top: 11px; }
+.poietek-genaudio-actions button, .poietek-genaudio-catalog article button { min-height: 34px; padding: 7px 11px; border: 1px solid #d2945f; border-radius: 6px; color: #21150b; background: linear-gradient(#e8ac78,#b9703a); font-size: 8px; font-weight: 900; cursor: pointer; }
+.poietek-genaudio-actions button:disabled, .poietek-genaudio-catalog article button:disabled { border-color: #344146; color: #718083; background: #141b1e; cursor: not-allowed; }
+.poietek-genaudio-message { min-height: 15px; margin: 8px 0; color: #879598; font-size: 8px; }
+.poietek-genaudio-plan { border-left: 3px solid #d9705e; background: rgba(217,112,94,.05); }
+.poietek-genaudio-plan > header { display: grid; gap: 3px; padding: 9px; }
+.poietek-genaudio-plan > header strong { color: #e7c4bd; font-size: 9px; }
+.poietek-genaudio-plan > header small { color: #8e9a9c; font-size: 7px; }
+.poietek-genaudio-plan ul { max-height: 170px; margin: 0; padding: 0 9px 9px 26px; overflow: auto; color: #b9a4a0; font-size: 7px; line-height: 1.5; }
+.poietek-genaudio-plan li b { margin-right: 6px; color: #df8f7f; }
+.poietek-genaudio-boundary { margin: 10px 0; padding: 8px; border: 1px solid #3b4548; border-radius: 6px; color: #8f9c9e; background: #101719; font-size: 8px; line-height: 1.5; }
+.poietek-genaudio-catalog > div:last-child { max-height: 610px; display: grid; gap: 5px; overflow: auto; padding-right: 3px; }
+.poietek-genaudio-catalog article { padding: 9px; border: 1px solid #2e3a3e; border-radius: 7px; background: #11181a; }
+.poietek-genaudio-catalog article.is-active { border-color: #b87843; background: #201710; }
+.poietek-genaudio-catalog article > header { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.poietek-genaudio-catalog article > header > div { min-width: 0; display: grid; gap: 3px; }
+.poietek-genaudio-catalog article strong { color: #e3ebea; font-size: 10px; }
+.poietek-genaudio-catalog article small { overflow: hidden; color: #728184; font: 7px ui-monospace,Consolas,monospace; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+.poietek-genaudio-catalog article p { margin: 7px 0; color: #93a0a2; font-size: 8px; line-height: 1.45; }
+.poietek-genaudio-catalog article footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 6px; border-top: 1px solid #293539; }
+.poietek-genaudio-catalog article footer span { color: #718083; font-size: 7px; }
+.poietek-genaudio-catalog article footer a { color: #75c9c0; font-size: 7px; }
+.poietek-ai :where(button,input,textarea,select,a):focus-visible { outline: 2px solid #efb178; outline-offset: 2px; }
+
+@media (max-width: 1050px) { .poietek-genaudio-layout { grid-template-columns: 1fr; } .poietek-genaudio-catalog > div:last-child { max-height: 390px; } }
+@media (max-width: 700px) { .poietek-genaudio { padding: 10px; } .poietek-genaudio > header { grid-template-columns: 1fr; } .poietek-genaudio > header dl { min-width: 0; } .poietek-genaudio-fields { grid-template-columns: 1fr; } .poietek-genaudio-fields label.is-wide { grid-column: auto; } }

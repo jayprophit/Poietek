@@ -56,6 +56,14 @@ AI and release operations. The current decision is **NO-GO**: 27 of 28 gates
 still require implementation or acceptance evidence. There is no publish or
 override control in the application.
 
+Open **AI** for the independent offline Studio Brain and optional provider
+router. The same screen now includes a provider-neutral **Generative Audio Lab**
+for drafting samples, sections, cues and demos. It is deliberately secondary to
+the production suite: every route is disabled, generation is unavailable until
+a reviewed adapter is configured, source audio needs a rights attestation and
+per-request consent, and any future output must remain preview-only until the
+creator accepts an undoable import.
+
 ## Run and verify
 
 ```text
@@ -97,6 +105,7 @@ no workflow silently uploads to a store.
 - [Industry qualification and five-star evidence baseline](docs/INDUSTRY_QUALIFICATION.md)
 - [Master 108-item build checklist and percentage dashboard](docs/MASTER_BUILD_CHECKLIST.md)
 - [Fail-closed public release readiness register](docs/PUBLIC_RELEASE_READINESS.md)
+- [Optional generative-audio architecture and provider boundaries](docs/GENERATIVE_AUDIO_ARCHITECTURE.md)
 - [Business tier and monetization reference architecture](docs/BUSINESS_TIER_ARCHITECTURE.md)
 - [One-app device-aware access architecture](docs/DEVICE_AWARE_ACCESS.md)
 - [Native installers, mobile packages and signing architecture](docs/NATIVE_DISTRIBUTION.md)
