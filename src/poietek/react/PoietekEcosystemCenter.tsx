@@ -1,4 +1,4 @@
-import {useMemo, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {
   INDUSTRY_QUALIFICATION_ASSESSMENTS,
   INDUSTRY_REFERENCE_PLATFORMS,
@@ -43,9 +43,11 @@ import {
   type PublicReleaseGateState,
 } from '../release/PublicReleaseReadiness';
 import './PoietekEcosystemCenter.css';
+import {UnifiedPlatformCenter} from './UnifiedPlatformCenter';
 
 type StatusFilter = 'all' | VisionCapabilityStatus;
-type EcosystemView = 'capabilities' | 'library' | 'business' | 'progress' | 'release' | 'benchmark';
+type EcosystemView = 'capabilities' | 'creator' | 'governance' | 'library' | 'business' | 'progress' | 'release' | 'benchmark';
+const ECOSYSTEM_VIEWS: EcosystemView[] = ['capabilities', 'creator', 'governance', 'library', 'business', 'progress', 'release', 'benchmark'];
 type BenchmarkKindFilter = 'all' | QualificationLaneKind;
 type ProgressStatusFilter = 'all' | BuildChecklistStatus;
 type ReleaseCategoryFilter = 'all' | PublicReleaseCategory;
@@ -99,7 +101,10 @@ const describeLimit = (limit: EntitlementLimit | null) => {
 };
 
 export function PoietekEcosystemCenter() {
-  const [view, setView] = useState<EcosystemView>('capabilities');
+  const [view, setView] = useState<EcosystemView>(() => {
+    const saved = typeof window === 'undefined' ? null : window.sessionStorage.getItem('poietek-ecosystem-view');
+    return saved && ECOSYSTEM_VIEWS.includes(saved as EcosystemView) ? saved as EcosystemView : 'capabilities';
+  });
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState<StatusFilter>('all');
   const [benchmarkKind, setBenchmarkKind] = useState<BenchmarkKindFilter>('all');
@@ -131,12 +136,25 @@ export function PoietekEcosystemCenter() {
     [query, releaseCategory, releaseState],
   );
 
+  useEffect(() => {
+    window.sessionStorage.setItem('poietek-ecosystem-view', view);
+  }, [view]);
+
+  useEffect(() => {
+    const selectView = (event: Event) => {
+      const next = (event as CustomEvent<string>).detail;
+      if (ECOSYSTEM_VIEWS.includes(next as EcosystemView)) setView(next as EcosystemView);
+    };
+    window.addEventListener('poietek:ecosystem-view', selectView);
+    return () => window.removeEventListener('poietek:ecosystem-view', selectView);
+  }, []);
+
   return (
     <main className="poietek-ecosystem" aria-label="Poietek ecosystem architecture">
       <header className="poietek-ecosystem-hero">
         <div>
           <p>Creative operating system · controlled catalogue {SDS_VISION_CATALOG_VERSION}</p>
-          <h1>{view === 'library' ? 'The complete development library.' : view === 'business' ? 'A business structure, before a price book.' : view === 'progress' ? 'Build to 100%, evidence first.' : view === 'release' ? 'Public release is a hard no-go.' : view === 'benchmark' ? 'Five stars must be proven.' : 'One studio. Thirteen connected systems.'}</h1>
+          <h1>{view === 'creator' ? 'One project, from first note to audience.' : view === 'governance' ? 'Trust is part of the product.' : view === 'library' ? 'The complete development library.' : view === 'business' ? 'A business structure, before a price book.' : view === 'progress' ? 'Build to 100%, evidence first.' : view === 'release' ? 'Public release is a hard no-go.' : view === 'benchmark' ? 'Five stars must be proven.' : 'One studio. Thirteen connected systems.'}</h1>
           <span>{view === 'library' ? 'Every attached source volume is cross-walked to working evidence, staged architecture, professional documentation and honest gates.' : view === 'business' ? 'Seven proposed tiers preserve the supplied commercial shape while pricing, checkout, entitlement enforcement and service promises remain explicitly unapproved.' : view === 'progress' ? 'All 108 mandatory criteria from the thirteen product systems and fourteen professional volumes are tracked as complete, partly done, missing or externally blocked.' : view === 'release' ? 'A public release stays blocked until product, audio, recovery, platform, accessibility, security, privacy, legal and operational acceptance evidence is complete.' : view === 'benchmark' ? 'Twenty-seven qualification lanes compare the thirteen-system product and fourteen professional volumes with official category-leader capabilities. Working code, tests and independent acceptance—not ambition—control the rating.' : 'The SDS vision is tracked here as executable capability, foundation, next slice, and honest release gate.'}</span>
         </div>
         <div className="poietek-ecosystem-totals" aria-label="Capability totals">
@@ -148,12 +166,17 @@ export function PoietekEcosystemCenter() {
 
       <nav className="poietek-ecosystem-tabs" aria-label="Ecosystem views">
         <button type="button" className={view === 'capabilities' ? 'is-active' : ''} onClick={() => setView('capabilities')}>Capability architecture</button>
+        <button type="button" className={view === 'creator' ? 'is-active' : ''} onClick={() => setView('creator')}>Creator platform</button>
+        <button type="button" className={view === 'governance' ? 'is-active' : ''} onClick={() => setView('governance')}>Governance & help</button>
         <button type="button" className={view === 'library' ? 'is-active' : ''} onClick={() => setView('library')}>Development library</button>
         <button type="button" className={view === 'business' ? 'is-active' : ''} onClick={() => setView('business')}>Business tiers</button>
         <button type="button" className={view === 'progress' ? 'is-active' : ''} onClick={() => setView('progress')}>Build checklist</button>
         <button type="button" className={view === 'release' ? 'is-active' : ''} onClick={() => setView('release')}>Release control</button>
         <button type="button" className={view === 'benchmark' ? 'is-active' : ''} onClick={() => setView('benchmark')}>Industry qualification</button>
       </nav>
+
+      {view === 'creator' && <UnifiedPlatformCenter mode="creator" />}
+      {view === 'governance' && <UnifiedPlatformCenter mode="governance" />}
 
       {view === 'capabilities' && <><section className="poietek-pillar-section" aria-labelledby="ecosystem-pillars-heading">
         <div className="poietek-ecosystem-heading">

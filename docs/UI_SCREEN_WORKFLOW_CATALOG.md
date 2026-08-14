@@ -291,6 +291,18 @@ are parameterized controls with stable behavior, not separately named features.
 
 ## 7. Tutorial and help inventory
 
+### Unified creator and governance screens
+
+| Screen ID | Screen | Current state |
+| --- | --- | --- |
+| `SCR-046` | Creator Platform: unified score/sound/picture/programme pipeline, Poietek TV, community topology and creator marketplace | operational architecture UI over versioned, validated local foundations; external services remain gated. |
+| `SCR-047` | Governance & Help: creator-ownership boundary, 19-document policy register, FAQ and official compliance matrix | operational drafting/help UI; every legal policy remains visibly unapproved. |
+
+The Help menu opens `SCR-047` directly. Creator Platform is also available in
+Ecosystem navigation. Neither screen may convert a draft policy, service licence,
+commission, seller, live stream, audience metric or rights declaration into an
+accepted/available state without its required authority evidence.
+
 | Tutorial ID | Tutorial | Status |
 | --- | --- | --- |
 | `EDU-001` | First launch, offline storage and install | operational explanation/foundation guided flow. |

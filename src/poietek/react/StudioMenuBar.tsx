@@ -10,7 +10,7 @@ interface MenuItem {
   value?: string;
   area?: StudioArea;
   setupTab?: StudioSetupTab;
-  action?: 'fullscreen' | 'shortcuts' | 'about';
+  action?: 'fullscreen' | 'shortcuts' | 'about' | 'governance';
   disabledReason?: string;
   separator?: boolean;
 }
@@ -160,6 +160,7 @@ function buildMenus(activeArea: StudioArea): MenuGroup[] {
       label: 'Help',
       items: [
         {label: 'Keyboard Shortcuts', action: 'shortcuts'},
+        {label: 'Terms, Governance & Help', action: 'governance'},
         {label: 'System Benchmark…', setupTab: 'diagnostics'},
         {label: 'Privacy & Security…', setupTab: 'privacy'},
         {label: 'About Poietek Studio', action: 'about'},
@@ -206,6 +207,12 @@ export function StudioMenuBar({activeArea, onAreaChange, onCommand, onOpenSetup}
     }
     if (item.action === 'shortcuts' || item.action === 'about') {
       setDialog(item.action);
+      return;
+    }
+    if (item.action === 'governance') {
+      window.sessionStorage.setItem('poietek-ecosystem-view', 'governance');
+      window.dispatchEvent(new CustomEvent('poietek:ecosystem-view', {detail: 'governance'}));
+      onAreaChange('ecosystem');
       return;
     }
     if (item.command) {

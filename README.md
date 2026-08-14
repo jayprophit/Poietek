@@ -115,6 +115,8 @@ no workflow silently uploads to a store.
 - [One-app device-aware access architecture](docs/DEVICE_AWARE_ACCESS.md)
 - [Native installers, mobile packages and signing architecture](docs/NATIVE_DISTRIBUTION.md)
 - [Native desktop audio and MIDI device architecture](docs/NATIVE_DEVICE_IO.md)
+- [Unified production, Poietek TV, community and marketplace](docs/UNIFIED_PRODUCTION_PLATFORM.md)
+- [Governance, legal and help drafting pack](docs/GOVERNANCE_LEGAL_HELP_PACK.md)
 - [Native scaffold boundary](src-tauri/README.md)
 
 ## Non-negotiable truth rules

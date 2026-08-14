@@ -134,6 +134,13 @@ available-device capabilities remain local to the active access point. See
 
 ## Controlled architecture set
 
+The versioned unified-production extension is the orchestration boundary for a
+complete programme: score, MIDI, audio, picture, VFX, captions, rights, master,
+Poietek TV session, selected community release and marketplace licence all point
+back to one canonical project. It composes the platform/community/hardware
+extensions and does not create a second project store. See
+`UNIFIED_PRODUCTION_PLATFORM.md` and `GOVERNANCE_LEGAL_HELP_PACK.md`.
+
 This overview is read with the following controlled documents:
 
 - `volumes/README.md` indexes the fourteen professional volumes for product,
