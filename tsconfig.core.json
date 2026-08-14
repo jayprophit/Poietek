@@ -37,7 +37,8 @@
     "src/poietek/creative-os/**/*.ts",
     "src/poietek/vision/**/*.ts",
     "src/poietek/progress/**/*.ts",
-    "src/poietek/ai/**/*.ts"
+    "src/poietek/ai/**/*.ts",
+    "src/poietek/native/**/*.ts"
   ],
   "exclude": [
     "src/poietek/react/**",

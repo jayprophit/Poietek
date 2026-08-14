@@ -119,6 +119,12 @@ if (wantsDesktop && process.platform === 'linux') {
     commandReady('pkg-config', ['--exists', 'webkit2gtk-4.1']),
     'Install the Tauri Linux dependencies listed in docs/NATIVE_DISTRIBUTION.md.',
   );
+  add(
+    'ALSA audio development package',
+    true,
+    commandReady('pkg-config', ['--exists', 'alsa']),
+    'Install libasound2-dev for the native audio and MIDI inventory adapters.',
+  );
 }
 
 if (wants('android')) {

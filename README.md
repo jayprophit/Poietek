@@ -36,6 +36,11 @@ global audio, MIDI/sync, recording, editing, file/recovery, plug-in, appearance,
 privacy and profile settings. The setup window also contains the honest module
 catalog and repeatable local benchmark. Requested driver settings remain
 requests until a real browser/native adapter reports what the device accepted.
+When opened as the native desktop application, the shell now inventories real
+operating-system audio and MIDI endpoints at startup and displays them separately
+from browser-selectable devices. This scan is read-only: native audio streams,
+native MIDI connections, ASIO/Core Audio/JACK selection and measured latency are
+still explicit next-stage engine gates rather than fabricated working features.
 
 Open **Ecosystem** and select **Development Library** to inspect the complete
 attached requirements crosswalk: Volumes 01–20, the proposed fifty-volume parts,
@@ -109,6 +114,7 @@ no workflow silently uploads to a store.
 - [Business tier and monetization reference architecture](docs/BUSINESS_TIER_ARCHITECTURE.md)
 - [One-app device-aware access architecture](docs/DEVICE_AWARE_ACCESS.md)
 - [Native installers, mobile packages and signing architecture](docs/NATIVE_DISTRIBUTION.md)
+- [Native desktop audio and MIDI device architecture](docs/NATIVE_DEVICE_IO.md)
 - [Native scaffold boundary](src-tauri/README.md)
 
 ## Non-negotiable truth rules

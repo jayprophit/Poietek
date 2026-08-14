@@ -13,3 +13,4 @@ export {
 export {StudioSetupModal, type StudioSetupModalProps} from './StudioSetupModal';
 export {StudioArrangerView} from './StudioArrangerView';
 export {StudioConsoleView} from './StudioConsoleView';
+export * from '../native';

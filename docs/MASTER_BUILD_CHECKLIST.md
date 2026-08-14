@@ -40,7 +40,7 @@ Record, arrange, edit, mix, master and deliver complex sessions reliably.
   - Current evidence: Track gain/pan/mute/solo and release-readiness contracts exist.
   - Professional exit: Ship buses, sends, inserts, automation, control-room monitoring and validated BS.1770 LUFS/dBTP analysis.
 - [ ] **EXTERNAL GATE — Native low-latency engine**
-  - Current evidence: Browser Web Audio is working; the native shell has no production audio backend.
+  - Current evidence: Browser Web Audio is working; the native shell now inventories CPAL audio endpoints and advertised configurations without opening a stream or inventing latency.
   - Professional exit: Pass measured device round-trip, dropout, clock, multichannel and sustained-load acceptance on supported operating systems.
 - [ ] **MISSING — Interchange and session qualification**
   - Current evidence: Architecture and staged DAW gap plan are documented.
@@ -91,8 +91,8 @@ Map controls, routing, surfaces and console state without unsupported claims.
 Route, transform, clock and monitor MIDI devices and protocols.
 
 - [ ] **PARTLY DONE — Honest MIDI discovery and events**
-  - Current evidence: Permission, unsupported, denied and error states are explicit; SysEx requires opt-in.
-  - Professional exit: Prove hot-plug, large-port routing and browser/platform compatibility.
+  - Current evidence: Permission, unsupported, denied and error states are explicit; SysEx requires opt-in. Desktop native builds also inventory real midir ports at startup without opening them.
+  - Professional exit: Add explicit native input connections and output scheduling, then prove hot-plug, large-port routing and browser/platform compatibility.
 - [x] **COMPLETE — Message parsing correctness**
   - Current evidence: Pitch bend, channel pressure, zero-velocity note-off and malformed message tests pass.
   - Professional exit: Extend conformance fixtures across channel voice, system realtime and MIDI 2.0 translation.

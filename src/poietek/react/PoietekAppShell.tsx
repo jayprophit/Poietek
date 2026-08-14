@@ -6,6 +6,10 @@ import {dispatchStudioCommand, type StudioArea, type StudioCommandDetail} from '
 import {BrowserStudioSettingsRepository, type StudioPreferences} from '../settings';
 import type {StudioSetupTab} from './StudioSetupModal';
 import {useDeviceRuntimeProfile} from './useDeviceRuntimeProfile';
+import {
+  nativeStudioDeviceInventory,
+  type NativeDeviceInventorySnapshot,
+} from '../native';
 
 const PoietekStudioWorkspace = lazy(async () => {
   const module = await import('./PoietekStudioWorkspace');
@@ -41,6 +45,7 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
   const [setupTab, setSetupTab] = useState<StudioSetupTab>('profiles');
   const [setupOpen, setSetupOpen] = useState(false);
   const [pendingCommand, setPendingCommand] = useState<{detail: StudioCommandDetail; area: StudioArea} | null>(null);
+  const [nativeDevices, setNativeDevices] = useState<NativeDeviceInventorySnapshot>(() => nativeStudioDeviceInventory.getSnapshot());
 
   const applyStudioPreferences = useCallback((preferences: StudioPreferences) => {
     document.documentElement.dataset.poietekTheme = preferences.appearance.theme;
@@ -53,6 +58,15 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
   useEffect(() => {
     applyStudioPreferences(new BrowserStudioSettingsRepository().load().preferences);
   }, [applyStudioPreferences]);
+
+  useEffect(() => {
+    const unsubscribe = nativeStudioDeviceInventory.subscribe(setNativeDevices);
+    const stopWatching = nativeStudioDeviceInventory.startWatching();
+    return () => {
+      unsubscribe();
+      stopWatching();
+    };
+  }, []);
 
   useEffect(() => {
     sessionStorage.setItem('poietek-active-area', area);
@@ -185,7 +199,14 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
             <small>local brain · model router</small>
           </button>
         </nav>
-        <OfflineInstallCenter deviceProfile={deviceProfile} />
+        <div className="poietek-command-utilities">
+          {nativeDevices.runtime === 'native' && <button type="button" className={`poietek-native-device-status is-${nativeDevices.status}`} onClick={() => openSetup(nativeDevices.inventory?.audioInputs.length || nativeDevices.inventory?.audioOutputs.length ? 'audio' : 'midi')} title="Open native device inventory">
+            <span aria-hidden="true">●</span>
+            <strong>{nativeDevices.status === 'ready' && nativeDevices.inventory ? `${nativeDevices.inventory.audioInputs.length + nativeDevices.inventory.audioOutputs.length} audio · ${nativeDevices.inventory.midiInputs.length + nativeDevices.inventory.midiOutputs.length} MIDI` : nativeDevices.status === 'scanning' ? 'Scanning devices…' : nativeDevices.status === 'error' ? 'Device scan error' : 'Desktop devices'}</strong>
+            <small>{nativeDevices.status === 'ready' ? 'detected · inventory only' : 'open Studio Setup'}</small>
+          </button>}
+          <OfflineInstallCenter deviceProfile={deviceProfile} />
+        </div>
       </header>
 
       <div className="poietek-shell-stage">

@@ -123,7 +123,7 @@ npm run mobile:ios:build:app-store -- --ci
 
 Each command must run on the corresponding host. Windows packages should be built
 on Windows; macOS and iOS require macOS, and iOS requires full Xcode. Linux needs
-WebKitGTK 4.1 development libraries. Android needs Android Studio or equivalent
+WebKitGTK 4.1 and ALSA development libraries. Android needs Android Studio or equivalent
 SDK command-line tools, Java, platform tools, build tools and the NDK.
 
 The generated `src-tauri/gen` mobile projects are build products in this phase and

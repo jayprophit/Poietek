@@ -1,6 +1,6 @@
 {
   "identifier": "main-minimal",
-  "description": "The prototype main window has no native IPC permissions until each adapter is implemented and reviewed.",
+  "description": "The main studio window can call only the reviewed read-only studio device inventory command.",
   "windows": ["main"],
-  "permissions": []
+  "permissions": ["studio-device-inventory"]
 }

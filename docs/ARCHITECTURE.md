@@ -106,9 +106,12 @@ gain node. Removing a clip retains its source asset for safety.
 ## Native and web targets
 
 The same canonical project format is used by the browser/PWA and the Tauri shell.
-The current Tauri directory is intentionally a least-privilege scaffold: no IPC
-commands or plugins, restrictive CSP, and bundling disabled until real native
-adapters, icons, signing and platform tests are complete.
+The Tauri directory remains least privilege: it has a restrictive CSP and one
+application command permission for read-only CPAL/midir audio and MIDI endpoint
+inventory. Bundling and icons are configured. The command opens no stream or
+MIDI connection and exposes no filesystem, shell, network or provider access.
+Native realtime routing, signing and physical platform tests remain separate
+release gates; see `NATIVE_DEVICE_IO.md`.
 
 ### One app, active-device presentation
 

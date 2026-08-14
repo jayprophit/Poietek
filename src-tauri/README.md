@@ -2,11 +2,19 @@
 
 The Tauri 2 shell now has production bundle metadata, offline WebView2 installer
 configuration for Windows, responsive window limits, icons, a strict content
-security policy and an empty native capability. It packages the same local-first
-web runtime used by the browser portal and PWA.
+security policy and one narrowly scoped, read-only device-inventory capability.
+It packages the same local-first web runtime used by the browser portal and PWA.
 
-It does not claim native audio, VST/AU hosting, unrestricted filesystem access or
-hardware control. Those remain behind reviewed adapters. Projects and media use
+On Windows, macOS and Linux, `list_native_studio_devices` uses CPAL and midir to
+read operating-system audio and MIDI endpoint identity plus advertised audio
+configurations. The command opens no stream or MIDI connection, sends no MIDI and
+reports every endpoint as not selectable by the current native engine with
+latency not measured. Its Tauri permission is the only custom privilege granted
+to the main window.
+
+It does not claim a native realtime audio engine, VST/AU hosting, unrestricted
+filesystem access or hardware control. Those remain behind reviewed adapters.
+Projects and media use
 the browser-compatible `ProjectRepository` and `AssetStore` contracts inside the
 webview until native implementations are added and migrated safely.
 
@@ -18,7 +26,7 @@ build prerequisites:
 
 - repository-local `@tauri-apps/cli` 2.11.4 installed by the bootstrap command;
 - Rust stable with the platform target;
-- the platform's native build tools and webview;
+- the platform's native build tools and webview (plus ALSA development files on Linux);
 - Android Studio/SDK/NDK for Android packages;
 - macOS, Xcode and CocoaPods for iOS packages.
 
