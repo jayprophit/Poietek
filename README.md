@@ -49,6 +49,13 @@ volumes. The current baseline is 53/100 (2.5/5.0), with zero lanes falsely
 labelled five-star complete. Every card links its official reference set, shows
 current repository evidence and states the acceptance work needed to reach 5.0.
 
+Select **Release control** for the separate fail-closed public-use decision.
+This register covers product, audio, recovery, PWA, desktop, mobile, security,
+privacy/legal, accessibility, cloud/collaboration, commerce, rights/publishing,
+AI and release operations. The current decision is **NO-GO**: 27 of 28 gates
+still require implementation or acceptance evidence. There is no publish or
+override control in the application.
+
 ## Run and verify
 
 ```text
@@ -89,6 +96,7 @@ no workflow silently uploads to a store.
 - [Professional workstation comparison](docs/PRO_DAW_COMPARISON.md)
 - [Industry qualification and five-star evidence baseline](docs/INDUSTRY_QUALIFICATION.md)
 - [Master 108-item build checklist and percentage dashboard](docs/MASTER_BUILD_CHECKLIST.md)
+- [Fail-closed public release readiness register](docs/PUBLIC_RELEASE_READINESS.md)
 - [Business tier and monetization reference architecture](docs/BUSINESS_TIER_ARCHITECTURE.md)
 - [One-app device-aware access architecture](docs/DEVICE_AWARE_ACCESS.md)
 - [Native installers, mobile packages and signing architecture](docs/NATIVE_DISTRIBUTION.md)

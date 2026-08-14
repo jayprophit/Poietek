@@ -34,12 +34,22 @@ import {
   type EntitlementLimit,
   type TierEntitlement,
 } from '../business';
+import {
+  PUBLIC_RELEASE_CATEGORIES,
+  PUBLIC_RELEASE_CATEGORY_LABELS,
+  searchPublicReleaseGates,
+  summarizePublicReleaseReadiness,
+  type PublicReleaseCategory,
+  type PublicReleaseGateState,
+} from '../release/PublicReleaseReadiness';
 import './PoietekEcosystemCenter.css';
 
 type StatusFilter = 'all' | VisionCapabilityStatus;
-type EcosystemView = 'capabilities' | 'library' | 'business' | 'progress' | 'benchmark';
+type EcosystemView = 'capabilities' | 'library' | 'business' | 'progress' | 'release' | 'benchmark';
 type BenchmarkKindFilter = 'all' | QualificationLaneKind;
 type ProgressStatusFilter = 'all' | BuildChecklistStatus;
+type ReleaseCategoryFilter = 'all' | PublicReleaseCategory;
+type ReleaseStateFilter = 'all' | PublicReleaseGateState;
 
 const statusLabels: Record<VisionCapabilityStatus, string> = {
   operational: 'Working now',
@@ -61,6 +71,14 @@ const progressLabels: Record<BuildChecklistStatus, string> = {
   partly_done: 'Partly done',
   missing: 'Missing',
   blocked_external: 'External gate',
+};
+
+const releaseStateLabels: Record<PublicReleaseGateState, string> = {
+  verified: 'Verified',
+  working: 'Working, acceptance due',
+  foundation: 'Foundation only',
+  missing: 'Missing',
+  external_gate: 'External evidence required',
 };
 
 const entitlementLabels: Record<TierEntitlement['state'], string> = {
@@ -87,9 +105,12 @@ export function PoietekEcosystemCenter() {
   const [benchmarkKind, setBenchmarkKind] = useState<BenchmarkKindFilter>('all');
   const [progressKind, setProgressKind] = useState<BenchmarkKindFilter>('all');
   const [progressStatus, setProgressStatus] = useState<ProgressStatusFilter>('all');
+  const [releaseCategory, setReleaseCategory] = useState<ReleaseCategoryFilter>('all');
+  const [releaseState, setReleaseState] = useState<ReleaseStateFilter>('all');
   const summary = useMemo(() => summarizeVisionCatalog(), []);
   const qualificationSummary = useMemo(() => summarizeIndustryQualification(), []);
   const progressSummary = useMemo(() => summarizeMasterBuildProgress(), []);
+  const releaseSummary = useMemo(() => summarizePublicReleaseReadiness(), []);
   const benchmarkReferences = useMemo(
     () => new Map(INDUSTRY_REFERENCE_PLATFORMS.map((item) => [item.id, item])),
     [],
@@ -105,19 +126,23 @@ export function PoietekEcosystemCenter() {
     [query, progressKind, progressStatus],
   );
   const businessTiers = useMemo(() => searchBusinessTiers(query), [query]);
+  const releaseGates = useMemo(
+    () => searchPublicReleaseGates(query, releaseCategory, releaseState),
+    [query, releaseCategory, releaseState],
+  );
 
   return (
     <main className="poietek-ecosystem" aria-label="Poietek ecosystem architecture">
       <header className="poietek-ecosystem-hero">
         <div>
           <p>Creative operating system · controlled catalogue {SDS_VISION_CATALOG_VERSION}</p>
-          <h1>{view === 'library' ? 'The complete development library.' : view === 'business' ? 'A business structure, before a price book.' : view === 'progress' ? 'Build to 100%, evidence first.' : view === 'benchmark' ? 'Five stars must be proven.' : 'One studio. Thirteen connected systems.'}</h1>
-          <span>{view === 'library' ? 'Every attached source volume is cross-walked to working evidence, staged architecture, professional documentation and honest gates.' : view === 'business' ? 'Seven proposed tiers preserve the supplied commercial shape while pricing, checkout, entitlement enforcement and service promises remain explicitly unapproved.' : view === 'progress' ? 'All 108 mandatory criteria from the thirteen product systems and fourteen professional volumes are tracked as complete, partly done, missing or externally blocked.' : view === 'benchmark' ? 'Twenty-seven qualification lanes compare the thirteen-system product and fourteen professional volumes with official category-leader capabilities. Working code, tests and independent acceptance—not ambition—control the rating.' : 'The SDS vision is tracked here as executable capability, foundation, next slice, and honest release gate.'}</span>
+          <h1>{view === 'library' ? 'The complete development library.' : view === 'business' ? 'A business structure, before a price book.' : view === 'progress' ? 'Build to 100%, evidence first.' : view === 'release' ? 'Public release is a hard no-go.' : view === 'benchmark' ? 'Five stars must be proven.' : 'One studio. Thirteen connected systems.'}</h1>
+          <span>{view === 'library' ? 'Every attached source volume is cross-walked to working evidence, staged architecture, professional documentation and honest gates.' : view === 'business' ? 'Seven proposed tiers preserve the supplied commercial shape while pricing, checkout, entitlement enforcement and service promises remain explicitly unapproved.' : view === 'progress' ? 'All 108 mandatory criteria from the thirteen product systems and fourteen professional volumes are tracked as complete, partly done, missing or externally blocked.' : view === 'release' ? 'A public release stays blocked until product, audio, recovery, platform, accessibility, security, privacy, legal and operational acceptance evidence is complete.' : view === 'benchmark' ? 'Twenty-seven qualification lanes compare the thirteen-system product and fourteen professional volumes with official category-leader capabilities. Working code, tests and independent acceptance—not ambition—control the rating.' : 'The SDS vision is tracked here as executable capability, foundation, next slice, and honest release gate.'}</span>
         </div>
         <div className="poietek-ecosystem-totals" aria-label="Capability totals">
-          <strong>{view === 'library' ? DEVELOPMENT_LIBRARY_VOLUMES.length : view === 'business' ? BUSINESS_TIER_CATALOG.length : view === 'progress' ? `${progressSummary.strictCompletionPercent}%` : view === 'benchmark' ? `${qualificationSummary.stars.toFixed(1)}★` : SDS_VISION_CATALOG.length}</strong>
-          <span>{view === 'library' ? 'source volumes mapped' : view === 'business' ? 'reference tiers · checkout off' : view === 'progress' ? 'strictly verified complete' : view === 'benchmark' ? 'current evidence rating' : 'architecture areas'}</span>
-          <b>{view === 'library' ? '20 core · 51–53 intelligence' : view === 'business' ? 'B0 catalogue foundation only' : view === 'progress' ? `${progressSummary.overallProgressPercent}% weighted delivery progress` : view === 'benchmark' ? `${qualificationSummary.qualifiedLanes}/${qualificationSummary.laneCount} lanes five-star qualified` : `${summary.operational} working · ${summary.foundation} foundations`}</b>
+          <strong>{view === 'library' ? DEVELOPMENT_LIBRARY_VOLUMES.length : view === 'business' ? BUSINESS_TIER_CATALOG.length : view === 'progress' ? `${progressSummary.strictCompletionPercent}%` : view === 'release' ? releaseSummary.decision.replace('_', '-') : view === 'benchmark' ? `${qualificationSummary.stars.toFixed(1)}★` : SDS_VISION_CATALOG.length}</strong>
+          <span>{view === 'library' ? 'source volumes mapped' : view === 'business' ? 'reference tiers · checkout off' : view === 'progress' ? 'strictly verified complete' : view === 'release' ? 'public-release decision' : view === 'benchmark' ? 'current evidence rating' : 'architecture areas'}</span>
+          <b>{view === 'library' ? '20 core · 51–53 intelligence' : view === 'business' ? 'B0 catalogue foundation only' : view === 'progress' ? `${progressSummary.overallProgressPercent}% weighted delivery progress` : view === 'release' ? `${releaseSummary.blockingCount}/${releaseSummary.gateCount} gates still block release` : view === 'benchmark' ? `${qualificationSummary.qualifiedLanes}/${qualificationSummary.laneCount} lanes five-star qualified` : `${summary.operational} working · ${summary.foundation} foundations`}</b>
         </div>
       </header>
 
@@ -126,6 +151,7 @@ export function PoietekEcosystemCenter() {
         <button type="button" className={view === 'library' ? 'is-active' : ''} onClick={() => setView('library')}>Development library</button>
         <button type="button" className={view === 'business' ? 'is-active' : ''} onClick={() => setView('business')}>Business tiers</button>
         <button type="button" className={view === 'progress' ? 'is-active' : ''} onClick={() => setView('progress')}>Build checklist</button>
+        <button type="button" className={view === 'release' ? 'is-active' : ''} onClick={() => setView('release')}>Release control</button>
         <button type="button" className={view === 'benchmark' ? 'is-active' : ''} onClick={() => setView('benchmark')}>Industry qualification</button>
       </nav>
 
@@ -357,6 +383,42 @@ export function PoietekEcosystemCenter() {
             ))}
           </div>
           {!progressLanes.length && <div className="poietek-vision-empty"><strong>No matching checklist lane</strong><span>Try another status, broader search or show both systems and volumes.</span></div>}
+        </section>
+      </>}
+
+      {view === 'release' && <>
+        <section className="poietek-release-decision" aria-labelledby="public-release-heading">
+          <div>
+            <p>Controlled release decision · assessed {releaseSummary.assessedAt}</p>
+            <h2 id="public-release-heading">{releaseSummary.decision.replace('_', '-')} · do not publish as a finished product</h2>
+            <span>{releaseSummary.blockingCount} of {releaseSummary.gateCount} release gates remain incomplete. A working slice or architecture foundation is not public acceptance.</span>
+          </div>
+          <dl>
+            <div className="is-verified"><dt>Verified</dt><dd>{releaseSummary.verifiedCount}</dd></div>
+            <div className="is-working"><dt>Working</dt><dd>{releaseSummary.workingCount}</dd></div>
+            <div className="is-foundation"><dt>Foundation</dt><dd>{releaseSummary.foundationCount}</dd></div>
+            <div className="is-missing"><dt>Missing</dt><dd>{releaseSummary.missingCount}</dd></div>
+            <div className="is-external"><dt>External gates</dt><dd>{releaseSummary.externalGateCount}</dd></div>
+          </dl>
+          <aside><strong>Fail closed</strong><span>The decision becomes GO only when every blocking gate is verified and all {releaseSummary.categoriesCovered} required categories remain covered.</span></aside>
+        </section>
+
+        <section className="poietek-vision-section" aria-labelledby="public-release-gates-heading">
+          <div className="poietek-ecosystem-heading"><div><p>Public-use acceptance register</p><h2 id="public-release-gates-heading">Exact evidence required before release</h2></div><span>{releaseGates.length} of {releaseSummary.gateCount} gates shown</span></div>
+          <div className="poietek-release-controls">
+            <label><span>Search evidence, exits and authorities</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="recovery, LUFS, privacy, signing, accessibility…" /></label>
+            <label><span>Category</span><select value={releaseCategory} onChange={(event) => setReleaseCategory(event.target.value as ReleaseCategoryFilter)}><option value="all">All categories</option>{PUBLIC_RELEASE_CATEGORIES.map((item) => <option key={item} value={item}>{PUBLIC_RELEASE_CATEGORY_LABELS[item]}</option>)}</select></label>
+            <label><span>Evidence state</span><select value={releaseState} onChange={(event) => setReleaseState(event.target.value as ReleaseStateFilter)}><option value="all">Every state</option>{(['verified', 'working', 'foundation', 'missing', 'external_gate'] as const).map((item) => <option key={item} value={item}>{releaseStateLabels[item]}</option>)}</select></label>
+          </div>
+          <div className="poietek-release-grid">
+            {releaseGates.map((item) => <article key={item.id} className={`poietek-release-card is-${item.state}`}>
+              <header><div><span>{PUBLIC_RELEASE_CATEGORY_LABELS[item.category]}</span><h3>{item.title}</h3></div><small>{releaseStateLabels[item.state]}</small></header>
+              <div><h4>Current evidence</h4><ul>{item.currentEvidence.map((evidence) => <li key={evidence}>{evidence}</li>)}</ul></div>
+              <div className="poietek-release-exit"><h4>Required exit</h4><p>{item.requiredExit}</p></div>
+              {item.references.length > 0 && <footer><b>Official requirements</b><div>{item.references.map((reference) => <a key={reference.url} href={reference.url} target="_blank" rel="noreferrer">{reference.authority} · {reference.label}</a>)}</div></footer>}
+            </article>)}
+          </div>
+          {!releaseGates.length && <div className="poietek-vision-empty"><strong>No matching release gate</strong><span>Try a broader term or show every category and state.</span></div>}
         </section>
       </>}
 
