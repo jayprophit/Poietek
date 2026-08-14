@@ -20,11 +20,17 @@ import {
   summarizeVisionCatalog,
   type VisionCapabilityStatus,
 } from '../vision';
+import {
+  searchMasterBuildChecklist,
+  summarizeMasterBuildProgress,
+  type BuildChecklistStatus,
+} from '../progress';
 import './PoietekEcosystemCenter.css';
 
 type StatusFilter = 'all' | VisionCapabilityStatus;
-type EcosystemView = 'capabilities' | 'library' | 'benchmark';
+type EcosystemView = 'capabilities' | 'library' | 'progress' | 'benchmark';
 type BenchmarkKindFilter = 'all' | QualificationLaneKind;
+type ProgressStatusFilter = 'all' | BuildChecklistStatus;
 
 const statusLabels: Record<VisionCapabilityStatus, string> = {
   operational: 'Working now',
@@ -41,13 +47,23 @@ const qualificationLabels: Record<QualificationState, string> = {
   external_gate: 'External gate',
 };
 
+const progressLabels: Record<BuildChecklistStatus, string> = {
+  complete: 'Complete',
+  partly_done: 'Partly done',
+  missing: 'Missing',
+  blocked_external: 'External gate',
+};
+
 export function PoietekEcosystemCenter() {
   const [view, setView] = useState<EcosystemView>('capabilities');
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState<StatusFilter>('all');
   const [benchmarkKind, setBenchmarkKind] = useState<BenchmarkKindFilter>('all');
+  const [progressKind, setProgressKind] = useState<BenchmarkKindFilter>('all');
+  const [progressStatus, setProgressStatus] = useState<ProgressStatusFilter>('all');
   const summary = useMemo(() => summarizeVisionCatalog(), []);
   const qualificationSummary = useMemo(() => summarizeIndustryQualification(), []);
+  const progressSummary = useMemo(() => summarizeMasterBuildProgress(), []);
   const benchmarkReferences = useMemo(
     () => new Map(INDUSTRY_REFERENCE_PLATFORMS.map((item) => [item.id, item])),
     [],
@@ -58,25 +74,30 @@ export function PoietekEcosystemCenter() {
     () => searchIndustryQualification(query, benchmarkKind),
     [query, benchmarkKind],
   );
+  const progressLanes = useMemo(
+    () => searchMasterBuildChecklist(query, progressKind, progressStatus),
+    [query, progressKind, progressStatus],
+  );
 
   return (
     <main className="poietek-ecosystem" aria-label="Poietek ecosystem architecture">
       <header className="poietek-ecosystem-hero">
         <div>
           <p>Creative operating system · controlled catalogue {SDS_VISION_CATALOG_VERSION}</p>
-          <h1>{view === 'library' ? 'The complete development library.' : view === 'benchmark' ? 'Five stars must be proven.' : 'One studio. Thirteen connected systems.'}</h1>
-          <span>{view === 'library' ? 'Every attached source volume is cross-walked to working evidence, staged architecture, professional documentation and honest gates.' : view === 'benchmark' ? 'Twenty-seven qualification lanes compare the thirteen-system product and fourteen professional volumes with official category-leader capabilities. Working code, tests and independent acceptance—not ambition—control the rating.' : 'The SDS vision is tracked here as executable capability, foundation, next slice, and honest release gate.'}</span>
+          <h1>{view === 'library' ? 'The complete development library.' : view === 'progress' ? 'Build to 100%, evidence first.' : view === 'benchmark' ? 'Five stars must be proven.' : 'One studio. Thirteen connected systems.'}</h1>
+          <span>{view === 'library' ? 'Every attached source volume is cross-walked to working evidence, staged architecture, professional documentation and honest gates.' : view === 'progress' ? 'All 108 mandatory criteria from the thirteen product systems and fourteen professional volumes are tracked as complete, partly done, missing or externally blocked.' : view === 'benchmark' ? 'Twenty-seven qualification lanes compare the thirteen-system product and fourteen professional volumes with official category-leader capabilities. Working code, tests and independent acceptance—not ambition—control the rating.' : 'The SDS vision is tracked here as executable capability, foundation, next slice, and honest release gate.'}</span>
         </div>
         <div className="poietek-ecosystem-totals" aria-label="Capability totals">
-          <strong>{view === 'library' ? DEVELOPMENT_LIBRARY_VOLUMES.length : view === 'benchmark' ? `${qualificationSummary.stars.toFixed(1)}★` : SDS_VISION_CATALOG.length}</strong>
-          <span>{view === 'library' ? 'source volumes mapped' : view === 'benchmark' ? 'current evidence rating' : 'architecture areas'}</span>
-          <b>{view === 'library' ? '20 core · 51–53 intelligence' : view === 'benchmark' ? `${qualificationSummary.qualifiedLanes}/${qualificationSummary.laneCount} lanes five-star qualified` : `${summary.operational} working · ${summary.foundation} foundations`}</b>
+          <strong>{view === 'library' ? DEVELOPMENT_LIBRARY_VOLUMES.length : view === 'progress' ? `${progressSummary.strictCompletionPercent}%` : view === 'benchmark' ? `${qualificationSummary.stars.toFixed(1)}★` : SDS_VISION_CATALOG.length}</strong>
+          <span>{view === 'library' ? 'source volumes mapped' : view === 'progress' ? 'strictly verified complete' : view === 'benchmark' ? 'current evidence rating' : 'architecture areas'}</span>
+          <b>{view === 'library' ? '20 core · 51–53 intelligence' : view === 'progress' ? `${progressSummary.overallProgressPercent}% weighted delivery progress` : view === 'benchmark' ? `${qualificationSummary.qualifiedLanes}/${qualificationSummary.laneCount} lanes five-star qualified` : `${summary.operational} working · ${summary.foundation} foundations`}</b>
         </div>
       </header>
 
       <nav className="poietek-ecosystem-tabs" aria-label="Ecosystem views">
         <button type="button" className={view === 'capabilities' ? 'is-active' : ''} onClick={() => setView('capabilities')}>Capability architecture</button>
         <button type="button" className={view === 'library' ? 'is-active' : ''} onClick={() => setView('library')}>Development library</button>
+        <button type="button" className={view === 'progress' ? 'is-active' : ''} onClick={() => setView('progress')}>Build checklist</button>
         <button type="button" className={view === 'benchmark' ? 'is-active' : ''} onClick={() => setView('benchmark')}>Industry qualification</button>
       </nav>
 
@@ -212,6 +233,65 @@ export function PoietekEcosystemCenter() {
           <div className="poietek-library-appendix-grid">
             {DEVELOPMENT_LIBRARY_APPENDICES.map((appendix) => <article key={appendix.id}><h3>{appendix.title}</h3><p>{appendix.topics.join(' · ')}</p></article>)}
           </div>
+        </section>
+      </>}
+
+      {view === 'progress' && <>
+        <section className="poietek-progress-summary" aria-labelledby="master-progress-heading">
+          <div className="poietek-progress-primary">
+            <p>SDS source audit · {progressSummary.assessedAt}</p>
+            <h2 id="master-progress-heading">{progressSummary.overallProgressPercent}% weighted progress</h2>
+            <span>{progressSummary.strictCompletionPercent}% is strictly verified. Plans and foundations earn progress, but they do not count as finished.</span>
+          </div>
+          <div className="poietek-progress-measures">
+            <article><span>Product implementation</span><strong>{progressSummary.productProgressPercent}%</strong><small>{progressSummary.productStrictCompletionPercent}% strictly complete</small></article>
+            <article><span>Architecture & delivery</span><strong>{progressSummary.architectureProgressPercent}%</strong><small>{progressSummary.architectureStrictCompletionPercent}% strictly complete</small></article>
+            <article className="is-complete"><span>Complete</span><strong>{progressSummary.counts.complete}</strong><small>of {progressSummary.counts.total} criteria</small></article>
+            <article className="is-partial"><span>Partly done</span><strong>{progressSummary.counts.partly_done}</strong><small>{progressSummary.counts.working} working · {progressSummary.counts.foundation} foundations</small></article>
+            <article className="is-missing"><span>Missing</span><strong>{progressSummary.counts.missing}</strong><small>specified, not implemented</small></article>
+            <article className="is-gate"><span>External gates</span><strong>{progressSummary.counts.blocked_external}</strong><small>real evidence still required</small></article>
+          </div>
+          <aside><strong>World-class completion rule</strong><span>100% means all 108 mandatory criteria are verified and all 27 lanes qualify. No contract, mock, submission, hardware name or benchmark claim can substitute for working acceptance evidence.</span></aside>
+        </section>
+
+        <section className="poietek-vision-section" aria-labelledby="master-checklist-heading">
+          <div className="poietek-ecosystem-heading">
+            <div><p>Controlled progress register</p><h2 id="master-checklist-heading">Thirteen systems plus fourteen professional volumes</h2></div>
+            <span>{progressLanes.length} of {progressSummary.laneCount} lanes shown</span>
+          </div>
+          <div className="poietek-vision-controls poietek-progress-controls">
+            <label>
+              <span>Search items, evidence and professional exits</span>
+              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="automation, sampler, video, rights, security…" />
+            </label>
+            <div role="group" aria-label="Progress lane filter">
+              {(['all', 'system', 'volume'] as const).map((item) => <button key={item} type="button" className={progressKind === item ? 'is-active' : ''} onClick={() => setProgressKind(item)}>{item === 'all' ? 'All 27' : item === 'system' ? '13 systems' : '14 volumes'}</button>)}
+            </div>
+            <div role="group" aria-label="Progress status filter">
+              {(['all', 'complete', 'partly_done', 'missing', 'blocked_external'] as const).map((item) => <button key={item} type="button" className={progressStatus === item ? 'is-active' : ''} onClick={() => setProgressStatus(item)}>{item === 'all' ? 'Every status' : progressLabels[item]}</button>)}
+            </div>
+          </div>
+
+          <div className="poietek-progress-grid">
+            {progressLanes.map((lane) => (
+              <article key={lane.id} className="poietek-progress-card">
+                <header><div><span>{lane.kind === 'system' ? `System ${String(lane.order).padStart(2, '0')}` : `Volume ${String(lane.order).padStart(2, '0')}`}</span><h3>{lane.name}</h3></div><strong>{lane.progressPercent}%</strong></header>
+                <div className="poietek-progress-track" aria-label={`${lane.progressPercent}% weighted progress`}><span style={{width: `${lane.progressPercent}%`}} /></div>
+                <p>{lane.purpose}</p>
+                <div className="poietek-progress-card-totals"><span>{lane.strictCompletionPercent}% strictly complete</span><b>{lane.completeItems}/{lane.requiredItems} verified</b></div>
+                <div className="poietek-progress-items">
+                  {lane.items.map((item) => (
+                    <details key={item.id} className={`is-${item.status}`}>
+                      <summary><input type="checkbox" checked={item.status === 'complete'} readOnly tabIndex={-1} aria-label={`${item.title}: ${progressLabels[item.status]}`} /><span>{item.title}</span><small>{progressLabels[item.status]}</small></summary>
+                      <div><b>Current evidence</b><ul>{item.evidence.map((evidence) => <li key={evidence}>{evidence}</li>)}</ul></div>
+                      <div className="poietek-progress-exit"><b>Required for professional completion</b><p>{item.professionalExit}</p></div>
+                    </details>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+          {!progressLanes.length && <div className="poietek-vision-empty"><strong>No matching checklist lane</strong><span>Try another status, broader search or show both systems and volumes.</span></div>}
         </section>
       </>}
 

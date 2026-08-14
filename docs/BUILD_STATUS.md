@@ -6,8 +6,8 @@
 - Full TypeScript typecheck: passed
 - Strict Poietek core compile: passed
 - Native deployment configuration consistency: passed
-- Automated regression tests: 100 passed, 0 failed
-- Vite production build: passed (1,782 modules)
+- Automated regression tests: 106 passed, 0 failed
+- Vite production build: passed (1,784 modules)
 - Production browser smoke test: passed
 - Installed dependency graph: no missing, invalid or extraneous packages
 - Git whitespace/conflict check: passed
@@ -67,6 +67,16 @@ with restricted permissions, and no workflow performs a store upload. These
 workflows are source-validated but have not run remotely in this local task;
 macOS/iOS, Linux and signing results remain external gates until their first
 successful GitHub runner and physical-device evidence exists.
+
+The master-progress pass re-audited the 5,504-line `sds.txt` and converted the
+existing 108 mandatory qualification criteria into a synchronized checklist in
+the Ecosystem screen and `docs/MASTER_BUILD_CHECKLIST.md`. Current combined
+weighted delivery progress is 53%, while strict verified completion is 31%.
+Product implementation is 37% weighted / 10% strict; architecture and delivery
+are 67% weighted / 50% strict. There are 33 complete, 36 partly done, 27 missing
+and 12 externally gated criteria. Zero of 27 lanes is five-star qualified. The
+two percentages remain separate so documentation and foundations cannot be
+presented as a completed professional product.
 
 The managed Codex Windows sandbox does not permit Vite's development dependency
 optimizer to traverse its normal resolution boundary. `npm run dev` therefore

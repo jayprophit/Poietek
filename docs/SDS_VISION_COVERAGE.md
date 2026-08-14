@@ -7,7 +7,9 @@ Poietek/SDS conversation history.
 - Source size: 5,504 lines / 152,303 decoded characters
 - SHA-256: `83b1cf2b4d103ef22f36d1a31442efc095469b330c84821b4cac3ab509163fff`
 - Audit date: 2026-08-13
-- Current catalogue: `src/poietek/vision/catalog.ts`, version 3.2.0
+- Current catalogue: `src/poietek/vision/catalog.ts`, version 3.3.0
+- Controlled progress checklist: `src/poietek/progress/checklist.ts`, schema 1.0.0
+- Human-readable tracker: `docs/MASTER_BUILD_CHECKLIST.md`
 
 Additional development-library source integrated into the application:
 
@@ -195,3 +197,18 @@ portability; money/token bridging is not part of the creative core.
 This map deliberately reaches beyond v3.1 while keeping implementation language
 truthful. The Ecosystem screen reads the same machine-readable catalogue, so the
 vision and the build cannot quietly drift apart.
+
+## Progress accounting
+
+The Build checklist surface uses 108 mandatory criteria across all thirteen SDS
+product systems and the fourteen controlled professional volumes. Two percentages
+are shown deliberately:
+
+- weighted delivery progress gives specified work 20%, a foundation 40%, a
+  working integrated slice 75%, verified work 100% and an external gate 0%;
+- strict completion counts only verified mandatory criteria.
+
+As of 2026-08-14 the combined result is 53% weighted progress and 31% strictly
+verified. Product implementation alone is 37% weighted / 10% strict;
+architecture and delivery work is 67% weighted / 50% strict. This prevents
+documents and contracts from being mistaken for a finished professional product.
