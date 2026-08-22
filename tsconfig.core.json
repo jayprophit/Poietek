@@ -40,6 +40,7 @@
     "src/poietek/ai/**/*.ts",
     "src/poietek/native/**/*.ts"
     ,"src/poietek/unified/**/*.ts"
+    ,"src/poietek/engines/**/*.ts"
   ],
   "exclude": [
     "src/poietek/react/**",

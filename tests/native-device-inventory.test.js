@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict';
-import {mkdirSync, writeFileSync} from 'node:fs';
 import {readFile} from 'node:fs/promises';
 import {createRequire} from 'node:module';
 import path from 'node:path';
@@ -7,13 +6,6 @@ import test from 'node:test';
 
 const root = process.cwd();
 const read = (file) => readFile(path.join(root, file), 'utf8');
-const compiledCoreDirectory = new URL('./.compiled-core/', import.meta.url);
-mkdirSync(compiledCoreDirectory, {recursive: true});
-writeFileSync(
-  new URL('package.json', compiledCoreDirectory),
-  `${JSON.stringify({private: true, type: 'commonjs'}, null, 2)}\n`,
-  'utf8',
-);
 const require = createRequire(import.meta.url);
 const {validateNativeStudioDeviceInventory} = require(
   './.compiled-core/native/validation.js',

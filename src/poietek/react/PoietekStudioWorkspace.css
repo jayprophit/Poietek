@@ -1086,19 +1086,9 @@
   font-size: 8px;
 }
 .poietek-arranger-readout strong { color: #d5dfdf; }
-.poietek-zoom-control {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: #829092;
-  font-size: 8px;
-  text-transform: uppercase;
-}
-.poietek-zoom-control input { width: 76px; accent-color: #d58d49; }
-
-.poietek-arranger-scroll { overflow-x: auto; }
+.poietek-arranger-scroll { background: #090d10; }
 .poietek-arranger-canvas {
-  width: calc(100% * var(--arranger-zoom, 1));
+  width: 100%;
   min-width: 720px;
 }
 .poietek-arranger-ruler-row { background: #11171a; }
@@ -1339,12 +1329,19 @@
   .poietek-persist-bar { margin-bottom: 6px; }
   .poietek-desk-tabs button { grid-template-columns: auto 1fr; }
   .poietek-desk-tabs button small { display: none; }
-  .poietek-arranger-toolbar { align-items: flex-start; flex-direction: column; }
-  .poietek-arranger-readout { margin-left: 0; }
-  .poietek-clip-inspector { align-items: stretch; flex-wrap: wrap; }
+  .poietek-arranger-toolbar { align-items: center; flex-direction: row; overflow-x: auto; overscroll-behavior-inline: contain; }
+  .poietek-tool-group { flex: 0 0 auto; }
+  .poietek-arranger-readout { flex: 0 0 auto; margin-left: auto; }
+  .poietek-arranger-canvas { min-width: 600px; }
+  .poietek-arranger .poietek-ruler-row,
+  .poietek-arranger .poietek-track-row { grid-template-columns: 154px minmax(446px, 1fr); }
+  .poietek-arranger .poietek-track-row { min-width: 600px; }
+  .poietek-clip-inspector { position: sticky; z-index: 15; bottom: 0; align-items: stretch; flex-wrap: wrap; max-height: min(48dvh, 380px); overflow-y: auto; box-shadow: 0 -12px 28px rgba(0,0,0,.45); }
   .poietek-inspector-actions { width: 100%; margin-left: 0; }
   .poietek-console-header { flex-direction: column; }
   .poietek-console-buses { justify-content: flex-start; }
+  .poietek-console-scroll { scroll-snap-type: x proximity; overscroll-behavior-inline: contain; }
+  .poietek-channel-strip { width: 154px; min-height: 540px; scroll-snap-align: start; }
 }
 
 @media (max-width: 430px) {
@@ -1357,6 +1354,11 @@
   .poietek-new-project > div { grid-template-columns: 1fr 38px; }
   .poietek-runtime-badges .poietek-runtime-badge:not(.poietek-runtime-badge-online) { display: none; }
   .poietek-studio-main { padding: 6px; }
+  .poietek-arranger-canvas { min-width: 540px; }
+  .poietek-arranger .poietek-ruler-row,
+  .poietek-arranger .poietek-track-row { grid-template-columns: 132px minmax(408px, 1fr); }
+  .poietek-arranger .poietek-track-row { min-width: 540px; }
+  .poietek-desk-tabs button { min-height: 44px; padding-inline: 8px; }
 }
 
 @media (pointer: coarse) {

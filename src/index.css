@@ -11,6 +11,8 @@ body,
 #root {
   width: 100%;
   height: 100%;
+  min-height: 100svh;
+  min-height: 100dvh;
   margin: 0;
   overflow: hidden;
   overscroll-behavior: none;
@@ -21,6 +23,101 @@ body {
   min-width: 320px;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+}
+
+.poietek-rack-app {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+html[data-poietek-device-layout='compact'] .poietek-rack-center {
+  border-inline-width: 8px;
+}
+
+html[data-poietek-device-layout='handheld'] .poietek-rack-center {
+  border-inline-width: 0;
+}
+
+html[data-poietek-device-layout='handheld'] .poietek-legacy-rack-main {
+  padding: 0.375rem 0.375rem calc(196px + env(safe-area-inset-bottom, 0px));
+}
+
+html[data-poietek-device-layout='handheld'] .poietek-rack-hardware {
+  padding: 0.25rem;
+  border-bottom-width: 1px;
+}
+
+html[data-poietek-device-layout='handheld'] .poietek-browser-sidebar,
+html[data-poietek-device-layout='handheld'] .poietek-rack-library {
+  width: min(92vw, 22rem);
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html[data-poietek-device-layout='handheld'] .poietek-browser-toggle {
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 1.75rem;
+}
+
+html[data-poietek-device-layout='handheld'] .poietek-rack-library-toggle {
+  right: 0;
+  padding-block: 0.75rem;
+}
+
+html[data-poietek-device-layout='handheld'] .poietek-rack-transport {
+  flex: 0 0 auto;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html[data-poietek-device-layout='handheld'] .poietek-rack-transport-console {
+  bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+}
+
+html[data-poietek-device-layout='compact'][data-poietek-orientation='landscape'] .poietek-rack-hardware,
+html[data-poietek-device-layout='handheld'][data-poietek-orientation='landscape'] .poietek-rack-hardware {
+  max-height: 5.5rem;
+  overflow-y: auto;
+}
+
+html[data-poietek-device-layout='compact'][data-poietek-orientation='landscape'] .poietek-legacy-rack-main,
+html[data-poietek-device-layout='handheld'][data-poietek-orientation='landscape'] .poietek-legacy-rack-main {
+  padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+}
+
+html[data-poietek-device-layout='compact'][data-poietek-orientation='landscape'] .poietek-rack-transport-console,
+html[data-poietek-device-layout='handheld'][data-poietek-orientation='landscape'] .poietek-rack-transport-console {
+  height: calc(64px + env(safe-area-inset-bottom, 0px));
+  overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html[data-poietek-device-layout='compact'][data-poietek-orientation='landscape'] .poietek-rack-transport-body,
+html[data-poietek-device-layout='handheld'][data-poietek-orientation='landscape'] .poietek-rack-transport-body {
+  height: 60px;
+  max-width: none;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.375rem 0.5rem;
+  scrollbar-width: thin;
+}
+
+html[data-poietek-device-layout='compact'][data-poietek-orientation='landscape'] .poietek-rack-transport-brand,
+html[data-poietek-device-layout='handheld'][data-poietek-orientation='landscape'] .poietek-rack-transport-brand {
+  display: none;
+}
+
+html[data-poietek-device-layout='compact'][data-poietek-orientation='landscape'] .poietek-rack-transport-center,
+html[data-poietek-device-layout='compact'][data-poietek-orientation='landscape'] .poietek-rack-transport-right,
+html[data-poietek-device-layout='handheld'][data-poietek-orientation='landscape'] .poietek-rack-transport-center,
+html[data-poietek-device-layout='handheld'][data-poietek-orientation='landscape'] .poietek-rack-transport-right {
+  flex: 0 0 auto;
+  gap: 0.5rem;
 }
 
 button,
@@ -35,6 +132,33 @@ input,
 textarea {
   -webkit-user-select: text;
   user-select: text;
+}
+
+.rack-sidebar-action {
+  display: flex;
+  min-height: 2rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border: 1px solid #334155;
+  border-radius: 0.5rem;
+  background: #0f172a;
+  padding: 0.375rem 0.5rem;
+  color: #cbd5e1;
+  font-size: 0.625rem;
+  font-weight: 800;
+  transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease;
+}
+
+.rack-sidebar-action:hover:not(:disabled) {
+  border-color: rgba(34, 211, 238, 0.62);
+  background: #1e293b;
+  color: #ffffff;
+}
+
+.rack-sidebar-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.36;
 }
 
 html[data-poietek-theme='graphite'] body {

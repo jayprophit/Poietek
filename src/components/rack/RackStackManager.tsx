@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   ChevronUp,
   ChevronDown,
@@ -40,6 +40,12 @@ import { HumanPulseGroovePool } from '../daw/HumanPulseGroovePool';
 import { PianoRollSequencer } from '../daw/PianoRollSequencer';
 import { HorizonWaveformSequencer } from '../daw/HorizonWaveformSequencer';
 import { BeatLoomChannelRack } from '../daw/BeatLoomChannelRack';
+import { ViewportNavigator } from '../shared/ViewportNavigator';
+import {
+  createRackModuleItem,
+  isRackModuleType,
+  POIETEK_RACK_DRAG_TYPE,
+} from './rackModuleCatalog';
 
 interface RackStackManagerProps {
   rackModules: RackModuleItem[];
@@ -58,6 +64,10 @@ interface RackStackManagerProps {
   onRedo?: () => void;
   canUndo?: boolean;
   canRedo?: boolean;
+  zoom: number;
+  onZoomChange(zoom: number): void;
+  autoFit: boolean;
+  onAutoFitChange(autoFit: boolean): void;
 }
 
 export const RackStackManager: React.FC<RackStackManagerProps> = ({
@@ -77,8 +87,14 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
   onRedo,
   canUndo = false,
   canRedo = false,
+  zoom,
+  onZoomChange,
+  autoFit,
+  onAutoFitChange,
 }) => {
   const [isAddMenuOpen, setIsAddMenuOpen] = useState<boolean>(false);
+  const [isLibraryDragOver, setIsLibraryDragOver] = useState<boolean>(false);
+  const dragDepth = useRef(0);
 
   // Helper functions for stack management
   const handleMoveModule = (id: string, direction: 'up' | 'down') => {
@@ -115,86 +131,14 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
   };
 
   const handleAddModule = (type: ModuleType, targetFolderId?: string) => {
-    const newId = `mod_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
-    let title = 'Studio Rack Unit';
-    let tapeLabel = 'RACK UNIT';
-
-    switch (type) {
-      case 'folder_combinator':
-        title = 'Combinator Bus Folder';
-        tapeLabel = 'BUS FOLDER';
-        break;
-      case 'mpc':
-        title = 'Canvas Drum Grid';
-        tapeLabel = 'DRUM SAMPLER';
-        break;
-      case 'sp404':
-        title = 'Grain Deck Sampler';
-        tapeLabel = 'MFX SAMPLER';
-        break;
-      case 'keyboard':
-        title = 'Analog Subtractive Synth';
-        tapeLabel = 'SUBTRACTIVE SYNTH';
-        break;
-      case 'edrum':
-        title = 'E-Drum Mesh Kit';
-        tapeLabel = 'MESH DRUMS';
-        break;
-      case 'dj':
-        title = 'DJ Performance Decks';
-        tapeLabel = 'DJ CONSOLE';
-        break;
-      case 'mixer':
-        title = 'Summit Master Console';
-        tapeLabel = 'MASTER CONSOLE';
-        break;
-      case 'drum_machines':
-        title = 'Studio Drum Computer';
-        tapeLabel = 'STEP DRUMS';
-        break;
-      case 'wave_sequencer':
-        title = 'Multi-Track Audio Sequencer';
-        tapeLabel = 'AUDIO TIMELINE';
-        break;
-      case 'fl_channel_rack':
-        title = 'Pattern Step Channel Rack';
-        tapeLabel = '16-STEP RACK';
-        break;
-      case 'melodyne_pitch':
-        title = 'Pro Vocal Pitch Editor';
-        tapeLabel = 'AUTO TUNER';
-        break;
-      case 'circle_fifths':
-        title = 'Circle of Fifths Harmony Wheel';
-        tapeLabel = 'HARMONY AI';
-        break;
-      case 'piano_roll':
-        title = 'Universal Piano Roll';
-        tapeLabel = 'MIDI GRID';
-        break;
-      case 'chop_lab':
-        title = 'Chop Lab Stem Slicer';
-        tapeLabel = 'STEM CHOPPER';
-        break;
-      default:
-        title = 'Studio Module';
-    }
-
-    const newModule: RackModuleItem = {
-      id: newId,
-      type,
-      title,
-      tapeLabel,
-      groupId: targetFolderId,
-      isFolded: false,
-    };
+    const newModule = createRackModuleItem(type, targetFolderId);
 
     setRackModules((prev) => {
       if (targetFolderId) {
         // Attach to folder
         return prev.map((m) =>
           m.id === targetFolderId
-            ? { ...m, subModuleIds: [...(m.subModuleIds || []), newId] }
+            ? { ...m, subModuleIds: [...(m.subModuleIds || []), newModule.id] }
             : m
         ).concat(newModule);
       }
@@ -279,7 +223,52 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
   const topLevelModules = rackModules.filter((m) => !m.groupId);
 
   return (
-    <div className="space-y-4 font-mono select-none pb-12">
+    <ViewportNavigator
+      ariaLabel="Studio rack viewport"
+      zoom={zoom}
+      onZoomChange={onZoomChange}
+      minZoom={0.25}
+      maxZoom={1.6}
+      zoomStep={0.1}
+      autoFit={autoFit}
+      onAutoFitChange={onAutoFitChange}
+      fitContentWidth={760}
+      zoomPresets={[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.6]}
+      variant="rack"
+      contentClassName="min-w-[760px] p-3"
+    >
+    <div
+      className={`relative space-y-4 pb-12 font-mono select-none transition ${isLibraryDragOver ? 'rounded-2xl ring-2 ring-cyan-300 ring-offset-4 ring-offset-slate-950' : ''}`}
+      onDragEnter={(event) => {
+        if (!Array.from(event.dataTransfer.types).includes(POIETEK_RACK_DRAG_TYPE)) return;
+        event.preventDefault();
+        dragDepth.current += 1;
+        setIsLibraryDragOver(true);
+      }}
+      onDragOver={(event) => {
+        if (!Array.from(event.dataTransfer.types).includes(POIETEK_RACK_DRAG_TYPE)) return;
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'copy';
+      }}
+      onDragLeave={(event) => {
+        if (!Array.from(event.dataTransfer.types).includes(POIETEK_RACK_DRAG_TYPE)) return;
+        dragDepth.current = Math.max(0, dragDepth.current - 1);
+        if (dragDepth.current === 0) setIsLibraryDragOver(false);
+      }}
+      onDrop={(event) => {
+        const type = event.dataTransfer.getData(POIETEK_RACK_DRAG_TYPE);
+        if (!isRackModuleType(type)) return;
+        event.preventDefault();
+        dragDepth.current = 0;
+        setIsLibraryDragOver(false);
+        handleAddModule(type);
+      }}
+    >
+      {isLibraryDragOver && (
+        <div className="pointer-events-none sticky top-2 z-[80] mx-auto flex w-fit items-center gap-2 rounded-full border border-cyan-300 bg-slate-950/95 px-4 py-2 text-[10px] font-black uppercase tracking-wider text-cyan-200 shadow-2xl" aria-live="polite">
+          <Plus className="h-4 w-4" /> Drop to add device to rack
+        </div>
+      )}
       {/* Top Rack Stack Manager Header Controls */}
       <div className="bg-neutral-900/90 border border-neutral-800 rounded-2xl p-2.5 px-4 flex items-center justify-between shadow-xl">
         <div className="flex items-center gap-2">
@@ -289,6 +278,22 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
           <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-300 font-bold border border-amber-500/20">
             {rackModules.length} {rackModules.length === 1 ? 'UNIT' : 'UNITS'} ACTIVE
           </span>
+          <label className="hidden items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-950 px-2 py-1 text-[9px] text-slate-400 md:flex">
+            <span>JUMP</span>
+            <select
+              defaultValue=""
+              aria-label="Jump to rack unit"
+              onChange={(event) => {
+                const id = event.target.value;
+                if (id) document.getElementById(`rack-module-${id}`)?.scrollIntoView({behavior: 'smooth', block: 'start'});
+                event.currentTarget.value = '';
+              }}
+              className="max-w-44 bg-slate-950 text-[10px] font-bold text-slate-200 outline-none"
+            >
+              <option value="" disabled>Choose unit…</option>
+              {topLevelModules.map((module) => <option key={module.id} value={module.id}>{module.title}</option>)}
+            </select>
+          </label>
         </div>
 
         {/* Undo / Redo & Clear Stack Actions */}
@@ -418,7 +423,7 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
           }
 
           return (
-            <div key={mod.id} className="relative group">
+              <div key={mod.id} id={`rack-module-${mod.id}`} className="relative scroll-mt-3 group">
               {/* Stack Item Quick Reorder & Controls Strip */}
               <div className="flex items-center justify-between bg-neutral-900 border-x-2 border-t-2 border-neutral-800 rounded-t-xl px-3 py-1 text-[10px]">
                 <div className="flex items-center gap-2">
@@ -519,5 +524,6 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
         )}
       </div>
     </div>
+    </ViewportNavigator>
   );
 };

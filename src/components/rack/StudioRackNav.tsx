@@ -1,101 +1,127 @@
-import React from 'react';
-import { WorkspaceType } from '../../types';
+import React, {useMemo, useState} from 'react';
 import {
-  Grid,
-  Flame,
-  Music,
-  Disc,
-  Disc3,
-  Sliders,
-  Radio,
-  Zap,
-  Cpu,
-  Layers,
-  Share2,
-  Scissors,
   Activity,
-  Plus,
+  ChevronDown,
   Compass,
+  Cpu,
+  Disc,
+  Grid,
+  Layers,
+  Music,
+  Share2,
+  Plus,
+  Search,
+  Scissors,
+  Sliders,
+  Sparkles,
+  X,
 } from 'lucide-react';
+import {WorkspaceType} from '../../types';
 
 interface StudioRackNavProps {
   activeWorkspace: WorkspaceType;
-  setActiveWorkspace: (ws: WorkspaceType) => void;
+  setActiveWorkspace: (workspace: WorkspaceType) => void;
 }
 
-export const StudioRackNav: React.FC<StudioRackNavProps> = ({
-  activeWorkspace,
-  setActiveWorkspace,
-}) => {
-  const rackDevices: {
-    id: WorkspaceType;
-    label: string;
-    category: string;
-    icon: React.FC<{ className?: string }>;
-    color: string;
-  }[] = [
-    { id: 'mpc', label: 'Canvas Drum Grid', category: 'SAMPLER', icon: Grid, color: 'border-indigo-500 text-indigo-400' },
-    { id: 'sp404', label: 'Grain Deck Sampler', category: 'EFFECTS/SAMPLE', icon: Flame, color: 'border-amber-500 text-amber-400' },
-    { id: 'keyboard', label: 'Analog Subtractive Synth', category: 'SYNTHESIZER', icon: Music, color: 'border-purple-500 text-purple-400' },
-    { id: 'drum_machines', label: 'Studio Drum Computer', category: 'SEQUENCER', icon: Zap, color: 'border-rose-500 text-rose-400' },
-    { id: 'edrum', label: 'E-Drum Mesh Kit', category: 'DRUMS', icon: Disc, color: 'border-yellow-500 text-yellow-400' },
-    { id: 'dj', label: 'DJ Decks Console', category: 'PERFORMANCE', icon: Disc3, color: 'border-blue-500 text-blue-400' },
-    { id: 'mixer', label: 'Summit Master Console', category: 'MIXER', icon: Sliders, color: 'border-emerald-500 text-emerald-400' },
-    { id: 'patchbay', label: 'CV & Audio Patch Bay', category: 'ROUTING', icon: Radio, color: 'border-cyan-500 text-cyan-400' },
-    { id: 'mapper', label: 'Universal Hardware Mapper', category: 'HARDWARE', icon: Cpu, color: 'border-stone-400 text-stone-300' },
-    { id: 'visual_editor', label: 'DIY Visual Controller Builder', category: 'CUSTOM DIY', icon: Layers, color: 'border-amber-600 text-amber-500' },
-    { id: 'midi_matrix', label: 'MIDI Signal Matrix', category: 'MIDI PROCESSOR', icon: Share2, color: 'border-indigo-400 text-indigo-300' },
-    { id: 'piano_roll', label: 'Piano Roll & Timeline', category: 'DAW SEQUENCER', icon: Grid, color: 'border-indigo-400 text-indigo-300' },
-    { id: 'wave_sequencer', label: 'Multi-Track Audio Waveforms', category: 'AUDIO SEQUENCER', icon: Layers, color: 'border-blue-400 text-blue-300' },
-    { id: 'fl_channel_rack', label: 'Pattern Step Channel Rack', category: 'PATTERN BEATS', icon: Zap, color: 'border-orange-400 text-orange-300' },
-    { id: 'circle_fifths', label: 'Circle of Fifths Harmony', category: 'THEORY ENGINE', icon: Compass, color: 'border-amber-400 text-amber-300' },
-    { id: 'melodyne_pitch', label: 'Vocal Contour Editor', category: 'PITCH CORRECTION', icon: Activity, color: 'border-purple-400 text-purple-300' },
-    { id: 'd_groove', label: 'Human Pulse Pool', category: 'GROOVE/SHUFFLE', icon: Sliders, color: 'border-amber-500 text-amber-400' },
-    { id: 'chop_lab', label: 'Chop Lab Stem Slicer', category: 'SAMPLING', icon: Scissors, color: 'border-emerald-400 text-emerald-300' },
-    { id: 'health_latency', label: 'Device Health & Latency', category: 'SYSTEM', icon: Activity, color: 'border-rose-400 text-rose-300' },
-  ];
+type RackCategory = 'Instruments' | 'Samplers & rhythm' | 'Sequencing' | 'Mix & effects' | 'MIDI & hardware' | 'Utilities';
+
+interface RackDeviceChoice {
+  id: WorkspaceType;
+  label: string;
+  description: string;
+  category: RackCategory;
+  icon: React.FC<{className?: string}>;
+}
+
+const RACK_CATEGORIES: Array<{id: RackCategory; icon: React.FC<{className?: string}>}> = [
+  {id: 'Instruments', icon: Music},
+  {id: 'Samplers & rhythm', icon: Disc},
+  {id: 'Sequencing', icon: Grid},
+  {id: 'Mix & effects', icon: Sliders},
+  {id: 'MIDI & hardware', icon: Share2},
+  {id: 'Utilities', icon: Activity},
+];
+
+const RACK_DEVICES: RackDeviceChoice[] = [
+  {id: 'keyboard', label: 'Harmonic Synth', description: 'Subtractive instrument and performance keyboard', category: 'Instruments', icon: Music},
+  {id: 'circle_fifths', label: 'Harmony Compass', description: 'Keys, chords and harmonic relationships', category: 'Instruments', icon: Compass},
+  {id: 'melodyne_pitch', label: 'Pitch Detail Editor', description: 'Vocal and note-pitch editing workspace', category: 'Instruments', icon: Music},
+  {id: 'mpc', label: 'Pulse Pad Sampler', description: 'Velocity-pad sampling and beat performance', category: 'Samplers & rhythm', icon: Grid},
+  {id: 'sp404', label: 'Pocket FX Sampler', description: 'Performance sampling and resampling effects', category: 'Samplers & rhythm', icon: Sparkles},
+  {id: 'drum_machines', label: 'Rhythm Forge', description: 'Pattern drum instruments and sequencing', category: 'Samplers & rhythm', icon: Disc},
+  {id: 'edrum', label: 'Drum Trigger Hub', description: 'Electronic drum performance mapping', category: 'Samplers & rhythm', icon: Activity},
+  {id: 'chop_lab', label: 'Slice Workshop', description: 'Transient slicing and sample preparation', category: 'Samplers & rhythm', icon: Scissors},
+  {id: 'piano_roll', label: 'Note Grid', description: 'MIDI notes, velocity and controller lanes', category: 'Sequencing', icon: Grid},
+  {id: 'wave_sequencer', label: 'Audio Arrangement', description: 'Multitrack waveform and picture-sync lane', category: 'Sequencing', icon: Activity},
+  {id: 'fl_channel_rack', label: 'Pattern Channels', description: 'Step patterns and instrument channels', category: 'Sequencing', icon: Cpu},
+  {id: 'd_groove', label: 'Timing Pool', description: 'Groove, swing and timing templates', category: 'Sequencing', icon: Activity},
+  {id: 'mixer', label: 'Production Console', description: 'Tracks, buses, sends, inserts and master', category: 'Mix & effects', icon: Sliders},
+  {id: 'dj', label: 'Performance Decks', description: 'Two-deck playback and performance controls', category: 'Mix & effects', icon: Music},
+  {id: 'patchbay', label: 'Signal Patch Bay', description: 'Audio, control and sidechain routing', category: 'Mix & effects', icon: Share2},
+  {id: 'midi_matrix', label: 'MIDI Routing Matrix', description: 'Visible MIDI input, filtering and destinations', category: 'MIDI & hardware', icon: Share2},
+  {id: 'mapper', label: 'Controller Mapper', description: 'Hardware controls and parameter mapping', category: 'MIDI & hardware', icon: Cpu},
+  {id: 'visual_editor', label: 'Control Surface Builder', description: 'Custom controller layout editor', category: 'MIDI & hardware', icon: Layers},
+  {id: 'health_latency', label: 'Device Health', description: 'Capability, connection and measured-state inspector', category: 'Utilities', icon: Activity},
+];
+
+export const StudioRackNav: React.FC<StudioRackNavProps> = ({activeWorkspace, setActiveWorkspace}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [category, setCategory] = useState<RackCategory>('Instruments');
+  const [query, setQuery] = useState('');
+  const activeDevice = RACK_DEVICES.find((device) => device.id === activeWorkspace) ?? RACK_DEVICES[0];
+  const choices = useMemo(() => {
+    const normalized = query.trim().toLowerCase();
+    return RACK_DEVICES.filter((device) => normalized
+      ? `${device.label} ${device.description} ${device.category}`.toLowerCase().includes(normalized)
+      : device.category === category);
+  }, [category, query]);
+
+  const choose = (workspace: WorkspaceType) => {
+    setActiveWorkspace(workspace);
+    setIsOpen(false);
+    setQuery('');
+  };
 
   return (
-    <div className="bg-gradient-to-r from-neutral-900 via-stone-900 to-neutral-900 border-b-2 border-neutral-700 p-3 shadow-xl select-none">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 mb-2">
-        <div className="flex items-center gap-2">
-          <Compass className="w-4 h-4 text-amber-400" />
-          <span className="text-xs font-mono font-black text-amber-400 uppercase tracking-widest">
-            VIRTUAL STUDIO RACK PALETTE
-          </span>
+    <div className="relative z-30 border-b border-slate-800/80 bg-slate-950/95 px-2 py-1.5 font-mono shadow-sm backdrop-blur-xl sm:px-3">
+      <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-2">
+        <div className="flex min-w-0 items-center gap-2">
+          <Compass className="h-3.5 w-3.5 shrink-0 text-cyan-400" />
+          <span className="hidden text-[9px] font-bold uppercase tracking-[0.16em] text-slate-500 sm:inline">Rack focus</span>
+          <strong className="truncate rounded-md border border-cyan-400/20 bg-slate-900 px-2 py-1 text-[10px] text-cyan-100">{activeDevice.label}</strong>
         </div>
-        <span className="text-[10px] font-mono text-neutral-400">
-          SELECT ACTIVE RACK MODULE TO BRING TO FRONT
-        </span>
+        <button type="button" aria-expanded={isOpen} aria-controls="poietek-rack-library" onClick={() => setIsOpen((current) => !current)} className={`flex shrink-0 items-center gap-1.5 rounded-lg border px-2.5 py-1 text-[10px] font-black transition ${isOpen ? 'border-cyan-300 bg-cyan-400 text-slate-950' : 'border-slate-700 bg-slate-900 text-cyan-200 hover:border-cyan-400/60 hover:bg-slate-800'}`}>
+          <Plus className="h-3.5 w-3.5" /><span>Add device</span><ChevronDown className={`h-3 w-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        </button>
       </div>
 
-      <div className="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto pb-1 scrollbar-thin scrollbar-thumb-neutral-700">
-        {rackDevices.map((dev) => {
-          const Icon = dev.icon;
-          const isActive = activeWorkspace === dev.id;
-          return (
-            <button
-              key={dev.id}
-              onClick={() => setActiveWorkspace(dev.id)}
-              className={`flex-none px-3 py-2 rounded-xl border-2 font-mono text-left transition-all ${
-                isActive
-                  ? 'bg-neutral-950 border-amber-400 shadow-lg shadow-amber-500/20 ring-1 ring-amber-400 scale-102'
-                  : 'bg-neutral-900/90 border-neutral-700 hover:border-neutral-500 text-neutral-400 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-amber-400' : 'text-neutral-400'}`} />
-                <span className="text-[9px] font-bold text-neutral-500 block uppercase">
-                  {dev.category}
-                </span>
+      {isOpen && (
+        <section id="poietek-rack-library" aria-label="Rack device library" className="absolute left-2 right-2 top-[calc(100%+6px)] z-50 mx-auto max-w-[1100px] overflow-hidden rounded-xl border border-slate-700 bg-slate-950/98 shadow-2xl shadow-black/60 backdrop-blur-xl">
+          <header className="flex items-center justify-between border-b border-slate-800 px-3 py-2">
+            <div><p className="m-0 text-[9px] font-black uppercase tracking-[0.18em] text-cyan-400">Device library</p><span className="text-[10px] text-slate-400">Choose a family, then add one focused unit.</span></div>
+            <button type="button" onClick={() => setIsOpen(false)} aria-label="Close device library" className="rounded-md p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white"><X className="h-4 w-4" /></button>
+          </header>
+          <div className="grid max-h-[min(68vh,520px)] grid-cols-1 overflow-hidden md:grid-cols-[190px_minmax(0,1fr)]">
+            <nav aria-label="Device categories" className="flex gap-1 overflow-x-auto border-b border-slate-800 bg-slate-900/60 p-2 md:flex-col md:border-b-0 md:border-r">
+              {RACK_CATEGORIES.map((item) => {
+                const Icon = item.icon;
+                return <button key={item.id} type="button" onClick={() => {setCategory(item.id); setQuery('');}} className={`flex shrink-0 items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[10px] font-bold transition md:w-full ${category === item.id && !query ? 'bg-cyan-400 text-slate-950' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`}><Icon className="h-3.5 w-3.5" /><span>{item.id}</span></button>;
+              })}
+            </nav>
+            <div className="min-h-0 p-2.5">
+              <label className="mb-2 flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-900 px-2.5 py-1.5"><Search className="h-3.5 w-3.5 text-slate-500" /><span className="sr-only">Search devices</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search instruments, effects, routing…" className="min-w-0 flex-1 bg-transparent text-xs text-slate-100 outline-none placeholder:text-slate-600" /></label>
+              <div className="grid max-h-[390px] grid-cols-1 gap-1.5 overflow-y-auto pr-1 sm:grid-cols-2 lg:grid-cols-3">
+                {choices.map((device) => {
+                  const Icon = device.icon;
+                  const active = device.id === activeWorkspace;
+                  return <button key={device.id} type="button" onClick={() => choose(device.id)} className={`group flex min-h-[68px] items-start gap-2 rounded-lg border p-2.5 text-left transition ${active ? 'border-cyan-400/70 bg-cyan-400/10' : 'border-slate-800 bg-slate-900/70 hover:border-cyan-400/40 hover:bg-slate-800'}`}><Icon className={`mt-0.5 h-4 w-4 shrink-0 ${active ? 'text-cyan-300' : 'text-slate-500 group-hover:text-cyan-300'}`} /><span className="min-w-0"><strong className="block truncate text-[11px] text-slate-100">{device.label}</strong><small className="mt-1 block text-[9px] leading-4 text-slate-500">{device.description}</small></span></button>;
+                })}
+                {!choices.length && <div className="col-span-full rounded-lg border border-dashed border-slate-700 p-6 text-center text-xs text-slate-500">No matching rack device.</div>}
               </div>
-              <div className={`text-xs font-bold ${isActive ? 'text-white' : 'text-neutral-300'}`}>
-                {dev.label}
-              </div>
-            </button>
-          );
-        })}
-      </div>
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 };

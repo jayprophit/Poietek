@@ -2,6 +2,7 @@ import {useEffect, useMemo, useState, type CSSProperties, type MouseEvent} from 
 import type {AudioClip, PoietekProject, Track} from '../domain/types';
 import {secondsToTicks, ticksToSeconds} from '../timeline/tempo';
 import {formatClock, readWaveformPreview, type StoredWaveformPreview} from './audioWorkspaceModel';
+import {ViewportNavigator} from '../../components/shared/ViewportNavigator';
 
 export interface ArrangerSelection {
   trackId: string;
@@ -114,14 +115,19 @@ export function StudioArrangerView({
           <span>Snap <strong>Adaptive</strong></span>
           <span>Tempo <strong>{project.tempoMap[0].bpm} BPM</strong></span>
         </div>
-        <label className="poietek-zoom-control">
-          Zoom
-          <input type="range" min="0.75" max="2.5" step="0.25" value={zoom} onChange={(event) => setZoom(Number(event.target.value))} />
-        </label>
       </div>
 
-      <div className="poietek-arranger-scroll">
-        <div className="poietek-arranger-canvas" style={{'--arranger-zoom': zoom} as CSSProperties}>
+      <ViewportNavigator
+        ariaLabel="Arrangement timeline viewport"
+        zoom={zoom}
+        onZoomChange={setZoom}
+        minZoom={0.65}
+        maxZoom={2.5}
+        zoomStep={0.25}
+        variant="arranger"
+        viewportClassName="poietek-arranger-scroll"
+        contentClassName="poietek-arranger-canvas"
+      >
           <div className="poietek-ruler-row poietek-arranger-ruler-row">
             <div className="poietek-ruler-label">Tracks</div>
             <div className="poietek-ruler">
@@ -203,8 +209,7 @@ export function StudioArrangerView({
               ))}
             </div>
           )}
-        </div>
-      </div>
+      </ViewportNavigator>
 
       <div className="poietek-clip-inspector" aria-live="polite">
         {selectedClip && selectedTrack ? (
@@ -268,4 +273,3 @@ export function StudioArrangerView({
     </section>
   );
 }
-

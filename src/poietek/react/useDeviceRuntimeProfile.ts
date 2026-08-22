@@ -6,6 +6,8 @@ const mediaQueries = [
   '(pointer: fine)',
   '(hover: hover)',
   '(display-mode: standalone)',
+  '(orientation: portrait)',
+  '(orientation: landscape)',
 ] as const;
 
 export function useDeviceRuntimeProfile(): PoietekDeviceRuntimeProfile {

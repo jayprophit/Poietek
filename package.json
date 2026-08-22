@@ -33,7 +33,7 @@
     "format:check": "node ./scripts/check-format.mjs",
     "typecheck": "node ./node_modules/typescript/bin/tsc --noEmit --pretty false",
     "typecheck:core": "node ./node_modules/typescript/bin/tsc -p tsconfig.core.json --pretty false",
-    "test": "npm run typecheck:core && node --test tests/*.test.js",
+    "test": "npm run typecheck:core && node ./scripts/prepare-core-tests.mjs && node --test tests/*.test.js",
     "lint": "npm run typecheck",
     "verify": "npm run format:check && npm run native:verify-config && npm run typecheck && npm test && npm run build"
   },
@@ -43,6 +43,7 @@
     "react-dom": "^19.0.1"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "2.11.4",
     "@tailwindcss/vite": "^4.1.14",
     "@vitejs/plugin-react": "^5.0.4",
     "@types/node": "^22.14.0",

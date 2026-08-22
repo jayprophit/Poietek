@@ -1,19 +1,6 @@
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
-import { mkdirSync, writeFileSync } from "node:fs";
 import test from "node:test";
-
-// The application package is ESM, while tsconfig.core.json deliberately emits
-// CommonJS so the framework-independent core can be exercised directly by Node.
-// Mark the generated test output explicitly instead of changing application
-// module semantics.
-const compiledCoreDirectory = new URL("./.compiled-core/", import.meta.url);
-mkdirSync(compiledCoreDirectory, { recursive: true });
-writeFileSync(
-  new URL("package.json", compiledCoreDirectory),
-  `${JSON.stringify({ private: true, type: "commonjs" }, null, 2)}\n`,
-  "utf8",
-);
 
 const require = createRequire(import.meta.url);
 const tuning = require("./.compiled-core/player/TimePreservingPitchBackend.js");

@@ -6,6 +6,7 @@ export {PoietekEcosystemCenter} from './PoietekEcosystemCenter';
 export {PoietekAiCenter} from './PoietekAiCenter';
 export {useOfflineRuntime, type OfflineRuntimeController} from './useOfflineRuntime';
 export {useDeviceRuntimeProfile} from './useDeviceRuntimeProfile';
+export {DeviceOrientationControl} from './DeviceOrientationControl';
 export {
   PoietekStudioWorkspace,
   type PoietekStudioWorkspaceProps,
@@ -14,3 +15,4 @@ export {StudioSetupModal, type StudioSetupModalProps} from './StudioSetupModal';
 export {StudioArrangerView} from './StudioArrangerView';
 export {StudioConsoleView} from './StudioConsoleView';
 export * from '../native';
+export * from './ProductionEngineConsole';

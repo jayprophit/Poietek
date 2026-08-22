@@ -9,6 +9,7 @@ import {
   type DeliveryState,
 } from '../unified';
 import './UnifiedPlatformCenter.css';
+import {ProductionEngineConsole} from './ProductionEngineConsole';
 
 const stateLabel: Record<DeliveryState, string> = {
   working_model: 'Working model',
@@ -34,6 +35,8 @@ export function UnifiedPlatformCenter({mode}: {mode: 'creator' | 'governance'}) 
       <p>Poietek is designed to own its software, brand and service intellectual property—not the music, films, broadcasts or products that users create. Service permission is separately versioned, non-exclusive and purpose-limited. No acceptance or rights clearance is fabricated.</p>
       <dl><div><dt>User works</dt><dd>Creator or agreed rightsholders</dd></div><div><dt>Automatic transfer</dt><dd>Forbidden</dd></div><div><dt>Service licence</dt><dd>Draft · not accepted</dd></div><div><dt>Commission</dt><dd>Not decided</dd></div></dl>
     </section>
+
+    <ProductionEngineConsole />
 
     <section className="unified-section" aria-labelledby="unified-project-heading">
       <div className="unified-heading"><div><p>One canonical project</p><h2 id="unified-project-heading">Score → sound → picture → programme → audience</h2></div><span>One project ID · one revision history · one rights record</span></div>

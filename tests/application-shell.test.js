@@ -48,19 +48,35 @@ test('menu capability boundaries remain explicit', async () => {
 });
 
 test('one application adapts to only the active runtime device profile', async () => {
-  const [shell, hook, styles] = await Promise.all([
+  const [shell, hook, styles, orientationControl, rack, globalStyles] = await Promise.all([
     read('src/poietek/react/PoietekAppShell.tsx'),
     read('src/poietek/react/useDeviceRuntimeProfile.ts'),
     read('src/poietek/react/PoietekAppShell.css'),
+    read('src/poietek/react/DeviceOrientationControl.tsx'),
+    read('src/App.tsx'),
+    read('src/index.css'),
   ]);
   assert.match(shell, /useDeviceRuntimeProfile/);
   assert.match(shell, /data-device-class=/);
   assert.match(shell, /data-device-layout=/);
   assert.match(shell, /deviceProfile\.showKeyboardShortcuts/);
   assert.match(hook, /orientationchange/);
+  assert.match(hook, /\(orientation: portrait\)/);
   assert.match(hook, /visualViewport/);
   assert.match(hook, /poietekDeviceLayout/);
   assert.match(styles, /data-device-layout='compact'/);
   assert.match(styles, /data-device-layout='handheld'/);
   assert.match(styles, /position: fixed;[\s\S]*bottom: 0;/);
+  assert.match(styles, /data-device-class='mobile'\]\[data-orientation='landscape'/);
+  assert.match(orientationControl, /screen\.orientation/);
+  assert.match(orientationControl, /Rotation lock was blocked/);
+  assert.match(orientationControl, /does not allow Poietek to lock orientation/);
+  assert.doesNotMatch(orientationControl, /transform:\s*rotate/);
+  assert.match(rack, /poietek-rack-center/);
+  assert.match(rack, /poietek-rack-transport/);
+  assert.match(globalStyles, /data-poietek-device-layout='handheld'/);
+  assert.match(globalStyles, /data-poietek-device-layout='compact'\]\[data-poietek-orientation='landscape'/);
+  assert.match(globalStyles, /poietek-rack-transport-body/);
+  assert.match(globalStyles, /flex-wrap: nowrap/);
+  assert.match(globalStyles, /safe-area-inset-bottom/);
 });

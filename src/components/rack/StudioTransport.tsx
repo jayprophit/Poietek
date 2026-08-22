@@ -39,13 +39,13 @@ export const StudioTransport: React.FC<StudioTransportProps> = ({
   const activeCount = connectedDevices.filter((d) => d.connected).length;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-t from-neutral-950 via-neutral-900 to-neutral-900 border-t-2 border-neutral-700 shadow-[0_-10px_30px_rgba(0,0,0,0.8)] select-none">
+    <div className="poietek-rack-transport-console fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-t from-neutral-950 via-neutral-900 to-neutral-900 border-t-2 border-neutral-700 shadow-[0_-10px_30px_rgba(0,0,0,0.8)] select-none">
       {/* Wooden/Metallic Edge Strip */}
       <div className="h-1 bg-gradient-to-r from-amber-900 via-amber-700 to-amber-900 border-b border-neutral-950 opacity-80" />
 
-      <div className="max-w-7xl mx-auto px-4 py-2 flex flex-wrap items-center justify-between gap-3">
+      <div className="poietek-rack-transport-body max-w-7xl mx-auto px-4 py-2 flex flex-wrap items-center justify-between gap-3">
         {/* Left Section: TAB Flip Toggle */}
-        <div className="flex items-center gap-3">
+        <div className="poietek-rack-transport-left flex items-center gap-3">
           <button
             onClick={onToggleFlip}
             className={`px-3 py-1.5 rounded-md text-xs font-mono font-black uppercase transition-all flex items-center gap-1.5 shadow-lg border ${
@@ -58,7 +58,7 @@ export const StudioTransport: React.FC<StudioTransportProps> = ({
             <span>{isFlipped ? 'REAR CABLES' : 'FLIP RACK (TAB)'}</span>
           </button>
 
-          <div className="hidden md:flex items-center gap-2 border-l border-neutral-800 pl-3">
+          <div className="poietek-rack-transport-brand hidden md:flex items-center gap-2 border-l border-neutral-800 pl-3">
             <span className="text-[11px] font-mono font-black tracking-widest text-amber-500 uppercase">
               UNIVERSAL STUDIO VIRTUAL RACK
             </span>
@@ -66,7 +66,7 @@ export const StudioTransport: React.FC<StudioTransportProps> = ({
         </div>
 
         {/* Center Section: Iconic LCD Screen & Metallic Transport Buttons */}
-        <div className="flex items-center gap-4">
+        <div className="poietek-rack-transport-center flex items-center gap-4">
           {/* Digital Green LCD Screen */}
           <div className="bg-emerald-950/90 border-2 border-emerald-800/80 rounded-lg px-3 py-1 flex items-center gap-4 shadow-[inset_0_2px_8px_rgba(0,0,0,0.8)] font-mono">
             {/* Song Position Bar.Beat.Tick */}
@@ -157,7 +157,7 @@ export const StudioTransport: React.FC<StudioTransportProps> = ({
         </div>
 
         {/* Right Section: Master Volume & AI Button */}
-        <div className="flex items-center gap-4">
+        <div className="poietek-rack-transport-right flex items-center gap-4">
           {/* Master Output Level */}
           <div className="flex items-center gap-2 bg-neutral-950/80 px-3 py-1.5 rounded-xl border border-neutral-800">
             <Volume2 className="w-3.5 h-3.5 text-neutral-400" />

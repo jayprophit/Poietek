@@ -6,6 +6,7 @@ import {dispatchStudioCommand, type StudioArea, type StudioCommandDetail} from '
 import {BrowserStudioSettingsRepository, type StudioPreferences} from '../settings';
 import type {StudioSetupTab} from './StudioSetupModal';
 import {useDeviceRuntimeProfile} from './useDeviceRuntimeProfile';
+import {DeviceOrientationControl} from './DeviceOrientationControl';
 import {
   nativeStudioDeviceInventory,
   type NativeDeviceInventorySnapshot,
@@ -200,6 +201,7 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
           </button>
         </nav>
         <div className="poietek-command-utilities">
+          <DeviceOrientationControl deviceProfile={deviceProfile} />
           {nativeDevices.runtime === 'native' && <button type="button" className={`poietek-native-device-status is-${nativeDevices.status}`} onClick={() => openSetup(nativeDevices.inventory?.audioInputs.length || nativeDevices.inventory?.audioOutputs.length ? 'audio' : 'midi')} title="Open native device inventory">
             <span aria-hidden="true">●</span>
             <strong>{nativeDevices.status === 'ready' && nativeDevices.inventory ? `${nativeDevices.inventory.audioInputs.length + nativeDevices.inventory.audioOutputs.length} audio · ${nativeDevices.inventory.midiInputs.length + nativeDevices.inventory.midiOutputs.length} MIDI` : nativeDevices.status === 'scanning' ? 'Scanning devices…' : nativeDevices.status === 'error' ? 'Device scan error' : 'Desktop devices'}</strong>
@@ -212,7 +214,7 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
       <div className="poietek-shell-stage">
         {area === 'rack' ? (
           <div className="poietek-rack-host">
-            <p className="poietek-rack-mobile-note">Rack view is widest in landscape. Swipe sideways to reach every device.</p>
+            <p className="poietek-rack-mobile-note">Rack auto-fit is active. Rotate or swipe to inspect every device without losing desktop controls.</p>
             {children}
           </div>
         ) : area === 'ecosystem' ? (

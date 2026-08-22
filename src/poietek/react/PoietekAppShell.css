@@ -1,6 +1,9 @@
 .poietek-app-shell {
   width: 100vw;
   height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  min-height: -webkit-fill-available;
   display: grid;
   grid-template-rows: 30px 54px minmax(0, 1fr);
   overflow: hidden;
@@ -98,6 +101,49 @@
 .poietek-command-status small { color: #737f82; font-size: 7px; }
 
 .poietek-command-utilities { min-width: 0; display: flex; align-items: stretch; }
+.poietek-orientation-control {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  border-left: 1px solid #343b3f;
+}
+.poietek-orientation-control > button {
+  min-width: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border: 0;
+  color: #bcebe5;
+  background: transparent;
+  cursor: pointer;
+}
+.poietek-orientation-control > button:hover,
+.poietek-orientation-control[data-status='locked'] > button { background: rgba(98,203,191,.08); }
+.poietek-orientation-control > button:disabled { cursor: wait; opacity: .66; }
+.poietek-orientation-control svg { width: 17px; height: 17px; color: #d89557; }
+.poietek-orientation-control > button > span { display: grid; gap: 1px; text-align: left; }
+.poietek-orientation-control strong { font-size: 7px; text-transform: uppercase; letter-spacing: .08em; }
+.poietek-orientation-control small { color: #7f8a8c; font-size: 6px; text-transform: uppercase; }
+.poietek-orientation-control > p {
+  position: fixed;
+  z-index: 14000;
+  top: 92px;
+  right: max(10px, env(safe-area-inset-right, 0px));
+  width: min(360px, calc(100vw - 20px));
+  margin: 0;
+  padding: 9px 11px;
+  border: 1px solid #5d4938;
+  border-radius: 7px;
+  color: #e8eeee;
+  background: #151b1e;
+  box-shadow: 0 8px 24px rgba(0,0,0,.5);
+  font-size: 8px;
+  line-height: 1.45;
+}
+.poietek-orientation-control[data-status='blocked'] > p,
+.poietek-orientation-control[data-status='unavailable'] > p { border-color: #a76c3d; color: #f2d3b4; }
 .poietek-native-device-status {
   min-width: 112px;
   display: grid;
@@ -206,6 +252,7 @@
 .poietek-arrange-host,
 .poietek-ecosystem-host,
 .poietek-ai-host { min-width: 0; min-height: 0; overflow: hidden; }
+.poietek-rack-host { height: 100%; }
 .poietek-rack-host > div { height: 100%; }
 .poietek-arrange-host { height: 100%; overflow: auto; background: #080c0e; }
 .poietek-ecosystem-host { height: 100%; overflow: auto; background: #080c0e; }
@@ -227,6 +274,11 @@
 .poietek-app-shell[data-device-layout='compact'] .poietek-native-device-status { min-width: 36px; padding-inline: 7px; }
 .poietek-app-shell[data-device-layout='compact'] .poietek-native-device-status strong,
 .poietek-app-shell[data-device-layout='compact'] .poietek-native-device-status small { display: none; }
+.poietek-app-shell[data-device-class='tablet'][data-orientation='portrait'] .poietek-command-bar {
+  grid-template-columns: 58px minmax(360px, 1fr) minmax(150px, 190px);
+}
+.poietek-app-shell[data-device-class='tablet'][data-orientation='portrait'] .poietek-command-brand { padding: 6px 10px; }
+.poietek-app-shell[data-device-class='tablet'][data-orientation='portrait'] .poietek-command-brand > div { display: none; }
 .poietek-app-shell[data-input-mode='touch'] .poietek-command-bar button,
 .poietek-app-shell[data-input-mode='hybrid'] .poietek-command-bar button,
 .poietek-app-shell[data-input-mode='touch'] .poietek-offline-panel button,
@@ -240,11 +292,15 @@
 .poietek-app-shell[data-device-layout='handheld'] .poietek-menu-bar { padding-top: env(safe-area-inset-top, 0px); }
 .poietek-app-shell[data-device-layout='handheld'] .poietek-menu-root > button { min-height: 44px; }
 .poietek-app-shell[data-device-layout='handheld'] .poietek-menu-popover { top: calc(45px + env(safe-area-inset-top, 0px)); }
-.poietek-app-shell[data-device-layout='handheld'] .poietek-command-bar { grid-template-columns: auto minmax(0, 1fr) 48px; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-command-bar { grid-template-columns: auto minmax(0, 1fr) 96px; }
 .poietek-app-shell[data-device-layout='handheld'] .poietek-command-brand { padding: 6px; }
 .poietek-app-shell[data-device-layout='handheld'] .poietek-command-brand > div { display: none; }
 .poietek-app-shell[data-device-layout='handheld'] .poietek-command-brand > span { width: 34px; height: 34px; }
 .poietek-app-shell[data-device-layout='handheld'] .poietek-native-device-status { display: none; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-command-utilities { overflow: visible; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-orientation-control > button { width: 48px; min-width: 48px; padding: 5px; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-orientation-control > button > span { display: none; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-orientation-control > p { top: calc(99px + env(safe-area-inset-top, 0px)); }
 .poietek-app-shell[data-device-layout='handheld'] .poietek-command-bar nav {
   position: fixed;
   z-index: 1300;
@@ -268,8 +324,17 @@
 .poietek-app-shell[data-device-layout='handheld'] .poietek-offline-summary b { grid-column: 3; }
 .poietek-app-shell[data-device-layout='handheld'] .poietek-rack-host { overflow: auto; }
 .poietek-app-shell[data-device-layout='handheld'] .poietek-shell-stage { box-sizing: border-box; padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
-.poietek-app-shell[data-device-layout='handheld'] .poietek-rack-host > div { min-width: 900px; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-rack-host > div { min-width: 0; }
 .poietek-app-shell[data-device-layout='handheld'] .poietek-rack-mobile-note { position: sticky; z-index: 20; top: 0; left: 0; width: 100vw; display: block; margin: 0; padding: 7px 10px; border-bottom: 1px solid #5d4938; color: #f2d3b4; background: #21170f; font: 9px ui-monospace, Consolas, monospace; }
+
+.poietek-app-shell[data-device-class='mobile'][data-orientation='landscape'] {
+  grid-template-rows: calc(38px + env(safe-area-inset-top, 0px)) 44px minmax(0, 1fr);
+}
+.poietek-app-shell[data-device-class='mobile'][data-orientation='landscape'] .poietek-menu-root > button { min-height: 38px; }
+.poietek-app-shell[data-device-class='mobile'][data-orientation='landscape'] .poietek-menu-popover { top: calc(39px + env(safe-area-inset-top, 0px)); }
+.poietek-app-shell[data-device-class='mobile'][data-orientation='landscape'] .poietek-command-brand > span { width: 30px; height: 30px; }
+.poietek-app-shell[data-device-class='mobile'][data-orientation='landscape'] .poietek-offline-panel,
+.poietek-app-shell[data-device-class='mobile'][data-orientation='landscape'] .poietek-orientation-control > p { top: calc(85px + env(safe-area-inset-top, 0px)); }
 
 @media (max-width: 760px) {
   .poietek-offline-center { min-width: 0; }

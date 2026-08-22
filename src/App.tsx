@@ -12,7 +12,8 @@ import { HardwareInterfaceUnit } from './components/rack/HardwareInterfaceUnit';
 import { StudioTransport } from './components/rack/StudioTransport';
 import { StudioRearPanel } from './components/rack/StudioRearPanel';
 import { StudioRackDevice } from './components/rack/StudioRackDevice';
-import { StudioRackNav } from './components/rack/StudioRackNav';
+import { RackRightSidebar } from './components/rack/RackRightSidebar';
+import { createRackModuleItem } from './components/rack/rackModuleCatalog';
 
 import { CanvasDrumGridWorkspace } from './components/workspaces/CanvasDrumGridWorkspace';
 import { GrainDeckWorkspace } from './components/workspaces/GrainDeckWorkspace';
@@ -40,7 +41,6 @@ import { FloatingWindowManager } from './components/daw/FloatingWindowManager';
 
 import { RackModuleItem, StudioTemplate, ModuleType } from './types';
 import { RackStackManager } from './components/rack/RackStackManager';
-import { FloatingQuickPalette } from './components/daw/FloatingQuickPalette';
 import { TemplatesModal } from './components/daw/TemplatesModal';
 import { GuidedWalkthroughBanner } from './components/daw/GuidedWalkthroughBanner';
 import {subscribeStudioCommands} from './poietek/react/studioCommands';
@@ -64,12 +64,21 @@ export default function App() {
   const [connectedDevices, setConnectedDevices] = useState<ConnectedDevice[]>([]);
   const [isAIGrooveOpen, setIsAIGrooveOpen] = useState<boolean>(false);
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
-  const [isBrowserOpen, setIsBrowserOpen] = useState<boolean>(true);
+  const [isBrowserOpen, setIsBrowserOpen] = useState<boolean>(() =>
+    typeof window === 'undefined' || window.matchMedia('(min-width: 1280px)').matches,
+  );
+  const [isRackLibraryOpen, setIsRackLibraryOpen] = useState<boolean>(() =>
+    typeof window === 'undefined' || window.matchMedia('(min-width: 1200px)').matches,
+  );
   const [detachedWorkspaces, setDetachedWorkspaces] = useState<WorkspaceType[]>([]);
 
   const [isTemplatesOpen, setIsTemplatesOpen] = useState<boolean>(false);
-  const [isWalkthroughActive, setIsWalkthroughActive] = useState<boolean>(true);
+  const [isWalkthroughActive, setIsWalkthroughActive] = useState<boolean>(() =>
+    typeof window === 'undefined' || window.matchMedia('(min-width: 900px)').matches,
+  );
   const [autoHideBars, setAutoHideBars] = useState<boolean>(false);
+  const [rackZoom, setRackZoom] = useState<number>(1);
+  const [rackAutoFit, setRackAutoFit] = useState<boolean>(true);
 
   // Infinite Rack Modules State with Undo/Redo History Stack
   const [rackHistory, setRackHistory] = useState<RackModuleItem[][]>([
@@ -155,23 +164,7 @@ export default function App() {
   }, [handleUndo, handleRedo]);
 
   const handleAddModuleToRack = (type: ModuleType) => {
-    const newId = `mod_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
-    let title = 'Studio Rack Unit';
-    let tapeLabel = 'RACK UNIT';
-    if (type === 'folder_combinator') {
-      title = 'Combinator Bus Folder';
-      tapeLabel = 'BUS FOLDER';
-    } else {
-      title = getRackTitle(type as WorkspaceType);
-      tapeLabel = getTapeLabel(type as WorkspaceType);
-    }
-    const newMod: RackModuleItem = {
-      id: newId,
-      type,
-      title,
-      tapeLabel,
-    };
-    setRackModules((prev) => [...prev, newMod]);
+    setRackModules((prev) => [...prev, createRackModuleItem(type)]);
   };
 
   const handleLoadTemplate = (template: StudioTemplate) => {
@@ -372,58 +365,8 @@ export default function App() {
     return () => window.removeEventListener('poietek:preferences-applied', applyAppearance);
   }, []);
 
-  const getRackTitle = (ws: WorkspaceType) => {
-    switch (ws) {
-      case 'mpc': return 'CANVAS DRUM GRID SAMPLER';
-      case 'sp404': return 'GRAIN DECK MULTI-EFFECTS SAMPLER';
-      case 'keyboard': return 'PRISM POLY SYNTHESIZER';
-      case 'drum_machines': return 'PULSE DRUM LINE & PATTERN SEQUENCER';
-      case 'edrum': return 'E-DRUM MESH TRIGGER MODULE';
-      case 'dj': return 'DJ PERFORMANCE DECKS CONSOLE';
-      case 'mixer': return 'SUMMIT MASTER STUDIO CONSOLE';
-      case 'patchbay': return 'AUDIO & CV HARDWARE PATCH BAY';
-      case 'mapper': return 'UNIVERSAL MIDI HARDWARE MAPPER';
-      case 'visual_editor': return 'DIY VISUAL CONTROLLER BUILDER';
-      case 'midi_matrix': return 'REALTIME MIDI SIGNAL PROCESSOR';
-      case 'circle_fifths': return 'CIRCLE OF FIFTHS HARMONY WHEEL & CHORD GENERATOR';
-      case 'melodyne_pitch': return 'VOCAL CONTOUR PITCH EDITOR';
-      case 'd_groove': return 'HUMAN PULSE GROOVE POOL';
-      case 'piano_roll': return 'PIANO ROLL & PATTERN SEQUENCER';
-      case 'wave_sequencer': return 'HORIZON MULTI-TRACK WAVEFORM SEQUENCER';
-      case 'fl_channel_rack': return 'BEAT LOOM PATTERN STEP RACK';
-      case 'chop_lab': return 'CHOP LAB STEM SAMPLING UNIT';
-      case 'health_latency': return 'SYSTEM LATENCY & DIAGNOSTICS';
-      default: return 'VIRTUAL STUDIO RACK MODULE';
-    }
-  };
-
-  const getTapeLabel = (ws: WorkspaceType) => {
-    switch (ws) {
-      case 'mpc': return 'CANVAS GRID 1';
-      case 'sp404': return 'GRAIN DECK 1';
-      case 'keyboard': return 'PRISM POLY 1';
-      case 'drum_machines': return 'PULSE LINE 1';
-      case 'edrum': return 'E-KIT 1';
-      case 'dj': return 'DJ CONSOLE';
-      case 'mixer': return 'SUMMIT MIXER 1';
-      case 'patchbay': return 'PATCH BAY 1';
-      case 'mapper': return 'MIDI MAPPER';
-      case 'visual_editor': return 'DIY BUILDER';
-      case 'midi_matrix': return 'MIDI MATRIX';
-      case 'circle_fifths': return 'CIRCLE 5THS';
-      case 'melodyne_pitch': return 'VOCAL CONTOUR 1';
-      case 'd_groove': return 'HUMAN PULSE 1';
-      case 'piano_roll': return 'PIANO ROLL 1';
-      case 'wave_sequencer': return 'HORIZON AUDIO';
-      case 'fl_channel_rack': return 'BEAT LOOM 1';
-      case 'chop_lab': return 'CHOP LAB 1';
-      case 'health_latency': return 'HEALTH DIAG';
-      default: return 'RACK UNIT';
-    }
-  };
-
   return (
-    <div className="h-screen w-screen bg-stone-950 text-neutral-100 flex flex-col font-mono selection:bg-amber-500 selection:text-neutral-950 antialiased overflow-hidden select-none relative">
+    <div className="poietek-rack-app h-screen w-screen bg-stone-950 text-neutral-100 flex flex-col font-mono selection:bg-amber-500 selection:text-neutral-950 antialiased overflow-hidden select-none relative">
       {/* Starter Song Interactive Walkthrough Banner */}
       {isWalkthroughActive && (
         <GuidedWalkthroughBanner
@@ -436,7 +379,7 @@ export default function App() {
       )}
 
       {/* Main Full-Screen DAW Workspace (Browser Left + Mahogany Wood Hardware Rack Center) */}
-      <div className="flex-1 flex overflow-hidden bg-stone-950 relative">
+      <div className="poietek-rack-workspace flex-1 flex overflow-hidden bg-stone-950 relative">
         {/* Left Studio DAW Browser Sidebar */}
         <DAWBrowserSidebar
           activeWorkspace={masterState.activeWorkspace}
@@ -449,9 +392,9 @@ export default function App() {
         />
 
         {/* Center Studio Workstation Container */}
-        <div className="flex-1 flex flex-col overflow-y-auto bg-stone-900 border-x-[14px] border-[#381e0e] shadow-[inset_0_0_50px_rgba(0,0,0,0.9)] scrollbar-thin scrollbar-thumb-stone-700">
+        <div className="poietek-rack-center flex-1 min-h-0 flex flex-col overflow-hidden bg-stone-900 border-x-[14px] border-[#381e0e] shadow-[inset_0_0_50px_rgba(0,0,0,0.9)]">
           {/* 1U Studio Hardware Audio & MIDI Interface (Top Rack Unit) */}
-          <div className="p-2 bg-stone-950 border-b-2 border-stone-800">
+          <div className="poietek-rack-hardware shrink-0 p-2 bg-stone-950 border-b-2 border-stone-800">
             <HardwareInterfaceUnit
               connectedDevices={connectedDevices}
               bpm={masterState.bpm}
@@ -460,17 +403,8 @@ export default function App() {
             />
           </div>
 
-          {/* Studio Rack Device Browser Palette */}
-          <StudioRackNav
-            activeWorkspace={masterState.activeWorkspace}
-            setActiveWorkspace={(ws) => {
-              setMasterState((prev) => ({ ...prev, activeWorkspace: ws }));
-              handleAddModuleToRack(ws);
-            }}
-          />
-
           {/* Main Virtual Studio Infinite Stacked Rack Display */}
-          <main className="p-4 flex-1">
+          <main className="poietek-legacy-rack-main min-h-0 flex flex-1 flex-col overflow-hidden p-4">
             {isFlipped ? (
               /* REAR PANEL VIEW WITH CABLES */
               <StudioRearPanel
@@ -496,15 +430,38 @@ export default function App() {
                 onRedo={handleRedo}
                 canUndo={canUndo}
                 canRedo={canRedo}
+                zoom={rackZoom}
+                onZoomChange={setRackZoom}
+                autoFit={rackAutoFit}
+                onAutoFitChange={setRackAutoFit}
               />
             )}
           </main>
         </div>
+
+        <RackRightSidebar
+          isOpen={isRackLibraryOpen}
+          onToggle={() => setIsRackLibraryOpen((current) => !current)}
+          activeWorkspace={masterState.activeWorkspace}
+          onSelectWorkspace={(workspace) => setMasterState((current) => ({...current, activeWorkspace: workspace}))}
+          onAddModule={handleAddModuleToRack}
+          onToggleFlip={() => setIsFlipped((current) => !current)}
+          isFlipped={isFlipped}
+          openAIGrooveModal={() => setIsAIGrooveOpen(true)}
+          openTemplatesModal={() => setIsTemplatesOpen(true)}
+          onDetachWorkspace={() => handleDetachWorkspace(masterState.activeWorkspace)}
+          autoHideBars={autoHideBars}
+          setAutoHideBars={setAutoHideBars}
+          onUndo={handleUndo}
+          onRedo={handleRedo}
+          canUndo={canUndo}
+          canRedo={canRedo}
+        />
       </div>
 
       {/* Fixed Bottom Studio Transport Console */}
       <div
-        className={`transition-all duration-300 z-40 ${
+        className={`poietek-rack-transport transition-all duration-300 z-40 ${
           autoHideBars
             ? 'h-2 hover:h-auto overflow-hidden opacity-30 hover:opacity-100 bg-amber-500/30'
             : ''
@@ -521,23 +478,6 @@ export default function App() {
           openAIGrooveModal={() => setIsAIGrooveOpen(true)}
         />
       </div>
-
-      {/* Floating Quick Options Tool Palette */}
-      <FloatingQuickPalette
-        onAddModule={handleAddModuleToRack}
-        onToggleFlip={() => setIsFlipped((prev) => !prev)}
-        isFlipped={isFlipped}
-        openAIGrooveModal={() => setIsAIGrooveOpen(true)}
-        openTemplatesModal={() => setIsTemplatesOpen(true)}
-        onDetachWorkspace={() => handleDetachWorkspace(masterState.activeWorkspace)}
-        autoHideBars={autoHideBars}
-        setAutoHideBars={setAutoHideBars}
-        activeWorkspace={masterState.activeWorkspace}
-        onUndo={handleUndo}
-        onRedo={handleRedo}
-        canUndo={canUndo}
-        canRedo={canRedo}
-      />
 
       {/* Starter Songs & Custom Templates Modal */}
       <TemplatesModal

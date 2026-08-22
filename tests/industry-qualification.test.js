@@ -1,15 +1,7 @@
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
-import {mkdirSync, readFileSync, writeFileSync} from 'node:fs';
+import {readFileSync} from 'node:fs';
 import test from 'node:test';
-
-const compiledCoreDirectory = new URL('./.compiled-core/', import.meta.url);
-mkdirSync(compiledCoreDirectory, {recursive: true});
-writeFileSync(
-  new URL('package.json', compiledCoreDirectory),
-  `${JSON.stringify({private: true, type: 'commonjs'}, null, 2)}\n`,
-  'utf8',
-);
 
 const require = createRequire(import.meta.url);
 const benchmark = require('./.compiled-core/diagnostics/IndustryQualification.js');

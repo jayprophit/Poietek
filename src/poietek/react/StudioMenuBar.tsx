@@ -2,6 +2,7 @@ import {useEffect, useRef, useState} from 'react';
 import type {StudioSetupTab} from './StudioSetupModal';
 import type {StudioArea, StudioCommandDetail, StudioCommandId} from './studioCommands';
 import './StudioMenuBar.css';
+import './StudioMenuCascade.css';
 
 interface MenuItem {
   label: string;
@@ -11,6 +12,8 @@ interface MenuItem {
   area?: StudioArea;
   setupTab?: StudioSetupTab;
   action?: 'fullscreen' | 'shortcuts' | 'about' | 'governance';
+  ecosystemView?: 'creator' | 'governance' | 'progress' | 'release';
+  children?: MenuItem[];
   disabledReason?: string;
   separator?: boolean;
 }
@@ -112,7 +115,30 @@ function buildMenus(activeArea: StudioArea): MenuGroup[] {
       items: [
         areaItem('Studio Rack', 'rack', 'F6'),
         {label: 'Flip Rack / Rear Patching', shortcut: 'Tab', command: 'rack-flip', area: 'rack'},
-        {label: 'Audio & CV Patch Bay', command: 'rack-workspace', value: 'patchbay', area: 'rack'},
+        {label: 'Instruments & Harmony', children: [
+          {label: 'Harmonic Synth', command: 'rack-workspace', value: 'keyboard', area: 'rack'},
+          {label: 'Note Grid', command: 'rack-workspace', value: 'piano_roll', area: 'rack'},
+          {label: 'Harmony Compass', command: 'rack-workspace', value: 'circle_fifths', area: 'rack'},
+          {label: 'Pitch Detail Editor', command: 'rack-workspace', value: 'melodyne_pitch', area: 'rack'},
+        ]},
+        {label: 'Samplers & Rhythm', children: [
+          {label: 'Pulse Pad Sampler', command: 'rack-workspace', value: 'mpc', area: 'rack'},
+          {label: 'Pocket FX Sampler', command: 'rack-workspace', value: 'sp404', area: 'rack'},
+          {label: 'Rhythm Forge', command: 'rack-workspace', value: 'drum_machines', area: 'rack'},
+          {label: 'Slice Workshop', command: 'rack-workspace', value: 'chop_lab', area: 'rack'},
+          {label: 'Pattern Channels', command: 'rack-workspace', value: 'fl_channel_rack', area: 'rack'},
+        ]},
+        {label: 'Mix, Effects & Routing', children: [
+          {label: 'Production Console', command: 'rack-workspace', value: 'mixer', area: 'rack'},
+          {label: 'Signal Patch Bay', command: 'rack-workspace', value: 'patchbay', area: 'rack'},
+          {label: 'Timing Pool', command: 'rack-workspace', value: 'd_groove', area: 'rack'},
+        ]},
+        {label: 'MIDI & Hardware', children: [
+          {label: 'MIDI Routing Matrix', command: 'rack-workspace', value: 'midi_matrix', area: 'rack'},
+          {label: 'Controller Mapper', command: 'rack-workspace', value: 'mapper', area: 'rack'},
+          {label: 'Control Surface Builder', command: 'rack-workspace', value: 'visual_editor', area: 'rack'},
+          {label: 'Device Health', command: 'rack-workspace', value: 'health_latency', area: 'rack'},
+        ]},
         {label: 'Plug-in Manager…', setupTab: 'plugins'},
         {label: 'Modules & Content…', setupTab: 'library'},
       ],
@@ -160,7 +186,13 @@ function buildMenus(activeArea: StudioArea): MenuGroup[] {
       label: 'Help',
       items: [
         {label: 'Keyboard Shortcuts', action: 'shortcuts'},
-        {label: 'Terms, Governance & Help', action: 'governance'},
+        {label: 'Guides, Lessons & FAQ', ecosystemView: 'governance'},
+        {label: 'Product Status', children: [
+          {label: 'What is working and missing?', ecosystemView: 'progress'},
+          {label: 'Public-release readiness', ecosystemView: 'release'},
+          {label: 'Creator platform overview', ecosystemView: 'creator'},
+        ]},
+        {label: 'Terms, Governance & Safety', ecosystemView: 'governance'},
         {label: 'System Benchmark…', setupTab: 'diagnostics'},
         {label: 'Privacy & Security…', setupTab: 'privacy'},
         {label: 'About Poietek Studio', action: 'about'},
@@ -196,6 +228,12 @@ export function StudioMenuBar({activeArea, onAreaChange, onCommand, onOpenSetup}
   const runItem = async (item: MenuItem) => {
     if (item.disabledReason) return;
     setOpenMenu(null);
+    if (item.ecosystemView) {
+      window.sessionStorage.setItem('poietek-ecosystem-view', item.ecosystemView);
+      window.dispatchEvent(new CustomEvent('poietek:ecosystem-view', {detail: item.ecosystemView}));
+      onAreaChange('ecosystem');
+      return;
+    }
     if (item.setupTab) {
       onOpenSetup(item.setupTab);
       return;
@@ -243,6 +281,19 @@ export function StudioMenuBar({activeArea, onAreaChange, onCommand, onOpenSetup}
                 <div className="poietek-menu-popover" role="menu" aria-label={`${menu.label} menu`}>
                   {menu.items.map((item, index) => item.separator ? (
                     <hr key={`${menu.label}-${index}`} />
+                  ) : item.children ? (
+                    <div className="poietek-menu-cascade" key={`${menu.label}-${item.label}`}>
+                      <button type="button" role="menuitem" aria-haspopup="menu" className="poietek-menu-cascade-trigger">
+                        <span>{item.label}</span><i aria-hidden="true">›</i>
+                      </button>
+                      <div className="poietek-menu-cascade-panel" role="menu" aria-label={item.label}>
+                        {item.children.map((child) => (
+                          <button type="button" role="menuitem" key={`${item.label}-${child.label}`} disabled={Boolean(child.disabledReason)} title={child.disabledReason} onClick={() => void runItem(child)}>
+                            <span>{child.label}</span>{child.shortcut && <kbd>{child.shortcut}</kbd>}{child.disabledReason && <small>Unavailable</small>}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   ) : (
                     <button
                       type="button"

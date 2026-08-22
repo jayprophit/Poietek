@@ -57,7 +57,7 @@ export const FloatingQuickPalette: React.FC<FloatingQuickPaletteProps> = ({
   canUndo = false,
   canRedo = false,
 }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isAddMenuOpen, setIsAddMenuOpen] = useState<boolean>(false);
   const [position, setPosition] = useState<{ x: number; y: number }>({ x: 24, y: 110 });
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -125,6 +125,8 @@ export const FloatingQuickPalette: React.FC<FloatingQuickPaletteProps> = ({
           </div>
           <button
             onClick={() => setIsOpen(!isOpen)}
+            aria-expanded={isOpen}
+            aria-label={isOpen ? 'Collapse Quick Options palette' : 'Expand Quick Options palette'}
             className="p-0.5 rounded hover:bg-neutral-800 text-neutral-400 hover:text-white"
           >
             {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}

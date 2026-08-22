@@ -109,7 +109,7 @@ export const DAWBrowserSidebar: React.FC<DAWBrowserSidebarProps> = ({
     return (
       <button
         onClick={onToggle}
-        className="fixed left-0 top-12 bottom-12 w-6 bg-stone-900 border-r border-stone-700 hover:bg-stone-800 flex flex-col items-center justify-center text-amber-400 z-30 transition shadow-2xl"
+        className="poietek-browser-toggle absolute bottom-12 left-0 top-12 z-30 flex w-6 flex-col items-center justify-center border-r border-stone-700 bg-stone-900 text-amber-400 shadow-2xl transition hover:bg-stone-800"
         title="Open DAW Browser (Ctrl+B)"
       >
         <span className="text-[10px] font-mono font-black uppercase tracking-widest transform -rotate-90 whitespace-nowrap">
@@ -120,7 +120,7 @@ export const DAWBrowserSidebar: React.FC<DAWBrowserSidebarProps> = ({
   }
 
   return (
-    <aside className="w-64 shrink-0 bg-stone-950 border-r-2 border-stone-800 flex flex-col h-full font-mono select-none shadow-2xl z-20">
+    <aside className="poietek-browser-sidebar absolute inset-y-0 left-0 z-50 flex h-full w-64 shrink-0 flex-col border-r-2 border-stone-800 bg-stone-950 font-mono shadow-2xl select-none xl:relative xl:inset-auto xl:z-20">
       {/* Browser Header Bar */}
       <div className="p-3 bg-stone-900 border-b border-stone-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
