@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.24)
 project(poietek_native_core VERSION 0.1.0 LANGUAGES CXX)
 
 option(POIETEK_NATIVE_CORE_BUILD_TESTS "Build native-core tests" ON)
+option(POIETEK_NATIVE_CORE_BUILD_BENCHES "Build native-core benchmarks" ON)
 
 add_library(poietek_native_core STATIC
   src/poietek_dsp.cpp
@@ -34,4 +35,11 @@ if(POIETEK_NATIVE_CORE_BUILD_TESTS)
   target_link_libraries(poietek_native_core_tests PRIVATE Poietek::native_core)
   target_compile_features(poietek_native_core_tests PRIVATE cxx_std_20)
   add_test(NAME poietek_native_core_tests COMMAND poietek_native_core_tests)
+endif()
+
+if(POIETEK_NATIVE_CORE_BUILD_BENCHES)
+  add_executable(poietek_native_core_bench bench/bench_main.cpp)
+  target_link_libraries(poietek_native_core_bench PRIVATE Poietek::native_core)
+  target_compile_features(poietek_native_core_bench PRIVATE cxx_std_20)
+  # Provide a simple target to run the bench from build tree
 endif()
