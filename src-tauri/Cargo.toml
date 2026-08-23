@@ -24,6 +24,8 @@ thread-priority = { version = "0.3", optional = true }
 [features]
 # feature to enable best-effort priority escalation on supported platforms
 priority = ["thread-priority"]
+# feature to enable optional C API ringbuffer FFI bindings for integration tests
+ring-ffi = []
 
 
 [target.'cfg(any(target_os = "windows", target_os = "macos", target_os = "linux"))'.dependencies]
