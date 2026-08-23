@@ -52,7 +52,8 @@ jobs:
       - name: Build Tauri (Rust)
         working-directory: Poietek-Studio/src-tauri
         run: |
-          cargo build --release
+          # Build the native shell enabling best-effort priority escalation where supported
+          cargo build --release --features priority
 
       - name: Install CMake and build native-core
         if: always()

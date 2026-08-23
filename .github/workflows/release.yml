@@ -46,6 +46,11 @@ jobs:
           cd Poietek-Studio/native-core/build
           ctest --output-on-failure
 
+      - name: Build native shell (Tauri)
+        working-directory: Poietek-Studio/src-tauri
+        run: |
+          cargo build --release --features priority || true
+
       - name: Tauri bundle (produce installers)
         working-directory: Poietek-Studio
         run: npm run native:build --if-present
