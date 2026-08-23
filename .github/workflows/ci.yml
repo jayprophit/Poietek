@@ -68,6 +68,23 @@ jobs:
           cd Poietek-Studio/native-core/build
           ctest --output-on-failure || true
 
+      - name: Run native-core benchmark (if built)
+        if: always()
+        run: |
+          set -e
+          cd Poietek-Studio/native-core/build
+          if [ -f ./poietek_native_core_bench ]; then
+            ./poietek_native_core_bench | tee bench-output.txt || true
+          elif [ -f ./Release/poietek_native_core_bench ] ; then
+            ./Release/poietek_native_core_bench | tee bench-output.txt || true
+          elif [ -f ./poietek_native_core_bench.exe ]; then
+            ./poietek_native_core_bench.exe | tee bench-output.txt || true
+          elif [ -f ./Release/poietek_native_core_bench.exe ]; then
+            ./Release/poietek_native_core_bench.exe | tee bench-output.txt || true
+          else
+            echo "bench binary not found"
+          fi
+
       - name: Tauri bundle (native installers)
         working-directory: Poietek-Studio
         env:
@@ -87,4 +104,5 @@ jobs:
             Poietek-Studio/dist
             Poietek-Studio/src-tauri/target/release
             Poietek-Studio/native-core/build
+            Poietek-Studio/native-core/build/bench-output.txt
             Poietek-Studio/src-tauri/target/release/bundle || Poietek-Studio/src-tauri/target/release/bundle/**
