@@ -51,6 +51,11 @@ if(POIETEK_NATIVE_CORE_BUILD_TESTS)
   target_link_libraries(poietek_ring_api_tests PRIVATE Poietek::native_core)
   target_compile_features(poietek_ring_api_tests PRIVATE cxx_std_20)
   add_test(NAME poietek_ring_api_tests COMMAND poietek_ring_api_tests)
+
+  add_executable(poietek_ring_bulk_tests tests/ring_bulk_tests.cpp)
+  target_link_libraries(poietek_ring_bulk_tests PRIVATE Poietek::native_core)
+  target_compile_features(poietek_ring_bulk_tests PRIVATE cxx_std_20)
+  add_test(NAME poietek_ring_bulk_tests COMMAND poietek_ring_bulk_tests)
 endif()
 
 if(POIETEK_NATIVE_CORE_BUILD_BENCHES)

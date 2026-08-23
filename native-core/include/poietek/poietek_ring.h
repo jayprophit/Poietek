@@ -24,6 +24,11 @@ POIETEK_DSP_API int poietek_ring_push_f32(poietek_ring_t ring, float value);
 // returns 0 if empty or error.
 POIETEK_DSP_API int poietek_ring_pop_f32(poietek_ring_t ring, float* out);
 
+// Bulk push/pop helpers. These attempt to push/pop up to `count` values
+// and return the number of elements actually transferred.
+POIETEK_DSP_API unsigned int poietek_ring_push_bulk_f32(poietek_ring_t ring, const float* data, unsigned int count);
+POIETEK_DSP_API unsigned int poietek_ring_pop_bulk_f32(poietek_ring_t ring, float* out, unsigned int count);
+
 // Query capacity and approximate size
 POIETEK_DSP_API unsigned int poietek_ring_capacity(poietek_ring_t ring);
 POIETEK_DSP_API unsigned int poietek_ring_size(poietek_ring_t ring);

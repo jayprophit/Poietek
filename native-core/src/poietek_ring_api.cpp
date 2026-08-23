@@ -61,3 +61,27 @@ extern "C" unsigned int poietek_ring_size(poietek_ring_t ring) {
   RingHandle* h = reinterpret_cast<RingHandle*>(ring);
   return static_cast<unsigned int>(h->buf->size());
 }
+
+extern "C" unsigned int poietek_ring_push_bulk_f32(poietek_ring_t ring, const float* data, unsigned int count) {
+  if (!ring || !data || count == 0) return 0;
+  RingHandle* h = reinterpret_cast<RingHandle*>(ring);
+  unsigned int pushed = 0;
+  for (unsigned int i = 0; i < count; ++i) {
+    if (!h->buf->push(data[i])) break;
+    pushed++;
+  }
+  return pushed;
+}
+
+extern "C" unsigned int poietek_ring_pop_bulk_f32(poietek_ring_t ring, float* out, unsigned int count) {
+  if (!ring || !out || count == 0) return 0;
+  RingHandle* h = reinterpret_cast<RingHandle*>(ring);
+  unsigned int popped = 0;
+  for (unsigned int i = 0; i < count; ++i) {
+    float tmp = 0.0f;
+    if (!h->buf->pop(tmp)) break;
+    out[i] = tmp;
+    popped++;
+  }
+  return popped;
+}
