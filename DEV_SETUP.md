@@ -46,6 +46,25 @@ Commands to build and test locally
   cmake --build . --config Release
   ctest --output-on-failure
 
+- Optional: enable and test the Rust FFI bridge to the native ring-buffer API
+  The repository provides an optional Rust-side FFI wrapper that links against
+  the native-core static library. This is feature-gated behind the Cargo
+  feature `ring-ffi` and requires CMake and a C++ toolchain available to Cargo
+  (build.rs will attempt to build native-core via CMake when the feature is
+  enabled).
+
+  Example (from project root):
+  # Ensure native toolchain and CMake are installed
+  cd src-tauri
+  # Run the tests with the optional feature enabled. CI runners that provide
+  # a C++ toolchain and CMake should run an equivalent command.
+  cargo test --features "ring-ffi" --workspace --tests
+
+  If linking fails, inspect the build logs from build.rs (it uses CMake to
+  build native-core) and ensure native-core was successfully built and that
+  artifacts are visible to the Rust build. On CI, run the provided `native:doctor`
+  script or enable verbose CMake output for diagnosis.
+
 Notes
 - Mobile builds require additional SDKs and credentials (signing keys/provisioning profiles). See scripts for mobile targets.
 - If packaging fails on CI, inspect logs for missing platform packagers (makensis on Windows, hdiutil on macOS, dpkg on Linux) and install them locally.
