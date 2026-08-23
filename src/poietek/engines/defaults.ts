@@ -1,4 +1,4 @@
-import {requiresConfigurationCapability, unavailableCapability} from '../platform';
+import {availableCapability, requiresConfigurationCapability, unavailableCapability} from '../platform';
 import {PRODUCTION_ENGINE_SCHEMA_VERSION, type PluginFormat, type ProductionEngineReadiness, type RuntimePlatform} from './contracts';
 
 const unavailable = (id: string, message: string) => unavailableCapability(id, 'NOT_IMPLEMENTED', message);
@@ -25,13 +25,35 @@ export function createProductionEngineReadiness(projectId: string, platform: Run
     editing: {
       commandCapability: configure('engine.edit.commands', 'Canonical professional edit commands require integration with the project session.'),
       stretchCapability: unavailable('engine.edit.stretch', 'No validated time-preserving stretch backend is installed.'),
-      compingCapability: unavailable('engine.edit.comping', 'Take-lane comping is not implemented.'),
+      compingCapability: availableCapability(
+        'engine.edit.comping',
+        'poietek.core.take-comp.v1',
+        now,
+        'local',
+        {
+          operation: 'non_destructive_audio_clip_reference_comp',
+          projectUndo: true,
+          consolidatedRender: false,
+        },
+      ),
       automationCapability: unavailable('engine.edit.automation', 'Production automation playback and writing are not implemented.'),
       interchangeCapability: unavailable('engine.edit.interchange', 'No reviewed AAF/OMF/EDL interchange adapter is installed.'),
       selectedObjectIds: [], clipGroupIds: {}, trackFolders: [], takeLanes: [], compSegments: [], automationLanes: [], commands: [], interchange: [],
     },
     midiScoring: {
-      clipEditingCapability: unavailable('engine.midi.clip_editing', 'Canonical MIDI clip editing is not implemented.'),
+      clipEditingCapability: availableCapability(
+        'engine.midi.clip_editing',
+        'poietek.core.note-forge.v1',
+        now,
+        'local',
+        {
+          operation: 'deterministic_project_midi_clip_variations',
+          projectUndo: true,
+          audiblePlayback: false,
+          retrospectiveInputCapture: false,
+          networkSync: false,
+        },
+      ),
       mpeCapability: unavailable('engine.midi.mpe', 'MPE input, editing and playback are not verified.'),
       clockOutputCapability: unavailable('engine.midi.clock_output', 'No verified MIDI clock/transport output is active.'),
       notationCapability: unavailable('engine.score.notation', 'No production notation and engraving engine is installed.'),

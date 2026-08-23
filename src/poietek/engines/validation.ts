@@ -27,13 +27,36 @@ export function validateProductionEngineReadiness(state: ProductionEngineReadine
   });
   state.editing.compSegments.forEach((segment, index) => {
     if (segment.durationTicks <= 0 || segment.startTick < 0 || segment.crossfadeInTicks < 0 || segment.crossfadeOutTicks < 0) add('COMP_SEGMENT_INVALID', `editing.compSegments[${index}]`, 'Comp segments require non-negative timing and positive duration.');
+    const lane = state.editing.takeLanes.find((candidate) => candidate.id === segment.takeLaneId);
+    if (!lane) add('COMP_LANE_MISSING', `editing.compSegments[${index}].takeLaneId`, 'Comp segments must reference an existing take lane.');
+    else if (!lane.clipIds.includes(segment.sourceClipId)) add('COMP_SOURCE_OUTSIDE_LANE', `editing.compSegments[${index}].sourceClipId`, 'A comp segment source must belong to its selected take lane.');
   });
 
   state.midiScoring.clips.forEach((clip, clipIndex) => {
-    if (clip.startTick < 0 || clip.durationTicks <= 0 || clip.loopEndTick <= clip.loopStartTick) add('MIDI_CLIP_TIMING_INVALID', `midiScoring.clips[${clipIndex}]`, 'MIDI clip timing and loop range must be valid.');
+    if (clip.startTick < 0 || clip.durationTicks <= 0 || clip.loopStartTick < 0 || clip.loopEndTick <= clip.loopStartTick || clip.loopEndTick > clip.durationTicks) add('MIDI_CLIP_TIMING_INVALID', `midiScoring.clips[${clipIndex}]`, 'MIDI clip timing and loop range must be valid.');
     clip.events.forEach((event, eventIndex) => {
-      if (event.tick < 0 || event.channel < 0 || event.channel > 15) add('MIDI_EVENT_INVALID', `midiScoring.clips[${clipIndex}].events[${eventIndex}]`, 'MIDI event tick/channel is invalid.');
+      const path = `midiScoring.clips[${clipIndex}].events[${eventIndex}]`;
+      let valid = Number.isSafeInteger(event.tick) && event.tick >= 0 && event.tick < clip.durationTicks && Number.isSafeInteger(event.channel) && event.channel >= 0 && event.channel <= 15;
+      if (event.type === 'note') valid = valid && Number.isSafeInteger(event.note) && event.note >= 0 && event.note <= 127 && Number.isSafeInteger(event.velocity) && event.velocity >= 1 && event.velocity <= 127 && Number.isSafeInteger(event.durationTicks) && event.durationTicks > 0 && event.tick + event.durationTicks <= clip.durationTicks && (event.releaseVelocity === null || (Number.isSafeInteger(event.releaseVelocity) && event.releaseVelocity >= 0 && event.releaseVelocity <= 127));
+      if (event.type === 'cc') valid = valid && Number.isSafeInteger(event.controller) && event.controller >= 0 && event.controller <= 127 && Number.isSafeInteger(event.value) && event.value >= 0 && event.value <= 127;
+      if (event.type === 'pitch_bend') valid = valid && Number.isSafeInteger(event.value) && event.value >= -8192 && event.value <= 8191;
+      if (event.type === 'channel_pressure') valid = valid && Number.isSafeInteger(event.value) && event.value >= 0 && event.value <= 127;
+      if (event.type === 'poly_pressure') valid = valid && Number.isSafeInteger(event.note) && event.note >= 0 && event.note <= 127 && Number.isSafeInteger(event.value) && event.value >= 0 && event.value <= 127;
+      if (!valid) add('MIDI_EVENT_INVALID', path, 'MIDI event timing, channel or data range is invalid.');
     });
+  });
+  const midiClipIds = new Set(state.midiScoring.clips.map((clip) => clip.id));
+  if (midiClipIds.size !== state.midiScoring.clips.length) add('MIDI_CLIP_ID_DUPLICATE', 'midiScoring.clips', 'MIDI clip ids must be unique.');
+  const transformationIds = new Set<string>();
+  state.midiScoring.transformations.forEach((transformation, index) => {
+    const path = `midiScoring.transformations[${index}]`;
+    if (transformationIds.has(transformation.id)) add('MIDI_TRANSFORMATION_ID_DUPLICATE', `${path}.id`, 'MIDI transformation ids must be unique.');
+    transformationIds.add(transformation.id);
+    const generator = transformation.kind === 'rhythm_generate' || transformation.kind === 'chord_generate';
+    if (!generator && transformation.sourceClipIds.length === 0) add('MIDI_TRANSFORMATION_SOURCE_REQUIRED', `${path}.sourceClipIds`, 'A MIDI transformation must reference at least one source clip.');
+    if (transformation.sourceClipIds.some((id) => !midiClipIds.has(id))) add('MIDI_TRANSFORMATION_SOURCE_MISSING', `${path}.sourceClipIds`, 'Every MIDI transformation source must exist.');
+    if (transformation.outputClipIds.length === 0 || transformation.outputClipIds.some((id) => !midiClipIds.has(id))) add('MIDI_TRANSFORMATION_OUTPUT_MISSING', `${path}.outputClipIds`, 'Every MIDI transformation output must exist.');
+    if (transformation.status === 'applied' && (!usable(state.midiScoring.clipEditingCapability) || !transformation.undoCommandId)) add('MIDI_TRANSFORMATION_UNPROVEN', path, 'Applied MIDI variations require the local clip engine and an undo command reference.');
   });
   if (state.midiScoring.clockOutputs.some((output) => output.sendClock || output.sendMtc || output.sendStartStop) && !usable(state.midiScoring.clockOutputCapability)) add('MIDI_CLOCK_UNPROVEN', 'midiScoring.clockOutputs', 'Enabled MIDI sync output requires an observed adapter.');
   state.midiScoring.scoreDocuments.forEach((score, index) => {if (score.status === 'rendered' && (!usable(state.midiScoring.notationCapability) || !score.rendererImplementationId)) add('SCORE_RENDER_UNPROVEN', `midiScoring.scoreDocuments[${index}]`, 'Rendered notation requires an available renderer.');});

@@ -42,12 +42,13 @@ import {
   type PublicReleaseCategory,
   type PublicReleaseGateState,
 } from '../release/PublicReleaseReadiness';
+import {PRODUCTION_WORKFLOW_DEFINITIONS} from '../production-workflows';
 import './PoietekEcosystemCenter.css';
 import {UnifiedPlatformCenter} from './UnifiedPlatformCenter';
 
 type StatusFilter = 'all' | VisionCapabilityStatus;
-type EcosystemView = 'capabilities' | 'creator' | 'governance' | 'library' | 'business' | 'progress' | 'release' | 'benchmark';
-const ECOSYSTEM_VIEWS: EcosystemView[] = ['capabilities', 'creator', 'governance', 'library', 'business', 'progress', 'release', 'benchmark'];
+type EcosystemView = 'capabilities' | 'workflows' | 'creator' | 'governance' | 'library' | 'business' | 'progress' | 'release' | 'benchmark';
+const ECOSYSTEM_VIEWS: EcosystemView[] = ['capabilities', 'workflows', 'creator', 'governance', 'library', 'business', 'progress', 'release', 'benchmark'];
 type BenchmarkKindFilter = 'all' | QualificationLaneKind;
 type ProgressStatusFilter = 'all' | BuildChecklistStatus;
 type ReleaseCategoryFilter = 'all' | PublicReleaseCategory;
@@ -154,18 +155,19 @@ export function PoietekEcosystemCenter() {
       <header className="poietek-ecosystem-hero">
         <div>
           <p>Creative operating system · controlled catalogue {SDS_VISION_CATALOG_VERSION}</p>
-          <h1>{view === 'creator' ? 'One project, from first note to audience.' : view === 'governance' ? 'Trust is part of the product.' : view === 'library' ? 'The complete development library.' : view === 'business' ? 'A business structure, before a price book.' : view === 'progress' ? 'Build to 100%, evidence first.' : view === 'release' ? 'Public release is a hard no-go.' : view === 'benchmark' ? 'Five stars must be proven.' : 'One studio. Thirteen connected systems.'}</h1>
-          <span>{view === 'library' ? 'Every attached source volume is cross-walked to working evidence, staged architecture, professional documentation and honest gates.' : view === 'business' ? 'Seven proposed tiers preserve the supplied commercial shape while pricing, checkout, entitlement enforcement and service promises remain explicitly unapproved.' : view === 'progress' ? 'All 108 mandatory criteria from the thirteen product systems and fourteen professional volumes are tracked as complete, partly done, missing or externally blocked.' : view === 'release' ? 'A public release stays blocked until product, audio, recovery, platform, accessibility, security, privacy, legal and operational acceptance evidence is complete.' : view === 'benchmark' ? 'Twenty-seven qualification lanes compare the thirteen-system product and fourteen professional volumes with official category-leader capabilities. Working code, tests and independent acceptance—not ambition—control the rating.' : 'The SDS vision is tracked here as executable capability, foundation, next slice, and honest release gate.'}</span>
+          <h1>{view === 'creator' ? 'One project, from first note to audience.' : view === 'governance' ? 'Trust is part of the product.' : view === 'workflows' ? 'Production disciplines, connected honestly.' : view === 'library' ? 'The complete development library.' : view === 'business' ? 'A business structure, before a price book.' : view === 'progress' ? 'Build to 100%, evidence first.' : view === 'release' ? 'Public release is a hard no-go.' : view === 'benchmark' ? 'Five stars must be proven.' : 'One studio. Thirteen connected systems.'}</h1>
+          <span>{view === 'workflows' ? 'Scoring, monitoring, spectral editing, offline processing, picture post, immersive routing, mastering, remote recording and MIDI logic share one local-first capability model.' : view === 'library' ? 'Every attached source volume is cross-walked to working evidence, staged architecture, professional documentation and honest gates.' : view === 'business' ? 'Seven proposed tiers preserve the supplied commercial shape while pricing, checkout, entitlement enforcement and service promises remain explicitly unapproved.' : view === 'progress' ? 'All 108 mandatory criteria from the thirteen product systems and fourteen professional volumes are tracked as complete, partly done, missing or externally blocked.' : view === 'release' ? 'A public release stays blocked until product, audio, recovery, platform, accessibility, security, privacy, legal and operational acceptance evidence is complete.' : view === 'benchmark' ? 'Twenty-seven qualification lanes compare the thirteen-system product and fourteen professional volumes with official category-leader capabilities. Working code, tests and independent acceptance—not ambition—control the rating.' : 'The SDS vision is tracked here as executable capability, foundation, next slice, and honest release gate.'}</span>
         </div>
         <div className="poietek-ecosystem-totals" aria-label="Capability totals">
-          <strong>{view === 'library' ? DEVELOPMENT_LIBRARY_VOLUMES.length : view === 'business' ? BUSINESS_TIER_CATALOG.length : view === 'progress' ? `${progressSummary.strictCompletionPercent}%` : view === 'release' ? releaseSummary.decision.replace('_', '-') : view === 'benchmark' ? `${qualificationSummary.stars.toFixed(1)}★` : SDS_VISION_CATALOG.length}</strong>
-          <span>{view === 'library' ? 'source volumes mapped' : view === 'business' ? 'reference tiers · checkout off' : view === 'progress' ? 'strictly verified complete' : view === 'release' ? 'public-release decision' : view === 'benchmark' ? 'current evidence rating' : 'architecture areas'}</span>
-          <b>{view === 'library' ? '20 core · 51–53 intelligence' : view === 'business' ? 'B0 catalogue foundation only' : view === 'progress' ? `${progressSummary.overallProgressPercent}% weighted delivery progress` : view === 'release' ? `${releaseSummary.blockingCount}/${releaseSummary.gateCount} gates still block release` : view === 'benchmark' ? `${qualificationSummary.qualifiedLanes}/${qualificationSummary.laneCount} lanes five-star qualified` : `${summary.operational} working · ${summary.foundation} foundations`}</b>
+          <strong>{view === 'workflows' ? PRODUCTION_WORKFLOW_DEFINITIONS.length : view === 'library' ? DEVELOPMENT_LIBRARY_VOLUMES.length : view === 'business' ? BUSINESS_TIER_CATALOG.length : view === 'progress' ? `${progressSummary.strictCompletionPercent}%` : view === 'release' ? releaseSummary.decision.replace('_', '-') : view === 'benchmark' ? `${qualificationSummary.stars.toFixed(1)}★` : SDS_VISION_CATALOG.length}</strong>
+          <span>{view === 'workflows' ? 'connected production workflows' : view === 'library' ? 'source volumes mapped' : view === 'business' ? 'reference tiers · checkout off' : view === 'progress' ? 'strictly verified complete' : view === 'release' ? 'public-release decision' : view === 'benchmark' ? 'current evidence rating' : 'architecture areas'}</span>
+          <b>{view === 'workflows' ? 'Local models · explicit adapter gates' : view === 'library' ? '20 core · 51–53 intelligence' : view === 'business' ? 'B0 catalogue foundation only' : view === 'progress' ? `${progressSummary.overallProgressPercent}% weighted delivery progress` : view === 'release' ? `${releaseSummary.blockingCount}/${releaseSummary.gateCount} gates still block release` : view === 'benchmark' ? `${qualificationSummary.qualifiedLanes}/${qualificationSummary.laneCount} lanes five-star qualified` : `${summary.operational} working · ${summary.foundation} foundations`}</b>
         </div>
       </header>
 
       <nav className="poietek-ecosystem-tabs" aria-label="Ecosystem views">
         <button type="button" className={view === 'capabilities' ? 'is-active' : ''} onClick={() => setView('capabilities')}>Capability architecture</button>
+        <button type="button" className={view === 'workflows' ? 'is-active' : ''} onClick={() => setView('workflows')}>Production workflows</button>
         <button type="button" className={view === 'creator' ? 'is-active' : ''} onClick={() => setView('creator')}>Creator platform</button>
         <button type="button" className={view === 'governance' ? 'is-active' : ''} onClick={() => setView('governance')}>Governance & help</button>
         <button type="button" className={view === 'library' ? 'is-active' : ''} onClick={() => setView('library')}>Development library</button>
@@ -177,6 +179,35 @@ export function PoietekEcosystemCenter() {
 
       {view === 'creator' && <UnifiedPlatformCenter mode="creator" />}
       {view === 'governance' && <UnifiedPlatformCenter mode="governance" />}
+
+      {view === 'workflows' && <section className="poietek-vision-section" aria-labelledby="production-workflow-heading">
+        <div className="poietek-ecosystem-heading">
+          <div><p>Cross-app production map</p><h2 id="production-workflow-heading">From score and recording to post and delivery</h2></div>
+          <span>Original Poietek controls · no copied product UI</span>
+        </div>
+        <div className="poietek-vision-controls">
+          <label>
+            <span>Search workflows and adapter gates</span>
+            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="score, spectral, cue, picture, mastering, remote…" />
+          </label>
+        </div>
+        <div className="poietek-vision-grid">
+          {PRODUCTION_WORKFLOW_DEFINITIONS.filter((workflow) => `${workflow.discipline} ${workflow.summary} ${workflow.localCapabilities.join(' ')} ${workflow.requiredCapabilities.join(' ')}`.toLowerCase().includes(query.trim().toLowerCase())).map((workflow) => (
+            <article key={workflow.kind} className={`poietek-vision-card is-${workflow.engineState === 'control_model' ? 'foundation' : 'blocked_external'}`}>
+              <header>
+                <div><span>{workflow.discipline}</span><h3>{workflow.summary}</h3></div>
+                <small>{workflow.engineState.replaceAll('_', ' ')}</small>
+              </header>
+              <div className="poietek-vision-evidence"><h4>Available local model</h4><ul>{workflow.localCapabilities.map((item) => <li key={item}>{item}</li>)}</ul></div>
+              <details open>
+                <summary>Truth and adapter boundary</summary>
+                <p>{workflow.truthNote}</p>
+                {workflow.requiredCapabilities.length > 0 && <div className="poietek-vision-gates"><h4>Required evidence</h4><ul>{workflow.requiredCapabilities.map((item) => <li key={item}>{item.replaceAll('_', ' ')}</li>)}</ul></div>}
+              </details>
+            </article>
+          ))}
+        </div>
+      </section>}
 
       {view === 'capabilities' && <><section className="poietek-pillar-section" aria-labelledby="ecosystem-pillars-heading">
         <div className="poietek-ecosystem-heading">

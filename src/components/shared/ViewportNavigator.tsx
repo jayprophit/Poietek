@@ -63,11 +63,14 @@ export function ViewportNavigator({
     if (!autoFit || !viewport || !fitContentWidth || fitContentWidth <= 0) return;
     const availableWidth = Math.max(1, viewport.clientWidth - 8);
     const fitMaximum = Math.min(1, maxZoom);
+    const readableMinimum = variant === 'rack' && availableWidth <= 620
+      ? Math.max(minZoom, 1)
+      : minZoom;
     const fittedZoom = Math.round(
-      Math.min(fitMaximum, Math.max(minZoom, availableWidth / fitContentWidth)) * 1000,
+      Math.min(fitMaximum, Math.max(readableMinimum, availableWidth / fitContentWidth)) * 1000,
     ) / 1000;
     if (Math.abs(fittedZoom - zoom) >= 0.005) onZoomChange(fittedZoom);
-  }, [autoFit, fitContentWidth, maxZoom, minZoom, onZoomChange, zoom]);
+  }, [autoFit, fitContentWidth, maxZoom, minZoom, onZoomChange, variant, zoom]);
 
   const updateMetrics = useCallback(() => {
     const viewport = viewportRef.current;
@@ -221,7 +224,7 @@ export function ViewportNavigator({
               onClick={toggleAutoFit}
               aria-label={`${ariaLabel}: auto fit width`}
               aria-pressed={autoFit}
-              title={autoFit ? 'Auto fit is following the available width' : 'Automatically fit the full rack width'}
+              title={autoFit ? 'Auto fit follows width without going below the readable rack minimum' : 'Automatically fit the rack within its readable minimum'}
             >
               <Maximize2 aria-hidden="true" />
               <span>AUTO</span>

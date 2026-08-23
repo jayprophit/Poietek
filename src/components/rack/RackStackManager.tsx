@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import {
   ChevronUp,
   ChevronDown,
@@ -15,6 +15,8 @@ import {
   Undo2,
   Redo2,
   RotateCcw,
+  Cable,
+  Network,
 } from 'lucide-react';
 import { RackModuleItem, WorkspaceType, ModuleType, MasterState, SamplePad, TrackChannel } from '../../types';
 import { StudioRackDevice } from './StudioRackDevice';
@@ -41,11 +43,68 @@ import { PianoRollSequencer } from '../daw/PianoRollSequencer';
 import { HorizonWaveformSequencer } from '../daw/HorizonWaveformSequencer';
 import { BeatLoomChannelRack } from '../daw/BeatLoomChannelRack';
 import { ViewportNavigator } from '../shared/ViewportNavigator';
+import {RackFoundationDevice} from './RackFoundationDevice';
+import {ScoreWorkbenchDevice} from './ScoreWorkbenchDevice';
+import {CompositionWorkbenchDevice} from './CompositionWorkbenchDevice';
+import {PerformanceCanvasDevice} from './PerformanceCanvasDevice';
+import {ProductionRegionsDevice} from './ProductionRegionsDevice';
+import {TrackingConsoleDevice} from './TrackingConsoleDevice';
+import {SessionVariationsDevice} from './SessionVariationsDevice';
+import {LiveSessionHubDevice} from './LiveSessionHubDevice';
+import {ActionExtensionWorkshopDevice} from './ActionExtensionWorkshopDevice';
+import {MotionMatrixDevice} from './MotionMatrixDevice';
+import {PicturePostWorkbenchDevice} from './PicturePostWorkbenchDevice';
+import {SequenceAssemblyWorkbenchDevice} from './SequenceAssemblyWorkbenchDevice';
+import {BatchDeliveryWorkbenchDevice} from './BatchDeliveryWorkbenchDevice';
+import {
+  deriveAutomaticRackSignalFlow,
+  insertRackModuleByRole,
+  type RackSignalModule,
+} from '../../poietek/rack';
+import type {MixScene} from '../../poietek/composition-workflows';
+import type {BatchDeliveryMutation, LiveSessionMutation, PicturePostMutation, SequenceAssemblyMutation} from '../../poietek/production-workflows';
+import type {ActionWorkflowMutation} from '../../poietek/action-workflows';
+import type {ModulationWorkflowMutation} from '../../poietek/modulation-workflows';
+import type {PerformanceCanvasMutation} from '../../poietek/performance-workflows';
+import type {CaptureProductionRegionInput, ProductionRegionAction} from '../../poietek/region-workflows';
+import type {TrackingConsoleMutation} from '../../poietek/tracking-workflows';
+import type {
+  CreateEditorialClipGroupInput,
+  EditorialBatchRenamePlan,
+  EditorialEditPolicy,
+  SaveEditorialMemoryInput,
+} from '../../poietek/editorial-workflows';
+import type {PoietekProject} from '../../poietek/domain/types';
+import type {CreateStarterMidiClipInput, NoteForgeOperationInput} from '../../poietek/engines/midiLab';
+import type {TechniquePlaybackPlan} from '../../poietek/technique-workflows';
 import {
   createRackModuleItem,
+  getRackModuleDefinition,
   isRackModuleType,
+  isWorkspaceModuleType,
   POIETEK_RACK_DRAG_TYPE,
+  RACK_MODULE_CATALOG,
 } from './rackModuleCatalog';
+
+const TakeCompStudioDevice = React.lazy(async () => {
+  const module = await import('./TakeCompStudioDevice');
+  return {default: module.TakeCompStudioDevice};
+});
+
+const NoteForgeMidiLabDevice = React.lazy(async () => {
+  const module = await import('./NoteForgeMidiLabDevice');
+  return {default: module.NoteForgeMidiLabDevice};
+});
+
+const TechniqueMatrixDevice = React.lazy(async () => {
+  const module = await import('./TechniqueMatrixDevice');
+  return {default: module.TechniqueMatrixDevice};
+});
+
+const EditorialMemoryWorkbenchDevice = React.lazy(async () => {
+  const module = await import('./EditorialMemoryWorkbenchDevice');
+  return {default: module.EditorialMemoryWorkbenchDevice};
+});
 
 interface RackStackManagerProps {
   rackModules: RackModuleItem[];
@@ -68,6 +127,43 @@ interface RackStackManagerProps {
   onZoomChange(zoom: number): void;
   autoFit: boolean;
   onAutoFitChange(autoFit: boolean): void;
+  project?: PoietekProject | null;
+  activeProjectMixSceneId?: string | null;
+  projectEditBusy?: boolean;
+  canUndoProject?: boolean;
+  canRedoProject?: boolean;
+  onApplyProjectMixScene?(scene: MixScene): Promise<void>;
+  onInitializeTrackingConsole?(): Promise<void>;
+  onMutateTrackingConsole?(mutation: TrackingConsoleMutation): Promise<void>;
+  onCreateTakeComp?(sourceClipIds: readonly string[], groupId: string, name: string): Promise<void>;
+  onSelectTakeForSegment?(groupId: string, segmentId: string, takeLaneId: string): Promise<void>;
+  onCommitTakeComp?(groupId: string): Promise<void>;
+  onCreateStarterMidiClip?(input: CreateStarterMidiClipInput): Promise<void>;
+  onCommitMidiOperation?(input: NoteForgeOperationInput): Promise<void>;
+  onInitializeTechniqueMatrix?(): Promise<void>;
+  onCommitTechniquePlan?(plan: TechniquePlaybackPlan): Promise<void>;
+  onMutateLiveSession?(mutation: LiveSessionMutation): Promise<void>;
+  onMutatePicturePost?(mutation: PicturePostMutation): Promise<void>;
+  onMutateSequenceAssembly?(mutation: SequenceAssemblyMutation): Promise<void>;
+  onMutateBatchDelivery?(mutation: BatchDeliveryMutation): Promise<void>;
+  onMutateActionWorkflow?(mutation: ActionWorkflowMutation): Promise<void>;
+  onRunActionRecipe?(recipeId: string): Promise<void>;
+  onRunCycleAction?(cycleId: string): Promise<void>;
+  onMutateModulationWorkflow?(mutation: ModulationWorkflowMutation): Promise<void>;
+  onInitializePerformanceCanvas?(): Promise<void>;
+  onMutatePerformanceCanvas?(mutation: PerformanceCanvasMutation): Promise<void>;
+  onCommitPerformanceCapture?(commitId: string, insertionTick: number): Promise<void>;
+  onInitializeProductionRegions?(): Promise<void>;
+  onCaptureProductionRegion?(input: CaptureProductionRegionInput): Promise<void>;
+  onApplyProductionRegionAction?(regionId: string, action: ProductionRegionAction, targetStartTick: number, operationId: string): Promise<void>;
+  onInitializeEditorial?(): Promise<void>;
+  onSaveEditorialMemory?(input: SaveEditorialMemoryInput): Promise<void>;
+  onRecallEditorialMemory?(memoryId: string, operationId: string): Promise<void>;
+  onCreateEditorialClipGroup?(input: CreateEditorialClipGroupInput): Promise<void>;
+  onApplyEditorialBatchRename?(plan: EditorialBatchRenamePlan): Promise<void>;
+  onSetEditorialEditPolicy?(policy: EditorialEditPolicy, operationId: string): Promise<void>;
+  onUndoProject?(): Promise<void>;
+  onRedoProject?(): Promise<void>;
 }
 
 export const RackStackManager: React.FC<RackStackManagerProps> = ({
@@ -91,10 +187,66 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
   onZoomChange,
   autoFit,
   onAutoFitChange,
+  project = null,
+  activeProjectMixSceneId = null,
+  projectEditBusy = false,
+  canUndoProject = false,
+  canRedoProject = false,
+  onApplyProjectMixScene,
+  onInitializeTrackingConsole,
+  onMutateTrackingConsole,
+  onCreateTakeComp,
+  onSelectTakeForSegment,
+  onCommitTakeComp,
+  onCreateStarterMidiClip,
+  onCommitMidiOperation,
+  onInitializeTechniqueMatrix,
+  onCommitTechniquePlan,
+  onMutateLiveSession,
+  onMutatePicturePost,
+  onMutateSequenceAssembly,
+  onMutateBatchDelivery,
+  onMutateActionWorkflow,
+  onRunActionRecipe,
+  onRunCycleAction,
+  onMutateModulationWorkflow,
+  onInitializePerformanceCanvas,
+  onMutatePerformanceCanvas,
+  onCommitPerformanceCapture,
+  onInitializeProductionRegions,
+  onCaptureProductionRegion,
+  onApplyProductionRegionAction,
+  onInitializeEditorial,
+  onSaveEditorialMemory,
+  onRecallEditorialMemory,
+  onCreateEditorialClipGroup,
+  onApplyEditorialBatchRename,
+  onSetEditorialEditPolicy,
+  onUndoProject,
+  onRedoProject,
 }) => {
   const [isAddMenuOpen, setIsAddMenuOpen] = useState<boolean>(false);
   const [isLibraryDragOver, setIsLibraryDragOver] = useState<boolean>(false);
+  const [isSignalFlowOpen, setIsSignalFlowOpen] = useState<boolean>(true);
+  const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
   const dragDepth = useRef(0);
+
+  const toSignalModule = (module: RackModuleItem): RackSignalModule => {
+    const definition = getRackModuleDefinition(module.type);
+    return {
+      id: module.id,
+      title: module.title,
+      role: definition.role,
+      inputs: definition.inputs,
+      outputs: definition.outputs,
+      groupId: module.groupId,
+    };
+  };
+
+  const signalFlow = useMemo(
+    () => deriveAutomaticRackSignalFlow(rackModules.map(toSignalModule)),
+    [rackModules],
+  );
 
   // Helper functions for stack management
   const handleMoveModule = (id: string, direction: 'up' | 'down') => {
@@ -142,8 +294,22 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
             : m
         ).concat(newModule);
       }
-      return [...prev, newModule];
+      const ordered = insertRackModuleByRole(
+        prev.map((module) => ({...toSignalModule(module), module})),
+        {...toSignalModule(newModule), module: newModule},
+      );
+      return ordered.map((entry) => entry.module);
     });
+    setSelectedModuleId(newModule.id);
+  };
+
+  const handleUpdateParameters = (
+    moduleId: string,
+    parameters: RackModuleItem['parameters'],
+  ) => {
+    setRackModules((prev) => prev.map((module) => (
+      module.id === moduleId ? {...module, parameters} : module
+    )));
   };
 
   const handleUpdateFolderParams = (folderId: string, params: Partial<RackModuleItem['macroParams']>) => {
@@ -174,8 +340,8 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
   };
 
   // Render individual Workspace module body
-  const renderModuleContent = (type: ModuleType) => {
-    switch (type) {
+  const renderModuleContent = (module: RackModuleItem) => {
+    switch (module.type) {
       case 'mpc':
         return <CanvasDrumGridWorkspace pads={pads} setPads={setPads} bpm={masterState.bpm} isPlaying={masterState.isPlaying} onSimulateMIDI={handleSimulateMIDI} />;
       case 'sp404':
@@ -214,8 +380,210 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
         return <HorizonWaveformSequencer />;
       case 'fl_channel_rack':
         return <BeatLoomChannelRack />;
+      case 'composition_workbench':
+        return (
+          <CompositionWorkbenchDevice
+            module={module}
+            onParametersChange={(parameters) => handleUpdateParameters(module.id, parameters)}
+          />
+        );
+      case 'performance_canvas':
+        return (
+          <PerformanceCanvasDevice
+            module={module}
+            onParametersChange={(parameters) => handleUpdateParameters(module.id, parameters)}
+            project={project}
+            projectBusy={projectEditBusy}
+            onInitializePerformanceCanvas={onInitializePerformanceCanvas}
+            onMutatePerformanceCanvas={onMutatePerformanceCanvas}
+            onCommitPerformanceCapture={onCommitPerformanceCapture}
+          />
+        );
+      case 'production_regions':
+        return (
+          <ProductionRegionsDevice
+            module={module}
+            onParametersChange={(parameters) => handleUpdateParameters(module.id, parameters)}
+            project={project}
+            projectBusy={projectEditBusy}
+            onInitializeProductionRegions={onInitializeProductionRegions}
+            onCaptureProductionRegion={onCaptureProductionRegion}
+            onApplyProductionRegionAction={onApplyProductionRegionAction}
+          />
+        );
+      case 'editorial_memory':
+        return (
+          <React.Suspense fallback={<div className="min-h-24 rounded-xl border border-sky-300/25 bg-slate-950 p-4 text-[9px] text-sky-100">Loading Editorial Memory…</div>}>
+            <EditorialMemoryWorkbenchDevice
+              module={module}
+              onParametersChange={(parameters) => handleUpdateParameters(module.id, parameters)}
+              project={project}
+              projectBusy={projectEditBusy}
+              canUndoProject={canUndoProject}
+              onInitializeEditorial={onInitializeEditorial}
+              onSaveEditorialMemory={onSaveEditorialMemory}
+              onRecallEditorialMemory={onRecallEditorialMemory}
+              onCreateEditorialClipGroup={onCreateEditorialClipGroup}
+              onApplyEditorialBatchRename={onApplyEditorialBatchRename}
+              onSetEditorialEditPolicy={onSetEditorialEditPolicy}
+              onUndoProject={onUndoProject}
+            />
+          </React.Suspense>
+        );
+      case 'tracking_console':
+        return (
+          <TrackingConsoleDevice
+            module={module}
+            onParametersChange={(parameters) => handleUpdateParameters(module.id, parameters)}
+            project={project}
+            projectBusy={projectEditBusy}
+            onInitializeTrackingConsole={onInitializeTrackingConsole}
+            onMutateTrackingConsole={onMutateTrackingConsole}
+          />
+        );
+      case 'take_comp_studio':
+        return (
+          <React.Suspense fallback={<div className="min-h-24 rounded-xl border border-fuchsia-300/25 bg-slate-950 p-4 text-[9px] text-fuchsia-100">Loading Take Studio…</div>}>
+            <TakeCompStudioDevice
+              module={module}
+              onParametersChange={(parameters) => handleUpdateParameters(module.id, parameters)}
+              project={project}
+              projectBusy={projectEditBusy}
+              canUndoProject={canUndoProject}
+              canRedoProject={canRedoProject}
+              onCreateTakeComp={onCreateTakeComp}
+              onSelectTakeForSegment={onSelectTakeForSegment}
+              onCommitTakeComp={onCommitTakeComp}
+              onUndoProject={onUndoProject}
+              onRedoProject={onRedoProject}
+            />
+          </React.Suspense>
+        );
+      case 'note_forge_midi_lab':
+        return (
+          <React.Suspense fallback={<div className="min-h-24 rounded-xl border border-teal-300/25 bg-slate-950 p-4 text-[9px] text-teal-100">Loading Note Forge…</div>}>
+            <NoteForgeMidiLabDevice
+              module={module}
+              onParametersChange={(parameters) => handleUpdateParameters(module.id, parameters)}
+              project={project}
+              projectBusy={projectEditBusy}
+              canUndoProject={canUndoProject}
+              onCreateStarterMidiClip={onCreateStarterMidiClip}
+              onCommitMidiOperation={onCommitMidiOperation}
+              onUndoProject={onUndoProject}
+            />
+          </React.Suspense>
+        );
+      case 'session_variations':
+        return (
+          <SessionVariationsDevice
+            module={module}
+            onParametersChange={(parameters) => handleUpdateParameters(module.id, parameters)}
+            project={project}
+            activeProjectSceneId={activeProjectMixSceneId}
+            projectBusy={projectEditBusy}
+            canUndoProject={canUndoProject}
+            canRedoProject={canRedoProject}
+            onApplyProjectMixScene={onApplyProjectMixScene}
+            onUndoProject={onUndoProject}
+            onRedoProject={onRedoProject}
+          />
+        );
+      case 'score_workbench':
+        return (
+          <ScoreWorkbenchDevice
+            module={module}
+            onParametersChange={(parameters) => handleUpdateParameters(module.id, parameters)}
+          />
+        );
+      case 'technique_matrix':
+        return (
+          <React.Suspense fallback={<div className="min-h-24 rounded-xl border border-violet-300/25 bg-slate-950 p-4 text-[9px] text-violet-100">Loading Technique Matrix…</div>}>
+            <TechniqueMatrixDevice
+              module={module}
+              onParametersChange={(parameters) => handleUpdateParameters(module.id, parameters)}
+              project={project}
+              projectBusy={projectEditBusy}
+              canUndoProject={canUndoProject}
+              onInitializeTechniqueMatrix={onInitializeTechniqueMatrix}
+              onCommitTechniquePlan={onCommitTechniquePlan}
+              onUndoProject={onUndoProject}
+            />
+          </React.Suspense>
+        );
+      case 'live_session_hub':
+        return (
+          <LiveSessionHubDevice
+            module={module}
+            onParametersChange={(parameters) => handleUpdateParameters(module.id, parameters)}
+            project={project}
+            projectBusy={projectEditBusy}
+            onMutateLiveSession={onMutateLiveSession}
+          />
+        );
+      case 'picture_post':
+        return (
+          <PicturePostWorkbenchDevice
+            module={module}
+            onParametersChange={(parameters) => handleUpdateParameters(module.id, parameters)}
+            project={project}
+            projectBusy={projectEditBusy}
+            onMutatePicturePost={onMutatePicturePost}
+          />
+        );
+      case 'sequence_assembly':
+        return (
+          <SequenceAssemblyWorkbenchDevice
+            module={module}
+            onParametersChange={(parameters) => handleUpdateParameters(module.id, parameters)}
+            project={project}
+            projectBusy={projectEditBusy}
+            onMutateSequenceAssembly={onMutateSequenceAssembly}
+          />
+        );
+      case 'batch_delivery':
+        return (
+          <BatchDeliveryWorkbenchDevice
+            module={module}
+            onParametersChange={(parameters) => handleUpdateParameters(module.id, parameters)}
+            project={project}
+            projectBusy={projectEditBusy}
+            onMutateBatchDelivery={onMutateBatchDelivery}
+          />
+        );
+      case 'action_extension_workshop':
+        return (
+          <ActionExtensionWorkshopDevice
+            module={module}
+            onParametersChange={(parameters) => handleUpdateParameters(module.id, parameters)}
+            project={project}
+            projectBusy={projectEditBusy}
+            canUndoProject={canUndoProject}
+            canRedoProject={canRedoProject}
+            onMutateActionWorkflow={onMutateActionWorkflow}
+            onRunActionRecipe={onRunActionRecipe}
+            onRunCycleAction={onRunCycleAction}
+            onUndoProject={onUndoProject}
+            onRedoProject={onRedoProject}
+          />
+        );
+      case 'motion_matrix':
+        return (
+          <MotionMatrixDevice
+            module={module}
+            onParametersChange={(parameters) => handleUpdateParameters(module.id, parameters)}
+            project={project}
+            projectBusy={projectEditBusy}
+            onMutateModulationWorkflow={onMutateModulationWorkflow}
+          />
+        );
       default:
-        return null;
+        return (
+          <RackFoundationDevice
+            module={module}
+            onParametersChange={(parameters) => handleUpdateParameters(module.id, parameters)}
+          />
+        );
     }
   };
 
@@ -285,7 +653,10 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
               aria-label="Jump to rack unit"
               onChange={(event) => {
                 const id = event.target.value;
-                if (id) document.getElementById(`rack-module-${id}`)?.scrollIntoView({behavior: 'smooth', block: 'start'});
+                if (id) {
+                  setSelectedModuleId(id);
+                  document.getElementById(`rack-module-${id}`)?.scrollIntoView({behavior: 'smooth', block: 'start'});
+                }
                 event.currentTarget.value = '';
               }}
               className="max-w-44 bg-slate-950 text-[10px] font-bold text-slate-200 outline-none"
@@ -344,13 +715,66 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
         </div>
       </div>
 
+      <section className="overflow-hidden rounded-2xl border border-cyan-500/30 bg-slate-950/90 shadow-xl" aria-label="Rack signal flow inspector">
+        <button
+          type="button"
+          onClick={() => setIsSignalFlowOpen((current) => !current)}
+          className="flex w-full items-center justify-between gap-3 px-4 py-2 text-left hover:bg-slate-900"
+          aria-expanded={isSignalFlowOpen}
+        >
+          <span className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.14em] text-cyan-200">
+            <Network className="h-4 w-4" />
+            Logical Signal Flow
+          </span>
+          <span className="flex items-center gap-2 text-[9px] text-slate-500">
+            {signalFlow.connections.length} automatic links
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform ${isSignalFlowOpen ? 'rotate-180' : ''}`} />
+          </span>
+        </button>
+        {isSignalFlowOpen && (
+          <div className="border-t border-slate-800 p-3">
+            <div className="flex min-w-max items-center gap-2 overflow-x-auto pb-2">
+              {signalFlow.modules.map((module, index) => {
+                const definition = getRackModuleDefinition(
+                  rackModules.find((candidate) => candidate.id === module.id)?.type ?? 'health_latency',
+                );
+                const stateColor = definition.engineState === 'operational'
+                  ? 'border-emerald-500/40 text-emerald-300'
+                  : definition.engineState === 'native_required'
+                    ? 'border-rose-500/40 text-rose-300'
+                    : definition.engineState === 'external_required'
+                      ? 'border-violet-500/40 text-violet-300'
+                    : 'border-amber-500/40 text-amber-300';
+                return (
+                  <React.Fragment key={module.id}>
+                    {index > 0 && <Cable className="h-4 w-4 shrink-0 text-cyan-500/50" aria-hidden="true" />}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedModuleId(module.id);
+                        document.getElementById(`rack-module-${module.id}`)?.scrollIntoView({behavior: 'smooth', block: 'start'});
+                      }}
+                      className={`min-w-32 rounded-lg border bg-slate-900 px-3 py-2 text-left transition hover:border-cyan-300 ${selectedModuleId === module.id ? 'border-cyan-300 ring-1 ring-cyan-300/40' : 'border-slate-700'}`}
+                    >
+                      <span className="block max-w-36 truncate text-[10px] font-bold text-slate-200">{module.title}</span>
+                      <span className={`mt-1 inline-block rounded border px-1.5 py-0.5 text-[8px] font-black uppercase ${stateColor}`}>{module.role} · {definition.engineState.replace('_', ' ')}</span>
+                    </button>
+                  </React.Fragment>
+                );
+              })}
+            </div>
+            <p className="mt-1 text-[9px] leading-relaxed text-slate-500">{signalFlow.note} CV, gate, sends, sidechains and parallel branches remain explicit rear-panel routes.</p>
+          </div>
+        )}
+      </section>
+
       {topLevelModules.length === 0 ? (
         <div className="p-12 text-center border-2 border-dashed border-neutral-800 rounded-3xl bg-neutral-950/80 my-4 space-y-3">
           <h3 className="text-sm font-black text-amber-400 uppercase tracking-widest">
-            THE STUDIO RACK CAN CAN HOLD INFINITE STACKED MODULES
+            THE STUDIO RACK CAN HOLD A FLEXIBLE DEVICE STACK
           </h3>
           <p className="text-xs text-neutral-400 max-w-md mx-auto font-sans">
-            Your studio rack is empty. Add samplers, synthesizers, sequencers, or Combinator Bus Folders below to build your custom modular rig.
+            Your studio rack is empty. Add Players, instruments, effects, utilities, or Macro Bus Containers to build an original modular rig.
           </p>
           <button
             onClick={() => handleAddModule('mpc')}
@@ -380,7 +804,7 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
                     title={subMod.title}
                     tapeLabel={subMod.tapeLabel}
                     subtitle="GROUPED BUS MODULE"
-                    onDetach={() => onDetachWorkspace(subMod.type as WorkspaceType)}
+                    onDetach={isWorkspaceModuleType(subMod.type) ? () => onDetachWorkspace(subMod.type) : undefined}
                     onToggleFlip={onToggleFlip}
                   >
                     <div className="flex items-center justify-between border-b border-neutral-800 pb-1 mb-2">
@@ -415,7 +839,7 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
                         Remove
                       </button>
                     </div>
-                    {renderModuleContent(mod.type)}
+                    {renderModuleContent(subMod)}
                   </StudioRackDevice>
                 )}
               />
@@ -423,7 +847,12 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
           }
 
           return (
-              <div key={mod.id} id={`rack-module-${mod.id}`} className="relative scroll-mt-3 group">
+              <div
+                key={mod.id}
+                id={`rack-module-${mod.id}`}
+                className={`relative scroll-mt-3 rounded-xl transition group ${selectedModuleId === mod.id ? 'ring-2 ring-cyan-300 ring-offset-2 ring-offset-slate-950' : ''}`}
+                onClick={() => setSelectedModuleId(mod.id)}
+              >
               {/* Stack Item Quick Reorder & Controls Strip */}
               <div className="flex items-center justify-between bg-neutral-900 border-x-2 border-t-2 border-neutral-800 rounded-t-xl px-3 py-1 text-[10px]">
                 <div className="flex items-center gap-2">
@@ -433,6 +862,9 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
                   </span>
                   <span className="text-[9px] px-1.5 py-0.2 rounded bg-stone-800 text-stone-300 font-bold border border-stone-700">
                     {mod.tapeLabel}
+                  </span>
+                  <span className="rounded border border-cyan-500/30 bg-cyan-500/5 px-1.5 py-0.5 text-[8px] font-black uppercase text-cyan-300">
+                    {getRackModuleDefinition(mod.type).role}
                   </span>
                 </div>
 
@@ -472,10 +904,10 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
                 title={mod.title}
                 tapeLabel={mod.tapeLabel}
                 subtitle="STACKED VIRTUAL RACK UNIT"
-                onDetach={() => onDetachWorkspace(mod.type as WorkspaceType)}
+                onDetach={isWorkspaceModuleType(mod.type) ? () => onDetachWorkspace(mod.type) : undefined}
                 onToggleFlip={onToggleFlip}
               >
-                {renderModuleContent(mod.type)}
+                {renderModuleContent(mod)}
               </StudioRackDevice>
             </div>
           );
@@ -494,30 +926,17 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
 
         {isAddMenuOpen && (
           <div className="absolute left-0 right-0 bottom-full mb-2 bg-neutral-950 border-2 border-neutral-700 rounded-2xl shadow-2xl p-3 z-50 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 max-h-72 overflow-y-auto scrollbar-thin scrollbar-thumb-stone-700">
-            {[
-              { type: 'folder_combinator', name: 'Combinator Bus Folder' },
-            { type: 'mpc', name: 'Canvas Drum Grid' },
-            { type: 'sp404', name: 'Grain Deck Sampler' },
-              { type: 'keyboard', name: 'Analog Subtractive Synth' },
-              { type: 'edrum', name: 'E-Drum Mesh Kit' },
-              { type: 'drum_machines', name: 'Studio Drum Computer' },
-              { type: 'wave_sequencer', name: 'Multi-Track Audio Sequencer' },
-              { type: 'fl_channel_rack', name: 'Pattern Step Channel Rack' },
-            { type: 'melodyne_pitch', name: 'Vocal Contour Editor' },
-              { type: 'circle_fifths', name: 'Circle of Fifths Harmony' },
-              { type: 'piano_roll', name: 'Universal Piano Roll' },
-              { type: 'chop_lab', name: 'Chop Lab Stem Slicer' },
-            { type: 'mixer', name: 'Summit Master Console' },
-            ].map((item, idx) => (
+            {RACK_MODULE_CATALOG.map((item) => (
               <button
-                key={idx}
+                key={item.type}
                 onClick={() => {
-                  handleAddModule(item.type as ModuleType);
+                  handleAddModule(item.type);
                   setIsAddMenuOpen(false);
                 }}
                 className="p-2.5 rounded-xl bg-neutral-900 hover:bg-amber-500 hover:text-neutral-950 border border-neutral-800 text-left font-black text-xs transition"
               >
-                {item.name}
+                <span className="block">{item.label}</span>
+                <span className="mt-1 block text-[8px] font-bold uppercase opacity-60">{item.role} · {item.engineState.replace('_', ' ')}</span>
               </button>
             ))}
           </div>

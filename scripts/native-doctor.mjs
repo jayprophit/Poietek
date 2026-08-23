@@ -43,6 +43,21 @@ function commandReady(command, args) {
   }).status === 0;
 }
 
+function visualStudioFiles(pattern) {
+  const vswhere = 'C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\vswhere.exe';
+  if (!existsSync(vswhere)) return [];
+  const result = spawnSync(
+    vswhere,
+    ['-latest', '-products', '*', '-requires', 'Microsoft.VisualStudio.Component.VC.Tools.x86.x64', '-find', pattern],
+    {cwd: root, encoding: 'utf8', windowsHide: true},
+  );
+  if (result.status !== 0) return [];
+  return result.stdout
+    .split(/\r?\n/)
+    .map((entry) => entry.trim())
+    .filter((entry) => entry && existsSync(entry));
+}
+
 const checks = [];
 const add = (name, required, ready, detail) =>
   checks.push({name, required, ready, detail});
@@ -96,9 +111,7 @@ if (wantsDesktop && process.platform === 'win32') {
   add(
     'Microsoft C++ build tools',
     true,
-    existsSync(
-      'C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\vswhere.exe',
-    ),
+    visualStudioFiles('VC\\Tools\\MSVC\\**\\bin\\Hostx64\\x64\\cl.exe').length > 0,
     'Install Visual Studio Build Tools with Desktop development with C++.',
   );
 }

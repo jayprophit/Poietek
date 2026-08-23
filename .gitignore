@@ -1,8 +1,11 @@
 node_modules/
 .npm-cache-local/
 build/
+native-core/build/
+native-core/build-*/
 dist/
 coverage/
+_archive/
 .DS_Store
 *.log
 .native-signing/

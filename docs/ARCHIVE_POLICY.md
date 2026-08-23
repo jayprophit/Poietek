@@ -16,7 +16,7 @@ and the historical `sds.txt` remain immutable reference material outside it.
 - `tests/.compiled-core`
 - local caches and logs
 
-## Archive outside the active repository
+## Archive outside active source and Git
 
 - partial clones and interrupted mirrors
 - superseded implementation overlays
@@ -26,4 +26,7 @@ and the historical `sds.txt` remain immutable reference material outside it.
 
 Archives use a date-stamped directory, a JSON manifest and SHA-256 checksums for
 small reference files. Moving a historical item into the archive is preferred to
-deleting it. The archive is not included in the application build or Git source.
+deleting it. For a single-directory workstation installation, `_archive/` may sit
+beneath the repository root only when it is ignored by Git, excluded from every
+compiler/build input and treated as quarantine rather than application content.
+The archive is never included in the application build or Git source.

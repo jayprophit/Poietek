@@ -12,7 +12,7 @@ interface MenuItem {
   area?: StudioArea;
   setupTab?: StudioSetupTab;
   action?: 'fullscreen' | 'shortcuts' | 'about' | 'governance';
-  ecosystemView?: 'creator' | 'governance' | 'progress' | 'release';
+  ecosystemView?: 'creator' | 'governance' | 'workflows' | 'progress' | 'release';
   children?: MenuItem[];
   disabledReason?: string;
   separator?: boolean;
@@ -57,6 +57,9 @@ function buildMenus(activeArea: StudioArea): MenuGroup[] {
         {label: 'Undo', shortcut: 'Ctrl+Z', command: 'edit-undo', area: activeArea === 'rack' ? 'rack' : 'arrange'},
         {label: 'Redo', shortcut: 'Ctrl+Shift+Z', command: 'edit-redo', area: activeArea === 'rack' ? 'rack' : 'arrange'},
         {label: '', separator: true},
+        {label: 'Editorial Memory & Clip Groups', command: 'rack-workspace', value: 'editorial_memory', area: 'rack'},
+        {label: 'Action & Extension Workshop', command: 'rack-workspace', value: 'action_extension_workshop', area: 'rack'},
+        {label: 'Motion Matrix', command: 'rack-workspace', value: 'motion_matrix', area: 'rack'},
         {label: 'Studio Preferences…', shortcut: 'Ctrl+,', setupTab: 'profiles'},
         {label: 'Editing Preferences…', setupTab: 'editing'},
         {label: 'Appearance & Accessibility…', setupTab: 'appearance'},
@@ -66,6 +69,14 @@ function buildMenus(activeArea: StudioArea): MenuGroup[] {
       label: 'Project',
       items: [
         {label: 'Project Rack', command: 'project-open', area: 'arrange'},
+        {label: 'Idea Flow Workbench', command: 'rack-workspace', value: 'composition_workbench', area: 'rack'},
+        {label: 'Note Forge MIDI Lab', command: 'rack-workspace', value: 'note_forge_midi_lab', area: 'rack'},
+        {label: 'Session Variations Workbench', command: 'rack-workspace', value: 'session_variations', area: 'rack'},
+        {label: 'Editorial Memory & Clip Groups', command: 'rack-workspace', value: 'editorial_memory', area: 'rack'},
+        {label: 'Score & Parts Workbench', command: 'rack-workspace', value: 'score_workbench', area: 'rack'},
+        {label: 'Technique Matrix & Score Bridge', command: 'rack-workspace', value: 'technique_matrix', area: 'rack'},
+        {label: 'Project Actions & Cycles', command: 'rack-workspace', value: 'action_extension_workshop', area: 'rack'},
+        {label: 'Project Motion Matrix', command: 'rack-workspace', value: 'motion_matrix', area: 'rack'},
         {label: 'Starter Songs & Templates…', command: 'rack-templates', area: 'rack'},
         {label: 'Files, Autosave & Recovery…', setupTab: 'files'},
         {label: 'Tempo Map & Signature…', disabledReason: 'Tempo-map editing is not exposed yet; the canonical model remains authoritative.'},
@@ -77,8 +88,9 @@ function buildMenus(activeArea: StudioArea): MenuGroup[] {
         {label: 'Add Audio Track by Import…', command: 'audio-import', area: 'arrange'},
         {label: 'Show Arrangement', command: 'arrange-show-timeline', area: 'arrange'},
         {label: 'Show Mix Console', command: 'arrange-show-console', area: 'arrange'},
-        {label: 'Add MIDI / Instrument Track', disabledReason: 'Canonical MIDI and instrument-track editing is staged.'},
-        {label: 'Track Versions & Comping', disabledReason: 'Take lanes and comping are staged.'},
+        {label: 'Add MIDI / Instrument Track in Note Forge', command: 'rack-workspace', value: 'note_forge_midi_lab', area: 'rack'},
+        {label: 'Take Studio & Comp Builder', command: 'rack-workspace', value: 'take_comp_studio', area: 'rack'},
+        {label: 'Track Focus & Edit Memories', command: 'rack-workspace', value: 'editorial_memory', area: 'rack'},
       ],
     },
     {
@@ -86,6 +98,7 @@ function buildMenus(activeArea: StudioArea): MenuGroup[] {
       items: [
         {label: 'Split at Playhead', disabledReason: 'Select a waveform clip and use its Split control; global clip selection is staged.'},
         {label: 'Move, Trim, Gain & Fades', command: 'arrange-show-timeline', area: 'arrange'},
+        {label: 'Clip Groups & Batch Display Names', command: 'rack-workspace', value: 'editorial_memory', area: 'rack'},
         {label: 'Time Stretch / Warp', disabledReason: 'A validated time-preserving DSP backend is not installed.'},
         {label: 'Pitch Correction', disabledReason: 'Pitch-edit UI is a Rack prototype; production DSP is unavailable.'},
       ],
@@ -104,10 +117,80 @@ function buildMenus(activeArea: StudioArea): MenuGroup[] {
       label: 'MIDI',
       items: [
         {label: 'MIDI & Sync Setup…', setupTab: 'midi'},
+        {label: 'Note Forge MIDI Lab', command: 'rack-workspace', value: 'note_forge_midi_lab', area: 'rack'},
+        {label: 'Technique Matrix & Score Bridge', command: 'rack-workspace', value: 'technique_matrix', area: 'rack'},
         {label: 'MIDI Routing Matrix', command: 'rack-workspace', value: 'midi_matrix', area: 'rack'},
         {label: 'Piano Roll', command: 'rack-workspace', value: 'piano_roll', area: 'rack'},
         {label: 'MIDI Learn / Hardware Mapper', command: 'rack-workspace', value: 'mapper', area: 'rack'},
         {label: 'MIDI Clock Output', disabledReason: 'No verified MIDI-clock output adapter is active.'},
+      ],
+    },
+    {
+      label: 'Production',
+      items: [
+        {label: 'Ideas, Patterns & Automation', children: [
+          {label: 'Idea Flow Workbench', command: 'rack-workspace', value: 'composition_workbench', area: 'rack'},
+          {label: 'Note Forge MIDI Lab', command: 'rack-workspace', value: 'note_forge_midi_lab', area: 'rack'},
+          {label: 'Performance Canvas & Scene Capture', command: 'rack-workspace', value: 'performance_canvas', area: 'rack'},
+          {label: 'Motion Matrix & Macro Scenes', command: 'rack-workspace', value: 'motion_matrix', area: 'rack'},
+          {label: 'Beat Loom Pattern Rack', command: 'rack-workspace', value: 'fl_channel_rack', area: 'rack'},
+          {label: 'Note Canvas', command: 'rack-workspace', value: 'piano_roll', area: 'rack'},
+          {label: 'Retrospective Capture', command: 'rack-workspace', value: 'composition_workbench', area: 'rack'},
+        ]},
+        {label: 'Song Development & Mix Recall', children: [
+          {label: 'Take Studio & Comp Builder', command: 'rack-workspace', value: 'take_comp_studio', area: 'rack'},
+          {label: 'Editorial Memory & Clip Groups', command: 'rack-workspace', value: 'editorial_memory', area: 'rack'},
+          {label: 'Production Regions & Section Editing', command: 'rack-workspace', value: 'production_regions', area: 'rack'},
+          {label: 'Sequence Assembly Workbench', command: 'rack-workspace', value: 'sequence_assembly', area: 'rack'},
+          {label: 'Independent Cues & Conductor Maps', command: 'rack-workspace', value: 'sequence_assembly', area: 'rack'},
+          {label: 'Shared Resources & Program Chain', command: 'rack-workspace', value: 'sequence_assembly', area: 'rack'},
+          {label: 'Session Variations Workbench', command: 'rack-workspace', value: 'session_variations', area: 'rack'},
+          {label: 'Song Map & Alternate Structures', command: 'rack-workspace', value: 'session_variations', area: 'rack'},
+          {label: 'Timeline Lyrics & Prompter', command: 'rack-workspace', value: 'session_variations', area: 'rack'},
+          {label: 'Mix Scene A/B Preview', command: 'rack-workspace', value: 'session_variations', area: 'rack'},
+        ]},
+        {label: 'Score, Parts & Articulations', children: [
+          {label: 'Score & Parts Workbench', command: 'rack-workspace', value: 'score_workbench', area: 'rack'},
+          {label: 'Technique Matrix & Score Bridge', command: 'rack-workspace', value: 'technique_matrix', area: 'rack'},
+          {label: 'Logic Note Transformer', command: 'rack-workspace', value: 'midi_transformer', area: 'rack'},
+          {label: 'MusicXML Import / Export', disabledReason: 'A validated MusicXML interchange adapter is not installed.'},
+        ]},
+        {label: 'Spectral & Offline Audio', children: [
+          {label: 'Spectrum Layer Lab', command: 'rack-workspace', value: 'spectral_workbench', area: 'rack'},
+          {label: 'Revision Process Chain', command: 'rack-workspace', value: 'offline_process_chain', area: 'rack'},
+          {label: 'Batch Delivery Workshop', command: 'rack-workspace', value: 'batch_delivery', area: 'rack'},
+          {label: 'Safe Naming & Dry Run', command: 'rack-workspace', value: 'batch_delivery', area: 'rack'},
+          {label: 'Pilot Approval & Run Report', command: 'rack-workspace', value: 'batch_delivery', area: 'rack'},
+          {label: 'Stem Separation', disabledReason: 'No reviewed local or external separation adapter is configured.'},
+        ]},
+        {label: 'Picture, Dialog & Immersive', children: [
+          {label: 'Picture & Dialog Post Workbench', command: 'rack-workspace', value: 'picture_post', area: 'rack'},
+          {label: 'ADR Cues, Takes & Talent Overlay', command: 'rack-workspace', value: 'picture_post', area: 'rack'},
+          {label: 'ReConform Preview & Cue Sheet', command: 'rack-workspace', value: 'picture_post', area: 'rack'},
+          {label: 'Field Recorder Match Proposals', command: 'rack-workspace', value: 'picture_post', area: 'rack'},
+          {label: 'Spatial Route Designer', command: 'rack-workspace', value: 'immersive_monitor', area: 'rack'},
+          {label: 'AAF / CMX3600 / TTAL Import', disabledReason: 'Validated production interchange parsers and fixture suites are not installed.'},
+          {label: 'Frame-accurate Video Render', disabledReason: 'The codec, frame-clock and cancellable render backends are not installed.'},
+        ]},
+        {label: 'Monitor, Master & Remote', children: [
+          {label: 'Tracking Console & Capture Paths', command: 'rack-workspace', value: 'tracking_console', area: 'rack'},
+          {label: 'Monitor, Cue & Talkback', command: 'rack-workspace', value: 'control_room', area: 'rack'},
+          {label: 'Live Session Hub', command: 'rack-workspace', value: 'live_session_hub', area: 'rack'},
+          {label: 'Master Sequence & Delivery', command: 'rack-workspace', value: 'mastering_delivery', area: 'rack'},
+          {label: 'Remote Performer Session', command: 'rack-workspace', value: 'remote_session', area: 'rack'},
+        ]},
+        {label: 'Actions, Extensions & Customize', children: [
+          {label: 'Action & Extension Workshop', command: 'rack-workspace', value: 'action_extension_workshop', area: 'rack'},
+          {label: 'Custom Actions & Atomic Macros', command: 'rack-workspace', value: 'action_extension_workshop', area: 'rack'},
+          {label: 'Package Provenance & Quarantine', command: 'rack-workspace', value: 'action_extension_workshop', area: 'rack'},
+          {label: 'Run External Script', disabledReason: 'External code remains disabled until a reviewed sandbox or native host adapter exists.'},
+        ]},
+        {label: 'Modulation, Expression & Control', children: [
+          {label: 'Motion Matrix', command: 'rack-workspace', value: 'motion_matrix', area: 'rack'},
+          {label: 'Typed Modulation Routes', command: 'rack-workspace', value: 'motion_matrix', area: 'rack'},
+          {label: 'Macro Scene Recall', command: 'rack-workspace', value: 'motion_matrix', area: 'rack'},
+          {label: 'Live Audio-rate Delivery', disabledReason: 'A verified native control-frame and DSP adapter is not active.'},
+        ]},
       ],
     },
     {
@@ -116,12 +199,16 @@ function buildMenus(activeArea: StudioArea): MenuGroup[] {
         areaItem('Studio Rack', 'rack', 'F6'),
         {label: 'Flip Rack / Rear Patching', shortcut: 'Tab', command: 'rack-flip', area: 'rack'},
         {label: 'Instruments & Harmony', children: [
+          {label: 'Idea Flow Workbench', command: 'rack-workspace', value: 'composition_workbench', area: 'rack'},
+          {label: 'Note Forge MIDI Lab', command: 'rack-workspace', value: 'note_forge_midi_lab', area: 'rack'},
+          {label: 'Performance Canvas', command: 'rack-workspace', value: 'performance_canvas', area: 'rack'},
           {label: 'Harmonic Synth', command: 'rack-workspace', value: 'keyboard', area: 'rack'},
           {label: 'Note Grid', command: 'rack-workspace', value: 'piano_roll', area: 'rack'},
           {label: 'Harmony Compass', command: 'rack-workspace', value: 'circle_fifths', area: 'rack'},
           {label: 'Pitch Detail Editor', command: 'rack-workspace', value: 'melodyne_pitch', area: 'rack'},
         ]},
         {label: 'Samplers & Rhythm', children: [
+          {label: 'Idea Flow Workbench', command: 'rack-workspace', value: 'composition_workbench', area: 'rack'},
           {label: 'Pulse Pad Sampler', command: 'rack-workspace', value: 'mpc', area: 'rack'},
           {label: 'Pocket FX Sampler', command: 'rack-workspace', value: 'sp404', area: 'rack'},
           {label: 'Rhythm Forge', command: 'rack-workspace', value: 'drum_machines', area: 'rack'},
@@ -130,14 +217,31 @@ function buildMenus(activeArea: StudioArea): MenuGroup[] {
         ]},
         {label: 'Mix, Effects & Routing', children: [
           {label: 'Production Console', command: 'rack-workspace', value: 'mixer', area: 'rack'},
+          {label: 'Motion Matrix', command: 'rack-workspace', value: 'motion_matrix', area: 'rack'},
           {label: 'Signal Patch Bay', command: 'rack-workspace', value: 'patchbay', area: 'rack'},
           {label: 'Timing Pool', command: 'rack-workspace', value: 'd_groove', area: 'rack'},
         ]},
         {label: 'MIDI & Hardware', children: [
+          {label: 'Tracking Console & Capture Paths', command: 'rack-workspace', value: 'tracking_console', area: 'rack'},
           {label: 'MIDI Routing Matrix', command: 'rack-workspace', value: 'midi_matrix', area: 'rack'},
           {label: 'Controller Mapper', command: 'rack-workspace', value: 'mapper', area: 'rack'},
           {label: 'Control Surface Builder', command: 'rack-workspace', value: 'visual_editor', area: 'rack'},
           {label: 'Device Health', command: 'rack-workspace', value: 'health_latency', area: 'rack'},
+          {label: 'Action & Extension Workshop', command: 'rack-workspace', value: 'action_extension_workshop', area: 'rack'},
+        ]},
+        {label: 'Post, Score & Delivery', children: [
+          {label: 'Take Studio & Comp Builder', command: 'rack-workspace', value: 'take_comp_studio', area: 'rack'},
+          {label: 'Editorial Memory & Clip Groups', command: 'rack-workspace', value: 'editorial_memory', area: 'rack'},
+          {label: 'Production Regions', command: 'rack-workspace', value: 'production_regions', area: 'rack'},
+          {label: 'Sequence Assembly Workbench', command: 'rack-workspace', value: 'sequence_assembly', area: 'rack'},
+          {label: 'Session Variations Workbench', command: 'rack-workspace', value: 'session_variations', area: 'rack'},
+          {label: 'Live Session Hub', command: 'rack-workspace', value: 'live_session_hub', area: 'rack'},
+          {label: 'Score & Parts Workbench', command: 'rack-workspace', value: 'score_workbench', area: 'rack'},
+          {label: 'Technique Matrix & Score Bridge', command: 'rack-workspace', value: 'technique_matrix', area: 'rack'},
+          {label: 'Spectrum Layer Lab', command: 'rack-workspace', value: 'spectral_workbench', area: 'rack'},
+          {label: 'Batch Delivery Workshop', command: 'rack-workspace', value: 'batch_delivery', area: 'rack'},
+          {label: 'Picture & Dialog Post Workbench', command: 'rack-workspace', value: 'picture_post', area: 'rack'},
+          {label: 'Master Sequence & Delivery', command: 'rack-workspace', value: 'mastering_delivery', area: 'rack'},
         ]},
         {label: 'Plug-in Manager…', setupTab: 'plugins'},
         {label: 'Modules & Content…', setupTab: 'library'},
@@ -148,8 +252,10 @@ function buildMenus(activeArea: StudioArea): MenuGroup[] {
       items: [
         {label: 'Production Console', command: 'arrange-show-console', area: 'arrange'},
         {label: 'Rack Mixing Desk', command: 'rack-workspace', value: 'mixer', area: 'rack'},
+        {label: 'Tracking Console & Capture Paths', command: 'rack-workspace', value: 'tracking_console', area: 'rack'},
         {label: 'Routing & Patch Bay', command: 'rack-workspace', value: 'patchbay', area: 'rack'},
-        {label: 'Control Room / Cue Mixes', disabledReason: 'Multi-output cue routing needs a verified native audio-device adapter.'},
+        {label: 'Control Room / Cue Mixes', command: 'rack-workspace', value: 'control_room', area: 'rack'},
+        {label: 'Activate Physical Cue Outputs', disabledReason: 'Multi-output cue routing needs a verified native audio-device adapter.'},
       ],
     },
     {
@@ -186,6 +292,7 @@ function buildMenus(activeArea: StudioArea): MenuGroup[] {
       label: 'Help',
       items: [
         {label: 'Keyboard Shortcuts', action: 'shortcuts'},
+        {label: 'Production Workflow Map', ecosystemView: 'workflows'},
         {label: 'Guides, Lessons & FAQ', ecosystemView: 'governance'},
         {label: 'Product Status', children: [
           {label: 'What is working and missing?', ecosystemView: 'progress'},

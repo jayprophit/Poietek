@@ -196,6 +196,13 @@
   .poietek-viewport-zoom .poietek-viewport-auto-fit { min-width: 36px; padding: 0; }
   .poietek-viewport-auto-fit span { display: none; }
   .poietek-viewport-zoom-presets { width: 72px; font-size: 8px; }
+  html[data-poietek-device-layout='handheld'] .poietek-viewport-navigator--rack .poietek-workbench-device button,
+  html[data-poietek-device-layout='handheld'] .poietek-viewport-navigator--rack .poietek-workbench-device input,
+  html[data-poietek-device-layout='handheld'] .poietek-viewport-navigator--rack .poietek-workbench-device select {
+    min-height: 44px;
+    font-size: max(12px, 0.75rem) !important;
+    line-height: 1.2;
+  }
 }
 
 @media (pointer: coarse) {

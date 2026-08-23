@@ -16,6 +16,7 @@ import {
   Check,
 } from 'lucide-react';
 import { RackModuleItem, ModuleType } from '../../types';
+import {RACK_MODULE_CATALOG} from './rackModuleCatalog';
 
 interface CombinatorFolderDeviceProps {
   folderModule: RackModuleItem;
@@ -256,23 +257,16 @@ export const CombinatorFolderDevice: React.FC<CombinatorFolderDeviceProps> = ({
 
             {isAddMenuOpen && (
               <div className="absolute left-0 right-0 top-full mt-1 bg-neutral-950 border-2 border-neutral-700 rounded-xl shadow-2xl p-2 z-50 grid grid-cols-2 gap-1.5">
-                {[
-                      { type: 'mpc', name: 'Canvas Drum Grid' },
-                      { type: 'sp404', name: 'Grain Deck Sampler' },
-                  { type: 'keyboard', name: 'Analog Subtractive Synth' },
-                  { type: 'drum_machines', name: 'Studio Drum Computer' },
-                      { type: 'mixer', name: 'Summit Mixer Channel' },
-                  { type: 'melodyne_pitch', name: 'Pro Vocal Pitch Editor' },
-                ].map((item, idx) => (
+                {RACK_MODULE_CATALOG.filter((item) => item.type !== 'folder_combinator').map((item) => (
                   <button
-                    key={idx}
+                    key={item.type}
                     onClick={() => {
-                      onAddModuleToFolder(folderModule.id, item.type as ModuleType);
+                      onAddModuleToFolder(folderModule.id, item.type);
                       setIsAddMenuOpen(false);
                     }}
                     className="p-2 rounded-lg bg-neutral-900 hover:bg-amber-500 hover:text-neutral-950 text-left font-bold text-xs transition"
                   >
-                    {item.name}
+                    {item.label}
                   </button>
                 ))}
               </div>

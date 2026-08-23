@@ -41,6 +41,17 @@
     "src/poietek/native/**/*.ts"
     ,"src/poietek/unified/**/*.ts"
     ,"src/poietek/engines/**/*.ts"
+    ,"src/poietek/creative-tools/**/*.ts"
+    ,"src/poietek/rack/**/*.ts"
+    ,"src/poietek/production-workflows/**/*.ts"
+    ,"src/poietek/technique-workflows/**/*.ts"
+    ,"src/poietek/composition-workflows/**/*.ts"
+    ,"src/poietek/action-workflows/**/*.ts"
+    ,"src/poietek/modulation-workflows/**/*.ts"
+    ,"src/poietek/performance-workflows/**/*.ts"
+    ,"src/poietek/region-workflows/**/*.ts"
+    ,"src/poietek/tracking-workflows/**/*.ts"
+    ,"src/poietek/editorial-workflows/**/*.ts"
   ],
   "exclude": [
     "src/poietek/react/**",

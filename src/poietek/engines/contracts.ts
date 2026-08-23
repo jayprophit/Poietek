@@ -136,6 +136,25 @@ export interface MidiClipRecord {
   events: MidiEventRecord[];
 }
 
+export type MidiTransformationKind =
+  | 'quantize'
+  | 'humanize'
+  | 'transpose'
+  | 'legato'
+  | 'velocity'
+  | 'scale_constrain'
+  | 'rhythm_generate'
+  | 'chord_generate';
+
+export interface MidiTransformationRecord {
+  id: string;
+  kind: MidiTransformationKind;
+  status: 'preview' | 'applied' | 'reverted';
+  sourceClipIds: string[];
+  outputClipIds: string[];
+  undoCommandId: string | null;
+}
+
 export interface MidiScoringState {
   clipEditingCapability: CapabilityReport;
   mpeCapability: CapabilityReport;
@@ -144,7 +163,7 @@ export interface MidiScoringState {
   musicXmlCapability: CapabilityReport;
   pictureScoringCapability: CapabilityReport;
   clips: MidiClipRecord[];
-  transformations: Array<{id: string; kind: 'quantize' | 'humanize' | 'transpose' | 'legato' | 'velocity' | 'scale_constrain'; status: 'preview' | 'applied' | 'reverted'; sourceClipIds: string[]; outputClipIds: string[]; undoCommandId: string | null}>;
+  transformations: MidiTransformationRecord[];
   clockOutputs: Array<{portId: string; sendClock: boolean; sendStartStop: boolean; sendMtc: boolean; offsetMilliseconds: number; observedAt: string | null}>;
   articulationMaps: Array<{id: string; instrumentId: string; entries: Array<{name: string; triggerKind: 'keyswitch' | 'cc' | 'program_change'; triggerValue: number}>}>;
   scoreDocuments: Array<{id: string; title: string; trackIds: string[]; musicXmlAssetId: string | null; status: 'draft' | 'rendered' | 'imported'; rendererImplementationId: string | null}>;

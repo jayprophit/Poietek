@@ -1,8 +1,10 @@
 import {useEffect, useMemo, useState, type CSSProperties, type MouseEvent} from 'react';
+import {Pin} from 'lucide-react';
 import type {AudioClip, PoietekProject, Track} from '../domain/types';
 import {secondsToTicks, ticksToSeconds} from '../timeline/tempo';
 import {formatClock, readWaveformPreview, type StoredWaveformPreview} from './audioWorkspaceModel';
 import {ViewportNavigator} from '../../components/shared/ViewportNavigator';
+import {getProjectEditorialWorkflow} from '../editorial-workflows';
 
 export interface ArrangerSelection {
   trackId: string;
@@ -19,6 +21,7 @@ export interface StudioArrangerViewProps {
   onSetClip(trackId: string, clipId: string, patch: Partial<AudioClip>, message: string): void;
   onSplitClip(trackId: string, clipId: string, splitTick: number): void;
   onRemoveClip(trackId: string, clipId: string): void;
+  onToggleTrackPin(trackId: string): void;
 }
 
 function Waveform({preview}: {preview: StoredWaveformPreview | null}) {
@@ -53,13 +56,22 @@ export function StudioArrangerView({
   onSetClip,
   onSplitClip,
   onRemoveClip,
+  onToggleTrackPin,
 }: StudioArrangerViewProps) {
   const [selection, setSelection] = useState<ArrangerSelection | null>(null);
   const [zoom, setZoom] = useState(1);
   const playheadPercent = (playheadSeconds / timelineSpan) * 100;
+  const editorial = useMemo(() => {
+    try {
+      return getProjectEditorialWorkflow(project);
+    } catch {
+      return null;
+    }
+  }, [project]);
+  const pinnedTrackIds = useMemo(() => new Set(editorial?.pinnedTrackIds ?? []), [editorial?.pinnedTrackIds]);
   const orderedTracks = useMemo(
-    () => [...project.tracks].sort((a, b) => a.order - b.order),
-    [project.tracks],
+    () => [...project.tracks].sort((a, b) => Number(pinnedTrackIds.has(b.id)) - Number(pinnedTrackIds.has(a.id)) || a.order - b.order),
+    [pinnedTrackIds, project.tracks],
   );
   const selectedTrack = selection
     ? project.tracks.find((track) => track.id === selection.trackId)
@@ -114,6 +126,7 @@ export function StudioArrangerView({
           <span>Grid <strong>1/16</strong></span>
           <span>Snap <strong>Adaptive</strong></span>
           <span>Tempo <strong>{project.tempoMap[0].bpm} BPM</strong></span>
+          <span>Edit memory <strong>{editorial?.activeEditPolicy.replaceAll('_', ' ') ?? 'not initialized'}</strong></span>
         </div>
       </div>
 
@@ -148,11 +161,20 @@ export function StudioArrangerView({
           ) : (
             <div className="poietek-track-list">
               {orderedTracks.map((track) => (
-                <div className={`poietek-track-row ${selectedTrack?.id === track.id ? 'is-selected' : ''}`} key={track.id}>
+                <div className={`poietek-track-row ${selectedTrack?.id === track.id ? 'is-selected' : ''} ${pinnedTrackIds.has(track.id) ? 'is-pinned' : ''}`} key={track.id}>
                   <div className="poietek-track-header" style={{'--track-color': track.color ?? '#62cbbf'} as CSSProperties}>
                     <div className="poietek-track-title-row">
                       <span className="poietek-track-number">{String(track.order + 1).padStart(2, '0')}</span>
                       <strong>{track.name}</strong>
+                      <button
+                        type="button"
+                        className="poietek-track-pin"
+                        aria-label={`${pinnedTrackIds.has(track.id) ? 'Unpin' : 'Pin'} ${track.name}`}
+                        aria-pressed={pinnedTrackIds.has(track.id)}
+                        title={pinnedTrackIds.has(track.id) ? 'Unpin track from focused order' : 'Pin track above unpinned tracks'}
+                        disabled={busy}
+                        onClick={() => onToggleTrackPin(track.id)}
+                      ><Pin aria-hidden="true" /></button>
                     </div>
                     <div className="poietek-track-controls">
                       <button

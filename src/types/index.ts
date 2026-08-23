@@ -1,4 +1,54 @@
-export type ModuleType = WorkspaceType | 'folder_combinator';
+export type RackFoundationModuleType =
+  | 'note_player'
+  | 'utility_gain_pan'
+  | 'utility_split_merge'
+  | 'effect_eq'
+  | 'effect_compressor'
+  | 'effect_reverb'
+  | 'effect_delay'
+  | 'effect_modulator'
+  | 'plugin_host'
+  | 'control_room'
+  | 'midi_transformer'
+  | 'composition_workbench'
+  | 'note_forge_midi_lab'
+  | 'performance_canvas'
+  | 'production_regions'
+  | 'editorial_memory'
+  | 'tracking_console'
+  | 'take_comp_studio'
+  | 'session_variations'
+  | 'score_workbench'
+  | 'technique_matrix'
+  | 'spectral_workbench'
+  | 'offline_process_chain'
+  | 'batch_delivery'
+  | 'picture_post'
+  | 'sequence_assembly'
+  | 'immersive_monitor'
+  | 'mastering_delivery'
+  | 'live_session_hub'
+  | 'action_extension_workshop'
+  | 'motion_matrix'
+  | 'remote_session';
+
+export type ModuleType = WorkspaceType | RackFoundationModuleType | 'folder_combinator';
+
+export type RackDeviceRole =
+  | 'player'
+  | 'instrument'
+  | 'effect'
+  | 'mixer'
+  | 'utility'
+  | 'controller';
+
+export type RackEngineState =
+  | 'operational'
+  | 'control_model'
+  | 'native_required'
+  | 'external_required';
+
+export type RackSignalType = 'note' | 'audio' | 'cv' | 'gate';
 
 export interface RackModuleItem {
   id: string;
@@ -9,6 +59,7 @@ export interface RackModuleItem {
   groupId?: string; // Optional parent Combinator folder ID
   subModuleIds?: string[]; // If type === 'folder_combinator'
   color?: string;
+  parameters?: Record<string, number | boolean | string>;
   macroParams?: {
     filterCutoff: number;
     drive: number;

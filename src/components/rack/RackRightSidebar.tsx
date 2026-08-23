@@ -8,14 +8,18 @@ import {
   ChevronLeft,
   ChevronRight,
   CircuitBoard,
+  Clapperboard,
   ExternalLink,
   Eye,
   EyeOff,
+  FileMusic,
   FolderPlus,
+  GitBranch,
   GripVertical,
   Layers3,
   Music2,
   Plus,
+  RadioTower,
   Redo2,
   RefreshCw,
   Search,
@@ -29,6 +33,7 @@ import type {ModuleType, WorkspaceType} from '../../types';
 import {
   POIETEK_RACK_DRAG_TYPE,
   RACK_MODULE_CATALOG,
+  isWorkspaceModuleType,
   type RackModuleCategoryId,
 } from './rackModuleCatalog';
 
@@ -55,6 +60,7 @@ const sections: readonly {id: RackModuleCategoryId; label: string; description: 
   {id: 'instruments', label: 'Instruments & Samplers', description: 'Sound sources and playable devices', icon: Music2},
   {id: 'sequencing', label: 'Sequencing & Editors', description: 'Arrangement, MIDI, pitch and groove', icon: Layers3},
   {id: 'effects', label: 'Mix, Effects & Buses', description: 'Effect-capable devices and signal groups', icon: SlidersHorizontal},
+  {id: 'production', label: 'Post, Score & Delivery', description: 'Monitoring, notation, picture, spectral and mastering', icon: Clapperboard},
   {id: 'control', label: 'Routing & Hardware', description: 'Patch, MIDI, mapping and diagnostics', icon: CircuitBoard},
 ] as const;
 
@@ -67,7 +73,19 @@ const moduleIcons: Partial<Record<ModuleType, LucideIcon>> = {
   visual_editor: Boxes,
   health_latency: Activity,
   wave_sequencer: Layers3,
+  composition_workbench: Sparkles,
+  motion_matrix: Activity,
+  session_variations: Layers3,
   fl_channel_rack: Zap,
+  score_workbench: FileMusic,
+  technique_matrix: GitBranch,
+  picture_post: Clapperboard,
+  sequence_assembly: Boxes,
+  batch_delivery: Boxes,
+  live_session_hub: RadioTower,
+  remote_session: RadioTower,
+  control_room: SlidersHorizontal,
+  mastering_delivery: SlidersHorizontal,
 };
 
 export const RackRightSidebar: React.FC<RackRightSidebarProps> = ({
@@ -115,7 +133,7 @@ export const RackRightSidebar: React.FC<RackRightSidebarProps> = ({
 
   const addModule = (type: ModuleType) => {
     onAddModule(type);
-    if (type !== 'folder_combinator') onSelectWorkspace(type);
+    if (isWorkspaceModuleType(type)) onSelectWorkspace(type);
   };
 
   if (!isOpen) {

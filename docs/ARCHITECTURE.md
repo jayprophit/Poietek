@@ -1,5 +1,10 @@
 # Poietek Studio system architecture
 
+The detailed scale, security, reliability, data, API, media, AI, deployment and
+adoption target is defined in
+[`WORLD_CLASS_SYSTEM_ARCHITECTURE.md`](WORLD_CLASS_SYSTEM_ARCHITECTURE.md). This
+file remains the concise map of the architecture implemented in the repository.
+
 Poietek is organized as a local-first creative system wrapped around the useful
 SDS rack interface. The SDS components remain a presentation layer; durable
 creative truth belongs to the versioned Poietek core.
@@ -27,6 +32,20 @@ src/
     ├── settings/             Versioned global preferences and portable profiles
     ├── library/              Original modules, content and availability catalog
     ├── diagnostics/          Evidence-based local benchmark
+    ├── production-workflows/ Score, monitor, post, spectral, offline,
+    │                         immersive, mastering, remote-session and live
+    │                         capture/soundcheck coordination models
+    ├── composition-workflows/Patterns, mixed lanes, note transforms,
+    │                         automation, recall intent, loop drafts, song
+    │                         variants, lyrics and validated track-scene recall
+    ├── engines/comping.ts    Aligned real-audio take discovery, validated
+    │                         segment plans and atomic canonical comp commits
+    ├── performance-workflows/Project-owned scene/slot launch intent,
+    │                         quantized rehearsal capture, runtime evidence
+    │                         gates and atomic arrangement commit
+    ├── region-workflows/     Exact project-owned audio, arrangement and
+    │                         automation membership; deterministic whole-section
+    │                         move/copy plans and atomic project commands
     ├── ai/                   Local assistant, provider catalog and policy
     ├── hardware/             Device, routing, sync and measurement contracts
     ├── community/            Hub, release and tuning destination contracts
@@ -44,6 +63,12 @@ The public API for production modules is `src/poietek/index.ts`. Subsystems may
 still import nearby implementation files internally, but new application code
 should prefer the public barrel when practical.
 
+`native-core/` is the portable C++20 real-time/DSP kernel. It exposes a narrow,
+versioned C ABI to Rust/Tauri and future mobile hosts; it never owns project
+documents, UI state, credentials or provider workflows. This preserves a native
+foundation where deterministic performance matters without duplicating the safer
+domain and application layers.
+
 ## Runtime boundaries
 
 ```mermaid
@@ -59,6 +84,8 @@ flowchart LR
   Assets --> Export
   Project --> Recovery["Crash recovery checkpoints"]
   Project --> Router["Capability router"]
+  Project --> LiveHub["Live Session Hub extension"]
+  LiveHub -. evidence only .-> Devices["Capture / route / remote adapters"]
   Router --> Local["Local provider"]
   Router -. configured only .-> Cloud["Supabase / Firebase adapters"]
   Project --> Platform["Rights, team, commerce, provenance, AI contracts"]
@@ -131,6 +158,57 @@ This device profile is deliberately not stored in `PoietekProject`. The project,
 assets, rights and release data remain portable creative truth; presentation and
 available-device capabilities remain local to the active access point. See
 `DEVICE_AWARE_ACCESS.md` for the complete detection and acceptance matrix.
+
+## Canonical MIDI idea and variation boundary
+
+`MidiClipRecord` objects live in the versioned production-engine extension and
+reference canonical MIDI or instrument tracks. `Note Forge MIDI Lab` is the first
+operational editor for that store. It creates starter clips, computes deterministic
+generator/transform previews without mutation, and commits a new output clip plus
+an applied transformation record through `ProjectSession`. Source clips are never
+overwritten by a variation commit.
+
+The available local clip capability is intentionally narrower than a real-time MIDI
+engine. Its evidence metadata declares playback, retrospective input capture and
+network sync false. MPE, clock output, external scheduling, Link, hardware handoff,
+notation rendering and MusicXML remain separate fail-closed capabilities. This keeps
+serializable creative work reusable by the scoring and performance layers without
+allowing a rack UI to masquerade as an observed audio/MIDI runtime.
+
+## Score techniques and instrument-switch intent
+
+The `org.poietek.performance-techniques` extension is the provider-neutral bridge
+between the canonical score and future instrument adapters. Schema 1.0 owns typed
+direction/attribute techniques, mutual-exclusion groups, normalized score bindings,
+exact sound slots, MIDI trigger intent, player/track assignments and committed plan
+records. It supplements rather than rewrites the earlier score articulation strings
+and production-engine MIDI clip records.
+
+`planProjectTechniquePlayback` is pure. It validates the score, map and assignment,
+converts measure/beat positions with the canonical PPQ, models persistent directions
+and one-note attributes, requires an exact slot and returns reviewable trigger ticks.
+`commitProjectTechniquePlan` re-derives the complete plan from current project truth
+and refuses stale or duplicate operations before recording `planned_for_adapter`.
+The commit does not modify score notes, create clips, touch media or claim MIDI/audio
+execution. Live scheduling, plug-in hosting, audible rendering and third-party map
+interchange remain separate observed-adapter boundaries.
+
+## Editorial memory and exact clip cohorts
+
+The versioned `org.poietek.editorial-memory` extension keeps precision-editing
+context out of transient component state. It owns typed point/range/view memories,
+the active saved selection, track-focus pins, exact audio clip references and an
+auditable editorial operation history. Arrange reads the pin state and deterministically
+orders pinned tracks before unpinned tracks while preserving canonical track order
+inside both groups.
+
+Clip-group capture accepts only real audio clips fully contained by the creator's
+range; a boundary that cuts through a clip fails before mutation. Batch display-name
+plans are pure and carry their source names. Apply revalidates every source name so a
+stale preview cannot overwrite newer work, changes only canonical clip display names,
+preserves Asset IDs, hashes, original asset names and disk files, and becomes one
+`ProjectSession` undo point. Disk rename/relink, AAF/OMF parsing, speech models, AAX
+hosting, EUCON/HDX and immersive rendering remain independent licensed/native adapters.
 
 ## Controlled architecture set
 

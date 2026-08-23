@@ -41,9 +41,11 @@ import "./PoietekStudioWorkspace.css";
 import {StudioArrangerView} from './StudioArrangerView';
 import {StudioConsoleView} from './StudioConsoleView';
 import {subscribeStudioCommands, type StudioCommandDetail} from './studioCommands';
+import {getProjectEditorialWorkflow, toggleProjectEditorialTrackPin} from '../editorial-workflows';
 
 type TransportState = "stopped" | "starting" | "playing" | "paused";
 type SaveState = "loading" | "saving" | "saved" | "error";
+type SampleInputMode = 'mono' | 'stereo' | 'left' | 'right';
 
 export interface PoietekStudioWorkspaceProps {
   className?: string;
@@ -130,7 +132,28 @@ export function PoietekStudioWorkspace({
   const [playheadSeconds, setPlayheadSeconds] = useState(0);
   const [activeDesk, setActiveDesk] = useState<'arrange' | 'console' | 'health'>('arrange');
   const [isRecording, setIsRecording] = useState(false);
+  const [sampleRecorderOpen, setSampleRecorderOpen] = useState(false);
+  const [sampleInputDevices, setSampleInputDevices] = useState<MediaDeviceInfo[]>([]);
+  const [sampleInputDeviceId, setSampleInputDeviceId] = useState('');
+  const [sampleInputMode, setSampleInputMode] = useState<SampleInputMode>('stereo');
+  const [sampleMonitoring, setSampleMonitoring] = useState(false);
+  const [lastRecordedTake, setLastRecordedTake] = useState<{fileName: string; startTick: number} | null>(null);
   const recorder = useMemo(() => new BrowserAudioRecorder(runtime.importAudio), [runtime]);
+
+  const refreshSampleInputs = useCallback(async () => {
+    if (typeof navigator === 'undefined' || !navigator.mediaDevices?.enumerateDevices) {
+      setError('Audio-input enumeration is unavailable in this browser.');
+      return;
+    }
+    try {
+      const devices = (await navigator.mediaDevices.enumerateDevices()).filter((device) => device.kind === 'audioinput');
+      setSampleInputDevices(devices);
+      if (!sampleInputDeviceId && devices[0]?.deviceId) setSampleInputDeviceId(devices[0].deviceId);
+      setNotice(devices.length ? `Found ${devices.length} browser audio input${devices.length === 1 ? '' : 's'}.` : 'No browser audio inputs were reported. Permission may be required before labels appear.');
+    } catch (reason) {
+      setError(messageFrom(reason));
+    }
+  }, [sampleInputDeviceId]);
 
   const refreshProjectList = useCallback(async () => {
     const summaries = await runtime.projects.list();
@@ -375,7 +398,17 @@ export function PoietekStudioWorkspace({
       beginAction('Opening audio input');
       try {
         await pauseForEdit();
-        const started = await recorder.start({monitorInput: false});
+        if (sampleInputMode === 'left' || sampleInputMode === 'right') {
+          throw new Error('USB-L and USB-R isolation requires the native channel-routing adapter. Choose USB stereo or mono in the web app.');
+        }
+        const audioConstraints: MediaTrackConstraints = {
+          channelCount: {ideal: sampleInputMode === 'mono' ? 1 : 2},
+          ...(sampleInputDeviceId ? {deviceId: {exact: sampleInputDeviceId}} : {}),
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false,
+        };
+        const started = await recorder.start({monitorInput: sampleMonitoring, audioConstraints});
         activeRecordingRef.current = started;
         recordingStartTickRef.current = secondsToTicks(
           playheadSeconds,
@@ -430,6 +463,7 @@ export function PoietekStudioWorkspace({
         });
       });
       importedAssetId = null;
+      setLastRecordedTake({fileName: result.fileName, startTick: recordingStartTickRef.current});
       await markSaved(next, `Recorded “${result.fileName}”, created an audio track, and saved the take locally.`);
     } catch (reason) {
       if (importedAssetId) await runtime.assets.remove(importedAssetId).catch(() => undefined);
@@ -568,6 +602,20 @@ export function PoietekStudioWorkspace({
     );
   };
 
+  const toggleTrackPin = (trackId: string) => {
+    void commitProjectEdit(
+      (current) => {
+        const revision = getProjectEditorialWorkflow(current)?.revision ?? 0;
+        return toggleProjectEditorialTrackPin(
+          current,
+          trackId,
+          `editorial.arrange.pin.${revision + 1}`,
+        );
+      },
+      'Track focus pin updated and saved locally.',
+    );
+  };
+
   const play = async () => {
     if (!project || busyAction) return;
     const anySolo = project.tracks.some((track) => track.mixer.solo);
@@ -682,6 +730,13 @@ export function PoietekStudioWorkspace({
       setTransport("paused");
       setError(messageFrom(reason));
     }
+  };
+
+  const recallLastRecordedTake = async () => {
+    if (!project || !lastRecordedTake || busyAction) return;
+    const seconds = ticksToSeconds(lastRecordedTake.startTick, project.tempoMap, project.settings.ppq);
+    await seek(seconds);
+    setNotice(`Recalled “${lastRecordedTake.fileName}” at ${formatClock(seconds)}. Press Play to monitor it through the project mix.`);
   };
 
   const seekFromLane = (event: MouseEvent<HTMLDivElement>) => {
@@ -958,6 +1013,58 @@ export function PoietekStudioWorkspace({
               disabled={Boolean(busyAction) || !hasClips}
               aria-label="Timeline playhead"
             />
+            <div className="poietek-sample-recorder-actions" aria-label="Sample record and recall">
+              <button type="button" onClick={() => setSampleRecorderOpen((open) => !open)} aria-expanded={sampleRecorderOpen}>
+                SAMPLE
+              </button>
+              <button
+                type="button"
+                className={isRecording ? 'is-recording' : ''}
+                onClick={() => void toggleRecording()}
+                disabled={(Boolean(busyAction) && !isRecording) || recorder.getCapability().state === 'unavailable'}
+              >
+                {isRecording ? 'STOP' : 'REC'}
+              </button>
+              <button type="button" onClick={() => void recallLastRecordedTake()} disabled={!lastRecordedTake || Boolean(busyAction)}>
+                RECALL
+              </button>
+              <span>{lastRecordedTake ? lastRecordedTake.fileName : 'No captured take yet'}</span>
+            </div>
+            {sampleRecorderOpen ? (
+              <section className="poietek-sample-recorder" aria-label="Sample recording setup">
+                <div>
+                  <p className="poietek-eyebrow">Live sample input</p>
+                  <h3>Record &amp; Recall</h3>
+                  <p>Capture the selected real browser input, save it locally as a project take, then recall its timeline position.</p>
+                </div>
+                <label>
+                  Input device
+                  <select value={sampleInputDeviceId} onChange={(event) => setSampleInputDeviceId(event.target.value)} disabled={isRecording}>
+                    <option value="">System default / microphone</option>
+                    {sampleInputDevices.map((device, index) => (
+                      <option value={device.deviceId} key={device.deviceId || `input-${index}`}>
+                        {device.label || `Audio input ${index + 1} · permission required for label`}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <button type="button" onClick={() => void refreshSampleInputs()} disabled={isRecording}>SCAN INPUTS</button>
+                <fieldset disabled={isRecording}>
+                  <legend>Record source</legend>
+                  {(['mono', 'stereo', 'left', 'right'] as const).map((mode) => (
+                    <label key={mode} title={mode === 'left' || mode === 'right' ? 'Requires the native per-channel routing adapter' : undefined}>
+                      <input type="radio" name="sample-input-mode" value={mode} checked={sampleInputMode === mode} onChange={() => setSampleInputMode(mode)} />
+                      {mode === 'mono' ? 'MIC / MONO' : mode === 'stereo' ? 'USB STEREO' : mode === 'left' ? 'USB-L · NATIVE' : 'USB-R · NATIVE'}
+                    </label>
+                  ))}
+                </fieldset>
+                <label className="poietek-sample-monitor-toggle">
+                  <input type="checkbox" checked={sampleMonitoring} onChange={(event) => setSampleMonitoring(event.target.checked)} disabled={isRecording || !recorder.getCapability().inputMonitoringAvailable} />
+                  Monitor live input
+                </label>
+                <p className="poietek-sample-recorder-warning">Use headphones when monitoring to avoid acoustic feedback. Browser labels and channels are reported capabilities, not assumed USB hardware.</p>
+              </section>
+            ) : null}
           </section>
 
           <nav className="poietek-desk-tabs" aria-label="Production workspace views">
@@ -986,6 +1093,7 @@ export function PoietekStudioWorkspace({
               onSetClip={setClip}
               onSplitClip={splitClip}
               onRemoveClip={removeClip}
+              onToggleTrackPin={toggleTrackPin}
             />
           ) : null}
 

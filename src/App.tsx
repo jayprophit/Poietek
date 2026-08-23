@@ -13,7 +13,13 @@ import { StudioTransport } from './components/rack/StudioTransport';
 import { StudioRearPanel } from './components/rack/StudioRearPanel';
 import { StudioRackDevice } from './components/rack/StudioRackDevice';
 import { RackRightSidebar } from './components/rack/RackRightSidebar';
-import { createRackModuleItem } from './components/rack/rackModuleCatalog';
+import {
+  createRackModuleItem,
+  getRackModuleDefinition,
+  isRackModuleType,
+  isWorkspaceModuleType,
+} from './components/rack/rackModuleCatalog';
+import {insertRackModuleByRole} from './poietek/rack';
 
 import { CanvasDrumGridWorkspace } from './components/workspaces/CanvasDrumGridWorkspace';
 import { GrainDeckWorkspace } from './components/workspaces/GrainDeckWorkspace';
@@ -43,10 +49,526 @@ import { RackModuleItem, StudioTemplate, ModuleType } from './types';
 import { RackStackManager } from './components/rack/RackStackManager';
 import { TemplatesModal } from './components/daw/TemplatesModal';
 import { GuidedWalkthroughBanner } from './components/daw/GuidedWalkthroughBanner';
-import {subscribeStudioCommands} from './poietek/react/studioCommands';
+import {markStudioCommandAreaReady, subscribeStudioCommands} from './poietek/react/studioCommands';
 import {BrowserStudioSettingsRepository, type StudioPreferences} from './poietek/settings';
+import {usePoietekRuntime} from './poietek/react/PoietekRuntimeProvider';
+import {
+  getProjectCompositionWorkflow,
+  saveAndApplyProjectMixScene,
+  type MixScene,
+} from './poietek/composition-workflows';
+import type {PoietekProject} from './poietek/domain/types';
+import {
+  mutateProjectLiveSessionState,
+  type LiveSessionMutation,
+  mutateProjectPicturePostState,
+  type PicturePostMutation,
+  mutateProjectSequenceAssemblyState,
+  type SequenceAssemblyMutation,
+  mutateProjectBatchDeliveryState,
+  type BatchDeliveryMutation,
+} from './poietek/production-workflows';
+import {
+  mutateProjectActionWorkflowState,
+  runProjectActionRecipe,
+  runProjectCycleAction,
+  type ActionWorkflowMutation,
+} from './poietek/action-workflows';
+import {
+  mutateProjectModulationWorkflowState,
+  type ModulationWorkflowMutation,
+} from './poietek/modulation-workflows';
+import {
+  commitProjectPerformanceCapture,
+  createStarterPerformanceCanvasProject,
+  mutateProjectPerformanceCanvasState,
+  type PerformanceCanvasMutation,
+} from './poietek/performance-workflows';
+import {
+  applyProjectProductionRegionAction,
+  captureProjectProductionRegion,
+  createStarterProductionRegionsProject,
+  type CaptureProductionRegionInput,
+  type ProductionRegionAction,
+} from './poietek/region-workflows';
+import {
+  createStarterTrackingConsoleProject,
+  mutateProjectTrackingConsoleState,
+  type TrackingConsoleMutation,
+} from './poietek/tracking-workflows';
+import {
+  commitProjectTakeComp,
+  createProjectTakeComp,
+  selectProjectTakeCompSegment,
+} from './poietek/engines/comping';
+import {
+  commitProjectMidiOperation,
+  createStarterMidiClip,
+  type CreateStarterMidiClipInput,
+  type NoteForgeOperationInput,
+} from './poietek/engines/midiLab';
+import {
+  applyProjectEditorialBatchRename,
+  createProjectEditorialClipGroup,
+  createStarterEditorialProject,
+  recallProjectEditorialMemory,
+  saveProjectEditorialMemory,
+  setProjectEditorialEditPolicy,
+  type CreateEditorialClipGroupInput,
+  type EditorialBatchRenamePlan,
+  type EditorialEditPolicy,
+  type SaveEditorialMemoryInput,
+} from './poietek/editorial-workflows';
+import {
+  commitProjectTechniquePlan,
+  createStarterTechniqueMatrixProject,
+  type TechniquePlaybackPlan,
+} from './poietek/technique-workflows';
 
 export default function App() {
+  const {
+    runtime: projectRuntime,
+    status: projectRuntimeStatus,
+    refreshProject,
+  } = usePoietekRuntime();
+  const [canonicalProject, setCanonicalProject] = useState<PoietekProject | null>(null);
+  const [projectEditBusy, setProjectEditBusy] = useState(false);
+
+  useEffect(() => {
+    if (projectRuntimeStatus !== 'ready') return;
+    setCanonicalProject(projectRuntime.getSession().getSnapshot());
+  }, [projectRuntime, projectRuntimeStatus]);
+
+  const adoptCanonicalProject = useCallback((project: PoietekProject) => {
+    setCanonicalProject(project);
+    refreshProject();
+  }, [refreshProject]);
+
+  const handleApplyProjectMixScene = useCallback(async (scene: MixScene) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => saveAndApplyProjectMixScene(current, scene));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleMutateLiveSession = useCallback(async (mutation: LiveSessionMutation) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => (
+        mutateProjectLiveSessionState(current, mutation)
+      ));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleInitializeTrackingConsole = useCallback(async () => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => createStarterTrackingConsoleProject(current));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleMutateTrackingConsole = useCallback(async (mutation: TrackingConsoleMutation) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => mutateProjectTrackingConsoleState(current, mutation));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleCreateTakeComp = useCallback(async (
+    sourceClipIds: readonly string[],
+    groupId: string,
+    name: string,
+  ) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => createProjectTakeComp(current, {
+        groupId,
+        name,
+        sourceClipIds,
+      }));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleSelectTakeForSegment = useCallback(async (
+    groupId: string,
+    segmentId: string,
+    takeLaneId: string,
+  ) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => (
+        selectProjectTakeCompSegment(current, groupId, segmentId, takeLaneId)
+      ));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleCommitTakeComp = useCallback(async (groupId: string) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => commitProjectTakeComp(current, groupId));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleCreateStarterMidiClip = useCallback(async (input: CreateStarterMidiClipInput) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => createStarterMidiClip(current, input));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleCommitMidiOperation = useCallback(async (input: NoteForgeOperationInput) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => commitProjectMidiOperation(current, input));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleInitializeTechniqueMatrix = useCallback(async () => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => createStarterTechniqueMatrixProject(current));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleCommitTechniquePlan = useCallback(async (plan: TechniquePlaybackPlan) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => commitProjectTechniquePlan(current, plan));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleMutatePicturePost = useCallback(async (mutation: PicturePostMutation) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => (
+        mutateProjectPicturePostState(current, mutation)
+      ));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleMutateSequenceAssembly = useCallback(async (mutation: SequenceAssemblyMutation) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => (
+        mutateProjectSequenceAssemblyState(current, mutation)
+      ));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleMutateBatchDelivery = useCallback(async (mutation: BatchDeliveryMutation) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => (
+        mutateProjectBatchDeliveryState(current, mutation)
+      ));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleMutateActionWorkflow = useCallback(async (mutation: ActionWorkflowMutation) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => (
+        mutateProjectActionWorkflowState(current, mutation)
+      ));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleRunActionRecipe = useCallback(async (recipeId: string) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => runProjectActionRecipe(current, recipeId));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleRunCycleAction = useCallback(async (cycleId: string) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => runProjectCycleAction(current, cycleId));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleMutateModulationWorkflow = useCallback(async (mutation: ModulationWorkflowMutation) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => (
+        mutateProjectModulationWorkflowState(current, mutation)
+      ));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleInitializePerformanceCanvas = useCallback(async () => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => createStarterPerformanceCanvasProject(current));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleMutatePerformanceCanvas = useCallback(async (mutation: PerformanceCanvasMutation) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => mutateProjectPerformanceCanvasState(current, mutation));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleCommitPerformanceCapture = useCallback(async (commitId: string, insertionTick: number) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => commitProjectPerformanceCapture(current, commitId, insertionTick));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleInitializeProductionRegions = useCallback(async () => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => createStarterProductionRegionsProject(current));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleCaptureProductionRegion = useCallback(async (input: CaptureProductionRegionInput) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => captureProjectProductionRegion(current, input));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleApplyProductionRegionAction = useCallback(async (
+    regionId: string,
+    action: ProductionRegionAction,
+    targetStartTick: number,
+    operationId: string,
+  ) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => applyProjectProductionRegionAction(
+        current,
+        regionId,
+        action,
+        targetStartTick,
+        operationId,
+      ));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleInitializeEditorial = useCallback(async () => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => createStarterEditorialProject(current));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleSaveEditorialMemory = useCallback(async (input: SaveEditorialMemoryInput) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => saveProjectEditorialMemory(current, input));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleRecallEditorialMemory = useCallback(async (memoryId: string, operationId: string) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => recallProjectEditorialMemory(current, memoryId, operationId));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleCreateEditorialClipGroup = useCallback(async (input: CreateEditorialClipGroupInput) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => createProjectEditorialClipGroup(current, input));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleApplyEditorialBatchRename = useCallback(async (plan: EditorialBatchRenamePlan) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => applyProjectEditorialBatchRename(current, plan));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleSetEditorialEditPolicy = useCallback(async (policy: EditorialEditPolicy, operationId: string) => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      const next = await projectRuntime.getSession().mutate((current) => setProjectEditorialEditPolicy(current, policy, operationId));
+      adoptCanonicalProject(next);
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleUndoProject = useCallback(async () => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      adoptCanonicalProject(await projectRuntime.getSession().undo());
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const handleRedoProject = useCallback(async () => {
+    if (projectRuntimeStatus !== 'ready') throw new Error('The local project session is still starting.');
+    if (projectEditBusy) throw new Error('Another project edit is already in progress.');
+    setProjectEditBusy(true);
+    try {
+      adoptCanonicalProject(await projectRuntime.getSession().redo());
+    } finally {
+      setProjectEditBusy(false);
+    }
+  }, [adoptCanonicalProject, projectEditBusy, projectRuntime, projectRuntimeStatus]);
+
+  const canUndoProject = projectRuntimeStatus === 'ready' && projectRuntime.getSession().canUndo();
+  const canRedoProject = projectRuntimeStatus === 'ready' && projectRuntime.getSession().canRedo();
+  const activeProjectMixSceneId = canonicalProject
+    ? getProjectCompositionWorkflow(canonicalProject)?.activeMixSceneId ?? null
+    : null;
+
   // Master Global App State
   const [masterState, setMasterState] = useState<MasterState>({
     bpm: 94,
@@ -83,6 +605,9 @@ export default function App() {
   // Infinite Rack Modules State with Undo/Redo History Stack
   const [rackHistory, setRackHistory] = useState<RackModuleItem[][]>([
     [
+      { id: 'start_idea', type: 'composition_workbench', title: 'Idea Flow Workbench', tapeLabel: 'IDEA FLOW', parameters: {view: 'pattern', activePattern: 'pattern-a', swing: 0.5, scaleRoot: 0, scaleType: 'major', noteTool: 'original', automationCurve: 'smooth', automationMid: 0.78, captureArmed: false} },
+      { id: 'start_motion', type: 'motion_matrix', title: 'Motion Matrix', tapeLabel: 'MOTION MATRIX', parameters: {view: 'modulators'} },
+      { id: 'start_score', type: 'score_workbench', title: 'Score & Parts Workbench', tapeLabel: 'SCORE WORKBENCH', parameters: {scoreMode: 'write', playerCount: 1, articulationPlayback: true, followPicture: false} },
       { id: 'start_mpc', type: 'mpc', title: 'Canvas Drum Grid', tapeLabel: 'FOUNDRY KIT' },
       { id: 'start_synth', type: 'keyboard', title: 'Analog Subtractive Synth', tapeLabel: 'LEAD SYNTH' },
       {
@@ -95,6 +620,7 @@ export default function App() {
       { id: 'start_sp404', type: 'sp404', title: 'Grain Deck Sampler', tapeLabel: 'TEXTURE FX', groupId: 'start_bus' },
       { id: 'start_pitch', type: 'melodyne_pitch', title: 'Vocal Contour Editor', tapeLabel: 'PITCH MAP' },
       { id: 'start_mixer', type: 'mixer', title: 'Summit Master Console', tapeLabel: 'MASTER CONSOLE' },
+      { id: 'start_control_room', type: 'control_room', title: 'Monitor, Cue & Talkback', tapeLabel: 'CONTROL ROOM', parameters: {source: 'main', monitorFormat: 'stereo', cueBusCount: 2, dimDb: -20, dimEnabled: false, monoEnabled: false, talkbackEnabled: false} },
     ],
   ]);
   const [historyIndex, setHistoryIndex] = useState<number>(0);
@@ -164,7 +690,23 @@ export default function App() {
   }, [handleUndo, handleRedo]);
 
   const handleAddModuleToRack = (type: ModuleType) => {
-    setRackModules((prev) => [...prev, createRackModuleItem(type)]);
+    const newModule = createRackModuleItem(type);
+    setRackModules((prev) => {
+      const annotate = (module: RackModuleItem) => {
+        const definition = getRackModuleDefinition(module.type);
+        return {
+          id: module.id,
+          title: module.title,
+          role: definition.role,
+          inputs: definition.inputs,
+          outputs: definition.outputs,
+          groupId: module.groupId,
+          module,
+        };
+      };
+      return insertRackModuleByRole(prev.map(annotate), annotate(newModule))
+        .map((entry) => entry.module);
+    });
   };
 
   const handleLoadTemplate = (template: StudioTemplate) => {
@@ -347,13 +889,20 @@ export default function App() {
         break;
       case 'rack-workspace': {
         if (!command.value) break;
-        const workspace = command.value as WorkspaceType;
-        setMasterState((current) => ({...current, activeWorkspace: workspace}));
-        handleAddModuleToRack(workspace);
+        if (!isRackModuleType(command.value)) break;
+        if (isWorkspaceModuleType(command.value)) {
+          setMasterState((current) => ({...current, activeWorkspace: command.value as WorkspaceType}));
+        }
+        handleAddModuleToRack(command.value);
         break;
       }
     }
   }), [handleRedo, handleTogglePlayStop, handleUndo]);
+
+  useEffect(() => {
+    markStudioCommandAreaReady('rack', true);
+    return () => markStudioCommandAreaReady('rack', false);
+  }, []);
 
   useEffect(() => {
     setAutoHideBars(new BrowserStudioSettingsRepository().load().preferences.appearance.autoHideTransportBars);
@@ -408,7 +957,7 @@ export default function App() {
             {isFlipped ? (
               /* REAR PANEL VIEW WITH CABLES */
               <StudioRearPanel
-                masterState={masterState}
+                rackModules={rackModules}
                 onToggleFlip={() => setIsFlipped(false)}
               />
             ) : (
@@ -434,6 +983,43 @@ export default function App() {
                 onZoomChange={setRackZoom}
                 autoFit={rackAutoFit}
                 onAutoFitChange={setRackAutoFit}
+                project={canonicalProject}
+                activeProjectMixSceneId={activeProjectMixSceneId}
+                projectEditBusy={projectEditBusy}
+                canUndoProject={canUndoProject}
+                canRedoProject={canRedoProject}
+                onApplyProjectMixScene={handleApplyProjectMixScene}
+                onInitializeTrackingConsole={handleInitializeTrackingConsole}
+                onMutateTrackingConsole={handleMutateTrackingConsole}
+                onCreateTakeComp={handleCreateTakeComp}
+                onSelectTakeForSegment={handleSelectTakeForSegment}
+                onCommitTakeComp={handleCommitTakeComp}
+                onCreateStarterMidiClip={handleCreateStarterMidiClip}
+                onCommitMidiOperation={handleCommitMidiOperation}
+                onInitializeTechniqueMatrix={handleInitializeTechniqueMatrix}
+                onCommitTechniquePlan={handleCommitTechniquePlan}
+                onMutateLiveSession={handleMutateLiveSession}
+                onMutatePicturePost={handleMutatePicturePost}
+                onMutateSequenceAssembly={handleMutateSequenceAssembly}
+                onMutateBatchDelivery={handleMutateBatchDelivery}
+                onMutateActionWorkflow={handleMutateActionWorkflow}
+                onRunActionRecipe={handleRunActionRecipe}
+                onRunCycleAction={handleRunCycleAction}
+                onMutateModulationWorkflow={handleMutateModulationWorkflow}
+                onInitializePerformanceCanvas={handleInitializePerformanceCanvas}
+                onMutatePerformanceCanvas={handleMutatePerformanceCanvas}
+                onCommitPerformanceCapture={handleCommitPerformanceCapture}
+                onInitializeProductionRegions={handleInitializeProductionRegions}
+                onCaptureProductionRegion={handleCaptureProductionRegion}
+                onApplyProductionRegionAction={handleApplyProductionRegionAction}
+                onInitializeEditorial={handleInitializeEditorial}
+                onSaveEditorialMemory={handleSaveEditorialMemory}
+                onRecallEditorialMemory={handleRecallEditorialMemory}
+                onCreateEditorialClipGroup={handleCreateEditorialClipGroup}
+                onApplyEditorialBatchRename={handleApplyEditorialBatchRename}
+                onSetEditorialEditPolicy={handleSetEditorialEditPolicy}
+                onUndoProject={handleUndoProject}
+                onRedoProject={handleRedoProject}
               />
             )}
           </main>

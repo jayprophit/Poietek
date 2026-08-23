@@ -26,6 +26,7 @@
   "exclude": [
     "node_modules",
     "dist",
-    "zip-files"
+    "zip-files",
+    "_archive"
   ]
 }

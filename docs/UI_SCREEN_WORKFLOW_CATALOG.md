@@ -35,7 +35,7 @@ separate transport or project truth.
 | `SCR-020` | Circle of Fifths | prototype | Harmony/key exploration. |
 | `SCR-021` | Vocal Contour | prototype/unavailable DSP | Pitch editor concept; production pitch DSP is not claimed. |
 | `SCR-022` | Human Pulse Groove Pool | prototype | Groove selection and humanization concept. |
-| `SCR-023` | Piano Roll | prototype | Note/pattern editor concept; canonical MIDI-track persistence is planned. |
+| `SCR-023` | Piano Roll | prototype | Note/pattern editor concept; canonical MIDI persistence is operational through Note Forge but this visual editor is not yet wired to that store. |
 | `SCR-024` | Horizon legacy waveform module | prototype/retained | Synthetic legacy module retained inside Rack; canonical wave editing is `SCR-004`. |
 | `SCR-025` | Beat Loom channel rack | prototype | Step/pattern workflow concept. |
 | `SCR-026` | Chop Lab | prototype | Slice-count, reverse and pad-map concept; canonical slicing is planned. |
@@ -58,6 +58,14 @@ separate transport or project truth.
 | `SCR-043` | Video/VFX workspace | foundation/planned UI | Picture timeline, proxies, captions, colour, compositor and render jobs. |
 | `SCR-044` | Developer centre | planned | SDKs, adapter status, logs, fixtures, validation and signing. |
 | `SCR-045` | Organization administration | planned | Membership, roles, billing, retention, security, integrations and audit. |
+| `SCR-046` | Sequence Assembly Workbench | operational control model/native gates | Independent song, picture, live and scratch sequences; per-sequence conductor maps; shared resource references; deterministic program chains; planning manifest. Transport, shared processing and rendering require observed adapters. |
+| `SCR-047` | Batch Delivery Workshop | operational control model/native gates | Canonical audio source set; provider-neutral recipe graph; multi-output variants; portable naming tokens; contained dry run; collision policies; one-file pilot and aggregate run evidence. DSP, codecs, plug-ins, standards analysis and filesystem delivery require observed adapters. |
+| `SCR-048` | Performance Canvas | operational control model/runtime gates | Canonical scenes, lanes and pattern/audio slots; quantized launch/stop events; explicit follow plans; deterministic rehearsal capture; previewable atomic arrangement commit. Audible launch, automatic follow dispatch and hardware control require observed runtime adapters. |
+| `SCR-049` | Production Regions | operational control model/runtime gates | Exact canonical audio-clip, arrangement-clip and automation membership; boundary-safe range capture; deterministic move/copy preview; collision checks; operation history and one-step project undo. Audible scheduling and native timeline drag require observed adapters. |
+| `SCR-050` | Take Studio & Comp Builder | operational canonical edit/runtime gates | Real aligned audio-take discovery; project-owned take lanes and contiguous comp segments; exact source-offset and destination-collision preview; canonical comp clips, source preservation and one-step project undo. Automatic recording, audible lane audition, pitch/time DSP and flatten/merge rendering remain separate gates. |
+| `SCR-051` | Note Forge MIDI Lab | operational canonical MIDI edit/runtime gates | Canonical MIDI track/clip starter; deterministic rhythm/chord generation; pure non-destructive variation preview; new-clip commit and one-step project undo. Playback, retrospective input, MPE, external output, Link and hardware handoff remain separate gates. |
+| `SCR-052` | Editorial Memory & Clip Groups | operational canonical editorial state/runtime gates | Typed point/range/view memories; exact saved edit selection; project-owned track pins that drive Arrange ordering; boundary-safe real-audio clip cohorts; deterministic batch display-name preview; stale-preview refusal, asset preservation and one-step project undo. AAF/OMF, transcription, AAX, EUCON/HDX and licensed immersive rendering remain separate gates. |
+| `SCR-053` | Technique Matrix & Score Bridge | operational canonical score-technique plan/runtime gates | Versioned direction and one-note attribute techniques; mutual-exclusion rules; score bindings; exact keyswitch/CC/program sound slots; attack-compensated deterministic tick plan; stale-plan refusal, adapter-intent commit and one-step project undo. MIDI dispatch, plug-in response, audible playback and third-party map import remain separate gates. |
 
 All operational screens require loading, empty, ready, busy/progress, permission,
 recoverable-error, unavailable and destructive-confirmation states where relevant.
@@ -98,7 +106,7 @@ unavailable reason.
 | `MENU-PROJECT-001` | Project Rack | operational. |
 | `MENU-PROJECT-002` | Starter Songs & Templates… | prototype Rack templates. |
 | `MENU-PROJECT-003` | Files, Autosave & Recovery… | operational settings/foundation recovery. |
-| `MENU-PROJECT-004` | Tempo Map & Signature… | unavailable editor; canonical tempo-map model exists. |
+| `MENU-PROJECT-004` | Tempo Map & Signature… | unavailable global editor; canonical global tempo data and the Rack's per-sequence Conductor view exist. |
 
 ### Track (`MENU-TRACK`)
 
@@ -107,8 +115,9 @@ unavailable reason.
 | `MENU-TRACK-001` | Add Audio Track by Import… | operational. |
 | `MENU-TRACK-002` | Show Arrangement | operational. |
 | `MENU-TRACK-003` | Show Mix Console | operational slice. |
-| `MENU-TRACK-004` | Add MIDI / Instrument Track | unavailable pending canonical MIDI/instrument tracks. |
-| `MENU-TRACK-005` | Track Versions & Comping | unavailable pending take/comp engine. |
+| `MENU-TRACK-004` | Add MIDI / Instrument Track in Note Forge | operational through the focused canonical Note Forge starter workflow. |
+| `MENU-TRACK-005` | Take Studio & Comp Builder | operational canonical take/comp edit; automatic loop recording and flatten/merge remain gated. |
+| `MENU-TRACK-006` | Track Focus & Edit Memories | operational project-owned track pins and typed edit-memory workflow. Hardware-surface attention remains gated. |
 
 ### Clip (`MENU-CLIP`)
 
@@ -134,10 +143,12 @@ unavailable reason.
 | Item ID | Item | Status/action |
 | --- | --- | --- |
 | `MENU-MIDI-001` | MIDI & Sync Setup… | operational settings with truthful capability state. |
-| `MENU-MIDI-002` | MIDI Routing Matrix | foundation UI. |
-| `MENU-MIDI-003` | Piano Roll | prototype. |
-| `MENU-MIDI-004` | MIDI Learn / Hardware Mapper | foundation UI. |
-| `MENU-MIDI-005` | MIDI Clock Output | unavailable until verified output scheduler/adapter. |
+| `MENU-MIDI-002` | Note Forge MIDI Lab | operational canonical MIDI clip/generator/variation workflow; playback and output remain gated. |
+| `MENU-MIDI-003` | Technique Matrix & Score Bridge | operational exact score-technique switch planning and undoable adapter-intent commit; dispatch and playback remain gated. |
+| `MENU-MIDI-004` | MIDI Routing Matrix | foundation UI. |
+| `MENU-MIDI-005` | Piano Roll | prototype. |
+| `MENU-MIDI-006` | MIDI Learn / Hardware Mapper | foundation UI. |
+| `MENU-MIDI-007` | MIDI Clock Output | unavailable until verified output scheduler/adapter. |
 
 ### Devices (`MENU-DEVICES`)
 
@@ -243,6 +254,14 @@ are parameterized controls with stable behavior, not separately named features.
 | `BTN-RACK-003` | Rack manager | Undo/redo Rack, add device, group/folder and reorder. |
 | `BTN-RACK-004` | Rear patching | Select jack, create/remove cable intent, Reset Default Patching and Front Rack. |
 | `BTN-RACK-005` | Browser/palette | Open/close, filter/search, select device, Templates, AI Groove, auto-hide and detach. |
+| `BTN-SEQUENCE-001` | Sequence Assembly | Select canonical sequence focus; inspect tempo/meter/key/marker lanes; create original starter data; inspect shared resource gates; resolve program; export planning-only JSON manifest. No control implies active playback or rendering. |
+| `BTN-BATCH-001` | Batch Delivery | Select canonical sources; bypass recipe nodes; edit per-output templates and conflict policy; inspect contained dry-run rows; select one pilot; inspect preview/adapter/report gates; export planning-only JSON. No control implies DSP, analysis, encoding, filesystem mutation or completed delivery. |
+| `BTN-PERFORMANCE-001` | Performance Canvas | Create original source patterns/lanes; capture; launch scene/slot; stop lane/take; advance manual rehearsal cursor; inspect follow/readiness; preview and atomically commit arrangement clips. No control implies an audible sample-accurate launch or observed controller. |
+| `BTN-REGION-001` | Production Regions | Create original starter sections; select or capture exact ranges; choose move/copy and target bar; inspect a pure member plan; apply one canonical project transaction; inspect history/readiness. No control implies audible scheduling or a native timeline gesture. |
+| `BTN-TAKE-001` | Take Studio | Discover aligned canonical audio clips; create take lanes; select a source lane per contiguous segment; inspect exact source offsets and collisions; commit clip references and source mute as one project transaction; undo/redo. No control implies live recording, audible swipe audition, pitch/time processing or rendered flatten/merge media. |
+| `BTN-NOTE-FORGE-001` | Note Forge | Create/select canonical MIDI clips; select visible transform or generator constraints; inspect the deterministic preview; commit a new source-preserving clip; undo. No control implies audible playback, captured input, MPE, external output, Link or hardware operation. |
+| `BTN-TECHNIQUE-001` | Technique Matrix | Initialize a canonical score/map/assignment; inspect direction and attribute techniques, mutual-exclusion rules, score bindings and exact sound slots; review exact trigger ticks; commit adapter intent; undo. No control implies MIDI dispatch, plug-in response, imported proprietary maps or audible playback. |
+| `BTN-EDITORIAL-001` | Editorial Memory | Initialize typed starter memories; save or recall point/range/view selections; record explicit edit-policy intent; pin canonical tracks in Arrange; capture only fully-contained real-audio clips; preview deterministic display names; apply as one project edit; undo. No control implies disk-file rename, AAF/OMF interchange, transcription, AAX hosting, EUCON/HDX or immersive rendering. |
 | `BTN-SAMPLER-001` | Drum/Grain/Chop | Bank, pad trigger/select, pitch/level/pan/start/end/loop, resample, slice count, reverse and Chop & Map. Prototype state must be visible. |
 | `BTN-MIDI-001` | MIDI/mapper | Permission/initialize, explicit simulator, route/source/destination, processor toggle, mapping capture and Export Profile JSON. |
 | `BTN-AI-001` | AI Studio | Mode, Analyze Project, provider, endpoint/model/configuration, Check Route and Save Locally; remote consent and health state. |
@@ -260,6 +279,11 @@ are parameterized controls with stable behavior, not separately named features.
 | Inspect/export | Audio/File | `SCR-006`, `SCR-002` | Honest measurements and PCM16 WAV with limitations. |
 | Configure | Edit/Audio/MIDI/Devices/Help | `SCR-030` | Validated settings document/profile. |
 | Hardware/MIDI | Devices/MIDI | `SCR-007`, `SCR-017`–`SCR-019`, `SCR-027` | Capability observation/profile/mapping; not invented verification. |
+| MIDI idea generation and non-destructive variations | MIDI/Production/Devices | `SCR-007`, `SCR-051` | Canonical clip plus applied transformation record and one undoable project revision; realtime input/playback/output/network evidence remains explicit. |
+| Multi-sequence cue/program assembly | Production/Devices | `SCR-007`, `SCR-046` | Canonical independent sequence/conductor/resource/program revision and planning manifest; transport, shared-host and render gates remain explicit. |
+| Batch asset preparation and delivery | Production/Devices | `SCR-007`, `SCR-047` | Canonical source/recipe/output revision, protected dry run and planning manifest; pilot, DSP, codec, analyzer, plug-in, filesystem and report evidence gates remain explicit. |
+| Scene performance and arrangement capture | Production/Devices | `SCR-007`, `SCR-048`, `SCR-004` | Versioned launch events and one undoable arrangement commit; live scheduler, follow dispatch and controller evidence remain explicit. |
+| Whole-section clip and automation editing | Production/Devices | `SCR-007`, `SCR-049`, `SCR-004` | Versioned exact-member regions, pure move/copy plan and one undoable canonical project commit; audible scheduling and native timeline gesture evidence remain explicit. |
 | AI | F9/menu | `SCR-032` | Evidence-linked response; project unchanged unless later preview/accept/apply workflow is used. |
 | Install/offline | Shell status | `SCR-031` | Deployment capability snapshot and explicit browser response. |
 | Rights/release/community/marketplace | future shell areas | `SCR-037`–`SCR-041` | Evidence-backed external states; no self-declared acceptance/payment/publication. |

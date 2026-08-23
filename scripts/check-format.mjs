@@ -5,6 +5,7 @@ const roots = [
   '.github',
   'deployment',
   'docs',
+  'native-core',
   'public',
   'scripts',
   'src',
@@ -13,6 +14,8 @@ const roots = [
 ];
 const textExtensions = new Set([
   '.css',
+  '.cpp',
+  '.h',
   '.html',
   '.js',
   '.json',
@@ -25,12 +28,15 @@ const textExtensions = new Set([
   '.yaml',
   '.yml',
 ]);
-const ignoredDirectories = new Set(['.compiled-core', 'target']);
+const ignoredDirectories = new Set(['.compiled-core', 'build', 'target']);
 const problems = [];
 
 async function inspectDirectory(directory) {
   for (const entry of await readdir(directory, {withFileTypes: true})) {
-    if (entry.isDirectory() && ignoredDirectories.has(entry.name)) continue;
+    if (
+      entry.isDirectory() &&
+      (ignoredDirectories.has(entry.name) || entry.name.startsWith('build-'))
+    ) continue;
     const filePath = path.join(directory, entry.name);
     if (entry.isDirectory()) {
       await inspectDirectory(filePath);

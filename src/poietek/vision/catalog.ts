@@ -49,8 +49,8 @@ export const SDS_VISION_CATALOG: readonly VisionCapabilityArea[] = [
   {
     id: 'audio-production', category: 'Create', name: 'Audio production engine', status: 'operational', horizon: 'now',
     purpose: 'Recording, waveform editing, mixing, routing, rendering and deterministic audio checks.',
-    currentEvidence: ['real browser decode/import', 'Web Audio timeline playback', 'gain/pan/mute/solo', 'browser recording', 'PCM WAV export'],
-    advances: ['automation lanes', 'take comping', 'elastic audio', 'spectrogram editing', 'freeze/bounce'],
+    currentEvidence: ['real browser decode/import', 'Web Audio timeline playback', 'gain/pan/mute/solo', 'browser recording', 'project-owned take lanes and atomic comp commit', 'durable edit memories, track pins, exact clip cohorts and stale-safe batch display names', 'PCM WAV export'],
+    advances: ['arranger-integrated loop take capture', 'audible lane audition', 'automation lanes', 'elastic audio', 'spectrogram editing', 'freeze/bounce'],
     gates: ['validated LUFS/dBTP backend', 'native low-latency adapter for professional desktop I/O'],
   },
   {
@@ -63,8 +63,8 @@ export const SDS_VISION_CATALOG: readonly VisionCapabilityArea[] = [
   {
     id: 'midi-hardware', category: 'Connect', name: 'MIDI and hardware integration', status: 'foundation', horizon: 'next',
     purpose: 'Capability-negotiated MIDI, controller profiles, audio interfaces, patching and studio devices.',
-    currentEvidence: ['truthful Web MIDI manager', 'explicit SysEx consent', 'versioned hardware profiles', 'adapter negotiation', 'patch verification'],
-    advances: ['MIDI output and clock', 'MIDI 2/MPE adapters', 'OSC', 'Bluetooth/network controllers', 'profile editor'],
+    currentEvidence: ['canonical project MIDI clips', 'deterministic non-destructive MIDI variations', 'versioned score-technique maps with exact switch plans', 'truthful Web MIDI manager', 'explicit SysEx consent', 'versioned hardware profiles', 'adapter negotiation', 'patch verification'],
+    advances: ['retrospective MIDI input capture', 'live dispatch of reviewed score-technique plans', 'MIDI output and clock', 'MIDI 2/MPE adapters', 'OSC', 'Bluetooth/network controllers', 'profile editor'],
     gates: ['physical devices and manufacturer documentation', 'native USB/network adapters where web APIs cannot reach hardware'],
   },
   {

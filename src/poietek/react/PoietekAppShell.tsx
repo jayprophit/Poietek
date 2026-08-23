@@ -2,7 +2,13 @@ import {lazy, Suspense, useCallback, useEffect, useState, type ReactNode} from '
 import './PoietekAppShell.css';
 import {OfflineInstallCenter} from './OfflineInstallCenter';
 import {StudioMenuBar} from './StudioMenuBar';
-import {dispatchStudioCommand, type StudioArea, type StudioCommandDetail} from './studioCommands';
+import {
+  dispatchStudioCommand,
+  isStudioCommandAreaReady,
+  subscribeStudioCommandAreaReady,
+  type StudioArea,
+  type StudioCommandDetail,
+} from './studioCommands';
 import {BrowserStudioSettingsRepository, type StudioPreferences} from '../settings';
 import type {StudioSetupTab} from './StudioSetupModal';
 import {useDeviceRuntimeProfile} from './useDeviceRuntimeProfile';
@@ -104,8 +110,17 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
 
   useEffect(() => {
     if (!pendingCommand || pendingCommand.area !== area) return;
-    dispatchStudioCommand(pendingCommand.detail);
-    setPendingCommand(null);
+    const deliver = () => {
+      dispatchStudioCommand(pendingCommand.detail);
+      setPendingCommand(null);
+    };
+    if (isStudioCommandAreaReady(area)) {
+      deliver();
+      return;
+    }
+    return subscribeStudioCommandAreaReady((readyArea) => {
+      if (readyArea === area) deliver();
+    });
   }, [area, pendingCommand]);
 
   const runCommand = useCallback((detail: StudioCommandDetail, targetArea?: StudioArea) => {

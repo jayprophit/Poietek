@@ -15,6 +15,10 @@ test('the application shell owns one professional menu system', async () => {
   assert.match(shell, /key === 'n'/);
   assert.match(shell, /key === 's'/);
   assert.match(shell, /event\.code === 'Space'/);
+  assert.match(shell, /isStudioCommandAreaReady/);
+  assert.match(shell, /subscribeStudioCommandAreaReady/);
+  assert.match(shell, /dispatchStudioCommand\(pendingCommand\.detail\)/);
+  assert.match(rack, /markStudioCommandAreaReady\('rack', true\)/);
   assert.doesNotMatch(rack, /DAWMenuBar|<Navigation/);
 
   for (const heading of [
