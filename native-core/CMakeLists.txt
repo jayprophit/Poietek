@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.24)
 
 project(poietek_native_core VERSION 0.1.0 LANGUAGES CXX)
 
+if(MSVC)
+  set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL")
+endif()
+
 option(POIETEK_NATIVE_CORE_BUILD_TESTS "Build native-core tests" ON)
 option(POIETEK_NATIVE_CORE_BUILD_BENCHES "Build native-core benchmarks" ON)
 
@@ -64,3 +68,10 @@ if(POIETEK_NATIVE_CORE_BUILD_BENCHES)
   target_compile_features(poietek_native_core_bench PRIVATE cxx_std_20)
   # Provide a simple target to run the bench from build tree
 endif()
+
+install(TARGETS poietek_native_core
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ DESTINATION include)

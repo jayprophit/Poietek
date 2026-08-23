@@ -373,14 +373,14 @@ pub fn warm_native_engine(preferred_sample_rate: Option<u32>, preferred_buffer_f
         let device = host.default_output_device().ok_or_else(|| "No default output device available".to_string())?;
         let default_config = device.default_output_config().map_err(|e| format!("Could not read default output config: {e}"))?;
         let channels = default_config.channels();
-        let device_sample_rate = default_config.sample_rate().0;
+        let device_sample_rate = default_config.sample_rate();
         let device_buffer_frames = match default_config.buffer_size() {
             cpal::SupportedBufferSize::Range { min, max } => Some(min),
             cpal::SupportedBufferSize::Unknown => None,
         };
 
         let sample_rate = preferred_sample_rate.unwrap_or(device_sample_rate);
-        let buffer_frames = preferred_buffer_frames.or(device_buffer_frames).unwrap_or(256);
+        let buffer_frames = preferred_buffer_frames.or(device_buffer_frames.copied()).unwrap_or(256);
 
         let estimated_latency_ms = (buffer_frames as f64 / sample_rate as f64) * 1000.0;
 
@@ -414,18 +414,20 @@ pub fn warm_native_engine(preferred_sample_rate: Option<u32>, preferred_buffer_f
             extern "C" {
                 fn poietek_dsp_warmup(frames: u32, channels: u32, iterations: u32, telemetry: *mut NativeTelemetry) -> u32;
             }
-            // call in a catch_unwind to avoid unwinding across FFI boundary
-            let _ = std::panic::catch_unwind(|| {
-                // call with a small number of iterations
+            // call in a catch_unwind to avoid unwinding across FFI boundary.
+            // The closure is wrapped with AssertUnwindSafe because the FFI call
+            // writes into Rust-owned locals and we intentionally want the panic
+            // boundary to be tolerated without aborting the warmup path.
+            let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
                 let res = poietek_dsp_warmup(buffer_frames as u32, channels as u32, 8u32, &mut native_telemetry as *mut _);
                 if res == 0 {
                     native_used = true;
                 }
-            });
+            }));
         }
 
         if native_used {
-            let device_name = device.name().unwrap_or_else(|_| "Unknown device".to_string());
+            let device_name = device.to_string();
             return Ok(json!({
                 "selected_device": device_name,
                 "channels": channels,
@@ -459,7 +461,7 @@ pub fn warm_native_engine(preferred_sample_rate: Option<u32>, preferred_buffer_f
         let ms_per_iter = dur_ms as f64 / iterations as f64;
         let samples_per_sec = (processed_samples as f64 / dur_ms as f64) * 1000.0;
 
-        let device_name = device.name().unwrap_or_else(|_| "Unknown device".to_string());
+        let device_name = device.to_string();
         Ok(json!({
             "selected_device": device_name,
             "channels": channels,
