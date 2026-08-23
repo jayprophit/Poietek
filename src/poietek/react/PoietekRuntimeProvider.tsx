@@ -36,6 +36,19 @@ export function PoietekRuntimeProvider({
         if (!active) return;
         setProject(loaded);
         setStatus("ready");
+        // Native-first warm engine trigger: when running under native shell, perform
+        // a best-effort CPU/memory warm-up to reduce first-audio/connect latency.
+        try {
+          // @ts-ignore
+          if (typeof (window as any).__TAURI__ !== 'undefined') {
+            // Best-effort invocation; do not block initialization on this.
+            // @ts-ignore
+            (window as any).__TAURI__.invoke('warm_native_engine', {}).then((result: any) => {
+              // console.debug is intentionally minimal; developers can expand logging
+              console.debug('warm_native_engine result', result);
+            }).catch(() => {});
+          }
+        } catch (e) {}
       })
       .catch((reason) => {
         if (!active) return;
