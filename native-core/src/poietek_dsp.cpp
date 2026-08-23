@@ -67,3 +67,32 @@ extern "C" poietek_dsp_result poietek_dsp_process_interleaved_f32(
 
   return POIETEK_DSP_OK;
 }
+
+extern "C" poietek_dsp_result poietek_dsp_warmup(
+  uint32_t frames,
+  uint32_t channels,
+  uint32_t iterations,
+  poietek_dsp_telemetry* telemetry
+) {
+  if (frames == 0 || channels == 0 || telemetry == nullptr) return POIETEK_DSP_INVALID_ARGUMENT;
+  // prepare buffers
+  const std::size_t size = static_cast<std::size_t>(frames) * channels;
+  std::vector<float> input(size, 0.0F);
+  std::vector<float> output(size, 0.0F);
+  // fill input with test tone
+  for (uint32_t i = 0; i < frames; ++i) {
+    const float v = 0.25F * std::sin(2.0F * 3.14159265358979323846F * static_cast<float>(i) / 441.0F);
+    for (uint32_t c = 0; c < channels; ++c) input[static_cast<std::size_t>(i) * channels + c] = v;
+  }
+  // run processing loop using existing process function
+  poietek_dsp_process_config config{POIETEK_DSP_ABI_VERSION, frames, channels, 1.0F, 0.0F};
+  telemetry->processed_frames = 0U;
+  telemetry->clipped_samples = 0U;
+  telemetry->peak_absolute = 0.0F;
+
+  for (uint32_t it = 0; it < iterations; ++it) {
+    auto res = poietek_dsp_process_interleaved_f32(&config, input.data(), output.data(), telemetry);
+    if (res != POIETEK_DSP_OK) return res;
+  }
+  return POIETEK_DSP_OK;
+}

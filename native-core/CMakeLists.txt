@@ -9,6 +9,9 @@ add_library(poietek_native_core STATIC
   src/poietek_dsp.cpp
 )
 
+# Export headers for consumption by other build systems
+target_include_directories(poietek_native_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 add_library(Poietek::native_core ALIAS poietek_native_core)
 
 target_compile_features(poietek_native_core PUBLIC cxx_std_20)

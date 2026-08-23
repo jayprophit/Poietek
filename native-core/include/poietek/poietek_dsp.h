@@ -49,6 +49,16 @@ POIETEK_DSP_API poietek_dsp_result poietek_dsp_process_interleaved_f32(
   poietek_dsp_telemetry* telemetry
 );
 
+// Warmup helper: runs a simple processing loop on synthesized input to allow
+// runtime caches and buffers to be allocated. Parameters are frames per buffer,
+// channels and number of iterations. telemetry is filled in with aggregate info.
+POIETEK_DSP_API poietek_dsp_result poietek_dsp_warmup(
+  uint32_t frames,
+  uint32_t channels,
+  uint32_t iterations,
+  poietek_dsp_telemetry* telemetry
+);
+
 #ifdef __cplusplus
 }
 #endif
