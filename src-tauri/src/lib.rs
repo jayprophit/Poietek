@@ -25,7 +25,8 @@ pub fn run() {
 
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            commands::list_native_studio_devices
+            commands::list_native_studio_devices,
+            commands::warm_native_engine
         ])
         .run(tauri::generate_context!())
         .expect("error while running Poietek Studio");
