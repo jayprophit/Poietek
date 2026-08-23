@@ -7,6 +7,7 @@ option(POIETEK_NATIVE_CORE_BUILD_BENCHES "Build native-core benchmarks" ON)
 
 add_library(poietek_native_core STATIC
   src/poietek_dsp.cpp
+  src/poietek_ring_api.cpp
 )
 
 # Export headers for consumption by other build systems
@@ -44,6 +45,12 @@ if(POIETEK_NATIVE_CORE_BUILD_TESTS)
   target_link_libraries(poietek_ringbuffer_tests PRIVATE Poietek::native_core)
   target_compile_features(poietek_ringbuffer_tests PRIVATE cxx_std_20)
   add_test(NAME poietek_ringbuffer_tests COMMAND poietek_ringbuffer_tests)
+
+  # C API ring tests
+  add_executable(poietek_ring_api_tests tests/ring_api_tests.cpp)
+  target_link_libraries(poietek_ring_api_tests PRIVATE Poietek::native_core)
+  target_compile_features(poietek_ring_api_tests PRIVATE cxx_std_20)
+  add_test(NAME poietek_ring_api_tests COMMAND poietek_ring_api_tests)
 endif()
 
 if(POIETEK_NATIVE_CORE_BUILD_BENCHES)
