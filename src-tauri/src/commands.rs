@@ -399,6 +399,48 @@ pub fn warm_native_engine(preferred_sample_rate: Option<u32>, preferred_buffer_f
             }
         }
 
+        // First, try to call into the native-core warmup if available (best-effort).
+        #[repr(C)]
+        struct NativeTelemetry {
+            processed_frames: u64,
+            clipped_samples: u64,
+            peak_absolute: f32,
+        }
+
+        let mut native_used = false;
+        let mut native_telemetry = NativeTelemetry { processed_frames: 0, clipped_samples: 0, peak_absolute: 0.0 };
+        unsafe {
+            // declare the foreign symbol; if linking is not available this will be a link error
+            extern "C" {
+                fn poietek_dsp_warmup(frames: u32, channels: u32, iterations: u32, telemetry: *mut NativeTelemetry) -> u32;
+            }
+            // call in a catch_unwind to avoid unwinding across FFI boundary
+            let _ = std::panic::catch_unwind(|| {
+                // call with a small number of iterations
+                let res = poietek_dsp_warmup(buffer_frames as u32, channels as u32, 8u32, &mut native_telemetry as *mut _);
+                if res == 0 {
+                    native_used = true;
+                }
+            });
+        }
+
+        if native_used {
+            let device_name = device.name().unwrap_or_else(|_| "Unknown device".to_string());
+            return Ok(json!({
+                "selected_device": device_name,
+                "channels": channels,
+                "sample_rate": sample_rate,
+                "buffer_frames": buffer_frames,
+                "estimated_latency_ms": estimated_latency_ms,
+                "native_warm": true,
+                "native_telemetry": {
+                    "processed_frames": native_telemetry.processed_frames,
+                    "clipped_samples": native_telemetry.clipped_samples,
+                    "peak_absolute": native_telemetry.peak_absolute
+                }
+            }));
+        }
+
         let iterations = 40;
         let start = Instant::now();
         let mut processed_samples: usize = 0;
@@ -424,6 +466,7 @@ pub fn warm_native_engine(preferred_sample_rate: Option<u32>, preferred_buffer_f
             "sample_rate": sample_rate,
             "buffer_frames": buffer_frames,
             "estimated_latency_ms": estimated_latency_ms,
+            "native_warm": false,
             "bench": {
                 "iterations": iterations,
                 "total_ms": dur_ms,
