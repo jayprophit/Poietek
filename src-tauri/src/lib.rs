@@ -35,4 +35,4 @@ pub fn run() {
 
 // Optional ring-ffi bindings module (feature-gated)
 #[cfg(feature = "ring-ffi")]
-mod ring_bindings;
+pub mod ring_bindings;
