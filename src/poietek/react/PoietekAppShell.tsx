@@ -38,6 +38,21 @@ const StudioSetupModal = lazy(async () => {
   return {default: module.StudioSetupModal};
 });
 
+// Native-first prefetch: when running under the Tauri native shell, eagerly
+// import these modules so the renderer has them available immediately. This
+// avoids relying on delayed lazy-chunk fetches during startup on desktop/mobile.
+try {
+  // @ts-ignore
+  if (typeof (window as any).__TAURI__ !== 'undefined') {
+    import('./PoietekStudioWorkspace');
+    import('./PoietekEcosystemCenter');
+    import('./PoietekAiCenter');
+    import('./StudioSetupModal');
+  }
+} catch (e) {
+  // Best-effort: ignore failures
+}
+
 export function PoietekAppShell({children}: {children: ReactNode}) {
   const deviceProfile = useDeviceRuntimeProfile();
   const [area, setArea] = useState<StudioArea>(() => {

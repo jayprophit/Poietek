@@ -7,6 +7,19 @@ import {PoietekAppShell} from './poietek/react/PoietekAppShell';
 
 const RackWorkspace = lazy(() => import('./App.tsx'));
 
+// Native-first optimization: when running under Tauri (native shell), eagerly
+// start loading the main workspace and other critical modules to avoid chunk
+// fetch latency that harms startup responsiveness. This keeps the existing
+// lazy-based code path but preloads modules for native deployments.
+try {
+  // @ts-ignore - window.__TAURI__ is injected by Tauri at runtime
+  if (typeof (window as any).__TAURI__ !== 'undefined') {
+    import('./App.tsx');
+  }
+} catch (e) {
+  // ignore; best-effort
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <PoietekRuntimeProvider>
@@ -19,3 +32,4 @@ createRoot(document.getElementById('root')!).render(
     </PoietekRuntimeProvider>
   </StrictMode>,
 );
+

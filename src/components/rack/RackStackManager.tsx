@@ -90,21 +90,36 @@ const TakeCompStudioDevice = React.lazy(async () => {
   const module = await import('./TakeCompStudioDevice');
   return {default: module.TakeCompStudioDevice};
 });
-
+ 
 const NoteForgeMidiLabDevice = React.lazy(async () => {
   const module = await import('./NoteForgeMidiLabDevice');
   return {default: module.NoteForgeMidiLabDevice};
 });
-
+ 
 const TechniqueMatrixDevice = React.lazy(async () => {
   const module = await import('./TechniqueMatrixDevice');
   return {default: module.TechniqueMatrixDevice};
 });
-
+ 
 const EditorialMemoryWorkbenchDevice = React.lazy(async () => {
   const module = await import('./EditorialMemoryWorkbenchDevice');
   return {default: module.EditorialMemoryWorkbenchDevice};
 });
+
+// Native-first prefetch for device modules: reduce interactive lag on native
+// platforms by warming up heavy device module chunks at startup. Retain lazy
+// imports so web builds can still benefit from code-splitting when desired.
+try {
+  // @ts-ignore
+  if (typeof (window as any).__TAURI__ !== 'undefined') {
+    import('./TakeCompStudioDevice');
+    import('./NoteForgeMidiLabDevice');
+    import('./TechniqueMatrixDevice');
+    import('./EditorialMemoryWorkbenchDevice');
+  }
+} catch (e) {
+  // ignore
+}
 
 interface RackStackManagerProps {
   rackModules: RackModuleItem[];

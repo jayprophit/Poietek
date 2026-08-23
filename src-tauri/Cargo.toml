@@ -18,6 +18,12 @@ tauri-build = { version = "=2.6.3", features = [] }
 [dependencies]
 tauri = { version = "=2.11.5", features = [] }
 serde = { version = "1.0", features = ["derive"] }
+thread-priority = { version = "0.3", optional = true }
+
+[features]
+# feature to enable best-effort priority escalation on supported platforms
+priority = ["thread-priority"]
+
 
 [target.'cfg(any(target_os = "windows", target_os = "macos", target_os = "linux"))'.dependencies]
 cpal = "=0.18.1"
