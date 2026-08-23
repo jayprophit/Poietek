@@ -85,6 +85,20 @@ jobs:
           else
             echo "bench binary not found"
           fi
+          # copy bench output to repo root for the CI artifact upload step
+          mkdir -p ../../../../Poietek-Studio/native-core/build
+          cp bench-output.txt ../../../../Poietek-Studio/native-core/build/bench-output.txt || true
+
+      - name: Compare bench output to baseline (best-effort)
+        if: always()
+        working-directory: Poietek-Studio
+        run: |
+          node --version || true
+          node scripts/compare-bench.mjs native-core/build/bench-output.txt .github/bench/baseline.json || true
+          ls -l bench-summary.json || true
+          # upload bench-summary.json as artifact
+        env:
+          CI: true
 
       - name: Tauri bundle (native installers)
         working-directory: Poietek-Studio
