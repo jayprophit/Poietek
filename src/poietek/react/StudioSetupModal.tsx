@@ -153,6 +153,8 @@ export const StudioSetupModal: React.FC<StudioSetupModalProps> = ({isOpen, onClo
   const [benchmarkRunning, setBenchmarkRunning] = useState(false);
   const [warmRunning, setWarmRunning] = useState(false);
   const [warmResult, setWarmResult] = useState<any | null>(null);
+  const [ringRunning, setRingRunning] = useState(false);
+  const [ringResult, setRingResult] = useState<boolean | null>(null);
   const [libraryQuery, setLibraryQuery] = useState('');
   const summary = summarizeStudioLibrary();
 
@@ -275,6 +277,27 @@ export const StudioSetupModal: React.FC<StudioSetupModalProps> = ({isOpen, onClo
     }
   };
 
+  const runRingFfiTest = async () => {
+    setRingRunning(true);
+    setError(null);
+    try {
+      // @ts-ignore
+      if (typeof (window as any).__TAURI__ === 'undefined') throw new Error('Ring FFI test only available in native shell');
+      // @ts-ignore
+      const res = await (window as any).__TAURI__.invoke('run_ring_ffi_test');
+      // the command returns a boolean on success
+      setRingResult(Boolean(res));
+      if (!res) {
+        setError('Ring FFI test reported failure');
+      }
+    } catch (reason) {
+      setRingResult(null);
+      setError(reason instanceof Error ? reason.message : String(reason));
+    } finally {
+      setRingRunning(false);
+    }
+  };
+
   const filteredLibrary = STUDIO_LIBRARY_CATALOG.filter((item) => `${item.name} ${item.kind} ${item.category} ${item.description}`.toLowerCase().includes(libraryQuery.trim().toLowerCase()));
 
   return <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/80 p-3 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="studio-setup-title">
@@ -334,7 +357,10 @@ export const StudioSetupModal: React.FC<StudioSetupModalProps> = ({isOpen, onClo
 
           {activeTab === 'diagnostics' && <section className="space-y-4"><div><h3 className="text-base font-black text-white">Studio benchmark</h3><p className="text-xs text-stone-400">A repeatable local browser test for DSP throughput, scheduler jitter, offline rendering, and temporary local storage.</p></div><Notice title="What the stars mean">The rating reflects this run on this browser and computer. It is not a fabricated competitive score and does not measure audio-interface loopback latency, third-party plug-ins, or full production sessions.</Notice><div className="flex items-center gap-2">
               <button type="button" disabled={benchmarkRunning} onClick={() => void runBenchmark()} className="flex items-center gap-2 rounded bg-amber-500 px-4 py-2 text-xs font-black text-stone-950 disabled:opacity-50"><Gauge className="h-4 w-4" />{benchmarkRunning ? 'Running benchmark…' : 'Run benchmark'}</button>
-              {nativeDevices.runtime === 'native' && <button type="button" disabled={warmRunning} onClick={() => void runWarmNativeEngine()} className="flex items-center gap-2 rounded border border-stone-600 px-4 py-2 text-xs font-black text-stone-200 disabled:opacity-50"><RefreshCw className="h-4 w-4" />{warmRunning ? 'Warming…' : 'Warm native engine'}</button>}
+              {nativeDevices.runtime === 'native' && <div className="flex items-center gap-2">
+                <button type="button" disabled={warmRunning} onClick={() => void runWarmNativeEngine()} className="flex items-center gap-2 rounded border border-stone-600 px-4 py-2 text-xs font-black text-stone-200 disabled:opacity-50"><RefreshCw className="h-4 w-4" />{warmRunning ? 'Warming…' : 'Warm native engine'}</button>
+                <button type="button" disabled={ringRunning} onClick={() => void runRingFfiTest()} className="flex items-center gap-2 rounded border border-stone-600 px-4 py-2 text-xs font-black text-stone-200 disabled:opacity-50">{ringRunning ? 'Running…' : 'Run ring FFI test'}</button>
+              </div>}
             </div>{benchmark && <div className="space-y-4"><div className="rounded-xl border border-amber-600 bg-amber-950/20 p-5"><div className="flex items-end justify-between"><div><p className="text-3xl tracking-widest text-amber-400">{'★'.repeat(benchmark.stars)}{'☆'.repeat(5 - benchmark.stars)}</p><strong className="text-xl text-white">{benchmark.score}/100</strong></div><span className="text-xs text-stone-400">{benchmark.durationMs.toLocaleString()} ms</span></div><p className="mt-3 text-xs leading-5 text-stone-300">{benchmark.interpretation}</p></div><div className="grid gap-3 md:grid-cols-2">{Object.entries(benchmark.metrics).map(([id, metric]) => <article key={id} className="rounded-lg border border-stone-700 bg-stone-900 p-3"><p className="text-[10px] uppercase tracking-wider text-stone-500">{id.replace(/([A-Z])/g, ' $1')}</p><strong className="text-lg text-white">{metric.value == null ? metric.state : `${metric.value} ${metric.unit}`}</strong><p className="mt-1 text-[10px] leading-4 text-stone-400">{metric.detail}</p></article>)}</div><div className="flex flex-wrap gap-2">{Object.entries(benchmark.capabilities).map(([capability, available]) => <span key={capability} className={`rounded px-2 py-1 text-[10px] ${available ? 'bg-emerald-900 text-emerald-200' : 'bg-stone-800 text-stone-400'}`}>{capability}: {available ? 'available' : 'unavailable'}</span>)}</div><div className="flex gap-2">{warmResult && <button type="button" onClick={() => downloadJson('poietek-warm-result.json', warmResult)} className="flex items-center gap-2 rounded border border-stone-600 px-3 py-2 text-xs"><Download className="h-4 w-4" />Export warm result</button>}</div><button type="button" onClick={() => downloadJson('poietek-benchmark.json', benchmark)} className="flex items-center gap-2 rounded border border-stone-600 px-3 py-2 text-xs"><Download className="h-4 w-4" />Export benchmark</button></div>}</section>}
         </main>
       </div>
