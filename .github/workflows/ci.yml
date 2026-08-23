@@ -121,3 +121,38 @@ jobs:
             Poietek-Studio/native-core/build
             Poietek-Studio/native-core/build/bench-output.txt
             Poietek-Studio/src-tauri/target/release/bundle || Poietek-Studio/src-tauri/target/release/bundle/**
+
+  native-ring-ffi:
+    name: Native ring-ffi integration test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies (cmake, build-essential)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential pkg-config
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Build native-core via CMake
+        run: |
+          mkdir -p Poietek-Studio/native-core/build
+          cd Poietek-Studio/native-core/build
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --config Release
+
+      - name: Run native-core tests (ctest)
+        run: |
+          cd Poietek-Studio/native-core/build
+          ctest --output-on-failure
+
+      - name: Run Rust tests with ring-ffi feature
+        working-directory: Poietek-Studio/src-tauri
+        run: |
+          cargo test --features "ring-ffi" --tests --verbose
+
