@@ -26,8 +26,13 @@ pub fn run() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             commands::list_native_studio_devices,
-            commands::warm_native_engine
+            commands::warm_native_engine,
+            commands::run_ring_ffi_test
         ])
         .run(tauri::generate_context!())
         .expect("error while running Poietek Studio");
 }
+
+// Optional ring-ffi bindings module (feature-gated)
+#[cfg(feature = "ring-ffi")]
+mod ring_bindings;

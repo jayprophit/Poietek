@@ -476,3 +476,24 @@ pub fn warm_native_engine(preferred_sample_rate: Option<u32>, preferred_buffer_f
         }))
     }
 }
+
+#[tauri::command]
+pub fn run_ring_ffi_test() -> Result<bool, String> {
+    // Runtime-exposed diagnostic that exercises the optional Rust FFI bridge
+    // into the native ring buffer C API. This is feature-gated at compile time.
+    #[cfg(not(feature = "ring-ffi"))]
+    {
+        return Err("ring-ffi feature not enabled in this build".to_string());
+    }
+
+    #[cfg(feature = "ring-ffi")]
+    {
+        // Use catch_unwind to avoid unwinding across FFI boundaries in case
+        // the underlying native library or test panics.
+        let res = std::panic::catch_unwind(|| crate::ring_bindings::test_ring_ffi());
+        match res {
+            Ok(ok) => Ok(ok),
+            Err(_) => Err("Ring FFI test panicked".to_string()),
+        }
+    }
+}
