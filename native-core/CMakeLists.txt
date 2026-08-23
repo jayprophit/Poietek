@@ -38,6 +38,12 @@ if(POIETEK_NATIVE_CORE_BUILD_TESTS)
   target_link_libraries(poietek_native_core_tests PRIVATE Poietek::native_core)
   target_compile_features(poietek_native_core_tests PRIVATE cxx_std_20)
   add_test(NAME poietek_native_core_tests COMMAND poietek_native_core_tests)
+
+  # ringbuffer unit tests
+  add_executable(poietek_ringbuffer_tests tests/ringbuffer_tests.cpp)
+  target_link_libraries(poietek_ringbuffer_tests PRIVATE Poietek::native_core)
+  target_compile_features(poietek_ringbuffer_tests PRIVATE cxx_std_20)
+  add_test(NAME poietek_ringbuffer_tests COMMAND poietek_ringbuffer_tests)
 endif()
 
 if(POIETEK_NATIVE_CORE_BUILD_BENCHES)
