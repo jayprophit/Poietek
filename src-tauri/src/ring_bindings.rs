@@ -38,3 +38,6 @@ mod ring_ffi {
         }
     }
 }
+
+#[cfg(feature = "ring-ffi")]
+pub use ring_ffi::test_ring_ffi;
