@@ -1,0 +1,87 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release-build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node-version: [18.x]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Node dependencies
+        working-directory: Poietek-Studio
+        run: npm ci --silent
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Build web frontend
+        working-directory: Poietek-Studio
+        run: npm run build
+
+      - name: Build native-core (C++)
+        run: |
+          mkdir -p Poietek-Studio/native-core/build
+          cd Poietek-Studio/native-core/build
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --config Release
+
+      - name: Run native-core tests
+        run: |
+          cd Poietek-Studio/native-core/build
+          ctest --output-on-failure
+
+      - name: Tauri bundle (produce installers)
+        working-directory: Poietek-Studio
+        run: npm run native:build --if-present
+
+      - name: Collect artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts-${{ matrix.os }}
+          path: |
+            Poietek-Studio/dist
+            Poietek-Studio/src-tauri/target/release/bundle
+            Poietek-Studio/native-core/build
+
+  create-github-release:
+    needs: release-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: release-artifacts-ubuntu-latest
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Automated release built by CI. Artifacts are attached.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload release assets (best-effort)
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: Poietek-Studio/src-tauri/target/release/bundle || Poietek-Studio/src-tauri/target/release/bundle/**
+          asset_name: poietek-bundles-${{ github.ref }}.zip
+          asset_content_type: application/zip
