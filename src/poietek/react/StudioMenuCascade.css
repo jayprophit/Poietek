@@ -1,0 +1,7 @@
+.poietek-menu-cascade{position:relative}
+.poietek-menu-cascade-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.poietek-menu-cascade-trigger>i{color:#64748b;font-size:.9rem;font-style:normal}
+.poietek-menu-cascade-panel{position:absolute;top:-.35rem;left:calc(100% - .25rem);z-index:90;display:none;min-width:248px;padding:.35rem;border:1px solid rgba(100,116,139,.45);border-radius:9px;background:rgba(8,15,29,.99);box-shadow:0 18px 42px rgba(0,0,0,.5)}
+.poietek-menu-cascade:hover>.poietek-menu-cascade-panel,.poietek-menu-cascade:focus-within>.poietek-menu-cascade-panel{display:block}
+.poietek-menu-cascade-panel button{width:100%}
+@media(max-width:720px){.poietek-menu-cascade-panel{position:relative;top:auto;left:auto;display:block;margin:.15rem .25rem .35rem .75rem;min-width:0;border-left:2px solid rgba(34,211,238,.35);border-radius:5px;background:rgba(15,23,42,.75);box-shadow:none}.poietek-menu-cascade-trigger>i{transform:rotate(90deg)}}

@@ -1,0 +1,347 @@
+.poietek-app-shell {
+  width: 100vw;
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  min-height: -webkit-fill-available;
+  display: grid;
+  grid-template-rows: 30px 54px minmax(0, 1fr);
+  overflow: hidden;
+  color: #e7efee;
+  background: #070a0c;
+}
+
+.poietek-setup-loading {
+  position: fixed;
+  z-index: 14500;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #efbd85;
+  background: rgba(0,0,0,.82);
+  font: 11px ui-monospace, Consolas, monospace;
+}
+
+.poietek-command-bar {
+  position: relative;
+  z-index: 500;
+  display: grid;
+  grid-template-columns: minmax(180px, 240px) minmax(650px, 1fr) minmax(180px, 250px);
+  align-items: stretch;
+  border-bottom: 1px solid #4a3a2d;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.055), transparent 48%),
+    #161a1c;
+  box-shadow: 0 3px 14px rgba(0,0,0,.38);
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+
+.poietek-command-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 12px;
+  border-right: 1px solid #343b3f;
+}
+.poietek-command-brand > span {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e2aa71;
+  border-radius: 6px;
+  color: #211308;
+  background: linear-gradient(145deg, #efbd85, #b76f39);
+  font-family: Georgia, serif;
+  font-size: 20px;
+  font-weight: 900;
+  box-shadow: inset 0 1px rgba(255,255,255,.42), 0 3px 8px rgba(0,0,0,.35);
+}
+.poietek-command-brand > div { display: grid; gap: 1px; }
+.poietek-command-brand strong { color: #f0e3d3; font-size: 11px; letter-spacing: .08em; }
+.poietek-command-brand small { color: #7f8a8c; font-size: 7px; text-transform: uppercase; letter-spacing: .11em; }
+
+.poietek-command-bar nav { display: flex; align-items: stretch; justify-content: center; }
+.poietek-command-bar nav button {
+  min-width: 170px;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-content: center;
+  justify-content: center;
+  gap: 1px 8px;
+  padding: 5px 18px;
+  border: 0;
+  border-right: 1px solid #30373b;
+  color: #8f9a9c;
+  background: transparent;
+  cursor: pointer;
+}
+.poietek-command-bar nav button:first-child { border-left: 1px solid #30373b; }
+.poietek-command-bar nav button:hover { color: #e9efef; background: rgba(255,255,255,.035); }
+.poietek-command-bar nav button.is-active {
+  color: #fff0df;
+  background: linear-gradient(180deg, rgba(205,129,63,.22), rgba(91,52,26,.2));
+  box-shadow: inset 0 -3px #dc914d;
+}
+.poietek-command-bar nav button > span { grid-row: 1 / 3; align-self: center; padding: 3px 4px; border: 1px solid #4a5255; border-radius: 3px; color: #b88253; font-size: 7px; }
+.poietek-command-bar nav button strong { font-size: 10px; text-align: left; text-transform: uppercase; letter-spacing: .08em; }
+.poietek-command-bar nav button small { color: #737f82; font-size: 7px; text-align: left; }
+
+.poietek-command-status {
+  display: grid;
+  align-content: center;
+  justify-content: end;
+  gap: 3px;
+  padding: 6px 12px;
+  border-left: 1px solid #343b3f;
+  text-align: right;
+}
+.poietek-command-status span { display: flex; align-items: center; justify-content: end; gap: 6px; color: #bcebe5; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; }
+.poietek-command-status i { width: 7px; height: 7px; border-radius: 50%; background: #62cbbf; box-shadow: 0 0 7px rgba(98,203,191,.72); }
+.poietek-command-status small { color: #737f82; font-size: 7px; }
+
+.poietek-command-utilities { min-width: 0; display: flex; align-items: stretch; }
+.poietek-orientation-control {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  border-left: 1px solid #343b3f;
+}
+.poietek-orientation-control > button {
+  min-width: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border: 0;
+  color: #bcebe5;
+  background: transparent;
+  cursor: pointer;
+}
+.poietek-orientation-control > button:hover,
+.poietek-orientation-control[data-status='locked'] > button { background: rgba(98,203,191,.08); }
+.poietek-orientation-control > button:disabled { cursor: wait; opacity: .66; }
+.poietek-orientation-control svg { width: 17px; height: 17px; color: #d89557; }
+.poietek-orientation-control > button > span { display: grid; gap: 1px; text-align: left; }
+.poietek-orientation-control strong { font-size: 7px; text-transform: uppercase; letter-spacing: .08em; }
+.poietek-orientation-control small { color: #7f8a8c; font-size: 6px; text-transform: uppercase; }
+.poietek-orientation-control > p {
+  position: fixed;
+  z-index: 14000;
+  top: 92px;
+  right: max(10px, env(safe-area-inset-right, 0px));
+  width: min(360px, calc(100vw - 20px));
+  margin: 0;
+  padding: 9px 11px;
+  border: 1px solid #5d4938;
+  border-radius: 7px;
+  color: #e8eeee;
+  background: #151b1e;
+  box-shadow: 0 8px 24px rgba(0,0,0,.5);
+  font-size: 8px;
+  line-height: 1.45;
+}
+.poietek-orientation-control[data-status='blocked'] > p,
+.poietek-orientation-control[data-status='unavailable'] > p { border-color: #a76c3d; color: #f2d3b4; }
+.poietek-native-device-status {
+  min-width: 112px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-content: center;
+  gap: 1px 6px;
+  padding: 6px 9px;
+  border: 0;
+  border-left: 1px solid #343b3f;
+  color: #aeb9bb;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.poietek-native-device-status:hover { background: rgba(255,255,255,.045); }
+.poietek-native-device-status > span { grid-row: 1 / 3; align-self: center; color: #d89557; font-size: 8px; }
+.poietek-native-device-status.is-ready > span { color: #62cbbf; text-shadow: 0 0 7px rgba(98,203,191,.72); }
+.poietek-native-device-status.is-error > span { color: #ef6b67; }
+.poietek-native-device-status strong { overflow: hidden; font-size: 7px; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+.poietek-native-device-status small { overflow: hidden; color: #737f82; font-size: 6px; text-overflow: ellipsis; white-space: nowrap; }
+
+.poietek-offline-center {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  border-left: 1px solid #343b3f;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+.poietek-offline-trigger {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 0;
+  color: #bcebe5;
+  background: transparent;
+  text-align: right;
+  cursor: pointer;
+}
+.poietek-offline-trigger:hover,
+.poietek-offline-trigger[aria-expanded='true'] { background: rgba(255,255,255,.045); }
+.poietek-offline-trigger > i {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #62cbbf;
+  box-shadow: 0 0 7px rgba(98,203,191,.72);
+}
+.poietek-offline-trigger.is-offline > i { background: #d89557; box-shadow: 0 0 7px rgba(216,149,87,.62); }
+.poietek-offline-trigger > span { min-width: 0; display: grid; gap: 2px; }
+.poietek-offline-trigger strong { font-size: 8px; text-transform: uppercase; letter-spacing: .1em; }
+.poietek-offline-trigger small { max-width: 230px; overflow: hidden; color: #737f82; font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
+
+.poietek-offline-panel {
+  position: fixed;
+  z-index: 12000;
+  top: 88px;
+  right: 10px;
+  width: min(470px, calc(100vw - 20px));
+  max-height: min(760px, calc(100dvh - 70px));
+  display: grid;
+  grid-template-rows: auto auto auto auto auto minmax(140px, 1fr) auto;
+  gap: 10px;
+  padding: 14px;
+  overflow: hidden;
+  border: 1px solid #5d4938;
+  border-radius: 12px;
+  color: #e8eeee;
+  background: linear-gradient(155deg, #171d20, #0c1114 58%, #101516);
+  box-shadow: 0 20px 60px rgba(0,0,0,.68);
+  text-align: left;
+}
+.poietek-offline-panel > header { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
+.poietek-offline-panel > header p { margin: 0 0 3px; color: #d89557; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .14em; }
+.poietek-offline-panel h2 { margin: 0; color: #f5e8d9; font: 700 17px/1.1 ui-sans-serif, system-ui, sans-serif; }
+.poietek-offline-panel > header button { width: 30px; height: 30px; border: 1px solid #3d474b; border-radius: 6px; color: #b5c0c0; background: #151c1f; font-size: 19px; cursor: pointer; }
+.poietek-offline-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.poietek-offline-summary > span { min-width: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 6px; padding: 8px; border: 1px solid #2d383c; border-radius: 7px; color: #8f9c9f; font-size: 7px; text-transform: uppercase; letter-spacing: .05em; }
+.poietek-offline-summary i { width: 7px; height: 7px; border-radius: 50%; background: #d89557; }
+.poietek-offline-summary i.is-ready { background: #62cbbf; box-shadow: 0 0 5px rgba(98,203,191,.6); }
+.poietek-offline-summary b { grid-column: 2; overflow: hidden; color: #e1eaea; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.poietek-offline-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.poietek-offline-actions button { min-height: 34px; padding: 7px 10px; border: 1px solid rgba(216,149,87,.42); border-radius: 7px; color: #25170b; background: linear-gradient(#e0a36c,#b66f3a); font-size: 9px; font-weight: 900; cursor: pointer; }
+.poietek-install-guidance,
+.poietek-storage-usage { margin: 0; color: #9ca9ab; font-size: 9px; line-height: 1.45; }
+.poietek-install-guidance { padding: 8px 10px; border-left: 3px solid #d89557; background: rgba(216,149,87,.07); }
+.poietek-engine-list { min-height: 0; display: grid; gap: 5px; overflow: auto; padding-right: 3px; }
+.poietek-engine-list article { display: grid; grid-template-columns: 9px minmax(0,1fr) auto; align-items: center; gap: 8px; padding: 8px 9px; border: 1px solid #293438; border-radius: 7px; background: rgba(255,255,255,.018); }
+.poietek-engine-list article > i { width: 8px; height: 8px; border-radius: 50%; background: #667276; }
+.poietek-engine-list article > i.is-available { background: #62cbbf; }
+.poietek-engine-list article > i.is-fallback,
+.poietek-engine-list article > i.is-permission-required,
+.poietek-engine-list article > i.is-not-initialized { background: #d89557; }
+.poietek-engine-list article > div { min-width: 0; display: grid; gap: 2px; }
+.poietek-engine-list article strong { color: #e1eaea; font-size: 9px; }
+.poietek-engine-list article small { overflow: hidden; color: #7f8d90; font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
+.poietek-engine-list article > span { max-width: 100px; color: #879598; font-size: 7px; text-align: right; text-transform: uppercase; }
+.poietek-offline-panel > footer { padding-top: 9px; border-top: 1px solid #293438; color: #839093; font-size: 8px; line-height: 1.5; }
+
+.poietek-shell-stage,
+.poietek-rack-host,
+.poietek-arrange-host,
+.poietek-ecosystem-host,
+.poietek-ai-host { min-width: 0; min-height: 0; overflow: hidden; }
+.poietek-rack-host { height: 100%; }
+.poietek-rack-host > div { height: 100%; }
+.poietek-arrange-host { height: 100%; overflow: auto; background: #080c0e; }
+.poietek-ecosystem-host { height: 100%; overflow: auto; background: #080c0e; }
+.poietek-ai-host { height: 100%; overflow: auto; background: #080c0e; }
+.poietek-shell-loading { padding: 28px; color: #a9b5b4; font: 11px ui-monospace, Consolas, monospace; }
+.poietek-rack-mobile-note { display: none; }
+
+.poietek-app-shell[data-device-layout='compact'] .poietek-command-bar {
+  grid-template-columns: minmax(150px, 190px) minmax(410px, 1fr) minmax(150px, 210px);
+}
+.poietek-app-shell[data-device-layout='compact'] .poietek-command-bar nav button {
+  min-width: 100px;
+  padding-inline: 9px;
+}
+.poietek-app-shell[data-device-layout='compact'] .poietek-command-bar nav button small,
+.poietek-app-shell[data-device-layout='compact'] .poietek-command-bar nav button > span {
+  display: none;
+}
+.poietek-app-shell[data-device-layout='compact'] .poietek-native-device-status { min-width: 36px; padding-inline: 7px; }
+.poietek-app-shell[data-device-layout='compact'] .poietek-native-device-status strong,
+.poietek-app-shell[data-device-layout='compact'] .poietek-native-device-status small { display: none; }
+.poietek-app-shell[data-device-class='tablet'][data-orientation='portrait'] .poietek-command-bar {
+  grid-template-columns: 58px minmax(360px, 1fr) minmax(150px, 190px);
+}
+.poietek-app-shell[data-device-class='tablet'][data-orientation='portrait'] .poietek-command-brand { padding: 6px 10px; }
+.poietek-app-shell[data-device-class='tablet'][data-orientation='portrait'] .poietek-command-brand > div { display: none; }
+.poietek-app-shell[data-input-mode='touch'] .poietek-command-bar button,
+.poietek-app-shell[data-input-mode='hybrid'] .poietek-command-bar button,
+.poietek-app-shell[data-input-mode='touch'] .poietek-offline-panel button,
+.poietek-app-shell[data-input-mode='hybrid'] .poietek-offline-panel button {
+  min-height: var(--poietek-touch-target, 44px);
+}
+
+.poietek-app-shell[data-device-layout='handheld'] {
+  grid-template-rows: calc(44px + env(safe-area-inset-top, 0px)) 50px minmax(0, 1fr);
+}
+.poietek-app-shell[data-device-layout='handheld'] .poietek-menu-bar { padding-top: env(safe-area-inset-top, 0px); }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-menu-root > button { min-height: 44px; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-menu-popover { top: calc(45px + env(safe-area-inset-top, 0px)); }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-command-bar { grid-template-columns: auto minmax(0, 1fr) 96px; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-command-brand { padding: 6px; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-command-brand > div { display: none; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-command-brand > span { width: 34px; height: 34px; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-native-device-status { display: none; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-command-utilities { overflow: visible; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-orientation-control > button { width: 48px; min-width: 48px; padding: 5px; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-orientation-control > button > span { display: none; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-orientation-control > p { top: calc(99px + env(safe-area-inset-top, 0px)); }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-command-bar nav {
+  position: fixed;
+  z-index: 1300;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: calc(56px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  border-top: 1px solid #5d4938;
+  background: linear-gradient(180deg, #1a1f21, #111517);
+  box-shadow: 0 -5px 18px rgba(0,0,0,.55);
+}
+.poietek-app-shell[data-device-layout='handheld'] .poietek-command-bar nav button { min-width: 0; min-height: 56px; flex: 1; padding: 5px; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-command-bar nav button small,
+.poietek-app-shell[data-device-layout='handheld'] .poietek-command-bar nav button > span { display: none; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-offline-trigger { justify-content: center; padding: 5px; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-offline-trigger > span { display: none; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-offline-panel { top: calc(99px + env(safe-area-inset-top, 0px)); right: 6px; width: calc(100vw - 12px); max-height: calc(100dvh - 169px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)); padding-bottom: 12px; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-offline-summary { grid-template-columns: 1fr; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-offline-summary > span { grid-template-columns: auto minmax(0,1fr) auto; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-offline-summary b { grid-column: 3; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-rack-host { overflow: auto; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-shell-stage { box-sizing: border-box; padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-rack-host > div { min-width: 0; }
+.poietek-app-shell[data-device-layout='handheld'] .poietek-rack-mobile-note { position: sticky; z-index: 20; top: 0; left: 0; width: 100vw; display: block; margin: 0; padding: 7px 10px; border-bottom: 1px solid #5d4938; color: #f2d3b4; background: #21170f; font: 9px ui-monospace, Consolas, monospace; }
+
+.poietek-app-shell[data-device-class='mobile'][data-orientation='landscape'] {
+  grid-template-rows: calc(38px + env(safe-area-inset-top, 0px)) 44px minmax(0, 1fr);
+}
+.poietek-app-shell[data-device-class='mobile'][data-orientation='landscape'] .poietek-menu-root > button { min-height: 38px; }
+.poietek-app-shell[data-device-class='mobile'][data-orientation='landscape'] .poietek-menu-popover { top: calc(39px + env(safe-area-inset-top, 0px)); }
+.poietek-app-shell[data-device-class='mobile'][data-orientation='landscape'] .poietek-command-brand > span { width: 30px; height: 30px; }
+.poietek-app-shell[data-device-class='mobile'][data-orientation='landscape'] .poietek-offline-panel,
+.poietek-app-shell[data-device-class='mobile'][data-orientation='landscape'] .poietek-orientation-control > p { top: calc(85px + env(safe-area-inset-top, 0px)); }
+
+@media (max-width: 760px) {
+  .poietek-offline-center { min-width: 0; }
+}
+
+@media (pointer: coarse) {
+  .poietek-command-bar nav button,
+  .poietek-offline-trigger,
+  .poietek-offline-panel button { min-height: 44px; }
+}

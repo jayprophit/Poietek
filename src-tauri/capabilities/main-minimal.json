@@ -1,0 +1,6 @@
+{
+  "identifier": "main-minimal",
+  "description": "The main studio window can call only the reviewed read-only studio device inventory command.",
+  "windows": ["main"],
+  "permissions": ["studio-device-inventory"]
+}

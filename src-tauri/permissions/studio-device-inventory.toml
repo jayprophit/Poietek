@@ -1,0 +1,4 @@
+[[permission]]
+identifier = "studio-device-inventory"
+description = "Allows the main studio window to read names and advertised configurations of operating-system audio and MIDI endpoints. It does not open streams, connect MIDI ports, send messages, or access files."
+commands.allow = ["list_native_studio_devices"]
