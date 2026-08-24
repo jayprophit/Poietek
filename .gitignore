@@ -1,0 +1,18 @@
+# Dependency and build artifacts
+node_modules/
+dist/
+build/
+*.log
+
+# Local security material
+*.jks
+*.p12
+*.mobileprovision
+keystore.properties
+
+# Environment files
+.env
+.env.*
+
+# Session and validation temp files
+temp-test-output.txt

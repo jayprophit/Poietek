@@ -150,30 +150,6 @@ mod desktop {
         };
 
         let preferred_config_value = preferred.ok().map(preferred_config);
-        // Heuristic: if the device has a preferred config and supports small buffer
-        // sizes (<= 256 frames) mark it selectable by the native engine. This is a
-        // conservative heuristic - users will still opt-in in Studio Setup.
-        let selectable_by_native_engine = preferred_config_value.as_ref().map(|pc| {
-            match (pc.min_buffer_frames, pc.max_buffer_frames) {
-                (Some(min), Some(max)) => (min <= 256) || (max <= 256),
-                (Some(min), None) => min <= 256,
-                (None, Some(max)) => max <= 256,
-                _ => false,
-            }
-        }).unwrap_or(false);
-
-        let (latency_status, latency_ms) = match preferred_config_value.as_ref() {
-            Some(pc) => {
-                if let Some(min_frames) = pc.min_buffer_frames {
-                    // estimate latency using minimum buffer frames and sample rate
-                    let latency = (min_frames as f64 / pc.sample_rate as f64) * 1000.0;
-                    ("estimated", Some(latency))
-                } else {
-                    ("not_measured", None)
-                }
-            }
-            None => ("not_measured", None),
-        };
 
         NativeAudioDevice {
             id: format!("{host}:{direction}:{id}"),
@@ -185,9 +161,9 @@ mod desktop {
             capability_message,
             supported_configs,
             preferred_config: preferred_config_value,
-            selectable_by_native_engine,
-            latency_status,
-            latency_ms,
+            selectable_by_native_engine: false,
+            latency_status: "not_measured",
+            latency_ms: None,
         }
     }
 
