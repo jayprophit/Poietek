@@ -37,7 +37,7 @@ jobs:
           distribution: temurin
           java-version: '17'
           cache: gradle
-      - uses: android-actions/setup-android@v3
+      - uses: android-actions/setup-android@v4
       - name: Install Android SDK, build tools, and NDK
         run: |
           sdkmanager \
@@ -109,7 +109,7 @@ jobs:
           distribution: temurin
           java-version: '17'
           cache: gradle
-      - uses: android-actions/setup-android@v3
+      - uses: android-actions/setup-android@v4
       - name: Install Android SDK, build tools, and NDK
         run: |
           sdkmanager \
