@@ -90,17 +90,17 @@ const TakeCompStudioDevice = React.lazy(async () => {
   const module = await import('./TakeCompStudioDevice');
   return {default: module.TakeCompStudioDevice};
 });
- 
+
 const NoteForgeMidiLabDevice = React.lazy(async () => {
   const module = await import('./NoteForgeMidiLabDevice');
   return {default: module.NoteForgeMidiLabDevice};
 });
- 
+
 const TechniqueMatrixDevice = React.lazy(async () => {
   const module = await import('./TechniqueMatrixDevice');
   return {default: module.TechniqueMatrixDevice};
 });
- 
+
 const EditorialMemoryWorkbenchDevice = React.lazy(async () => {
   const module = await import('./EditorialMemoryWorkbenchDevice');
   return {default: module.EditorialMemoryWorkbenchDevice};

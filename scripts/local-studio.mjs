@@ -1,6 +1,7 @@
 import {spawn, spawnSync} from 'node:child_process';
 import {createReadStream, existsSync, statSync} from 'node:fs';
 import http from 'node:http';
+import net from 'node:net';
 import path from 'node:path';
 import process from 'node:process';
 import {fileURLToPath} from 'node:url';
@@ -8,8 +9,25 @@ import {fileURLToPath} from 'node:url';
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const distributionRoot = path.join(projectRoot, 'dist');
 const host = process.argv.find((value) => value.startsWith('--host='))?.slice(7) || '127.0.0.1';
-const port = Number(process.argv.find((value) => value.startsWith('--port='))?.slice(7) || 4173);
+const requestedPort = Number(process.argv.find((value) => value.startsWith('--port='))?.slice(7) || 4173);
 const shouldOpen = !process.argv.includes('--no-open');
+
+async function findAvailablePort(startPort, maxAttempts = 20) {
+  for (let port = startPort; port < startPort + maxAttempts; port += 1) {
+    const isTaken = await new Promise((resolve) => {
+      const probe = net.createServer();
+      probe.once('error', () => resolve(true));
+      probe.once('listening', () => {
+        probe.close(() => resolve(false));
+      });
+      probe.listen(port, host === '0.0.0.0' ? '0.0.0.0' : host);
+    });
+
+    if (!isTaken) return port;
+  }
+
+  return startPort;
+}
 
 if (!existsSync(path.join(distributionRoot, 'index.html'))) {
   console.log('Preparing Poietek Studio for its first local launch…');
@@ -83,6 +101,8 @@ const server = http.createServer((request, response) => {
   if (request.method === 'HEAD') response.end();
   else createReadStream(file).pipe(response);
 });
+
+const port = await findAvailablePort(requestedPort);
 
 server.on('error', (error) => {
   console.error(`Poietek Studio could not open its local port ${host}:${port}: ${error.message}`);

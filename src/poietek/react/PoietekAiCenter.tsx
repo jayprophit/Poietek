@@ -30,13 +30,17 @@ import {usePoietekRuntime} from './PoietekRuntimeProvider';
 import './PoietekAiCenter.css';
 
 const MODES: Array<{id: AiAssistantMode; label: string; detail: string}> = [
-  {id: 'project', label: 'Project', detail: 'state · next actions'},
-  {id: 'arrangement', label: 'Arrange', detail: 'structure · transitions'},
-  {id: 'mix', label: 'Mix', detail: 'balance · measured health'},
-  {id: 'sampling', label: 'Sample', detail: 'slices · mappings'},
-  {id: 'release', label: 'Release', detail: 'preflight · delivery'},
-  {id: 'rights', label: 'Rights', detail: 'credits · evidence'},
-  {id: 'learning', label: 'Learn', detail: 'guided production'},
+  {id: 'project', label: 'Project', detail: 'state · actions'},
+  {id: 'arrangement', label: 'Arrange', detail: 'tracks · sections'},
+  {id: 'mix', label: 'Mix', detail: 'levels · health'},
+  {id: 'release', label: 'Release', detail: 'delivery · notes'},
+];
+
+const QUICK_PROVIDERS: Array<{id: AiProviderKind; label: string}> = [
+  {id: 'poietek-local', label: 'Poietek'},
+  {id: 'openai', label: 'ChatGPT'},
+  {id: 'anthropic', label: 'Claude'},
+  {id: 'microsoft-copilot', label: 'Copilot'},
 ];
 
 function createId(prefix: string): string {
@@ -172,6 +176,11 @@ export function PoietekAiCenter() {
   return (
     <main className="poietek-ai" aria-label="Poietek independent AI studio">
       <section className="poietek-ai-hero"><div><p>Independent intelligence · optional providers</p><h1>Your studio brain stays yours.</h1><span>Poietek works offline by itself. External models are optional, user-selected and capability-gated.</span></div><dl><div><dt>Independent core</dt><dd>Ready offline</dd></div><div><dt>Active route</dt><dd>{activeConfiguration?.displayName ?? 'None'}</dd></div><div><dt>Project access</dt><dd>{project ? `${project.tracks.length} tracks · ${project.assets.length} assets` : runtimeStatus}</dd></div></dl></section>
+      <div className="poietek-ai-provider-shortcuts" role="group" aria-label="Quick AI provider selection">
+        {QUICK_PROVIDERS.map((provider) => (
+          <button key={provider.id} type="button" className={selectedProvider === provider.id ? 'is-active' : ''} onClick={() => setSelectedProvider(provider.id)}>{provider.label}</button>
+        ))}
+      </div>
       <div className="poietek-ai-grid">
         <section className="poietek-ai-assistant" aria-labelledby="assistant-heading">
           <header><div><p>Studio assistant</p><h2 id="assistant-heading">Ask the current project</h2></div><span className={activeConfiguration?.execution === 'in_app' ? 'is-local' : ''}>{activeConfiguration?.execution.replaceAll('_', ' ') ?? 'not selected'}</span></header>

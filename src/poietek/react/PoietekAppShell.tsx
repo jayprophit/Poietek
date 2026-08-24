@@ -219,15 +219,19 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
             <strong>Rack</strong>
             <small>devices · patching · sampling</small>
           </button>
-          <button type="button" className={area === 'ecosystem' ? 'is-active' : ''} onClick={() => setArea('ecosystem')}>
-            <span aria-hidden={!deviceProfile.showKeyboardShortcuts}>F8</span>
-            <strong>Ecosystem</strong>
-            <small>vision · systems · roadmap</small>
+          <button type="button" className={area === 'ecosystem' ? 'is-active' : ''} onClick={() => {
+            sessionStorage.setItem('poietek-ecosystem-view', 'community');
+            window.dispatchEvent(new CustomEvent('poietek:ecosystem-view', {detail: 'community'}));
+            setArea('ecosystem');
+          }}>
+            <span aria-hidden={!deviceProfile.showKeyboardShortcuts}>●</span>
+            <strong>Community</strong>
+            <small>share · profile · marketplace</small>
           </button>
           <button type="button" className={area === 'ai' ? 'is-active' : ''} onClick={() => setArea('ai')}>
             <span aria-hidden={!deviceProfile.showKeyboardShortcuts}>F9</span>
             <strong>AI</strong>
-            <small>local brain · model router</small>
+            <small>chat · prompts · notes</small>
           </button>
         </nav>
         <div className="poietek-command-utilities">

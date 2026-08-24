@@ -47,8 +47,8 @@ import './PoietekEcosystemCenter.css';
 import {UnifiedPlatformCenter} from './UnifiedPlatformCenter';
 
 type StatusFilter = 'all' | VisionCapabilityStatus;
-type EcosystemView = 'capabilities' | 'workflows' | 'creator' | 'governance' | 'library' | 'business' | 'progress' | 'release' | 'benchmark';
-const ECOSYSTEM_VIEWS: EcosystemView[] = ['capabilities', 'workflows', 'creator', 'governance', 'library', 'business', 'progress', 'release', 'benchmark'];
+type EcosystemView = 'capabilities' | 'workflows' | 'creator' | 'community' | 'governance' | 'library' | 'business' | 'progress' | 'release' | 'benchmark';
+const ECOSYSTEM_VIEWS: EcosystemView[] = ['capabilities', 'workflows', 'creator', 'community', 'governance', 'library', 'business', 'progress', 'release', 'benchmark'];
 type BenchmarkKindFilter = 'all' | QualificationLaneKind;
 type ProgressStatusFilter = 'all' | BuildChecklistStatus;
 type ReleaseCategoryFilter = 'all' | PublicReleaseCategory;
@@ -155,8 +155,8 @@ export function PoietekEcosystemCenter() {
       <header className="poietek-ecosystem-hero">
         <div>
           <p>Creative operating system · controlled catalogue {SDS_VISION_CATALOG_VERSION}</p>
-          <h1>{view === 'creator' ? 'One project, from first note to audience.' : view === 'governance' ? 'Trust is part of the product.' : view === 'workflows' ? 'Production disciplines, connected honestly.' : view === 'library' ? 'The complete development library.' : view === 'business' ? 'A business structure, before a price book.' : view === 'progress' ? 'Build to 100%, evidence first.' : view === 'release' ? 'Public release is a hard no-go.' : view === 'benchmark' ? 'Five stars must be proven.' : 'One studio. Thirteen connected systems.'}</h1>
-          <span>{view === 'workflows' ? 'Scoring, monitoring, spectral editing, offline processing, picture post, immersive routing, mastering, remote recording and MIDI logic share one local-first capability model.' : view === 'library' ? 'Every attached source volume is cross-walked to working evidence, staged architecture, professional documentation and honest gates.' : view === 'business' ? 'Seven proposed tiers preserve the supplied commercial shape while pricing, checkout, entitlement enforcement and service promises remain explicitly unapproved.' : view === 'progress' ? 'All 108 mandatory criteria from the thirteen product systems and fourteen professional volumes are tracked as complete, partly done, missing or externally blocked.' : view === 'release' ? 'A public release stays blocked until product, audio, recovery, platform, accessibility, security, privacy, legal and operational acceptance evidence is complete.' : view === 'benchmark' ? 'Twenty-seven qualification lanes compare the thirteen-system product and fourteen professional volumes with official category-leader capabilities. Working code, tests and independent acceptance—not ambition—control the rating.' : 'The SDS vision is tracked here as executable capability, foundation, next slice, and honest release gate.'}</span>
+          <h1>{view === 'creator' ? 'One project, from first note to audience.' : view === 'community' ? 'A creative community built around listening, sharing, and trusted discovery.' : view === 'governance' ? 'Trust is part of the product.' : view === 'workflows' ? 'Production disciplines, connected honestly.' : view === 'library' ? 'The complete development library.' : view === 'business' ? 'A business structure, before a price book.' : view === 'progress' ? 'Build to 100%, evidence first.' : view === 'release' ? 'Public release is a hard no-go.' : view === 'benchmark' ? 'Five stars must be proven.' : 'One studio. Thirteen connected systems.'}</h1>
+          <span>{view === 'community' ? 'Share tracks, collect feedback, discover new voices, promote profiles, and keep the social layer separate from the production workspace so it stays focused, respectful, and clearly optional.' : view === 'workflows' ? 'Scoring, monitoring, spectral editing, offline processing, picture post, immersive routing, mastering, remote recording and MIDI logic share one local-first capability model.' : view === 'library' ? 'Every attached source volume is cross-walked to working evidence, staged architecture, professional documentation and honest gates.' : view === 'business' ? 'Seven proposed tiers preserve the supplied commercial shape while pricing, checkout, entitlement enforcement and service promises remain explicitly unapproved.' : view === 'progress' ? 'All 108 mandatory criteria from the thirteen product systems and fourteen professional volumes are tracked as complete, partly done, missing or externally blocked.' : view === 'release' ? 'A public release stays blocked until product, audio, recovery, platform, accessibility, security, privacy, legal and operational acceptance evidence is complete.' : view === 'benchmark' ? 'Twenty-seven qualification lanes compare the thirteen-system product and fourteen professional volumes with official category-leader capabilities. Working code, tests and independent acceptance—not ambition—control the rating.' : 'The SDS vision is tracked here as executable capability, foundation, next slice, and honest release gate.'}</span>
         </div>
         <div className="poietek-ecosystem-totals" aria-label="Capability totals">
           <strong>{view === 'workflows' ? PRODUCTION_WORKFLOW_DEFINITIONS.length : view === 'library' ? DEVELOPMENT_LIBRARY_VOLUMES.length : view === 'business' ? BUSINESS_TIER_CATALOG.length : view === 'progress' ? `${progressSummary.strictCompletionPercent}%` : view === 'release' ? releaseSummary.decision.replace('_', '-') : view === 'benchmark' ? `${qualificationSummary.stars.toFixed(1)}★` : SDS_VISION_CATALOG.length}</strong>
@@ -169,6 +169,7 @@ export function PoietekEcosystemCenter() {
         <button type="button" className={view === 'capabilities' ? 'is-active' : ''} onClick={() => setView('capabilities')}>Capability architecture</button>
         <button type="button" className={view === 'workflows' ? 'is-active' : ''} onClick={() => setView('workflows')}>Production workflows</button>
         <button type="button" className={view === 'creator' ? 'is-active' : ''} onClick={() => setView('creator')}>Creator platform</button>
+        <button type="button" className={view === 'community' ? 'is-active' : ''} onClick={() => setView('community')}>Community hub</button>
         <button type="button" className={view === 'governance' ? 'is-active' : ''} onClick={() => setView('governance')}>Governance & help</button>
         <button type="button" className={view === 'library' ? 'is-active' : ''} onClick={() => setView('library')}>Development library</button>
         <button type="button" className={view === 'business' ? 'is-active' : ''} onClick={() => setView('business')}>Business tiers</button>
@@ -178,6 +179,28 @@ export function PoietekEcosystemCenter() {
       </nav>
 
       {view === 'creator' && <UnifiedPlatformCenter mode="creator" />}
+      {view === 'community' && <section className="poietek-vision-section" aria-labelledby="community-hub-heading">
+        <div className="poietek-ecosystem-heading">
+          <div><p>Audience and discovery</p><h2 id="community-hub-heading">A focused community layer for sharing, listening, and discovery.</h2></div>
+          <span>Separate social layer · optional marketplace · profile-first discovery</span>
+        </div>
+        <div className="poietek-vision-grid">
+          {[
+            {title: 'Listen & discover', copy: 'Follow artists, listen to previews, and build a discovery-first listening experience without cluttering the production workspace.'},
+            {title: 'Share projects', copy: 'Post updates, previews, stems, and release snippets to a dedicated social hub built around workflow, not noise.'},
+            {title: 'Profile promotion', copy: 'Highlight your work, projects, releases, and brand identity in a profile page built for creative promotion.'},
+            {title: 'Marketplace', copy: 'Support buying, selling, licensing, and collaboration in a clearly separated commerce surface that stays opt-in.'},
+          ].map((card) => (
+            <article key={card.title} className="poietek-vision-card is-foundation">
+              <header>
+                <div><span>Community</span><h3>{card.title}</h3></div>
+                <small>Social layer</small>
+              </header>
+              <p>{card.copy}</p>
+            </article>
+          ))}
+        </div>
+      </section>}
       {view === 'governance' && <UnifiedPlatformCenter mode="governance" />}
 
       {view === 'workflows' && <section className="poietek-vision-section" aria-labelledby="production-workflow-heading">

@@ -162,6 +162,7 @@ export default function App() {
   const [mixerPinned, setMixerPinned] = useState(true);
   const [dropActive, setDropActive] = useState(false);
   const [importedAudio, setImportedAudio] = useState<ImportedAudioAsset[]>([]);
+  const [connectedDevices, setConnectedDevices] = useState<ConnectedDevice[]>([]);
   const [syncCode, setSyncCode] = useState('PST-42D7');
 
   useEffect(() => {
@@ -696,7 +697,6 @@ export default function App() {
     learningModeActive: false,
   });
 
-  const [connectedDevices, setConnectedDevices] = useState<ConnectedDevice[]>([]);
   const [isAIGrooveOpen, setIsAIGrooveOpen] = useState<boolean>(false);
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
   const [isBrowserOpen, setIsBrowserOpen] = useState<boolean>(() =>
