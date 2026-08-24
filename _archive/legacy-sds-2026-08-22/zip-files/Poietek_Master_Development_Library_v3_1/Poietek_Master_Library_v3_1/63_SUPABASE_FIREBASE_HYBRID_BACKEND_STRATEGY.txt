@@ -1,0 +1,108 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 2.0
+
+63 — SUPABASE + FIREBASE HYBRID BACKEND STRATEGY
+=================================================
+
+RECOMMENDED FREE-FIRST DEFAULT
+
+PRIMARY APPLICATION BACKEND:
+Supabase.
+
+Supabase responsibilities:
+- Auth
+- Postgres application database
+- Row Level Security
+- Realtime presence/broadcast
+- comments/team metadata
+- project directory
+- rights/release metadata later
+- small managed file objects if desired.
+
+FIREBASE OPTIONAL RESPONSIBILITIES:
+- Firebase Hosting for the Web build if desired
+- Crashlytics / Performance Monitoring for supported app surfaces
+- Remote Config
+- Cloud Messaging later
+- App Distribution/testing where useful.
+
+LOCAL/BYOC:
+- project source of truth
+- WAV/video
+- local autosave
+- user-connected storage providers.
+
+WHY NOT TWO DATABASE SOURCES OF TRUTH
+
+Do not put project membership in both Firestore and Supabase and try to merge it.
+
+One responsibility -> one owner.
+
+MVP RECOMMENDATION
+
+Supabase:
+users
+projects
+members
+comments
+presence
+sync metadata.
+
+Firebase:
+optional Hosting only at first.
+
+This is much simpler than running Firebase Auth + Supabase Auth simultaneously.
+
+FIREBASE AUTH COMPATIBILITY
+
+Supabase currently supports Firebase Auth as a third-party JWT identity source.
+Therefore a future migration/hybrid path exists.
+
+Use that only if:
+- Firebase Auth is already established;
+- custom claim/security setup is tested;
+- one canonical user identity mapping is documented.
+
+Do NOT enable both auth systems casually during first prototype.
+
+SUPABASE LOCAL DEVELOPMENT
+
+Use Supabase CLI + local Postgres/Auth/Realtime for backend development.
+Migrations live in source control.
+
+SELF HOSTING
+
+Supported as a future advanced/team/enterprise mode, with the warning that
+self-hosting transfers operations, backup, security, availability and updates to
+the operator.
+
+BACKEND ADAPTER
+
+BackendProvider {
+ auth
+ projectDirectory
+ teams
+ comments
+ presence
+ syncRelay
+ notifications
+}
+
+Implement:
+SupabaseBackendProvider
+FirebaseBackendProvider (optional)
+LocalOnlyBackendProvider.
+
+LOCAL ONLY
+
+LocalOnlyBackendProvider:
+anonymous local identity
+no network project directory
+no team sync
+all DAW functions operational.
+
+ACCEPTANCE
+BACKEND-001 Supabase unavailable -> local project still opens.
+BACKEND-002 Firebase Hosting unavailable -> installed apps unaffected.
+BACKEND-003 no project table duplicated in Firestore and Postgres by default.
+BACKEND-004 auth provider switch does not change Project schema.
+BACKEND-005 local development can run without hosted Supabase.

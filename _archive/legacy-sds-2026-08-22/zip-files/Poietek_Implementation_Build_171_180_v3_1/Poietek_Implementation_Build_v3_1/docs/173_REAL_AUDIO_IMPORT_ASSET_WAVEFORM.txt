@@ -1,0 +1,16 @@
+173 — REAL AUDIO IMPORT / ASSET / WAVEFORM
+==========================================
+
+Implemented:
+Blob/File SHA-256
+OPFS storage
+IndexedDB Blob fallback
+AudioContext decode
+real duration/sample-rate/channel metadata
+waveform peak pyramid.
+
+The imported audio is stored by Poietek Asset ID and the Project serializes only
+the asset record/reference, never AudioBuffer.
+
+Codec support equals the current browser/native decode backend. Do not claim every
+codec until tested.

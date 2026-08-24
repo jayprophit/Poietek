@@ -1,0 +1,72 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.10
+
+70 — NATIVE + HYBRID BACKEND INTEGRATION ROADMAP
+=================================================
+
+PHASE A — WEB FOUNDATION
+Finish v1.9 real-audio vertical slice.
+
+PHASE B — SUPABASE
+Create development project.
+Run reviewed schema/RLS.
+Implement SupabaseBackend.
+Project directory/comments only.
+No media dependency.
+
+PHASE C — FIREBASE HOSTING
+Deploy website/web app.
+Optional Remote Config/messaging after explicit need.
+Do not create duplicate Firestore project truth.
+
+PHASE D — TAURI DESKTOP
+Add src-tauri.
+Windows/macOS/Linux dev builds.
+Native filesystem bridge.
+Native SQLite adapter.
+Keep WebAudio fallback during transition.
+
+PHASE E — NATIVE AUDIO/MIDI
+Replace professional desktop realtime path with native backend.
+Web keeps WebAudio/WebMIDI.
+
+PHASE F — MOBILE
+Tauri Android/iOS shell.
+Mobile filesystem/database.
+Audio/MIDI.
+Touch workspaces.
+Store packaging.
+
+PHASE G — DESKTOP PLUGIN HOST
+Rust/native process host.
+VST3/CLAP/AU according to platform.
+
+PHASE H — FIVE-STAR LAB
+Run category tests.
+Prioritize gap backlog by score.
+
+PHASE I — PUBLIC BETA
+Publish benchmark dashboard internally.
+External creator testing.
+
+PHASE J — CERTIFICATION
+Only when evidence meets Document 69.
+
+DELIVERED STARTER FILES
+
+native/src-tauri/
+NativeBridge.ts
+BackendServices.ts
+BackendComposition.ts
+supabase.schema.sql
+benchmark-rubric.v1.json
+current-prototype-score.v1.json
+
+NEXT REPOSITORY PATCH
+After local vertical slice:
+create a branch
+add package boundaries
+integrate Tauri behind feature/capability boundary
+add Supabase adapter
+keep Firebase optional.
+
+END DOCUMENTS 61-70

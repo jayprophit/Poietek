@@ -1,0 +1,63 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.8
+
+146 — HISTORICAL & MICROTONAL TEMPERAMENTS
+==========================================
+
+PRESET FAMILIES
+
+Reference pitch:
+A415
+A430
+A432
+A435
+A438
+A440
+A442
+A443
+A444
+custom.
+
+Temperaments:
+12-TET
+Pythagorean
+Just
+Quarter-comma meantone
+Werckmeister variants
+Vallotti
+19 EDO
+24 EDO
+31 EDO
+custom EDO
+Scala.
+
+IMPORTANT
+
+A historical pitch reference and historical temperament are separate controls.
+
+A415 + 12-TET
+and
+A415 + meantone
+are different systems.
+
+MICROTONAL PIANO ROLL
+
+Display:
+cents
+ratio
+scale degree
+note name
+MIDI note
+per-note pitch.
+
+GRID
+
+Normal semitone grid becomes configurable.
+
+SNAP TO:
+scale
+ratio
+EDO
+Scala mapping
+no grid.
+
+END DOCUMENT 146

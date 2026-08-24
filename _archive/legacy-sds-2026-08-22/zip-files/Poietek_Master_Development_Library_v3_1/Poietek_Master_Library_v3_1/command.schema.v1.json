@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/command/v1/command.schema.json",
+  "title": "Poietek Command Envelope v1",
+  "type": "object",
+  "required": [
+    "commandId",
+    "commandType",
+    "projectId",
+    "actorId",
+    "createdAt",
+    "payload"
+  ],
+  "properties": {
+    "commandId": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128
+    },
+    "commandType": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Za-z0-9]+$"
+    },
+    "projectId": {
+      "type": "string"
+    },
+    "actorId": {
+      "type": "string"
+    },
+    "clientId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expectedRevision": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "undoGroupId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "enum": [
+            "ui",
+            "keyboard",
+            "midi",
+            "hardware",
+            "ai",
+            "automation",
+            "api",
+            "migration",
+            "system"
+          ]
+        },
+        "workspace": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "correlationId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,278 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.0
+
+Compiled from:
+1) The complete product-development conversation supplied by the creator.
+2) Deep review of GitHub repository: jayprophit/Studio-Daw-Station-SDS-
+3) Current cross-platform/offline-first architecture recommendations.
+
+WORKING PRODUCT NAME
+Poietek is the working ecosystem name discussed in the design conversation.
+Studio DAW Station (SDS) is the current repository/product label.
+Final public branding should be chosen only after trademark/domain checks.
+
+CORE RULE
+One app. One project model. One creative graph. Many workspaces.
+Offline first. Cloud optional. Hardware agnostic. Collaboration capable.
+Professional depth without forcing beginners to see every advanced control.
+
+LEGAL / CLEAN-ROOM RULE
+Competitor products, patents, papers, hardware and interfaces may be studied for
+functional principles, workflows and interoperability requirements. Do not copy
+proprietary source code, protected assets, branded UI expression, undocumented
+confidential protocols, or patented claims without appropriate legal review or
+licensing. Compatibility layers should use documented/open interfaces wherever
+possible.
+
+===============================================================================
+
+REPOSITORY
+jayprophit/Studio-Daw-Station-SDS-
+Default branch: main
+Audited scaffold commit: 6451cb187158a591501fa23bcfbeba19ecd12428
+
+EXECUTIVE ASSESSMENT
+The repository is a strong concept/UI prototype produced from Google AI Studio
+vibe coding. It demonstrates the intended product shape well: modular rack,
+multiple hardware workspaces, visual mapping, step sequencing, basic Web Audio,
+Web MIDI input, a pitch-editor mock-up, cascading DAW menus, templates, floating
+workspaces and beginner walkthroughs.
+
+It is NOT yet a production DAW or collaboration platform. Most advanced labels
+represent UI simulations. Preserve the useful interaction design while replacing
+demo state with real domain/engine services.
+
+CURRENT FILE/FOLDER INVENTORY
+
+ROOT / CONFIGURATION
+- .env.example
+- .gitignore
+- assets/.aistudio/.gitignore
+- index.html
+- metadata.json
+- package.json
+- tsconfig.json
+- vite.config.ts
+- README.md was removed by the scaffold commit.
+
+CORE
+- src/App.tsx
+- src/main.tsx
+- src/index.css
+- src/types/index.ts
+- src/audio/engine.ts
+- src/midi/manager.ts
+- src/data/deviceProfiles.ts
+
+NAVIGATION / DAW UI
+- src/components/Navigation.tsx
+- src/components/daw/DAWBrowserSidebar.tsx
+- src/components/daw/DAWMenuBar.tsx
+- src/components/daw/FloatingQuickPalette.tsx
+- src/components/daw/FloatingWindowManager.tsx
+- src/components/daw/TemplatesModal.tsx
+- src/components/daw/GuidedWalkthroughBanner.tsx
+
+DAW / COMPOSITION MODULES
+- src/components/daw/CircleOfFifthsWheel.tsx
+- src/components/daw/CubaseLogicWaveformSequencer.tsx
+- src/components/daw/DGrooveMixer.tsx
+- src/components/daw/FLStudioChannelRack.tsx
+- src/components/daw/MelodynePitchEditor.tsx
+- src/components/daw/PianoRollSequencer.tsx
+
+RACK / ROUTING
+- src/components/rack/CombinatorFolderDevice.tsx
+- src/components/rack/HardwareInterfaceUnit.tsx
+- src/components/rack/RackStackManager.tsx
+- src/components/rack/StudioRackDevice.tsx
+- src/components/rack/StudioRackNav.tsx
+- src/components/rack/StudioRearPanel.tsx
+- src/components/rack/StudioTransport.tsx
+- src/components/routing/MIDIRoutingMatrix.tsx
+
+MAPPING / SYSTEM
+- src/components/mapper/UniversalHardwareMapper.tsx
+- src/components/mapper/VisualDeviceEditor.tsx
+- src/components/system/DeviceHealthModal.tsx
+
+SAMPLING / AI
+- src/components/sampler/ChopLab.tsx
+- src/components/ai/GenerativeGrooveModal.tsx
+
+HARDWARE WORKSPACES
+- src/components/workspaces/BuiltInDrumMachines.tsx
+- src/components/workspaces/DJWorkspace.tsx
+- src/components/workspaces/EDrumWorkspace.tsx
+- src/components/workspaces/KeyboardWorkspace.tsx
+- src/components/workspaces/MPCWorkspace.tsx
+- src/components/workspaces/MixerWorkspace.tsx
+- src/components/workspaces/PatchBayWorkspace.tsx
+- src/components/workspaces/SP404Workspace.tsx
+
+A. ROOT / BUILD
+package.json:
+- React/Vite/TypeScript foundation is useful.
+- package name still "react-example".
+- no test runner, PWA, persistence, CRDT, native wrapper, or plugin host deps.
+- @google/genai is installed but application code does not actually use it.
+- Express/dotenv exist without a complete backend architecture.
+
+tsconfig:
+- strict mode not enabled.
+- lint is only `tsc --noEmit`.
+- likely existing type mismatches should be fixed before feature growth.
+
+vite:
+- plain React/Vite.
+- no service worker/PWA.
+- no native wrapper target.
+- contains AI-Studio-specific HMR behavior and a text-encoding artifact.
+
+README:
+- removed in current scaffold commit; restore it.
+Also add LICENSE, CONTRIBUTING, SECURITY and architecture docs.
+
+B. App.tsx
+GOOD:
+- one-app/many-modules concept.
+- 128 A-H pad model.
+- floating workspace idea.
+- rack undo/redo.
+- templates/walkthrough.
+GAPS:
+- too much canonical state in React component.
+- reload loses project state.
+- undo/redo only tracks rack arrangement.
+- no Project, Asset, Sync, Collaboration, Video, Rights or Community model.
+- transport/metronome scheduling uses JavaScript timers.
+- navigation can conceptually add rack modules as a side effect.
+- current MasterState construction appears inconsistent with required fields.
+- MIDI simulation callback typing appears inconsistent through RackStackManager.
+
+C. types/index.ts
+Useful start for hardware abstraction, but missing Project, Asset, Clip, Timeline,
+Revision, Snapshot, Team, Rights, Contribution, Video, Plugin, Sync and Conflict.
+Critical serialization issue: SamplePad stores a live AudioBuffer. Replace it
+with assetId/hash and use a runtime AudioAssetCache.
+
+D. audio/engine.ts
+REAL:
+- AudioContext, pad playback, simple synth/drums, gain/pan/EQ, mic capture.
+PROTOTYPE:
+- pitch uses playbackRate, so time changes too.
+- no real stretch/warp.
+- no AudioWorklet/custom realtime backend.
+- no sample-accurate scheduler.
+- no professional multichannel interface routing.
+- no take lanes/comping.
+- sends/buses/plugins/automation incomplete.
+- no offline render graph.
+- “roundtrip latency” is timer-derived, not measured.
+- missing sample can fall back to kick and hide an asset failure.
+
+E. midi/manager.ts
+REAL:
+- Web MIDI input, note/CC/pitch/aftertouch logging, basic learn.
+PROTOTYPE:
+- input ports only; no physical MIDI outputs.
+- activeMappings not used as a real mapping execution graph.
+- keyword device matching.
+- simulator devices always added.
+- only some declared MIDI processors work.
+- no clock/MTC/Link.
+- no persisted profile/mapping registry.
+
+F. deviceProfiles.ts
+Correct direction but “OFFICIAL” is too strong without verification.
+Profiles combine families/models with potentially different mappings.
+Missing vendor/product IDs, firmware range, output bindings, transfer/storage
+capabilities and verification provenance.
+Rename to BUILTIN_DEVICE_PROFILES and add profileVersion + verificationLevel.
+
+G. DAW MENU / NAVIGATION
+One of the best parts of the prototype:
+- cascading menus;
+- burger compact navigation;
+- detached workspaces;
+- rack front/rear concept;
+- templates and guided help.
+Before public release, remove competitor/trademark names from component/public
+feature labels. Keep principles, use original names.
+
+H. Waveform Sequencer
+- static demo tracks/regions.
+- waveform canvas is procedural, not audio-derived.
+- playhead is UI timer.
+- Add Track makes a fake recording region.
+- M/S/REC are not a real timeline engine.
+- scissors is largely visual.
+Replace with TimelineEngine + ClipRepository + WaveformPeakCache + Scheduler.
+
+I. Pitch Editor
+Code uses simulated pitch blobs. Sliders do not process audio.
+Implement monophonic pitch analysis first; polyphonic later.
+
+J. ChopLab
+- synthetic waveform.
+- equal slices only.
+- reverse does not affect audio.
+- status text can disagree with >16 mapping.
+- no real transient/zero-crossing/linked-stem behavior.
+Implement real sample source selection and up to capability-driven pad counts.
+
+K. AI Groove
+- setTimeout and keyword BPM rules, not AI.
+- Apply mainly changes BPM.
+Introduce AICommandService returning structured, previewable project commands.
+
+L. Hardware Mapper
+Strong UI concept, but mappings are hard-coded/demo.
+Learn wizard does not persist completed profile.
+Advertised conflict resolver not implemented.
+Keep UI; connect it to MappingService.
+
+M. Visual Device Editor
+Can export JSON, but no import/schema validation/drag-resize/learn/community
+versioning.
+
+N. MIDI Routing Matrix
+UI-only processor chain. Not connected to MIDI engine.
+Scale selector and several processor types are incomplete.
+
+O. Device Health
+UI claims measured latency and verified profiles, while current backend does not
+justify those claims. Until implemented, label Estimated/Configured and Built-in.
+
+P. Mixer
+React state changes do not yet represent a complete mixer/render graph.
+Build MixerGraph and bind UI to engine state.
+
+Q. Hardware Workspaces
+MPC/SP/keyboard/e-drum/DJ/patchbay/drum-machine views are valuable.
+Refactor them to be capability-driven rather than hardcoded simulations.
+
+R. MISSING PRODUCT AREAS
+- durable project storage;
+- offline PWA;
+- native desktop/mobile;
+- sync;
+- team collaboration;
+- rights/credits;
+- internal community/DM;
+- video/VFX;
+- plugin sandbox;
+- actual AI provider integration;
+- CI/test/release pipeline.
+
+AUDIT VERDICT
+Product/UX prototype: strong.
+Production audio/MIDI: early.
+Durable project system: not yet.
+Offline-first: not yet.
+Cross-device sync: not yet.
+Team collaboration: not yet.
+Video/VFX: not yet.
+Rights/community: not yet.
+
+Do not add more “advanced feature” UI until the domain/project layer exists.

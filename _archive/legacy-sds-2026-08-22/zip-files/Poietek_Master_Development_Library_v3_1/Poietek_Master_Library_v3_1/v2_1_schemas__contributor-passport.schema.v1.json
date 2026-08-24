@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/party-passport/v1",
+  "title": "Poietek Contributor Passport v1",
+  "type": "object",
+  "required": [
+    "partyId",
+    "partyType",
+    "displayName",
+    "externalIdentifiers",
+    "memberships"
+  ],
+  "properties": {
+    "partyId": {
+      "type": "string"
+    },
+    "partyType": {
+      "enum": [
+        "person",
+        "company",
+        "collective",
+        "publisher",
+        "label",
+        "other"
+      ]
+    },
+    "displayName": {
+      "type": "string"
+    },
+    "legalName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "externalIdentifiers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "namespace",
+          "kind",
+          "value",
+          "verification"
+        ],
+        "properties": {
+          "namespace": {
+            "type": "string",
+            "description": "e.g. PRS, PPL, MLC, SOUNDEXCHANGE, ISNI"
+          },
+          "kind": {
+            "type": "string",
+            "description": "e.g. IPI_CAE, MEMBER_ID, PARTY_ID, PROVIDER_ID"
+          },
+          "value": {
+            "type": "string"
+          },
+          "verification": {
+            "enum": [
+              "self_declared",
+              "format_checked",
+              "provider_confirmed",
+              "admin_verified"
+            ]
+          },
+          "maskedDisplay": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "verifiedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "memberships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "publicProfile": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "privateProfile": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

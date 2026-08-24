@@ -1,0 +1,48 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.7
+
+133 — RADIO / TV BROADCAST RELEASE PROFILES
+===========================================
+
+RADIO/BROADCAST READINESS MAY INCLUDE
+
+loudness
+true peak
+sample/format requirements
+duration
+channel layout
+metadata
+identifiers
+rights
+file naming/package
+station/network-specific rules.
+
+EBU R128
+
+Current EBU R128 v5 recommends programme loudness of -23 LUFS and uses Loudness
+Range and Maximum True Peak descriptors for its broadcast ecosystem.
+
+ITU-R BS.1770-5
+
+Current in-force ITU recommendation defines the measurement algorithms for
+programme loudness and true-peak audio level.
+
+ATSC A/85:2026
+
+Current ATSC A/85 revision was approved 8 July 2026 and covers audio loudness
+practice for digital television and contemporary broadcast/streaming workflows.
+
+POIETEK RULE
+
+No single profile called "Radio Standard".
+
+Instead:
+BBC/UK profile
+EBU regional profile
+specific broadcaster profile
+US/ATSC-oriented profile
+station/client profile
+etc.
+
+Profiles are updateable and cite their source/version.
+
+END DOCUMENT 133

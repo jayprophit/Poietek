@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/release-readiness-profile/v1",
+  "title": "Poietek Release Readiness Profile v1",
+  "type": "object",
+  "required": [
+    "profileId",
+    "version",
+    "label",
+    "destinationClass",
+    "authorityType",
+    "checks",
+    "sourceRefs",
+    "checkedAt"
+  ],
+  "properties": {
+    "profileId": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "label": {
+      "type": "string"
+    },
+    "destinationClass": {
+      "enum": [
+        "radio",
+        "television",
+        "streaming_music",
+        "podcast",
+        "audiobook",
+        "cinema",
+        "streaming_video",
+        "social_video",
+        "live_stream",
+        "game",
+        "download_store",
+        "physical_media",
+        "client_delivery",
+        "archive",
+        "custom"
+      ]
+    },
+    "territories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "authorityType": {
+      "enum": [
+        "formal_standard",
+        "regulator",
+        "broadcaster",
+        "platform",
+        "distributor",
+        "cinema_festival",
+        "client",
+        "poietek_default",
+        "user_custom"
+      ]
+    },
+    "checks": {
+      "type": "object",
+      "properties": {
+        "tuning": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "audioFormat": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "audioLevels": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "channelLayout": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "videoFormat": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "colour": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "captions": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "rights": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "packaging": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "accessibility": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "sourceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "checkedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "validUntil": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

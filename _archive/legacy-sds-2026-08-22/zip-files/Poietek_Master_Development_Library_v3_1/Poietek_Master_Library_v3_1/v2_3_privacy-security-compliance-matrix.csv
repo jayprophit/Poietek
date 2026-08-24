@@ -1,0 +1,17 @@
+Framework/Law,Type,Poietek stance,Primary design implication
+EU GDPR,Privacy law,Conditional by scope,"Lawful basis, transparency, minimization, rights, retention, security"
+UK GDPR / UK privacy regime,Privacy law,Conditional by scope,"Privacy by design, accountability, rights, processor controls"
+CCPA/CPRA,California privacy law,Conditional by scope,Know/delete/correct/opt-out/limit and notice workflows
+Colorado Privacy Act,US state privacy law,Conditional by scope,"Consumer rights, consent/assessment where required"
+Utah Consumer Privacy Act,US state privacy law,Conditional by scope,Consumer access/delete/copy/opt-out workflows
+China PIPL,Privacy law,Conditional by scope,"Processing basis, sensitive PI, cross-border/data-handler obligations"
+Singapore PDPA,Privacy law,Conditional by scope,Purpose/consent/notification/care and governance
+Australian Privacy Act / APPs,Privacy law,Conditional by scope,"Transparent handling, minimization, access/correction, security"
+ISO/IEC 27001:2022,Security management standard,Target later,ISMS and risk-based controls
+SOC 2,Assurance framework,Target later for hosted service,Security/availability/confidentiality/privacy evidence
+PCI DSS 4.0.1,Payment standard,Minimize scope,Keep raw cardholder data at processor
+NIST CSF 2.0,Cybersecurity framework,ADOPT now,Govern/Identify/Protect/Detect/Respond/Recover mapping
+NIST SSDF 1.1 final,Secure development,ADOPT now,Secure SDLC and supply-chain provenance; monitor 1.2 draft
+NIST AI RMF 1.0 + GenAI Profile,AI risk framework,ADOPT for AI,"Model risk, testing, documentation, evaluation"
+HIPAA,US healthcare law,Conditional only,Only if Poietek handles ePHI in covered workflows
+GLBA,US financial-sector law,Conditional only,Only if Poietek enters covered financial-services scope

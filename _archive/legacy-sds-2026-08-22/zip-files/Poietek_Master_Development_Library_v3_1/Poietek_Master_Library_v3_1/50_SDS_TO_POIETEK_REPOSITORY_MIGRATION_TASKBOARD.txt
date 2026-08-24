@@ -1,0 +1,204 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.8
+
+50 — SDS -> POIETEK REPOSITORY MIGRATION TASKBOARD
+===================================================
+
+SOURCE SNAPSHOT
+Based on the previously audited SDS repository structure in this project history.
+
+GOAL
+Evolve, do not rewrite blindly.
+
+EPIC P0 — REPOSITORY HYGIENE
+
+P0-01 Restore README.
+P0-02 Rename package from react-example to poietek-studio working name.
+P0-03 Add LICENSE/SECURITY/CONTRIBUTING/CODE_OF_CONDUCT.
+P0-04 Add real lint/test scripts.
+P0-05 Enable stricter TypeScript incrementally.
+P0-06 Fix existing type mismatches.
+P0-07 Mark simulated UI features Prototype.
+P0-08 Rename competitor-branded component names internally over time.
+
+EPIC P1 — DOMAIN EXTRACTION
+
+P1-01 Create packages/domain.
+P1-02 Move serializable project types from src/types.
+P1-03 Add project.schema.v1.json.
+P1-04 Add ULID ID service.
+P1-05 Add Project factory.
+P1-06 Add schema validation.
+P1-07 Replace SamplePad.audioBuffer with assetId.
+
+EPIC P2 — COMMANDS
+
+P2-01 Create CommandBus.
+P2-02 Add AddTrack.
+P2-03 Add AddClip.
+P2-04 Add SplitClip.
+P2-05 Add SetClipGain.
+P2-06 Add UndoManager.
+P2-07 Route one existing UI workspace through commands.
+
+EPIC P3 — LOCAL PERSISTENCE
+
+P3-01 IndexedDbProjectRepository.
+P3-02 migration table/version.
+P3-03 autosave transaction.
+P3-04 local project list.
+P3-05 recovery checkpoint.
+
+EPIC P4 — ASSETS
+
+P4-01 AssetStore interface.
+P4-02 OPFS provider.
+P4-03 IndexedDB fallback.
+P4-04 SHA-256 worker.
+P4-05 import service.
+P4-06 waveform peak worker.
+P4-07 missing asset UI.
+
+EPIC P5 — AUDIO
+
+P5-01 AudioBackend interface.
+P5-02 wrap existing audio engine as Web backend.
+P5-03 canonical transport.
+P5-04 real clip schedule.
+P5-05 gain/fades.
+P5-06 seek/loop.
+P5-07 meters.
+P5-08 OfflineAudioContext export.
+P5-09 replace fake sequencer waveform in one view.
+
+EPIC P6 — PWA
+
+P6-01 manifest.
+P6-02 service worker.
+P6-03 offline shell.
+P6-04 persistent storage request.
+P6-05 offline E2E.
+
+EPIC P7 — FIREBASE OPTIONAL
+
+P7-01 create separate connector/provider package.
+P7-02 Auth adapter.
+P7-03 project directory mapping.
+P7-04 comments.
+P7-05 emulator security tests.
+P7-06 never require Firebase to open local project.
+
+EPIC P8 — MIDI
+
+P8-01 MidiBackend.
+P8-02 Web MIDI input refactor.
+P8-03 enumerate output.
+P8-04 send MIDI.
+P8-05 persistent mapping.
+P8-06 device profile validation.
+
+EPIC P9 — SYNC
+
+P9-01 CollaborativeDocument interface.
+P9-02 Yjs adapter.
+P9-03 local CRDT persistence.
+P9-04 sync relay adapter.
+P9-05 asset sync queue.
+P9-06 two-client convergence tests.
+
+FILE-BY-FILE CURRENT MAPPING
+
+src/App.tsx
+-> keep temporarily.
+-> extract domain state.
+-> final AppShell.
+
+src/audio/engine.ts
+-> WebAudioBackend prototype.
+-> remove project-data ownership.
+
+src/midi/manager.ts
+-> WebMidiBackend.
+
+src/types/index.ts
+-> split among domain, hardware, UI contracts.
+
+src/data/deviceProfiles.ts
+-> packages/device-profiles.
+-> rename OFFICIAL to BUILTIN unless verified.
+
+src/components/daw/CubaseLogicWaveformSequencer.tsx
+-> rename WaveformSequencer/ArrangeWorkspace.
+-> connect to real Timeline.
+
+src/components/daw/MelodynePitchEditor.tsx
+-> rename NotePitchEditor.
+-> keep Prototype until real analysis engine exists.
+
+src/components/daw/FLStudioChannelRack.tsx
+-> rename PatternChannelRack.
+-> wire to command/domain pattern model.
+
+src/components/ai/GenerativeGrooveModal.tsx
+-> rename AI Groove/Idea assistant.
+-> remove fake Gemini claim until provider invoked.
+
+src/components/system/DeviceHealthModal.tsx
+-> replace "Measured" latency with "Estimated" until real loopback test.
+-> replace "Verified" profiles appropriately.
+
+src/components/mapper/*
+-> retain UI.
+-> wire to MappingService/device schema.
+
+FIRST CODING AGENT PROMPT
+
+Read:
+31
+35
+39
+41
+47
+50
+
+Then implement ONLY:
+P0 + P1 + P2 + P3 + P4 + P5 minimal vertical slice.
+
+Do not implement:
+community
+rights backend
+marketplace
+AI generation
+polyphonic pitch
+DJ DVS
+video VFX
+plugins
+
+until offline real-audio vertical slice passes.
+
+DONE FOR FIRST MILESTONE
+
+Network disabled.
+Create project.
+Import WAV.
+See real waveform.
+Play.
+Split.
+Change gain.
+Undo/redo.
+Reload.
+Reopen.
+Export.
+No fake audio.
+No lost data.
+
+TASKBOARD RULE
+Every ticket must contain:
+files
+schema impact
+migration
+tests
+offline behavior
+error behavior
+acceptance.
+
+END DOCUMENT 50

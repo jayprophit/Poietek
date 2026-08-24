@@ -1,0 +1,41 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.3
+
+91 — PROOF-MECHANISM ADOPTION MATRIX
+====================================
+
+COMPANION
+proof-mechanism-adoption-matrix.csv
+
+Poietek separates NETWORK CONSENSUS from APPLICATION PROOFS.
+
+Network mechanisms such as PoW, PoS, DPoS, PoA, PoET, Proof-of-Space,
+PBFT/dBFT/FBA and similar protocols are relevant only if Poietek evaluates an
+external chain or future trusted consortium network.
+
+Poietek should not build a custom blockchain just to claim use of these terms.
+
+Application proofs are directly useful:
+Proof of Contribution
+Proof of Consent
+Proof of Identity
+Proof of Data Integrity
+Proof of Transaction History
+Proof of Interoperability
+Proof of Chaos/Resilience
+Proof of Concept.
+
+Adapt carefully:
+Reputation
+Impact
+Engagement
+Discovery
+Location
+Legacy
+Environmental Impact
+Customization
+Trust.
+
+A non-standard phrase is never used as a security primitive until a precise,
+reviewed protocol is selected.
+
+END DOCUMENT 91

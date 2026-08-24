@@ -1,0 +1,25 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.9
+
+52 — PROJECT FACTORY, IDS & VALIDATION CODE
+===========================================
+
+DELIVERED
+packages/domain/src/types.ts
+ids.ts
+projectFactory.ts
+validate.ts
+
+DECISIONS
+- project IDs use local ULID-compatible generation;
+- schema version 1.0.0;
+- no AudioBuffer/WebMIDI/DOM objects in serialized project;
+- shallow runtime validation supplied now;
+- full JSON Schema validation can be added through a generated validator later.
+
+NEXT IN REPO
+Replace direct MasterState/pad durable state only when matching domain fields exist.
+Do not erase prototype UI state prematurely.
+
+PROJECT-001 createBlankProject serializes with JSON.stringify.
+PROJECT-002 structuredClone succeeds.
+PROJECT-003 invalid missing referenced asset reports validation issue.

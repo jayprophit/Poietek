@@ -1,0 +1,90 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.0
+
+Compiled from:
+1) The complete product-development conversation supplied by the creator.
+2) Deep review of GitHub repository: jayprophit/Studio-Daw-Station-SDS-
+3) Current cross-platform/offline-first architecture recommendations.
+
+WORKING PRODUCT NAME
+Poietek is the working ecosystem name discussed in the design conversation.
+Studio DAW Station (SDS) is the current repository/product label.
+Final public branding should be chosen only after trademark/domain checks.
+
+CORE RULE
+One app. One project model. One creative graph. Many workspaces.
+Offline first. Cloud optional. Hardware agnostic. Collaboration capable.
+Professional depth without forcing beginners to see every advanced control.
+
+LEGAL / CLEAN-ROOM RULE
+Competitor products, patents, papers, hardware and interfaces may be studied for
+functional principles, workflows and interoperability requirements. Do not copy
+proprietary source code, protected assets, branded UI expression, undocumented
+confidential protocols, or patented claims without appropriate legal review or
+licensing. Compatibility layers should use documented/open interfaces wherever
+possible.
+
+===============================================================================
+
+PRESERVE SDS IDENTITY
+Rack metaphor, front/rear panel, cascading menus, burger navigation, detachable
+workspaces, quick palette, hardware views, templates and walkthroughs.
+
+ONE APP, MANY WINDOWS
+Rack, arrangement, mixer, piano roll, score, sample, stems, video, VFX, hardware,
+mapping, community, rights, publish and learning can dock/tab/split/float.
+
+TOP MENUS
+File, Edit, View, Project, Transport, Audio, MIDI, Sampler, Sequence, Arrange,
+Mix, Video, Effects, Hardware, Collaborate, Rights, Publish, Community, Window,
+Help.
+
+COMMAND PALETTE
+Search every command; keyboard shortcut; optional voice/NL access.
+
+CONTEXT MENU
+Right-click/long-press on clips, tracks, pads, plugins, devices, assets,
+contributors and comments.
+
+HOVER/HELP
+Desktop hover tooltip; touch long-press/info icon.
+Expanded help: what, when, example, shortcut, tutorial.
+
+FIRST RUN
+Guided complete project:
+genre -> sounds -> drums -> bass -> melody -> arrangement -> FX -> vocal ->
+mix -> master -> visual -> export.
+
+FORKABLE TUTORIALS
+Open original read-only or “Save My Version”; preserve source/licence.
+
+GENRE STARTERS
+Hip-hop, Boom bap, R&B, Jungle/DnB, House, Techno, Afrobeat, Reggae/Dub, Rock,
+Pop, Orchestral, Film, Podcast, Blank.
+
+PROGRESSIVE UI
+LEARN / CREATE / PRO / LAB / LIVE. Same project format.
+
+RESPONSIVE
+Desktop multi-monitor; tablet split; phone focused workspace and drawers.
+
+ACCESSIBILITY
+keyboard, screen reader, high contrast, UI scale, color-blind choices, captions,
+reduced motion, touch sizing, custom shortcuts, MIDI control, voice where useful.
+
+THEMES/SKINS
+Data-driven design tokens. Community themes must not execute unsafe scripts.
+
+WORKSPACE SYNC
+Sync layouts optionally with per-device variants.
+
+BRAND SAFETY
+Rename current competitor-branded components/features before public release.
+
+EMPTY/ERROR STATES
+Every workspace teaches what it does. Missing assets/plugins/hardware are visible,
+never hidden behind fake fallback behavior.
+
+STATUS BAR
+selected object, rate, buffer, latency, MIDI/audio I/O, autosave, storage, sync,
+offline, CPU and missing asset state.

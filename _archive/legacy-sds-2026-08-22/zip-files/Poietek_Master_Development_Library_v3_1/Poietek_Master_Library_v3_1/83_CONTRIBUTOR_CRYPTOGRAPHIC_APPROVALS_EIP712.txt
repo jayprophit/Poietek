@@ -1,0 +1,60 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.2
+
+83 — CONTRIBUTOR CRYPTOGRAPHIC APPROVALS
+========================================
+
+COMPANIONS
+contracts/PoietekRightsApprovalRegistry.sol
+packages/blockchain/src/RightsApprovalTypedData.ts
+
+PURPOSE
+
+A contributor can approve a particular version/hash of:
+credit
+rights claim
+split proposal
+final Rights Manifest.
+
+EIP-712
+
+Use typed structured-data signing so a wallet/user agent can display meaningful
+fields rather than an opaque random byte string.
+
+ERC-1271 / SignatureChecker
+
+Support smart-contract wallet signatures as well as ordinary account signatures.
+
+APPROVAL OBJECT
+
+manifest ID hash
+manifest content hash
+Party ID hash
+approval role
+version
+nonce
+expiry.
+
+WHY NONCE
+
+Prevents a previously signed authorization from being reused as a fresh approval.
+
+WHY VERSION/HASH
+
+Approving version 3 does not approve a later changed version 4.
+
+NO WALLET REQUIREMENT FOR EVERY USER
+
+Poietek account/passkey signatures can remain a valid off-chain approval path.
+
+Blockchain approval is optional or used for higher-assurance workflows.
+
+Account abstraction can later make wallet UX less intimidating and potentially
+allow Poietek/paymasters to sponsor gas rather than forcing users to hold native
+tokens.
+
+ACCEPTANCE
+SIGN-001 changed manifest invalidates prior version match.
+SIGN-002 expired approval rejected.
+SIGN-003 nonce prevents replay.
+SIGN-004 smart-contract wallet validation supported.
+SIGN-005 no seed phrase required for ordinary Poietek local workflow.

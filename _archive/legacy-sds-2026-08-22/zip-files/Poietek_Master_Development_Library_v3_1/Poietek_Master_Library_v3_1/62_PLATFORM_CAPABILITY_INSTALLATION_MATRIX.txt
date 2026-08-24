@@ -1,0 +1,44 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 2.0
+
+62 — PLATFORM CAPABILITY & INSTALLATION MATRIX
+==============================================
+
+Companion:
+platform-capability-matrix.csv
+
+PRINCIPLE
+
+Project compatibility is universal.
+Runtime capability is platform-specific.
+
+A project containing an unavailable desktop plug-in still opens on mobile/web:
+the plug-in state remains and the last freeze/render is used where available.
+
+The app never deletes unsupported state just because the current platform cannot
+execute it.
+
+CAPABILITY SERVICE
+
+PlatformCapabilities {
+  nativeInstalled
+  audioBackend
+  midi
+  pluginFormats[]
+  videoAcceleration
+  filesystemMode
+  multiWindow
+  camera
+  microphone
+  backgroundTasks
+  shareSheet
+  notifications
+}
+
+UI uses capability checks, not user-agent string guesses.
+
+ACCEPTANCE
+PLAT-001 unsupported plugin shown as unavailable/frozen.
+PLAT-002 web never advertises VST3 hosting.
+PLAT-003 tablet layout is touch-first.
+PLAT-004 desktop supports detach/multi-window after implementation.
+PLAT-005 same project ID/schema opens all supported platforms.

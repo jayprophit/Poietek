@@ -1,0 +1,49 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.7
+
+131 — PUBLIC RELEASE READINESS ENGINE
+=====================================
+
+PURPOSE
+
+A project can sound/look finished but still be technically unsuitable for a
+specific public destination.
+
+Poietek therefore has a target-based Release Readiness Engine.
+
+USER SELECTS
+
+Radio
+Television
+Streaming music
+Podcast
+Audiobook
+Cinema
+Streaming video
+Social video
+Live stream
+Game
+Download store
+Physical release
+Client delivery
+Archive
+Custom.
+
+ENGINE LOADS
+
+current versioned profile
+territory/context
+required technical checks
+metadata/rights checks
+packaging/accessibility requirements.
+
+RESULT
+
+READY
+READY WITH ADVISORIES
+NOT READY.
+
+AI explains every failure and can preview safe fixes.
+
+A target-specific formal failure is different from a creative suggestion.
+
+END DOCUMENT 131

@@ -1,0 +1,52 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.8
+
+144 — A432 & ALTERNATIVE REFERENCE-PITCH POLICY
+===============================================
+
+A432
+
+Poietek supports:
+A4 = 432 Hz
+with 12-TET or another selected temperament.
+
+UI PRESET:
+
+Organic / Alternative
+A432.
+
+SCIENCE LABEL
+
+Do not advertise:
+healing frequency
+universal natural frequency
+biological resonance
+superior health effect
+
+as established fact.
+
+Small human studies have reported some differences between 432- and 440-Hz
+listening conditions, but the evidence is limited/mixed and does not establish
+A432 as a universal health standard.
+
+Therefore:
+
+Creative preference:
+YES.
+
+Research mode:
+YES.
+
+Medical claim:
+NO without appropriate validated evidence/regulatory basis.
+
+COMPARE MODE
+
+[Listen A440]
+[Listen A432]
+[Level Match]
+[Blind A/B]
+[Choose]
+
+Level matching matters because louder playback can bias preference.
+
+END DOCUMENT 144

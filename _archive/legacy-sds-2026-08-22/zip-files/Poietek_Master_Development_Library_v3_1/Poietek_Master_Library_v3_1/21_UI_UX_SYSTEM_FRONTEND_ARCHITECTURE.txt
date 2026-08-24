@@ -1,0 +1,945 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.5 ADDENDUM
+
+21 — UI/UX SYSTEM, FRONTEND ARCHITECTURE & DESIGN STRUCTURE
+==========================================================
+
+PURPOSE
+
+This document defines the complete front-end architecture for Poietek/SDS across:
+- desktop;
+- tablet;
+- mobile;
+- web;
+- touch;
+- mouse/keyboard;
+- accessibility;
+- multiple displays;
+- beginner/pro modes.
+
+The UI must remain one coherent product even though it contains many highly
+specialized creative workspaces.
+
+The front end is NOT the source of truth for project state.
+React renders and edits canonical domain state through typed commands/services.
+
+------------------------------------------------------------------------------
+1. FRONTEND PRINCIPLES
+------------------------------------------------------------------------------
+
+1. DOMAIN FIRST
+UI components never own durable project truth.
+
+2. WORKSPACE BASED
+Users move through purpose-built workspaces rather than one giant screen.
+
+3. PROGRESSIVE DISCLOSURE
+Advanced functionality exists without overwhelming beginners.
+
+4. DEVICE RESPONSIVE
+Phone, tablet, desktop and web render the same project with different layouts.
+
+5. COMMAND DRIVEN
+Buttons, shortcuts, MIDI controls, AI and menus invoke the same command layer.
+
+6. ACCESSIBLE
+Every core function has non-pointer access.
+
+7. NON-DESTRUCTIVE
+UI always exposes undo/history and version implications.
+
+8. HONEST CAPABILITIES
+Do not display controls for unavailable platform features as though they work.
+
+------------------------------------------------------------------------------
+2. FRONTEND LAYERS
+------------------------------------------------------------------------------
+
+Layer A — App Shell
+Routing, top-level layout, account/session, platform capability context.
+
+Layer B — Workspace Manager
+Docking, tabs, windows, panels, splits, multi-monitor.
+
+Layer C — Design System
+Typography, spacing, controls, meters, waveform colors, focus, themes.
+
+Layer D — Feature Workspaces
+Arrangement, Mixer, Rack, Sampler, MIDI, Video, DJ, Rights, Community, etc.
+
+Layer E — Inspectors
+Contextual property editing.
+
+Layer F — Command / Interaction Layer
+Menus, shortcuts, gestures, MIDI, context commands.
+
+Layer G — View Models
+Derive UI-specific state from canonical project/domain state.
+
+Layer H — Platform Adapters
+Native dialogs, file pickers, windowing, share sheets, device permission UI.
+
+------------------------------------------------------------------------------
+3. RECOMMENDED FRONTEND MONOREPO STRUCTURE
+------------------------------------------------------------------------------
+
+/apps
+  /studio-web
+    /src
+      main.tsx
+      app.tsx
+      routes/
+      service-worker/
+  /studio-native
+    /src
+      main.tsx
+      shell/
+      native-bridge/
+
+/packages
+  /ui
+    /components
+    /primitives
+    /icons
+    /forms
+    /menus
+    /dialogs
+    /tooltips
+    /meters
+    /waveform
+    /timeline
+  /design-system
+    /tokens
+    /themes
+    /typography
+    /motion
+    /accessibility
+  /workspace
+    /layout
+    /docking
+    /floating
+    /windows
+    /workspace-presets
+  /feature-arrangement
+  /feature-sampler
+  /feature-piano-roll
+  /feature-score
+  /feature-mixer
+  /feature-rack
+  /feature-hardware
+  /feature-dj
+  /feature-video
+  /feature-ai
+  /feature-rights
+  /feature-community
+  /feature-storage
+  /feature-settings
+  /feature-learning
+  /frontend-state
+  /commands-client
+  /platform-capabilities
+
+RULE:
+Feature packages can depend on domain contracts.
+They must not reach directly into backend/vendor SDKs.
+
+------------------------------------------------------------------------------
+4. APP SHELL
+------------------------------------------------------------------------------
+
+AppShell owns:
+- selected project;
+- top-level navigation;
+- workspace layout;
+- notifications;
+- command palette;
+- global modals;
+- account/session indicator;
+- sync indicator;
+- storage health;
+- platform capability banner;
+- update status.
+
+AppShell does NOT own:
+- tracks;
+- clips;
+- MIDI notes;
+- mixer parameters;
+- rights metadata;
+- collaboration truth.
+
+------------------------------------------------------------------------------
+5. WORKSPACE MANAGER
+------------------------------------------------------------------------------
+
+Workspace types:
+ARRANGE
+MIX
+RACK
+SAMPLE
+STEMS
+MIDI
+SCORE
+PITCH
+VIDEO
+VFX
+DJ
+HARDWARE
+MAPPING
+COMMUNITY
+RIGHTS
+PUBLISH
+LEARN
+
+Each workspace describes:
+id
+title
+icon
+minimumSize
+preferredAspect
+phoneMode
+tabletMode
+desktopMode
+supportsDetach
+supportsMultiInstance
+capabilityRequirements
+
+WorkspaceLayout {
+  panels[]
+  splitTree
+  activePanel
+  detachedWindows[]
+  displayAssignments[]
+}
+
+Layouts can be saved:
+Songwriting
+Beatmaking
+Mixing
+Mastering
+Video
+DJ Live
+Learning
+Custom
+
+------------------------------------------------------------------------------
+6. DESKTOP UX
+------------------------------------------------------------------------------
+
+Top menu.
+Toolbar.
+Left browser.
+Central workspace.
+Right inspector.
+Bottom transport/status.
+
+All regions resizable/collapsible.
+
+Desktop-specific:
+- right click;
+- hover;
+- keyboard shortcuts;
+- multi-window;
+- multi-display;
+- detachable mixer/rack/piano roll;
+- command palette;
+- drag/drop from OS.
+
+------------------------------------------------------------------------------
+7. TABLET UX
+------------------------------------------------------------------------------
+
+Tablet emphasizes:
+- touch;
+- split workspace;
+- floating compact inspector;
+- large pads/faders;
+- Apple Pencil/stylus support where available;
+- gesture zoom/pan;
+- docked transport.
+
+Avoid simply shrinking desktop UI.
+
+Typical tablet:
+Left: browser/pads.
+Right: arrangement/editor.
+Bottom: transport.
+Inspector as slide-over.
+
+------------------------------------------------------------------------------
+8. PHONE UX
+------------------------------------------------------------------------------
+
+One primary task at a time.
+
+Bottom navigation:
+Create
+Mix
+Perform
+Library
+Project
+
+Context drawer:
+Inspector.
+
+Persistent mini transport.
+
+Phone workflows:
+- capture recording;
+- quick sample;
+- chop;
+- drum programming;
+- simple arrangement;
+- review/comments;
+- collaboration;
+- mixer;
+- quick export;
+- DJ compact mode.
+
+Complex graph/routing remains accessible through focused editors rather than
+trying to display the entire desktop rack at once.
+
+------------------------------------------------------------------------------
+9. RESPONSIVE BREAKPOINT LOGIC
+------------------------------------------------------------------------------
+
+Do not rely only on pixel width.
+
+Use:
+viewport
+pointer type
+hover capability
+touch
+display density
+orientation
+safe areas
+window count
+platform capability
+
+Example:
+A 13-inch touch Windows device can use a hybrid layout.
+An iPad with keyboard/trackpad can expose additional desktop-style interactions.
+
+------------------------------------------------------------------------------
+10. DESIGN TOKENS
+------------------------------------------------------------------------------
+
+Tokens:
+spacing
+radius
+border
+surface
+elevation
+text
+accent
+warning
+error
+success
+focus
+waveform
+MIDI note
+clip type
+automation
+meter zones
+routing cable types
+
+Never hard-code random colors across components.
+
+------------------------------------------------------------------------------
+11. THEMES
+------------------------------------------------------------------------------
+
+Built in:
+Dark Studio
+Light Studio
+High Contrast
+OLED
+Low-light Stage
+
+User/community:
+token-based only.
+
+Theme cannot:
+run script
+alter permissions
+hide warnings
+fake sync/security state.
+
+------------------------------------------------------------------------------
+12. INPUT SYSTEM
+------------------------------------------------------------------------------
+
+Unified input mapping:
+
+Keyboard
+Mouse
+Trackpad
+Touch
+Stylus
+MIDI
+HID
+Game controller later
+Voice command
+Accessibility switch control
+
+All invoke commands.
+
+Example:
+PlayCommand
+can be invoked by:
+Space bar
+transport UI
+MIDI CC
+hardware transport
+touch button
+AI command
+
+------------------------------------------------------------------------------
+13. KEYBOARD SHORTCUT SERVICE
+------------------------------------------------------------------------------
+
+ShortcutBinding {
+  commandId
+  keyChord
+  context
+  platform
+}
+
+Contexts:
+Global
+Arrangement
+Mixer
+Piano Roll
+Sample
+Video
+DJ
+
+Allow custom bindings and import/export.
+
+Conflict resolver required.
+
+------------------------------------------------------------------------------
+14. COMMAND PALETTE
+------------------------------------------------------------------------------
+
+Search:
+commands
+workspaces
+settings
+tracks
+devices
+assets
+collaborators
+help
+
+Examples:
+"Split clip"
+"Open mastering"
+"Reconnect missing audio"
+"Invite collaborator"
+"Change buffer"
+"Show vocal stem"
+
+AI natural-language interpretation can call the same command registry.
+
+------------------------------------------------------------------------------
+15. MENUS
+------------------------------------------------------------------------------
+
+Desktop menus:
+
+File
+Edit
+View
+Project
+Transport
+Audio
+MIDI
+Sampler
+Sequence
+Arrange
+Mix
+Video
+Effects
+Hardware
+Collaborate
+Rights
+Publish
+Community
+Window
+Help
+
+Menu item descriptor:
+commandId
+label
+shortcut
+enabledWhen
+visibleWhen
+submenu
+helpId
+
+Menus must be generated from command registry, not duplicated hand-written logic.
+
+------------------------------------------------------------------------------
+16. CONTEXTUAL INSPECTOR
+------------------------------------------------------------------------------
+
+Inspector adapts to selection.
+
+Track:
+name
+routing
+mixer
+input
+contributors
+
+Audio clip:
+start/end
+gain
+fade
+warp
+pitch
+asset info
+rights
+
+MIDI note:
+pitch
+velocity
+duration
+expression
+
+Plugin:
+parameters
+automation
+modulation
+
+Video:
+transform
+speed
+color
+effects
+
+Contributor:
+role
+assignment
+credit status
+
+------------------------------------------------------------------------------
+17. FRONTEND STATE
+------------------------------------------------------------------------------
+
+Separate:
+
+DOMAIN STATE
+Canonical project.
+
+SESSION STATE
+Current unsaved UI operation, playback, recording session.
+
+UI STATE
+Selected objects, open panels, zoom, scroll.
+
+PRESENCE STATE
+Remote users/cursors.
+
+DEVICE STATE
+Connected MIDI/audio/controllers.
+
+SYNC STATE
+offline, queued, syncing, conflict.
+
+Do not put all of these in one global store.
+
+------------------------------------------------------------------------------
+18. RECOMMENDED FRONTEND STORE SPLIT
+------------------------------------------------------------------------------
+
+ProjectReadModel
+Canonical-derived.
+
+UIWorkspaceStore
+Local user preference.
+
+SelectionStore
+Ephemeral.
+
+TransportViewStore
+Fast playback display.
+
+DeviceViewStore
+Connected hardware status.
+
+PresenceStore
+Ephemeral remote collaboration.
+
+NotificationStore
+Toast/activity.
+
+ModalStore
+Transient.
+
+Avoid triggering full React project rerenders at audio-rate.
+
+------------------------------------------------------------------------------
+19. VIEW MODEL PATTERN
+------------------------------------------------------------------------------
+
+Example:
+
+MixerChannelViewModel {
+  id
+  name
+  meterDisplay
+  faderValue
+  pan
+  mute
+  solo
+  insertLabels
+  sends
+  automationState
+  hardwareBinding
+}
+
+Meters are fed from realtime telemetry, not written into canonical project state.
+
+------------------------------------------------------------------------------
+20. REACT PERFORMANCE RULES
+------------------------------------------------------------------------------
+
+Do not update the whole component tree at 60/120 Hz.
+
+Use:
+fine-grained subscriptions
+canvas/WebGL for dense waveforms
+off-main-thread analysis
+requestAnimationFrame for visual meters
+shared memory/ring buffers where platform architecture permits
+virtualization for huge track/plugin lists
+
+Audio engine never depends on React render timing.
+
+------------------------------------------------------------------------------
+21. TIMELINE UI ARCHITECTURE
+------------------------------------------------------------------------------
+
+Timeline layers:
+ruler
+tempo/signature
+markers
+tracks
+clips
+automation
+comments
+playhead
+selection
+drag previews
+
+Use one coordinate transform service:
+time <-> pixels
+ticks <-> pixels
+frames <-> pixels
+
+Avoid feature components implementing separate timeline maths.
+
+------------------------------------------------------------------------------
+22. WAVEFORM RENDERING
+------------------------------------------------------------------------------
+
+WaveformPeakCache provides multi-resolution peak data.
+
+Frontend requests level based on zoom.
+
+Very zoomed out:
+summary peaks.
+
+Zoomed in:
+higher-resolution peaks.
+
+Sample editor:
+raw sample-level view only when necessary.
+
+Large sessions must not decode full WAV repeatedly.
+
+------------------------------------------------------------------------------
+23. CANVAS / GPU
+------------------------------------------------------------------------------
+
+Use DOM for:
+forms
+menus
+buttons
+accessibility structure.
+
+Use Canvas/WebGL/WebGPU where appropriate for:
+waveforms
+spectrogram
+meters
+large piano roll
+video scopes
+dense node graphs.
+
+Always retain accessible alternate controls.
+
+------------------------------------------------------------------------------
+24. DRAG / DROP
+------------------------------------------------------------------------------
+
+Drag types:
+asset
+clip
+track
+plugin
+preset
+rack module
+device mapping
+modulation source
+contributor
+storage destination
+
+Typed drag payloads.
+
+Drop target checks:
+compatibility
+permissions
+project state
+platform capability.
+
+------------------------------------------------------------------------------
+25. TOUCH / GESTURES
+------------------------------------------------------------------------------
+
+Pinch:
+zoom.
+
+Two-finger pan:
+timeline.
+
+Long press:
+context menu.
+
+Drag handle:
+precise clip move.
+
+Fine mode:
+temporary precision multiplier.
+
+Never make destructive actions dependent on hidden gestures only.
+
+------------------------------------------------------------------------------
+26. ACCESSIBILITY ARCHITECTURE
+------------------------------------------------------------------------------
+
+Every control:
+label
+role
+value
+state
+description
+keyboard behavior.
+
+Audio-specific accessibility:
+spoken meter values on request
+keyboard parameter entry
+MIDI controller navigation
+track navigation commands
+focusable timeline items
+non-color state indicators
+
+Video:
+captions/transcripts.
+
+Motion:
+reduced-motion preference.
+
+------------------------------------------------------------------------------
+27. LEARNING UX
+------------------------------------------------------------------------------
+
+HelpDescriptor {
+  id
+  short
+  explanation
+  example
+  tutorialId
+  documentationRef
+}
+
+Tooltip:
+one sentence.
+
+Learn More:
+full explanation.
+
+Show Me:
+highlights control and demonstrates safely.
+
+Tutorial can create a disposable branch/fork.
+
+------------------------------------------------------------------------------
+28. ONBOARDING
+------------------------------------------------------------------------------
+
+Step 1:
+Choose experience:
+New
+Some experience
+Professional
+
+Step 2:
+Audio/MIDI setup optional.
+
+Step 3:
+Storage:
+Auto
+Local
+Custom
+
+Step 4:
+Optional accounts/providers.
+
+Step 5:
+Choose first goal:
+Make beat
+Record song
+Mix
+DJ
+Video
+Learn
+
+No forced account before local creation.
+
+------------------------------------------------------------------------------
+29. EMPTY STATES
+------------------------------------------------------------------------------
+
+Example Sample workspace:
+"No sample loaded."
+[Import] [Record] [Use Demo]
+
+Mixer:
+"No tracks."
+[Add Track]
+
+Collaboration:
+"Project is local only."
+[Invite / Enable Team] [Stay Local]
+
+------------------------------------------------------------------------------
+30. ERROR UX
+------------------------------------------------------------------------------
+
+Errors include:
+human-readable summary
+technical detail expandable
+retry
+repair
+report
+safe fallback
+
+Examples:
+Missing asset
+Plugin failed
+Cloud unavailable
+MIDI disconnected
+Audio device lost
+Database migration failed
+
+Never silently substitute fake data.
+
+------------------------------------------------------------------------------
+31. FRONTEND SECURITY
+------------------------------------------------------------------------------
+
+No raw OAuth secrets in UI state.
+Sanitize community HTML/markdown.
+CSP for web.
+Safe URL handling.
+No arbitrary extension UI script without sandbox.
+Confirm external links when required.
+
+------------------------------------------------------------------------------
+32. FRONTEND TESTING
+------------------------------------------------------------------------------
+
+Unit:
+formatters
+view models
+command predicates.
+
+Component:
+controls
+inspectors
+dialogs.
+
+Accessibility:
+keyboard
+ARIA
+focus.
+
+Visual regression:
+core workspaces.
+
+E2E:
+open project
+edit clip
+save
+offline
+reopen
+switch layout
+connect device
+invite collaborator.
+
+------------------------------------------------------------------------------
+33. CURRENT SDS REPO MIGRATION
+------------------------------------------------------------------------------
+
+Current:
+src/components/daw
+src/components/workspaces
+src/components/rack
+src/components/mapper
+
+Future:
+packages/feature-*
+packages/ui
+packages/workspace
+
+Current App.tsx:
+becomes AppShell.
+
+Current MasterState:
+split into domain/transport/session stores.
+
+Current workspace switching:
+becomes WorkspaceManager.
+
+Current cascading menu:
+retain visual concept; rewrite against CommandRegistry.
+
+Current floating windows:
+retain; move into workspace package.
+
+Current Tailwind:
+can remain initially, but design tokens should become centralized.
+
+------------------------------------------------------------------------------
+34. FRONTEND ACCEPTANCE
+------------------------------------------------------------------------------
+
+FE-001 same command works menu/shortcut/hardware.
+FE-002 no canonical project object lives only in component local state.
+FE-003 phone can create/open/save project.
+FE-004 tablet split layout usable.
+FE-005 desktop multi-panel persists.
+FE-006 theme cannot hide warnings.
+FE-007 selection changes do not modify project.
+FE-008 playback meters do not flood project sync.
+FE-009 timeline maintains consistent coordinate transform.
+FE-010 accessibility tree exposes transport/mixer.
+FE-011 offline UI remains fully navigable.
+FE-012 missing backend does not prevent local project page.
+FE-013 detached workspace uses same project state.
+FE-014 workspace layout can differ by device.
+FE-015 help content works without network when bundled/cached.
+
+END DOCUMENT 21

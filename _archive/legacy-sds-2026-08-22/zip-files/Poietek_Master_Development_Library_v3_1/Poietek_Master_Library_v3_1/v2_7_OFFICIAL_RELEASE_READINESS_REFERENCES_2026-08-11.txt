@@ -1,0 +1,21 @@
+Primary/current references reviewed 11 August 2026:
+
+ISO 16:1975
+https://www.iso.org/standard/3601.html
+Standard musical pitch: A on treble stave = 440 Hz, accuracy 0.5 Hz.
+ISO page says confirmed in 2022 and current.
+
+ITU-R BS.1770
+https://www.itu.int/rec/R-REC-BS.1770/en
+BS.1770-5 (11/2023) is current/in force for programme loudness and true-peak
+measurement algorithms.
+
+EBU R128 v5
+https://tech.ebu.ch/publications/r128
+Current page recommends average programme loudness -23 LUFS plus Loudness Range
+and Maximum True Peak descriptors.
+
+ATSC A/85:2026-07
+https://www.atsc.org/atsc-documents/a85-techniques-for-establishing-and-maintaining-audio-loudness-for-digital-television/
+Approved 8 July 2026. Current recommended practice for audio loudness in digital
+television and hybrid broadcast/streaming workflows.

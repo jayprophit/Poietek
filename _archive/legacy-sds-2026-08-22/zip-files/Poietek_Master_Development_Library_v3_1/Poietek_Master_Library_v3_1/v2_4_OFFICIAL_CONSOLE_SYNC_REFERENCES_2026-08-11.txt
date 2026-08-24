@@ -1,0 +1,33 @@
+Official/current technical references reviewed 11 August 2026:
+
+Audinate Dante:
+https://dev.audinate.com/GA/dante-controller/userguide/webhelp/content/clock_synchronization.htm
+https://dev.audinate.com/GA/dante-controller/userguide/webhelp/content/clock_config_tab.htm
+
+Focusrite RedNet:
+https://support.focusrite.com/hc/en-gb/articles/33204908265490-Can-I-sync-my-Dante-system-to-an-external-clock
+https://userguides.focusrite.com/hc/en-gb/articles/17527124080914-Introduction-to-the-RedNet-D64R
+https://focusrite.com/products/rednet-d64r
+
+AES:
+https://aes.org/standards/
+https://aes.org/standards/standards-development/project-status/
+AES10 / MADI
+AES11 / synchronization
+AES50 / multichannel interconnection
+
+Allen & Heath:
+https://www.allen-heath.com/hardware/controllers/midi-control/
+https://support.allen-heath.com/hc/en-gb/articles/45146889174801-Avantis-MIDI-TCP-IP-Protocol
+https://support.allen-heath.com/hc/en-gb/articles/45947110744465-SQ-MIDI-and-DAW-Control
+https://support.allen-heath.com/hc/en-gb/articles/39822377006865-Shows-Utility
+
+OCA Alliance / AES70:
+https://ocaalliance.com/
+https://ocaalliance.com/resources/standards__specifications/
+
+Yamaha ProVisionaire:
+https://uk.yamaha.com/en/business/audio/products/software-apps/provisionaire-control/
+
+Avid EUCON:
+https://kb.avid.com/pkb/articles/en_US/Knowledge/EUCON-Product-Guides

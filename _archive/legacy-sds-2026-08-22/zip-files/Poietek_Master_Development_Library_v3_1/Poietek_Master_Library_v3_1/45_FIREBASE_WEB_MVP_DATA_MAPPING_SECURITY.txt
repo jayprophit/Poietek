@@ -1,0 +1,83 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.8
+
+45 — FIREBASE WEB MVP DATA MAPPING & SECURITY RULES
+===================================================
+
+COMPANION
+firestore.rules
+firestore.indexes.json
+
+IMPORTANT
+These are prototype starting rules, not a legal/security certification.
+Run Firebase Emulator tests before deployment.
+
+FIREBASE ROLE
+
+Hosting:
+Web PWA.
+
+Auth:
+Optional account.
+
+Firestore:
+Project directory
+Members
+Comments
+Light sync update envelopes
+Asset metadata only.
+
+NOT FIRESTORE
+WAV
+video
+waveform arrays
+meter values
+playhead frame spam
+plugin state blobs
+model weights.
+
+COLLECTION SHAPE
+
+users/{uid}
+
+projects/{projectId}
+  ownerUserId
+  title
+  schemaVersion
+  modifiedAt
+  visibility
+  syncRevision
+
+projects/{projectId}/members/{uid}
+  role
+  permissions
+
+projects/{projectId}/comments/{commentId}
+
+projects/{projectId}/syncUpdates/{updateId}
+
+assets/{assetId}
+  projectId
+  contentHash
+  mediaType
+  byteLength
+
+SECURITY
+Rules are deny-by-default for undefined collections.
+Project member check is server-evaluated.
+Rights/release/payment systems should NOT be added casually to client-only
+Firestore rules; use audited trusted service paths when introduced.
+
+COST CONTROL
+Debounce project-directory modifiedAt updates.
+Batch comments/activity where appropriate.
+CRDT updates should be compacted.
+Do not write transport playback state continuously.
+
+MVP ACCEPTANCE
+FB-001 unrelated authenticated user cannot read project.
+FB-002 member can read.
+FB-003 viewer role cannot create sync update.
+FB-004 editor can create update.
+FB-005 comment author can edit own comment.
+FB-006 anonymous local project needs no Firebase.
+FB-007 emulator test suite passes before deploy.

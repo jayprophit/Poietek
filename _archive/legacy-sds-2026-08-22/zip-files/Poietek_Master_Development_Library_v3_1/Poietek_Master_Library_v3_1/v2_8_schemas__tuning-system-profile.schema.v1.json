@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/tuning-system-profile/v1",
+  "title": "Poietek Tuning System Profile v1",
+  "type": "object",
+  "required": [
+    "profileId",
+    "version",
+    "label",
+    "referencePitch",
+    "temperament",
+    "mapping",
+    "authorityType"
+  ],
+  "properties": {
+    "profileId": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "label": {
+      "type": "string"
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "referencePitch": {
+      "type": "object",
+      "required": [
+        "note",
+        "frequencyHz"
+      ],
+      "properties": {
+        "note": {
+          "type": "string"
+        },
+        "frequencyHz": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "toleranceCents": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "temperament": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "12_tet",
+            "just_intonation",
+            "pythagorean",
+            "quarter_comma_meantone",
+            "werckmeister",
+            "vallotti",
+            "equal_division",
+            "scala",
+            "adaptive_just",
+            "custom"
+          ]
+        },
+        "edo": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "ratios": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9]+/[0-9]+$"
+          }
+        },
+        "scalaSclAssetId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "scalaKbmAssetId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "mapping": {
+      "type": "object",
+      "properties": {
+        "rootNote": {
+          "type": "string"
+        },
+        "rootMidiNote": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 127
+        },
+        "rootFrequencyHz": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "additionalProperties": true
+    },
+    "authorityType": {
+      "enum": [
+        "formal_standard",
+        "historical_practice",
+        "ensemble_requirement",
+        "creative_choice",
+        "research",
+        "user_custom"
+      ]
+    },
+    "healthClaimPolicy": {
+      "enum": [
+        "none",
+        "no_health_claims",
+        "research_only"
+      ]
+    },
+    "interoperability": {
+      "type": "object",
+      "properties": {
+        "midiTuningStandard": {
+          "type": "boolean"
+        },
+        "midi2PerNotePitch": {
+          "type": "boolean"
+        },
+        "mpeFallback": {
+          "type": "boolean"
+        },
+        "scalaScl": {
+          "type": "boolean"
+        },
+        "scalaKbm": {
+          "type": "boolean"
+        },
+        "audioRetune": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

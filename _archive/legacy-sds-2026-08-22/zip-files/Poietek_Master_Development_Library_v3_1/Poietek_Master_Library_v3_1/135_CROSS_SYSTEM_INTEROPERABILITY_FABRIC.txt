@@ -1,0 +1,46 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.7
+
+135 — CROSS-SYSTEM INTEROPERABILITY FABRIC
+==========================================
+
+Poietek is deliberately cross:
+
+network
+platform
+device
+chain
+system
+node
+program
+app
+dApp
+language
+code
+symbols
+image
+sound
+build
+idea
+grid.
+
+FOUNDATION
+
+Canonical Domain
+-> Commands
+-> Ports/Capabilities
+-> Adapters.
+
+INTEROP PRINCIPLES
+
+stable namespaced IDs
+versioned schemas
+content hashes
+capability negotiation
+loss-aware conversions
+local-first state
+idempotency
+security scopes
+graceful degradation
+round-trip certification.
+
+END DOCUMENT 135

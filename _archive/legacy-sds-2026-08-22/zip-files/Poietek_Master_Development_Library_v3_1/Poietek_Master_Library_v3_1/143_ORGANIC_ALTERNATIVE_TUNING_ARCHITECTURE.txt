@@ -1,0 +1,51 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.8
+
+143 — ORGANIC & ALTERNATIVE TUNING ARCHITECTURE
+===============================================
+
+GOAL
+
+Make tuning a first-class creative system.
+
+Poietek can offer:
+
+Standard
+Historical
+Organic/Harmonic
+Microtonal
+Custom.
+
+"Organic" is a user-facing creative category, not a scientific health claim.
+
+A REFERENCE PITCH
+
+A4=432 Hz means:
+the note A4 is assigned 432 Hz.
+
+The remainder of the tuning follows from the temperament/mapping.
+
+Do not confuse:
+reference pitch
+temperament
+frequency content of a finished song.
+
+CORE OBJECTS
+
+TuningProfile
+SessionTuningMap
+TrackOverride
+InstrumentTuningCapability
+AudioRetuneOperation.
+
+PROJECT PORTABILITY
+
+Every project records:
+reference note
+reference Hz
+temperament
+mapping
+profile/version.
+
+No hidden global tuning preference.
+
+END DOCUMENT 143

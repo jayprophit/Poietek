@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/device-profile/v1",
+  "title": "Poietek Device Profile v1",
+  "type": "object",
+  "required": [
+    "id",
+    "schemaVersion",
+    "manufacturer",
+    "model",
+    "categories",
+    "connections",
+    "capabilities",
+    "controls",
+    "verification"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "manufacturer": {
+      "type": "string"
+    },
+    "model": {
+      "type": "string"
+    },
+    "hardwareRevision": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "firmwareRange": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "vendorId": {
+      "type": [
+        "integer",
+        "string",
+        "null"
+      ]
+    },
+    "productId": {
+      "type": [
+        "integer",
+        "string",
+        "null"
+      ]
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "sampler",
+          "keyboard",
+          "pad_controller",
+          "synth",
+          "drum_machine",
+          "e_drum",
+          "dj_controller",
+          "mixer",
+          "control_surface",
+          "audio_interface",
+          "lighting",
+          "generic_midi",
+          "other"
+        ]
+      }
+    },
+    "connections": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "usb_midi",
+          "din_midi",
+          "bluetooth_midi",
+          "web_midi",
+          "hid",
+          "osc",
+          "wifi",
+          "usb_audio",
+          "network",
+          "other"
+        ]
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "controls": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/control"
+      }
+    },
+    "feedback": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "verification": {
+      "enum": [
+        "unverified",
+        "user_tested",
+        "community_tested",
+        "poietek_tested",
+        "manufacturer_documented",
+        "manufacturer_verified"
+      ]
+    },
+    "sourceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "profileVersion": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "control": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "input"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "pad",
+            "key",
+            "button",
+            "knob",
+            "encoder",
+            "fader",
+            "jog",
+            "pedal",
+            "xy",
+            "switch",
+            "display",
+            "other"
+          ]
+        },
+        "input": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "output": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true
+        },
+        "semanticHint": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "range": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

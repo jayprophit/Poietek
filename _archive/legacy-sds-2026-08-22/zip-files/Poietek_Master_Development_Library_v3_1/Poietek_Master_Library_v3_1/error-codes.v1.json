@@ -1,0 +1,100 @@
+{
+  "version": "1",
+  "errors": [
+    {
+      "code": "PROJECT_NOT_FOUND",
+      "category": "PROJECT",
+      "retryable": false
+    },
+    {
+      "code": "PROJECT_SCHEMA_UNSUPPORTED",
+      "category": "PROJECT",
+      "retryable": false
+    },
+    {
+      "code": "ASSET_MISSING",
+      "category": "ASSET",
+      "retryable": true
+    },
+    {
+      "code": "ASSET_HASH_MISMATCH",
+      "category": "ASSET",
+      "retryable": true
+    },
+    {
+      "code": "AUDIO_DEVICE_LOST",
+      "category": "AUDIO",
+      "retryable": true
+    },
+    {
+      "code": "AUDIO_DECODE_FAILED",
+      "category": "AUDIO",
+      "retryable": false
+    },
+    {
+      "code": "AUDIO_SCHEDULER_UNDERRUN",
+      "category": "AUDIO",
+      "retryable": true
+    },
+    {
+      "code": "MIDI_PERMISSION_DENIED",
+      "category": "MIDI",
+      "retryable": true
+    },
+    {
+      "code": "MIDI_DEVICE_DISCONNECTED",
+      "category": "MIDI",
+      "retryable": true
+    },
+    {
+      "code": "PLUGIN_CRASHED",
+      "category": "PLUGIN",
+      "retryable": true
+    },
+    {
+      "code": "PLUGIN_MISSING",
+      "category": "PLUGIN",
+      "retryable": true
+    },
+    {
+      "code": "STORAGE_PROVIDER_OFFLINE",
+      "category": "STORAGE",
+      "retryable": true
+    },
+    {
+      "code": "STORAGE_QUOTA_EXCEEDED",
+      "category": "STORAGE",
+      "retryable": true
+    },
+    {
+      "code": "SYNC_PERMISSION_REJECTED",
+      "category": "SYNC",
+      "retryable": false
+    },
+    {
+      "code": "SYNC_CONFLICT_REVIEW_REQUIRED",
+      "category": "SYNC",
+      "retryable": false
+    },
+    {
+      "code": "AUTH_REQUIRED",
+      "category": "AUTH",
+      "retryable": true
+    },
+    {
+      "code": "NETWORK_UNAVAILABLE",
+      "category": "NETWORK",
+      "retryable": true
+    },
+    {
+      "code": "AI_PROVIDER_FAILED",
+      "category": "AI",
+      "retryable": true
+    },
+    {
+      "code": "RIGHTS_APPROVAL_REQUIRED",
+      "category": "RIGHTS",
+      "retryable": false
+    }
+  ]
+}

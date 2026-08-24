@@ -1,0 +1,1902 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.3 ADDENDUM
+
+18 — PLUGIN HOST, SYNTHESIS, MODULATION, EFFECTS & MASTERING ARCHITECTURE
+=======================================================================
+
+PURPOSE
+
+This document converts the creator-supplied research on virtual instruments,
+modulators and effects into an original Poietek/SDS architecture.
+
+The supplied material grouped virtual studio tools into three useful creative
+families:
+1. Synthesizers / sound generators.
+2. Modulators / movement creators.
+3. Effects / sound processors.
+
+That framing is retained because it is useful for users, but one architectural
+correction is required:
+
+PLUGIN ROLE and PLUGIN FORMAT are separate dimensions.
+
+Examples:
+- "Instrument" is a role.
+- "Effect" is a role.
+- "Modulator" is a role.
+- VST3, AU, CLAP, LV2 and AAX are formats/APIs/ecosystems.
+
+A third-party wavetable instrument may be VST3, CLAP or AU.
+A native Poietek instrument may use no external plug-in format at all.
+A Poietek modulator may drive both native and hosted parameters.
+
+The goal is therefore TWO connected systems:
+
+A. POIETEK NATIVE SOUND PLATFORM
+Built-in synths, samplers, modulators, processors, analyzers and mastering tools.
+
+B. THIRD-PARTY PLUGIN HOST
+Loads external plug-ins where the operating system, licence, security model and
+plug-in format permit.
+
+Do not clone proprietary DSP or interfaces. Study published capabilities,
+workflow principles and open standards, then implement original designs.
+
+------------------------------------------------------------------------------
+1. RESEARCH UPDATE — CURRENT VERSIONS / VERIFIED DIRECTIONS
+------------------------------------------------------------------------------
+
+The creator-supplied comparison referenced several older product generations.
+As of August 2026, first-party sources show important evolution:
+
+Xfer Serum:
+The current product is Serum 2. It now combines wavetable, multisample, ordinary
+sample, granular and spectral oscillator types. Its current page also describes
+sample slicing, real-time score extraction, spectral resynthesis and multiple
+warp/modulation options.
+
+Vital:
+Current first-party material still emphasizes spectral-warping wavetable
+synthesis, highly visual feedback, drag-and-drop modulation, editable LFOs,
+audio-rate modulation, MPE and microtonal support. Vital's current Basic tier
+states that the complete synthesizer feature set is available, with paid tiers
+adding content/services.
+
+Spectrasonics Omnisphere:
+Current first-party pages emphasize a broad hybrid architecture: sample +
+real-time synthesis, wavetable/granular/FM/ring modulation, deep modulation,
+layering, user-audio import, effects and extensive physical-hardware integration.
+Current product pages also emphasize a much broader hardware-profile system than
+the older comparison material.
+
+Arturia V Collection:
+The current V Collection 11 Pro page describes a large instrument family
+spanning modeled analog/digital instruments, sampled/acoustic hybrids, unified
+preset browsing, hardware mapping and tutorials. The clean-room lesson is not
+"copy classic synth panels"; it is "many different engines can share one
+consistent browser, macro and controller layer."
+
+Cableguys ShaperBox:
+Current first-party material describes a multi-effect modulation environment
+containing Reverb, Time, Drive, Noise, Liquid, Filter, Crush, Volume, Pan and
+Width shaping, with waveform editing and multiband/rhythmic processing.
+
+Xfer LFOTool:
+Current first-party page describes customizable point/tension LFO curves,
+multiple simultaneous graphs, BPM/Hz operation, sample-accurate sync and MIDI CC
+output. The key transferable principle is that a modulation source can be a
+first-class reusable control signal rather than a feature hidden inside a synth.
+
+Soundtoys Tremolator:
+Current first-party material describes tempo-synchronized tremolo/auto-gating,
+programmable rhythmic patterns and dynamic response. The transferable principle
+is musically synchronized modulation with custom curves and envelope-following.
+
+FabFilter Pro-Q:
+The creator supplied Pro-Q 3; the current official product is Pro-Q 4. Current
+documentation includes static EQ, dynamic EQ, spectral dynamics, linear phase,
+mid/side-related workflows and highly contextual controls. The clean-room lesson
+is progressive disclosure: advanced controls appear when the user needs them.
+
+Soundtoys 5:
+Current first-party material describes a unified effects collection and Effect
+Rack combining saturation, delay, pitch, modulation, filter and spatial effects.
+The transferable principle is an effects-container workflow where creative chains
+can be saved as a single reusable unit.
+
+Valhalla VintageVerb:
+Current first-party material describes a collection of distinct algorithmic
+"modes" with different sonic characters. The clean-room lesson is to expose
+meaningful high-level algorithm choices while keeping a compact control surface.
+
+iZotope Ozone:
+The creator supplied Ozone 11; current first-party material is Ozone 12.
+Current Ozone 12 materials describe a modular mastering hub, editable individual
+modules, track/reference workflows, AI-assisted mastering, dynamic EQ, limiting,
+imaging, excitation, stabilizing, stem-aware tools and explicit user control.
+The transferable lesson is "assistant proposes a chain, engineer remains in
+control."
+
+------------------------------------------------------------------------------
+2. PLUGIN ROLE TAXONOMY
+------------------------------------------------------------------------------
+
+Poietek should expose a simple top-level browser but use richer internal roles.
+
+CREATIVE TOP LEVEL
+
+INSTRUMENTS
+- Synthesizer
+- Sampler
+- Drum instrument
+- Physical-model instrument
+- Hybrid instrument
+- ROM/sample-library instrument
+- Generative instrument
+
+MODULATORS
+- LFO
+- Envelope
+- Step modulator
+- Curve/shape modulator
+- Envelope follower
+- Random source
+- Sample & hold
+- Macro
+- Note-expression mapper
+- MIDI/CC generator
+- Audio-rate modulator where safe/supported
+
+EFFECTS
+- EQ/filter
+- Dynamics
+- Saturation/distortion
+- Delay/echo
+- Reverb
+- Modulation effect
+- Pitch/time
+- Stereo/spatial
+- Spectral
+- Restoration
+- Creative multi-FX
+- Mastering
+- Meter/analyzer
+- Utility
+
+ADDITIONAL INTERNAL ROLES
+
+MIDI / NOTE EFFECT
+Changes note/event streams before an instrument.
+
+ANALYZER
+Produces metering/feature data but may not alter audio.
+
+GENERATOR
+Produces audio, MIDI, automation or modulation without ordinary note input.
+
+CONTAINER
+Hosts multiple instruments/effects/modulators as one reusable rack.
+
+BRIDGE
+External hardware or network processor.
+
+VIDEO / CONTROL EFFECT
+Not an audio plug-in role, but uses the same extension registry concepts.
+
+------------------------------------------------------------------------------
+3. PLUGIN FORMAT POLICY
+------------------------------------------------------------------------------
+
+3.1 VST3
+
+Priority: HIGH for desktop.
+
+Current Steinberg first-party developer material states that VST technology /
+the current VST3 SDK is open source under the MIT licence, while the VST name and
+logo remain Steinberg trademarks with separate usage rules.
+
+Poietek implications:
+- Implement VST3 hosting on Windows/macOS/Linux desktop where technically stable.
+- Preserve Steinberg copyright/licence notices as required.
+- Follow trademark/logo usage rules if displaying official branding.
+- Create automated compatibility tests.
+- Do not support abandoned VST2 by default.
+
+3.2 CLAP
+
+Priority: HIGH for desktop.
+
+The current CLAP reference repository describes:
+- stable ABI;
+- plug-in/host objects;
+- state;
+- parameters;
+- audio/note ports;
+- real-time/offline rendering;
+- latency/tail reporting;
+- GUI;
+- voice information;
+- threading support;
+- preset discovery/load;
+- host-provided track context;
+- remote controls;
+- modulation/note-expression-oriented extensions.
+
+The reference implementation is MIT licensed.
+
+Poietek implications:
+CLAP should be a first-class host target alongside VST3 because its architecture
+fits Poietek's modulation-heavy, MPE and future-extension goals.
+
+3.3 AUDIO UNIT
+
+Priority:
+HIGH on macOS.
+HIGH for AUv3 interoperability on Apple mobile where practical.
+
+Apple currently documents AUv3 hosting for macOS and iOS and recommends AUv3 for
+new development, while AUv2 is in maintenance mode.
+
+Poietek implications:
+- macOS: host appropriate AU/AUv3 plug-ins.
+- iOS/iPadOS: support AUv3 extensions where platform rules permit.
+- isolate platform-specific state from canonical Project state.
+- store component identity + version + serialized state + freeze fallback.
+
+3.4 LV2
+
+Priority:
+MEDIUM, especially Linux/open-source ecosystem.
+
+Retain as a planned format from the broader Poietek specification.
+Before implementation, verify current LV2 SDK/API/licensing and create a dedicated
+format adapter and validation suite.
+
+3.5 AAX
+
+Priority as HOST: LOW / NOT INITIAL TARGET.
+
+Avid's current developer site describes the AAX SDK as a development kit for
+creating AAX plug-ins for Pro Tools, VENUE S6L and Media Composer, with separate
+commercialization/signing requirements.
+
+Poietek should NOT casually promise to "host AAX plug-ins."
+Treat AAX as:
+- a possible future export/build target if Poietek later ships its own plug-ins;
+- subject to Avid licensing, signing and developer-program rules.
+
+Do not display AAX in Poietek's "supported host formats" until an actual legal
+and technical host path exists.
+
+3.6 INTERNAL POIETEK PLUGIN API
+
+Required for:
+Web/PWA
+portable native modules
+community extensions
+safe built-in modules
+future cloud render workers
+
+This API should be capability-based and may have:
+- native Rust/C++ backend implementation;
+- WASM implementation for portable processing;
+- JavaScript/TypeScript only for non-realtime UI/control extensions.
+
+Do not run arbitrary JavaScript on the audio thread.
+
+------------------------------------------------------------------------------
+4. PLUGIN HOST SERVICE ARCHITECTURE
+------------------------------------------------------------------------------
+
+PluginRegistry
+PluginScanner
+PluginMetadataDatabase
+PluginHost
+PluginProcessManager
+PluginStateStore
+PluginPresetIndex
+PluginLatencyManager
+PluginAutomationBridge
+PluginMidiBridge
+PluginModulationBridge
+PluginGuiHost
+PluginSandbox
+PluginCrashReporter
+PluginQuarantine
+PluginCompatibilityService
+PluginFreezeService
+
+Canonical identity:
+
+PluginDescriptor {
+  stableId
+  format
+  vendor
+  productName
+  version
+  role[]
+  architecture
+  binaryPath
+  capabilities
+  ioConfigurations[]
+  parameterSummary
+  hasEditor
+  latencyMode
+  stateVersion?
+  scanStatus
+  trustStatus
+  lastKnownGoodVersion?
+}
+
+PluginInstance {
+  instanceId
+  descriptorId
+  stateBlobRef
+  parameterOverrides
+  bypass
+  wetDry
+  routing
+  automationBindings
+  modulationBindings
+  latencySamples
+  tailSamples
+  frozenRenderId?
+  missingReason?
+}
+
+------------------------------------------------------------------------------
+5. PLUGIN SCANNING / FAILURE CONTAINMENT
+------------------------------------------------------------------------------
+
+Never scan third-party plug-ins inside the main DAW process if avoidable.
+
+Scanner process:
+1. discover candidate binaries/bundles;
+2. launch isolated scanner;
+3. load one plug-in;
+4. inspect metadata/I/O;
+5. open/close editor where safe;
+6. serialize test state;
+7. perform short render;
+8. record crash/hang;
+9. save compatibility result;
+10. unload.
+
+States:
+UNSCANNED
+SCANNING
+VALID
+WARNING
+QUARANTINED
+BLOCKED
+MISSING
+VERSION_CHANGED
+
+A plug-in crash during scanning must not crash the studio.
+
+A plug-in that crashes three times in the same project can automatically reopen
+disabled while preserving its state.
+
+------------------------------------------------------------------------------
+6. PLUGIN SANDBOX
+------------------------------------------------------------------------------
+
+Desktop:
+Prefer a separate process or process pool for untrusted third-party plug-ins.
+
+Tradeoffs:
+- stronger crash isolation;
+- IPC overhead;
+- GUI embedding complexity;
+- real-time scheduling design;
+- shared-memory audio buffers required.
+
+Modes:
+SAFE
+NORMAL
+LOW-LATENCY TRUSTED
+
+User can override with warnings.
+
+Never silently give plug-ins unrestricted:
+filesystem
+network
+microphone
+camera
+project database
+user credentials.
+
+Legacy plug-in APIs may not support capability sandboxing perfectly, so Poietek
+must distinguish "OS-process isolated" from "fully permission sandboxed."
+
+------------------------------------------------------------------------------
+7. STATE / PORTABILITY
+------------------------------------------------------------------------------
+
+A project stores:
+plugin identity
+format
+vendor/product
+version
+serialized plug-in state
+host parameter mappings
+automation
+modulation
+routing
+optional freeze render
+
+If plug-in unavailable:
+Show "Missing plug-in" placeholder.
+Keep state.
+Keep automation.
+Play freeze/bounce if available.
+Never delete unknown state.
+
+Cross-device example:
+Desktop VST3 synth -> freeze render exists.
+Open iPad:
+- hear freeze;
+- edit rest of song;
+- MIDI remains;
+- plug-in shown unavailable.
+Return desktop:
+- restore live plug-in.
+
+------------------------------------------------------------------------------
+8. PLUGIN DELAY COMPENSATION
+------------------------------------------------------------------------------
+
+Every hosted processor must report or be measured/configured for:
+latencySamples
+tailSamples
+
+Graph computes path latency.
+Delay compensation aligns:
+dry tracks
+parallel buses
+sidechains
+returns
+master paths
+
+Changes in latency can trigger graph realignment outside unsafe callback points.
+
+Low-Latency Record mode can bypass selected high-latency processors temporarily.
+
+------------------------------------------------------------------------------
+9. SIDECHAIN / MULTI-BUS / MULTICHANNEL
+------------------------------------------------------------------------------
+
+Host model must support more than stereo in/out.
+
+AudioBus {
+  role: main | sidechain | aux | analysis | surround | ambisonic
+  channels
+  layout
+}
+
+Support:
+mono
+stereo
+multi-mono
+surround
+immersive later
+sidechain buses
+multiple outputs from instruments
+multi-output drum instruments.
+
+Do not hardcode every plug-in instance to one stereo input and one stereo output.
+
+------------------------------------------------------------------------------
+10. AUTOMATION AND MODULATION ARE DIFFERENT
+------------------------------------------------------------------------------
+
+AUTOMATION
+Timeline-owned deterministic parameter values.
+
+MODULATION
+Continuous relationship between a source and destination.
+
+Example:
+Filter cutoff automation = producer drew a curve over bars.
+Filter cutoff modulation = LFO moves cutoff around that automation baseline.
+
+EffectiveValue =
+Base
++ Automation
++ ModulationSum
+then clamped/transformed according to parameter semantics.
+
+Plug-in formats differ in how deeply they support modulation. The host adapter
+must translate gracefully.
+
+------------------------------------------------------------------------------
+11. POIETEK UNIVERSAL MODULATION SYSTEM
+------------------------------------------------------------------------------
+
+This should become a major Poietek differentiator.
+
+Every eligible native parameter can expose a modulation socket.
+
+ModulationSource types:
+LFO
+Envelope
+Step
+Curve
+Random
+Perlin/noise
+Sample-and-hold
+Envelope follower
+Audio band follower
+Transient trigger
+Pitch follower
+MIDI velocity
+Aftertouch
+MPE pressure/timbre/pitch
+Note number
+Macro
+Sidechain level
+Beat/bar phase
+Video motion data later
+AI control signal only when explicitly enabled
+
+ModulationBinding {
+  sourceId
+  destinationId
+  amount
+  polarity
+  curve
+  smoothing
+  range
+  transform
+  stereoMode
+  sampleAccurateRequired
+}
+
+UX:
+Drag modulation source onto destination.
+Destination shows a range halo.
+Hover reveals source amounts.
+Right-click opens routing matrix.
+Rear Rack view displays advanced virtual cables.
+
+This takes the strong general workflow principles of Serum/Vital-style
+drag-and-drop modulation and integrates them into the entire Poietek ecosystem.
+
+------------------------------------------------------------------------------
+12. MODULATION RESOLUTION
+------------------------------------------------------------------------------
+
+CONTROL RATE
+Suitable for ordinary UI movement.
+
+BLOCK RATE
+Efficient for many effects.
+
+SAMPLE ACCURATE
+Required for selected timing-sensitive modulation.
+
+AUDIO RATE
+Only for native modules and external formats that safely support it.
+
+Do not promise audio-rate modulation of arbitrary legacy hosted parameters.
+
+------------------------------------------------------------------------------
+13. SHAPE / MOTION MODULATOR
+------------------------------------------------------------------------------
+
+Inspired by the general capability class represented by ShaperBox, LFOTool and
+Tremolator, but built as an original universal Poietek module.
+
+`MotionShaper`
+
+Curve modes:
+Bezier
+points/tension
+freehand
+step
+Euclidean
+generated
+audio-derived groove
+
+Clock:
+Hz
+note division
+bars
+one-shot
+retrigger
+free-running
+MIDI trigger
+audio transient
+
+Targets:
+Volume
+Pan
+Width
+Filter
+Pitch
+Time/read-head
+Drive
+Bit depth/rate
+Delay feedback
+Reverb send
+Plugin/native parameters
+Video/VFX parameters later
+
+Multiband mode:
+split input into configurable bands.
+Each band can have independent depth/curve.
+
+Sidechain source:
+host beat clock
+external audio transient
+MIDI note
+manual.
+
+Preset:
+stores curves separate from destination so a shape can be reused elsewhere.
+
+------------------------------------------------------------------------------
+14. NATIVE INSTRUMENT FAMILY
+------------------------------------------------------------------------------
+
+Poietek should not rely on third-party instruments to feel complete.
+
+14.1 WAVE SYNTH
+
+Inspiration class:
+Serum/Vital.
+
+Original architecture:
+3 main oscillator slots + sub/noise/sample lane initially.
+
+Oscillator engines:
+Basic waveform
+Wavetable
+Sample
+Granular
+Spectral/resynthesis later
+
+Per oscillator:
+unison
+phase
+random phase
+warp
+FM/PM/ring where engine allows
+stereo spread
+key tracking
+level/pan
+oversampling/quality
+
+Wavetable:
+import
+record-to-table
+editor
+morph
+frame interpolation
+spectral view
+resynthesis tools
+
+14.2 HYBRID SOUND ENGINE
+
+Inspiration class:
+Omnisphere and modern hybrid instruments.
+
+Layer types:
+Synth
+Sample
+Granular
+Physical/modelled later
+
+Layer stack:
+up to capability-based count rather than branding a fixed number.
+
+Each layer:
+filter
+amp
+pitch
+modulation
+FX
+key/velocity range
+round-robin/variation
+
+Performance:
+split
+layer
+crossfade
+macro
+MPE
+hardware profile mapping.
+
+14.3 ANALOG / CLASSIC MODEL LAB
+
+Inspiration class:
+Arturia-style historical breadth.
+
+Do NOT build clones called "Minimoog", "Prophet", "DX7" etc. unless licensed.
+
+Instead create original engines based on general synthesis families:
+
+Subtractive Analog
+FM
+Phase Distortion
+Vector
+Additive
+West-Coast / wavefold
+String/organ physical models
+Classic sample playback
+
+A future separately licensed "heritage instrument" line could reproduce named
+hardware only with appropriate rights/branding agreements.
+
+14.4 GRANULAR INSTRUMENT
+
+Source:
+any Asset.
+
+Controls:
+grain position
+density
+size
+spray
+pitch
+reverse probability
+window
+stereo
+scan speed
+freeze
+transient preservation
+tempo sync
+
+Modulate all meaningful parameters.
+
+14.5 MULTISAMPLE INSTRUMENT
+
+Open/portable mappings where feasible:
+zones
+velocity layers
+round robin
+release samples
+key switches
+articulations
+streaming
+preload
+disk cache
+
+Investigate SFZ because Serum 2 currently highlights it as an open,
+human-readable multisample standard. Do not make SFZ the only internal format.
+
+14.6 DRUM INSTRUMENT
+
+Pads + multilayer sample engine + synthesis layers.
+Integrates with the logical pad model and hardware profiles already defined.
+
+------------------------------------------------------------------------------
+15. PRESET / SOUND LIBRARY
+------------------------------------------------------------------------------
+
+The Arturia/Vital/Omnisphere research reinforces a critical usability feature:
+the browser is as important as synthesis depth.
+
+Unified Preset {
+  id
+  targetModuleType
+  author
+  tags
+  genre
+  character
+  instrument
+  articulation
+  macroMappings
+  preview
+  dependencies[]
+  license
+  version
+}
+
+Search:
+"dark evolving pad"
+"808-style sub bass"
+"short metallic percussion"
+"warm vocal reverb"
+"transparent master"
+
+Local semantic search can index user-owned metadata.
+AI search optional.
+
+Preset inheritance:
+Factory
+User
+Project
+Team
+Community
+
+Never overwrite original factory presets.
+
+------------------------------------------------------------------------------
+16. MACRO SYSTEM
+------------------------------------------------------------------------------
+
+Every instrument/effect/container can expose 4-16 macro controls.
+
+Macro target:
+one or many parameters.
+
+Mapping:
+min/max
+curve
+invert
+quantize
+relative
+bipolar
+
+Macros are the bridge between:
+complex sound design
+MIDI hardware
+touch UI
+automation
+live performance.
+
+Hardware profiles can automatically bind macros.
+
+------------------------------------------------------------------------------
+17. NATIVE EFFECTS FOUNDATION
+------------------------------------------------------------------------------
+
+Poietek should ship a complete "can finish a record without purchases" suite.
+
+FOUNDATION / MIX
+Utility gain
+Pan
+Stereo balance
+Phase invert
+Delay compensation
+Channel trim
+High/low pass
+Parametric EQ
+Dynamic EQ
+Compressor
+Expander
+Gate
+De-esser
+Limiter
+Clipper
+Saturation
+Transient shaper
+
+CREATIVE
+Filter
+Distortion
+Wavefolder
+Bitcrusher
+Sample-rate reducer
+Chorus
+Flanger
+Phaser
+Tremolo
+Auto-pan
+Ring mod
+Frequency shift
+Pitch shift
+Delay
+Multi-tap delay
+Granular delay
+Reverb
+Convolution reverb
+Shimmer/pitch reverb
+Resonator
+Looper/stutter
+Tape/turntable effects
+
+ANALYSIS
+Spectrum
+Oscilloscope
+Vectorscope
+Correlation
+Phase
+LUFS
+True peak
+RMS/peak
+Dynamic range
+Stereo field
+Pitch/key
+Spectrogram
+
+RESTORATION
+De-click
+De-hum
+Noise reduction
+De-clip
+Spectral repair later
+
+------------------------------------------------------------------------------
+18. PRECISION EQ
+------------------------------------------------------------------------------
+
+Inspiration class:
+modern interactive/dynamic EQs such as the Pro-Q family.
+
+Original Poietek design:
+`PrecisionEQ`
+
+Capabilities:
+multiple arbitrary bands
+bell/shelf/cut/notch/bandpass/tilt
+adjustable slopes
+stereo/left/right/mid/side
+zero-latency
+natural/minimum phase
+linear phase where useful
+dynamic bands
+external sidechain
+band audition
+spectrum
+collision/masking view using optional analysis
+EQ matching assistant
+spectral-dynamic mode later
+auto gain audition
+
+UX principle:
+Ordinary static EQ remains simple.
+Dynamic/spectral controls appear only when enabled.
+
+Do not replicate FabFilter's appearance, gestures or proprietary algorithms.
+
+------------------------------------------------------------------------------
+19. DYNAMICS
+------------------------------------------------------------------------------
+
+Compressor families:
+clean
+feed-forward
+feed-back style
+opto-inspired response
+FET-inspired speed
+bus/glue
+upward compression
+parallel
+multiband
+
+Controls:
+threshold
+ratio
+attack
+release
+knee
+range
+lookahead
+hold
+sidechain filter
+stereo link
+M/S
+auto makeup optional
+
+Gain-reduction history and level meters.
+
+Character modes are original algorithms, not branded emulations.
+
+------------------------------------------------------------------------------
+20. CHARACTER / SATURATION RACK
+------------------------------------------------------------------------------
+
+Inspiration class:
+Soundtoys-style creative chain and historic-color workflows.
+
+`CharacterRack`
+
+Modules:
+Tube-like nonlinear family
+Tape-like family
+Transformer/preamp-like family
+Clip
+Fold
+Rectify
+Bit/sample
+Cab/speaker
+Noise
+Wow/flutter
+Tone filters
+
+Important:
+Use descriptive "tube-like", "tape-style", etc. unless an actual named hardware
+model has been licensed or clean-room modeled with proper legal review.
+
+Rack:
+series/parallel
+split bands
+wet/dry
+feedback loops only with safety bounds
+oversampling
+macro controls
+save entire chain.
+
+------------------------------------------------------------------------------
+21. DELAY / ECHO
+------------------------------------------------------------------------------
+
+Modes:
+Clean digital
+Tape-style
+BBD-style
+Diffused
+Ping-pong
+Multi-tap
+Reverse
+Granular
+Pitch-shifted
+Spectral later
+
+Tempo:
+ms
+note values
+dotted/triplet
+free swing
+host groove
+
+Modulate:
+time
+feedback
+filter
+pan
+pitch
+diffusion
+drive
+
+Delay time changes can choose:
+pitch glide
+time-stretch-like transition
+crossfade transition
+
+This general principle appears in current creative delay products and should be
+an explicit Poietek option.
+
+------------------------------------------------------------------------------
+22. ALGORITHMIC REVERB
+------------------------------------------------------------------------------
+
+The Valhalla research reinforces a useful product principle:
+one reverb shell can host multiple algorithms/modes with clearly different
+characters.
+
+`SpaceReverb`
+
+Algorithm families:
+Room
+Hall
+Chamber
+Plate
+Nonlinear
+Ambience
+Cloud
+Shimmer
+Modulated
+Early-reflection designer
+Experimental
+
+Parameters:
+size
+decay
+pre-delay
+diffusion
+early/late
+mod rate/depth
+low/high decay
+damping
+width
+freeze
+duck
+drive/character where suitable
+
+Do not name algorithms after proprietary devices unless licensed.
+
+Also provide:
+Convolution Reverb with user IRs.
+
+------------------------------------------------------------------------------
+23. MASTERING HUB
+------------------------------------------------------------------------------
+
+The Ozone research reinforces:
+- modular chain;
+- assistant can suggest;
+- user remains in control;
+- referencing and loudness targets matter;
+- mastering may contain stem-aware processors.
+
+`MasteringHub`
+
+Modules:
+Precision EQ
+Dynamic EQ
+Compressor
+Multiband dynamics
+Exciter
+Stereo imager
+Transient impact
+Resonance/spectral control
+Clipper
+True-peak limiter
+Dither
+Loudness/metering
+Reference comparison
+Codec preview where codecs/licences permit
+Stem-aware balancing later
+
+Master Assistant:
+analyze
+ask target/style
+select reference optional
+propose chain
+show explanation
+show target
+A/B gain matched
+apply as editable modules
+
+Never create a locked "AI mastered" result that the user cannot inspect.
+
+------------------------------------------------------------------------------
+24. PLUGIN CONTAINERS / CHAINS
+------------------------------------------------------------------------------
+
+Every native/hosted processor can be placed in:
+
+INSERT CHAIN
+straight series.
+
+PARALLEL RACK
+multiple branches.
+
+MULTIBAND RACK
+frequency-split branches.
+
+M/S RACK
+mid/side branches.
+
+TRANSIENT/SUSTAIN RACK
+analysis-dependent branches later.
+
+STEM RACK
+vocals/drums/bass/music branches where a stem representation exists.
+
+MACRO RACK
+container with exposed controls.
+
+Save chain as reusable preset.
+
+------------------------------------------------------------------------------
+25. ROUTING / FEEDBACK SAFETY
+------------------------------------------------------------------------------
+
+Modular routing is powerful but can explode numerically or sonically.
+
+Rules:
+detect direct zero-delay feedback loops.
+Require explicit feedback node.
+Clamp/soft-limit safety path optionally.
+Display feedback warning.
+Mute on NaN/Inf.
+Protect user speakers.
+
+Provide a global Panic command:
+stop transport
+all notes off
+reset feedback
+mute plugin processes if necessary.
+
+------------------------------------------------------------------------------
+26. OVERSAMPLING / QUALITY
+------------------------------------------------------------------------------
+
+Native nonlinear processors expose:
+Eco
+Normal
+High
+Render Ultra
+
+Oversampling may be:
+2x
+4x
+8x
+16x depending on module.
+
+Real-time mode can differ from offline render quality but must preserve sonic
+intent and avoid surprising automation changes.
+
+Project records render quality preset.
+
+------------------------------------------------------------------------------
+27. MPE / NOTE EXPRESSION / MICROTONALITY
+------------------------------------------------------------------------------
+
+The Vital/modern-synth and CLAP research reinforce first-class expressive control.
+
+Native instruments:
+per-note pitch
+pressure
+timbre
+release velocity
+poly aftertouch
+MPE zones
+microtonal tunings
+
+Project tuning:
+12-TET default
+Scala-compatible scale import
+keyboard mapping
+custom frequency map later.
+
+Host adapters pass the richest expression supported by each format.
+
+------------------------------------------------------------------------------
+28. HARDWARE SYNTH INTEGRATION
+------------------------------------------------------------------------------
+
+The current Omnisphere product demonstrates a strong transferable principle:
+a hardware profile can do more than generic MIDI Learn.
+
+Poietek already has a universal device profile system.
+Extend it to instrument-aware "Performance Mappings."
+
+A hardware synth/controller profile may define:
+physical knob -> logical macro
+physical section -> UI page
+button -> layer select
+encoder -> wavetable position
+aftertouch -> modulation source
+display feedback where documented
+preset category shortcuts.
+
+Crucial:
+Poietek profiles must be original mapping definitions created from documented
+MIDI/HID behavior or user learning. Do not copy proprietary profile data.
+
+------------------------------------------------------------------------------
+29. WEB / MOBILE PLUGIN REALITY
+------------------------------------------------------------------------------
+
+Web cannot simply host arbitrary desktop VST3/AU binaries.
+
+Web:
+- Poietek native WebAudio/WASM modules.
+- future portable community WASM modules.
+- no claim of VST3/AU hosting.
+
+iOS/iPadOS:
+- native Poietek modules.
+- AUv3 where Apple permits.
+- no desktop VST3 binaries.
+
+Android:
+- native Poietek modules.
+- portable Poietek extensions.
+- third-party plugin ecosystem only if a robust Android-compatible API strategy
+  is explicitly developed.
+
+Desktop:
+- VST3.
+- CLAP.
+- AU on macOS.
+- LV2 later where implemented.
+- internal Poietek modules.
+
+One project preserves unsupported plugin state via freeze/render fallback.
+
+------------------------------------------------------------------------------
+30. POIETEK PORTABLE MODULE FORMAT
+------------------------------------------------------------------------------
+
+Future community format:
+PXM — Poietek eXtension Module (working internal name only).
+
+Manifest:
+id
+version
+author
+license
+roles
+capabilities
+audioIO
+midiIO
+parameters
+modulation targets
+UI
+WASM/native implementation
+permissions
+minimumHostVersion
+signature
+checksum
+
+Portable DSP:
+WASM where performance permits.
+
+Native high-performance:
+signed platform binaries with stricter review.
+
+Do not ship this format until its security/update/version strategy is stable.
+
+------------------------------------------------------------------------------
+31. COMMUNITY PLUGIN MARKETPLACE
+------------------------------------------------------------------------------
+
+Listings:
+free
+paid one-time
+donation
+open source
+commercial
+
+Never force creators to buy essential first-party basics.
+
+Marketplace metadata:
+format
+platform
+CPU architecture
+latency
+MPE
+sidechain
+offline render
+license
+permissions
+version
+compatibility
+review/verification
+crash rate aggregated with privacy safeguards
+
+Community creators may sell:
+presets
+wavetables
+samples
+IRs
+rack chains
+modulator curves
+themes
+plugins.
+
+------------------------------------------------------------------------------
+32. PLUGIN LICENSING INVENTORY
+------------------------------------------------------------------------------
+
+Every dependency used to implement Poietek DSP must enter a licence register:
+
+DependencyRecord {
+  name
+  version
+  source
+  licence
+  linkingMode
+  modified
+  noticeRequirements
+  sourceDisclosureRequirements
+  commercialRestrictions
+  patentNotes
+  approvedBy
+}
+
+Do not confuse:
+"product can host VST3"
+with
+"we can copy code from a commercial VST3 plugin."
+
+Hosting a format and reproducing a product's DSP are entirely different legal
+questions.
+
+------------------------------------------------------------------------------
+33. AAX / PRO TOOLS INTEROPERABILITY
+------------------------------------------------------------------------------
+
+Near-term practical interoperability:
+- audio/stem export;
+- MIDI export;
+- AAF/other project interchange where supported;
+- rendered tracks;
+- future Poietek plug-ins can potentially be built in AAX after Avid agreement.
+
+Do not make "host AAX" a launch promise.
+
+------------------------------------------------------------------------------
+34. AI SOUND DESIGN
+------------------------------------------------------------------------------
+
+AI assistant can:
+describe a synth patch
+create editable oscillator/filter/modulation commands
+suggest modulation
+search presets
+match a reference characteristic at a high level
+create an effect chain
+explain why chain is proposed
+suggest mastering chain
+
+Example:
+"Make this bass wider above 180 Hz but keep sub mono."
+
+AI proposes:
+- mid/side split;
+- high-band width processor;
+- mono low-band constraint.
+
+Every change remains ordinary native parameters/routing.
+
+For third-party plugins:
+AI may use exposed parameters but must not assume semantic meaning when parameter
+metadata is insufficient.
+
+------------------------------------------------------------------------------
+35. MODULATION + AUTOMATION + HARDWARE UNIFICATION
+------------------------------------------------------------------------------
+
+This is a central Poietek idea:
+
+One parameter can have:
+Base value
+Automation lane
+One or more modulators
+MIDI/hardware assignment
+Macro mapping
+AI proposal
+Snapshot value
+
+The inspector shows all contributors to final value.
+
+Example:
+Filter Cutoff = 2.2 kHz base
++ automation
++ LFO ± 20%
++ aftertouch +10%
++ macro range
+= current effective value.
+
+This avoids mysterious parameter movement.
+
+------------------------------------------------------------------------------
+36. VISUAL MODULATION GRAPH
+------------------------------------------------------------------------------
+
+Front:
+simple source badges around parameter.
+
+Advanced:
+graph workspace:
+Sources
+Transforms
+Destinations
+
+Transforms:
+scale
+offset
+curve
+quantize
+smooth
+sample/hold
+logic
+math
+range
+lag
+slew
+rectify
+invert.
+
+The graph can be edited by mouse/touch and mapped to physical hardware.
+
+------------------------------------------------------------------------------
+37. PERFORMANCE SNAPSHOTS
+------------------------------------------------------------------------------
+
+Store:
+plugin parameters
+native effects
+modulator state
+macros
+mixer state
+
+Morph between snapshots:
+A/B
+continuous crossfade
+scene launch
+
+Useful for:
+live DJ
+song sections
+sound design
+mix comparison
+video/lighting scenes.
+
+------------------------------------------------------------------------------
+38. PRESET MORPH / MUTATION
+------------------------------------------------------------------------------
+
+Native instruments can generate controlled variations.
+
+Lockable groups:
+Oscillators
+Filter
+Envelope
+Modulation
+Effects
+Macros
+
+Variation amount:
+Subtle
+Medium
+Wild
+
+This is an original Poietek feature category; do not copy specific commercial
+mutation algorithms.
+
+------------------------------------------------------------------------------
+39. CPU / MEMORY MANAGEMENT
+------------------------------------------------------------------------------
+
+Plugin DSP can be the dominant project workload.
+
+Host monitors:
+CPU average/peak
+audio callback deadline misses
+memory
+GPU UI load
+disk streaming
+plugin latency
+plugin process health
+
+Per-instance:
+sleep when silent if safe
+smart bypass
+freeze
+render in place
+reduce oversampling in live mode
+disable GUI rendering when closed.
+
+Performance Guard from Document 17 can force a stable low-risk configuration.
+
+------------------------------------------------------------------------------
+40. PRESET / SAMPLE DEPENDENCY PORTABILITY
+------------------------------------------------------------------------------
+
+A plug-in state may depend on external:
+samples
+wavetables
+IRs
+presets
+
+Poietek cannot legally copy arbitrary third-party content into the project
+archive without licence/permission.
+
+Plugin dependency policy:
+EXTERNAL
+User must have library installed.
+
+EMBED_ALLOWED
+User/plugin declares media may be copied.
+
+PROJECT_OWNED
+Asset originated from user/project.
+
+Freeze render provides portable audible fallback without illegally repackaging
+a vendor's source library.
+
+------------------------------------------------------------------------------
+41. NATIVE MODULE UI PRINCIPLES
+------------------------------------------------------------------------------
+
+Shared design:
+header
+preset
+A/B
+undo
+bypass
+wet/dry where relevant
+macro row
+modulation indicators
+help
+quality
+CPU
+favorite
+save
+
+Advanced panels collapse.
+
+Do not make every module look like vintage hardware.
+Offer:
+Modern
+Compact
+Rack
+Touch
+
+Hardware-style skins can be optional and original.
+
+------------------------------------------------------------------------------
+42. FIRST-PARTY BUILT-IN SUITE — INITIAL RELEASE TARGET
+------------------------------------------------------------------------------
+
+INSTRUMENTS
+1. Basic Synth
+2. Wave Synth
+3. Sampler
+4. Drum Pad Instrument
+5. Granular Sampler later in beta/1.x
+
+MODULATORS
+1. LFO
+2. Envelope
+3. Step/Shape
+4. Envelope Follower
+5. Random/S&H
+6. Macro
+
+MIX EFFECTS
+1. Utility
+2. Precision EQ
+3. Compressor
+4. Gate/Expander
+5. De-esser
+6. Saturator
+7. Delay
+8. Reverb
+9. Chorus/Flanger/Phaser
+10. Limiter
+11. Meter
+
+CREATIVE
+1. MotionShaper
+2. CharacterRack
+3. Stutter/Looper
+4. Pitch/Time FX
+5. Resonator
+
+MASTER
+1. EQ
+2. Dynamics
+3. Exciter/Saturation
+4. Imager
+5. Clipper
+6. True Peak Limiter
+7. Loudness meter
+8. Dither
+9. Reference
+10. Assistant
+
+The creator can finish a release with built-ins only.
+
+------------------------------------------------------------------------------
+43. ACCEPTANCE TESTS — PLUGIN HOST
+------------------------------------------------------------------------------
+
+PLG-001 VST3 scan failure does not crash studio.
+PLG-002 Valid VST3 instrument receives MIDI and renders audio.
+PLG-003 VST3 effect processes stereo audio.
+PLG-004 CLAP instrument state saves/reloads.
+PLG-005 CLAP note expression maps correctly when supported.
+PLG-006 AUv3 loads on supported Apple target.
+PLG-007 unsupported format is not advertised.
+PLG-008 AAX is not listed as host capability unless actually licensed/implemented.
+PLG-009 sidechain routing works.
+PLG-010 multi-output instrument exposes outputs.
+PLG-011 plugin-reported latency enters PDC.
+PLG-012 plugin tail remains audible on offline render.
+PLG-013 missing plugin placeholder preserves state.
+PLG-014 freeze fallback plays on unsupported device.
+PLG-015 unfreeze restores live plugin on capable device.
+PLG-016 quarantined plugin can be reopened disabled.
+PLG-017 plugin crash does not corrupt project.
+PLG-018 project closes without orphan plugin processes.
+PLG-019 preset index survives rescan.
+PLG-020 plug-in update does not silently discard old state.
+
+------------------------------------------------------------------------------
+44. ACCEPTANCE TESTS — MODULATION
+------------------------------------------------------------------------------
+
+MOD-001 LFO can modulate native filter cutoff.
+MOD-002 modulation range is visually displayed.
+MOD-003 automation + modulation combine deterministically.
+MOD-004 bipolar/unipolar transforms work.
+MOD-005 smoothing prevents zippering for control-rate source.
+MOD-006 sample-accurate source meets timing tolerance.
+MOD-007 one shape can target multiple destinations.
+MOD-008 destination can receive multiple sources.
+MOD-009 modulation routing saves/reopens.
+MOD-010 hardware macro control coexists with modulation.
+MOD-011 no NaN/Inf reaches audio graph.
+MOD-012 feedback graph is detected or made explicit.
+MOD-013 MotionShaper phase-locks to transport.
+MOD-014 swing/offset behaves predictably.
+MOD-015 multiband modulation recombines without unacceptable artifacts.
+
+------------------------------------------------------------------------------
+45. ACCEPTANCE TESTS — NATIVE SYNTHS
+------------------------------------------------------------------------------
+
+SYNTH-001 oscillator pitch accurate across MIDI range.
+SYNTH-002 note-off/release stable.
+SYNTH-003 voice stealing deterministic.
+SYNTH-004 unison does not exceed defined CPU budget at quality target.
+SYNTH-005 wavetable import persists.
+SYNTH-006 modulation matrix saves.
+SYNTH-007 MPE expression is per note.
+SYNTH-008 microtonal scale loads correctly.
+SYNTH-009 granular engine handles asset relink.
+SYNTH-010 multisample zones map correctly.
+SYNTH-011 offline render is repeatable within tolerance.
+SYNTH-012 preset mutation never alters factory source preset.
+SYNTH-013 hardware mapping changes logical macros, not hardcoded UI pixels.
+SYNTH-014 web/native project uses same synth patch schema.
+SYNTH-015 quality fallback does not change project data.
+
+------------------------------------------------------------------------------
+46. ACCEPTANCE TESTS — EFFECTS / MASTERING
+------------------------------------------------------------------------------
+
+FX-001 EQ response matches designed coefficients within tolerance.
+FX-002 dynamic EQ sidechain triggers correct band.
+FX-003 linear-phase mode reports latency.
+FX-004 compressor attack/release fixtures pass.
+FX-005 saturator oversampling reduces aliasing according to benchmark.
+FX-006 delay tempo sync follows tempo map.
+FX-007 delay mode transition does not create unsafe spikes.
+FX-008 reverb tail survives stop/export as configured.
+FX-009 convolution relinks user IR.
+FX-010 limiter true peak target verified with oversampled measurement.
+FX-011 mastering assistant returns editable chain.
+FX-012 assistant reject leaves project untouched.
+FX-013 loudness meter meets chosen standard implementation tolerance.
+FX-014 A/B comparison supports gain matching.
+FX-015 reference track excluded from export.
+FX-016 codec preview is disabled when codec unavailable/unlicensed.
+FX-017 master dither applied once at final appropriate conversion.
+FX-018 stem-aware mastering clearly identifies generated stem dependency.
+
+------------------------------------------------------------------------------
+47. IMPLEMENTATION ROADMAP
+------------------------------------------------------------------------------
+
+PLUGIN PHASE A
+Host abstraction, internal native module interface, plugin descriptor/state model.
+
+PLUGIN PHASE B
+VST3 scanner/host desktop + crash isolation.
+
+PLUGIN PHASE C
+CLAP scanner/host + parameter/note-expression integration.
+
+PLUGIN PHASE D
+macOS/iOS AUv3 adapters.
+
+PLUGIN PHASE E
+PDC, sidechain, multi-output, preset indexing, freeze.
+
+PLUGIN PHASE F
+Universal modulation engine.
+
+PLUGIN PHASE G
+Core native mix effects.
+
+PLUGIN PHASE H
+Wave Synth + Sampler integration.
+
+PLUGIN PHASE I
+MotionShaper + CharacterRack + advanced creative FX.
+
+PLUGIN PHASE J
+Mastering Hub + assistant.
+
+PLUGIN PHASE K
+Portable PXM/WASM extension research.
+
+PLUGIN PHASE L
+LV2 adapter and additional ecosystem support where justified.
+
+AAX:
+Do not put into host roadmap unless Avid provides an appropriate authorized path.
+
+------------------------------------------------------------------------------
+48. CURRENT SDS REPOSITORY MIGRATION
+------------------------------------------------------------------------------
+
+Current SDS built-in synth/drum/effect demonstrations should become views over
+real modules.
+
+Existing `audioEngine`:
+- keep as prototype backend only;
+- move synthesis algorithms into native module interfaces;
+- move mixer DSP into graph nodes;
+- replace direct component calls with Command/AudioGraph services.
+
+Existing rack:
+- become plugin/native module container.
+
+Existing rear panel:
+- show audio, MIDI, modulation and sidechain ports.
+
+Existing mapper:
+- map hardware controls to logical parameters/macros.
+
+Existing mixer:
+- host plugin/native inserts and sends.
+
+Existing AI:
+- manipulate exposed module parameters/commands, not raw component state.
+
+------------------------------------------------------------------------------
+49. CLEAN-ROOM RULES
+------------------------------------------------------------------------------
+
+Allowed inspiration:
+- published workflow concepts;
+- public manuals;
+- public specifications;
+- open-source standards under their licences;
+- independent DSP theory;
+- measurements/research conducted lawfully;
+- user feedback.
+
+Do not copy:
+- proprietary code;
+- factory presets;
+- wavetables;
+- impulse responses;
+- protected samples;
+- interface artwork;
+- product-specific text;
+- proprietary hardware model names for Poietek native products;
+- undocumented protocols;
+- patented algorithm implementations without review/licensing.
+
+"Analog-inspired" is different from claiming an exact model of a named device.
+
+------------------------------------------------------------------------------
+50. VERIFIED FIRST-PARTY RESEARCH SOURCES — AUGUST 2026
+------------------------------------------------------------------------------
+
+Xfer Records — Serum 2:
+https://www.xferrecords.com/products/serum-2
+
+Vital:
+https://vital.audio/
+https://vital.audio/presskit/
+
+Spectrasonics Omnisphere:
+https://www.spectrasonics.net/products/omnisphere/overview.php
+https://support.spectrasonics.net/manual/Omnisphere/edit_page/oscillator/index.html
+https://support.spectrasonics.net/manual/Omnisphere/fx_page/index.html
+
+Arturia V Collection 11:
+https://www.arturia.com/products/software-instruments/v-collection/overview
+
+Cableguys ShaperBox 3:
+https://www.cableguys.com/shaperbox.html
+
+Xfer LFOTool:
+https://www.xferrecords.com/products/lfo-tool
+
+Soundtoys Tremolator:
+https://www.soundtoys.com/product/tremolator/
+
+FabFilter Pro-Q 4:
+https://www.fabfilter.com/products/pro-q-4-equalizer-plug-in
+https://www.fabfilter.com/help/pro-q/using/dynamic-eq
+https://www.fabfilter.com/help/pro-q/using/spectral-dynamics
+
+Soundtoys 5:
+https://www.soundtoys.com/product/soundtoys-5/
+
+Valhalla DSP:
+https://valhalladsp.com/plugins/
+https://valhalladsp.com/category/products/valhalla-vintage-verb/
+
+iZotope Ozone 12:
+https://www.izotope.com/products/ozone-standard
+https://www.izotope.com/products/ozone-advanced
+
+Steinberg VST3 SDK:
+https://www.steinberg.net/developers/vstsdk/
+
+CLAP:
+https://github.com/free-audio/clap
+
+Apple Audio Unit / AUv3:
+https://developer.apple.com/documentation/audiotoolbox/audio-unit-v3-plug-ins
+https://developer.apple.com/documentation/audiotoolbox/incorporating-audio-effects-and-instruments
+
+Avid AAX SDK:
+https://developer.avid.com/aax/
+
+END OF DOCUMENT 18

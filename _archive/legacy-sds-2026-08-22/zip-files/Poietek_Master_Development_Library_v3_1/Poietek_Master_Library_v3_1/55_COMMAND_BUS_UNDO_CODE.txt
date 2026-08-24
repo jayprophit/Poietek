@@ -1,0 +1,32 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.9
+
+55 — COMMAND BUS / UNDO STARTER CODE
+====================================
+
+DELIVERED
+commands/types.ts
+commands/reducer.ts
+commands/CommandBus.ts
+
+IMPLEMENTED COMMANDS
+AddTrack
+SetClipGain
+SplitAudioClip.
+
+LIMITATION
+The starter inverse system intentionally does not pretend every command is
+undoable yet. AddTrack and Split require explicit inverse/transaction records
+before production Undo claims complete coverage.
+
+FIRST PRODUCTION TASK
+Introduce command record:
+before/after or inverse factory
+and AddTrack/DeleteTrack + Split/Merge transaction inverse.
+
+RULE
+Do not connect Ctrl+Z to the old rack-only history once project CommandBus takes
+ownership.
+
+CMDSTART-001 SetClipGain undo/redo persists.
+CMDSTART-002 invalid split does not save.
+CMDSTART-003 command mutates cloned/immutable project structures.

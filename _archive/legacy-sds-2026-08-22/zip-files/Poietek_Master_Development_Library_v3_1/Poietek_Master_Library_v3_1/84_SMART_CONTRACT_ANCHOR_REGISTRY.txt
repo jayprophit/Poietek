@@ -1,0 +1,57 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.2
+
+84 — SMART-CONTRACT ANCHOR REGISTRY
+===================================
+
+COMPANION
+contracts/PoietekLedgerAnchor.sol
+packages/blockchain/src/BlockchainAnchorProvider.ts
+
+ANCHOR KINDS
+
+RightsManifest
+ContributorApprovalBatch
+RegistrationReceiptBatch
+MarketplaceSettlementBatch
+ExternalRoyaltyStatementBatch
+ReleaseSnapshot
+ProvenanceSnapshot.
+
+ANCHOR ID
+
+Deterministically or randomly generated unique record key.
+
+FIELDS
+
+objectIdHash
+contentHash
+metadataRoot
+version
+kind
+submittedBy
+blockNumber
+blockTimestamp.
+
+NO PII
+
+Party IDs should normally be salted/hashed or represented through privacy-aware
+commitments before public anchoring.
+
+SUPERSESSION
+
+Historical anchor is never deleted.
+A new anchor may declare that it supersedes an earlier version.
+
+ADMIN
+
+Production deployments should use audited role management, multisig/smart-account
+administration and delayed admin changes.
+
+The starter contract uses OpenZeppelin AccessControlDefaultAdminRules and Pausable
+as a design scaffold, not as a completed security audit.
+
+ACCEPTANCE
+ANCHOR-001 duplicate anchor ID rejected.
+ANCHOR-002 pause stops new anchors.
+ANCHOR-003 old anchor remains queryable.
+ANCHOR-004 supersession creates event rather than mutation.

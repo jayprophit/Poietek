@@ -1,0 +1,154 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.8
+
+41 — COMMAND BUS, DOMAIN EVENTS & UNDO CONTRACT v1
+==================================================
+
+COMPANION FILES
+command.schema.v1.json
+event.schema.v1.json
+
+PURPOSE
+Every meaningful project mutation must travel through one command pathway so UI,
+MIDI hardware, keyboard shortcuts, automation and AI do not create competing
+state-change systems.
+
+COMMAND LIFECYCLE
+
+Intent
+-> Command
+-> Validate
+-> Authorize
+-> Execute
+-> Persist local transaction
+-> Emit domain events
+-> Record undo inverse / snapshot
+-> Queue sync
+-> Update read models
+
+EXAMPLE COMMANDS
+
+Project:
+CreateProject
+RenameProject
+SetTempo
+SetTimeSignature
+
+Tracks:
+AddTrack
+DeleteTrack
+RenameTrack
+MoveTrack
+
+Clips:
+AddAudioClip
+MoveClip
+TrimClip
+SplitClip
+SetClipGain
+SetClipFade
+DeleteClip
+
+MIDI:
+AddMidiNote
+MoveMidiNote
+ResizeMidiNote
+SetMidiVelocity
+SetMidiExpression
+
+Sampler:
+AssignAssetToPad
+SetPadChokeGroup
+CreateSlices
+
+Mixer:
+SetTrackGain
+SetTrackPan
+SetMute
+SetSolo
+InsertPlugin
+RemovePlugin
+SetSendLevel
+
+Storage:
+SetStoragePolicy
+AddAssetReplica
+RemoveAssetReplica
+
+Collaboration:
+AddComment
+ResolveComment
+CreateSnapshot
+
+Rights:
+AssignContributor
+ProposeSplit
+ApproveSplit
+RejectSplit
+
+UNDO RULES
+
+A command must declare one of:
+REVERSIBLE
+SNAPSHOT_REQUIRED
+NON_UNDOABLE_AUDITED
+
+Examples:
+MoveClip -> reversible with inverse.
+ImportAsset -> project reference reversible; physical asset garbage collection deferred.
+ApproveSplit -> audited amendment workflow, not casual Ctrl+Z.
+
+CommandResult {
+  revision
+  events[]
+  warnings[]
+  changedObjectIds[]
+}
+
+CONCURRENCY
+
+expectedRevision may be supplied for commands requiring optimistic concurrency.
+CRDT-backed commands may omit global expectedRevision if operation merge semantics
+are safe.
+
+AI
+
+AI never edits objects directly.
+It produces ProposedCommand[].
+User preview/accept invokes normal CommandBus.
+
+HARDWARE
+
+MIDI mapping resolves physical event -> logical target -> command or realtime
+parameter control.
+
+Realtime ephemeral controls such as fader preview may update engine state at high
+frequency but commit canonical automation/parameter state through commands.
+
+EVENTS
+
+Domain events are facts:
+TrackAdded
+ClipMoved
+AssetImported
+ContributorAssigned
+StorageReplicaAvailable
+SplitProposalCreated
+
+Events are versioned independently from command versions.
+
+SYNC
+
+Not every domain event must be sent over the network exactly as emitted.
+Sync adapter converts canonical mutations to collaborative operations.
+
+COMMAND ACCEPTANCE
+CMD-001 UI cannot mutate canonical track state directly.
+CMD-002 same SetTrackGain command works from UI and mapped hardware.
+CMD-003 inverse restores SplitClip transaction where supported.
+CMD-004 audited rights approval cannot disappear via ordinary undo.
+CMD-005 duplicate commandId is idempotent where retried.
+CMD-006 rejected validation changes no state.
+CMD-007 failed persistence changes no visible committed state.
+CMD-008 event envelope validates.
+CMD-009 AI accepted proposal uses same command path.
+CMD-010 migrations may issue system commands but record migration context.

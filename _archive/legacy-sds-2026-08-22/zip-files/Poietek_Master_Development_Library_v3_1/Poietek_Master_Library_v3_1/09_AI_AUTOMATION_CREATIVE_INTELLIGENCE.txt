@@ -1,0 +1,100 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.0
+
+Compiled from:
+1) The complete product-development conversation supplied by the creator.
+2) Deep review of GitHub repository: jayprophit/Studio-Daw-Station-SDS-
+3) Current cross-platform/offline-first architecture recommendations.
+
+WORKING PRODUCT NAME
+Poietek is the working ecosystem name discussed in the design conversation.
+Studio DAW Station (SDS) is the current repository/product label.
+Final public branding should be chosen only after trademark/domain checks.
+
+CORE RULE
+One app. One project model. One creative graph. Many workspaces.
+Offline first. Cloud optional. Hardware agnostic. Collaboration capable.
+Professional depth without forcing beginners to see every advanced control.
+
+LEGAL / CLEAN-ROOM RULE
+Competitor products, patents, papers, hardware and interfaces may be studied for
+functional principles, workflows and interoperability requirements. Do not copy
+proprietary source code, protected assets, branded UI expression, undocumented
+confidential protocols, or patented claims without appropriate legal review or
+licensing. Compatibility layers should use documented/open interfaces wherever
+possible.
+
+===============================================================================
+
+AI MUST RETURN EDITABLE PROJECT OPERATIONS, NOT HIDDEN MAGIC.
+
+AI COMMAND OUTPUT
+explanation
+proposedCommands
+confidence
+warnings
+previewAssets
+rightsFlags
+
+User chooses Preview / Accept / Modify / Reject.
+
+PRODUCTION AI
+chop suggestions, patterns, MIDI variations, chords, arrangement, session players.
+
+AUDIO ANALYSIS
+BPM/key/chords, classification, transient/loop, loudness, masking, clipping,
+phase, stereo and noise/problem detection.
+
+MIX/MASTER
+Recommendations with explanations and editable parameter changes.
+
+VIDEO
+cut/pacing suggestions, beat markers, captions, color/VFX ideas, storyboard help.
+
+LEARNING
+contextual teaching and “show me” flows.
+
+PROJECT MANAGER
+missing media, unsynced assets, missing credits, pending approvals, backup health.
+
+RIGHTS ASSISTANT
+Classify evidence as original/licensed/royalty-free/public-domain candidate/
+unknown. Warn, never automatically determine legality.
+
+INSPIRED-BY MODE
+Generate original material from descriptive characteristics. AI is not a legal
+bypass for recreating protected recordings.
+
+CREATIVE MEMORY
+Opt-in user preferences for devices, layouts, chains and export defaults.
+
+NATURAL LANGUAGE COMMAND PALETTE
+“Open mixer.”
+“Chop this into transients.”
+“Show Alex's changes.”
+“Export a private preview.”
+“Prepare release metadata but do not publish.”
+
+AUTOMATION BUILDER
+Import -> analyze -> BPM -> transients -> pad map -> backup -> notify.
+
+MODEL ABSTRACTION
+AIProvider interface. Do not hardcode product to Gemini.
+Support cloud and future local providers. Core app works with AI disabled.
+
+OFFLINE AI
+Prioritize local algorithms for BPM/key/transient/waveform/basic classification.
+
+PROVENANCE
+AI-derived assets can record model/provider, operation, input IDs, timestamp and
+human acceptance.
+
+NON-DESTRUCTIVE GUARANTEE
+AI MIDI stays MIDI; chops stay markers; mix stays parameters; arrangements stay
+clips; video edits stay timeline edits; originals remain recoverable.
+
+VERSION 1.1 CROSS-REFERENCE
+Pitch/vocal AI must produce the structured operations defined in Document 16 rather than destructive hidden PCM edits.
+
+VERSION 1.3 CROSS-REFERENCE
+AI sound-design/mastering commands should target the structured native-module, macro, modulation and plugin-parameter model in Document 18, with previews and undo.

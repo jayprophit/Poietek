@@ -1,0 +1,53 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 3.0
+
+161 — COMMUNITY PLAYER TUNING ARCHITECTURE
+==========================================
+
+CLARIFIED PRODUCT REQUIREMENT
+
+Poietek's community surfaces can play a work using its creator tuning or an
+optional listener/community playback tuning.
+
+SURFACES
+
+Hub video player
+audio player
+community wall
+creator channel
+archive
+feed
+playlist
+remix pages
+learning pages
+live/replay pages.
+
+CANONICAL MASTER
+
+Never changes.
+
+Example:
+Creator master = A432.
+
+Community player can:
+play original A432
+or
+offer optional alternate playback.
+
+A listener preference can be:
+Original
+432
+440
+442
+Custom.
+
+The player displays the active mode.
+
+PLAYBACK RETUNING IS A DERIVATIVE EXPERIENCE
+
+It is not:
+a new rights owner
+a new canonical master
+a society registration change
+a replacement project.
+
+END DOCUMENT 161

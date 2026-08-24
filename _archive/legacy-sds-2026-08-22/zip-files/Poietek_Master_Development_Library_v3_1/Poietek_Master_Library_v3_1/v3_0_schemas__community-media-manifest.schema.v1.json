@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/community-media-manifest/v1",
+  "title": "Poietek Community Media Manifest v1",
+  "type": "object",
+  "required": [
+    "mediaId",
+    "creatorPartyIds",
+    "original",
+    "availableRenditions",
+    "community"
+  ],
+  "properties": {
+    "mediaId": {
+      "type": "string"
+    },
+    "creatorPartyIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "original": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "availableRenditions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "community": {
+      "type": "object",
+      "properties": {
+        "wallVisible": {
+          "type": "boolean"
+        },
+        "archiveVisible": {
+          "type": "boolean"
+        },
+        "feedVisible": {
+          "type": "boolean"
+        },
+        "playbackTuningEnabled": {
+          "type": "boolean"
+        },
+        "creatorRecommendedPlaybackMode": {
+          "type": "string"
+        },
+        "allowListenerRetune": {
+          "type": "boolean"
+        },
+        "allowCommunityPreset": {
+          "type": "boolean"
+        },
+        "defaultCommunityReferenceHz": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/style-reference-profile/v1",
+  "title": "Poietek Style Reference Profile v1",
+  "type": "object",
+  "required": [
+    "profileId",
+    "version",
+    "label",
+    "contentClass",
+    "taxonomy",
+    "referencePolicy",
+    "features"
+  ],
+  "properties": {
+    "profileId": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "label": {
+      "type": "string"
+    },
+    "contentClass": {
+      "enum": [
+        "music",
+        "speech",
+        "podcast",
+        "audiobook",
+        "film",
+        "tv",
+        "music_video",
+        "social_video",
+        "live_stream",
+        "image",
+        "animation",
+        "game_asset",
+        "immersive",
+        "advertisement",
+        "other"
+      ]
+    },
+    "taxonomy": {
+      "type": "object",
+      "properties": {
+        "genreIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "genreNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "subgenres": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "moods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "eras": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "userTags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "referencePolicy": {
+      "type": "object",
+      "required": [
+        "sourceType",
+        "minimumReferenceCount"
+      ],
+      "properties": {
+        "sourceType": {
+          "enum": [
+            "user_selected",
+            "licensed_dataset",
+            "open_dataset",
+            "community_aggregate",
+            "project_history",
+            "artist_catalogue",
+            "custom"
+          ]
+        },
+        "minimumReferenceCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "rightsReviewed": {
+          "type": "boolean"
+        },
+        "allowCloudAnalysis": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "features": {
+      "type": "object",
+      "properties": {
+        "tempo": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "keyMode": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "loudness": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "truePeak": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "crestFactor": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "loudnessRange": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "spectralBalance": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "bassEnergy": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "stereoWidth": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "sectionDurations": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "instrumentation": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "dialogueMusicBalance": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "shotLength": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "motion": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "colour": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

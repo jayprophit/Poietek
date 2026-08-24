@@ -1,0 +1,8 @@
+Object,Canonical ID,External IDs,Embedded/Exported,Payment impact
+Person/company,Poietek Party ID,"IPI/CAE, society member/provider IDs, ISNI",Only appropriate public IDs,Maps rights/payment beneficiaries
+Musical work,Poietek Work ID,"ISWC, PRS Tune Code, provider work IDs",Manifest/DDEX/CWR,Composition/publishing royalties
+Sound recording,Poietek Asset ID,"ISRC, provider recording IDs",Audio tags/RIN/RDR-N/C2PA,Master/neighbouring-right matching
+Video/music video,Poietek Asset ID,"ISRC where applicable, provider IDs",C2PA/RDR-N/manifest,Visual/master/performer rights
+Plugin/theme/preset,Poietek Product ID,Marketplace/vendor IDs,Manifest/package metadata,Marketplace sale allocations
+Sale,Poietek Order ID,Processor payment/transfer IDs,Ledger only,Internal payout routing
+External royalty,Statement Line ID,Society/distributor IDs,Statement/ledger,"Reconciliation, not direct control"

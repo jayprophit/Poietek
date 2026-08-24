@@ -1,0 +1,82 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 2.0
+
+70 — MASTER NATIVE/BACKEND/5-STAR RELEASE GATE
+==============================================
+
+NATIVE APPLICATION
+
+[ ] Windows installed build.
+[ ] macOS installed build.
+[ ] Linux installed build.
+[ ] iOS/iPadOS installed build.
+[ ] Android installed build.
+[ ] All open offline.
+[ ] App data paths correct.
+[ ] Signing/store requirements satisfied.
+
+WEB
+
+[ ] Website.
+[ ] Web app.
+[ ] PWA offline shell.
+[ ] Browser capability warnings.
+
+BACKEND
+
+[ ] LocalOnly backend.
+[ ] Supabase backend.
+[ ] RLS tests.
+[ ] Realtime tests.
+[ ] Firebase optional role documented.
+[ ] No duplicated data authority.
+[ ] BYOC works.
+
+5-STAR
+
+[ ] Benchmark reference versions frozen.
+[ ] Evidence for every 5★ category.
+[ ] No manually assigned 5★.
+[ ] Zero open critical data-loss defects.
+[ ] Security threat tests pass.
+[ ] Offline tests pass.
+[ ] Accessibility tests pass.
+[ ] Soak tests pass.
+[ ] Hardware certification evidence.
+
+CORE PRODUCT
+
+[ ] Import audio.
+[ ] Record.
+[ ] Timeline edit.
+[ ] MIDI.
+[ ] Mixer.
+[ ] Save/reopen.
+[ ] Export.
+[ ] Undo.
+[ ] Crash recovery.
+
+PORTABILITY
+
+[ ] Same project opens Web/Desktop/Tablet/Mobile.
+[ ] Unsupported plug-ins preserved.
+[ ] Assets resolve by hash/replicas.
+[ ] Portable archive works.
+
+RELEASE POLICY
+
+Alpha:
+No 5★ claim.
+
+Beta:
+No 5★ claim unless specific category evidence exists.
+
+Stable:
+May publish evidence-backed star score per category.
+
+"Poietek 5-Star Certified":
+Only when every declared flagship category is at 5★.
+
+The quality target is deliberately hard.
+The score must describe reality, not marketing intent.
+
+END DOCUMENT 70

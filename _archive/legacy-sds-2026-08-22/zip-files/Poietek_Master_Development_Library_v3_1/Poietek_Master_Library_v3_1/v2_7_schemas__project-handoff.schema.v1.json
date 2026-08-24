@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/project-handoff/v1",
+  "title": "Poietek Project Handoff v1",
+  "type": "object",
+  "required": [
+    "handoffId",
+    "projectId",
+    "fromDeviceId",
+    "createdAt",
+    "state"
+  ],
+  "properties": {
+    "handoffId": {
+      "type": "string"
+    },
+    "projectId": {
+      "type": "string"
+    },
+    "fromDeviceId": {
+      "type": "string"
+    },
+    "toDeviceId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "security": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

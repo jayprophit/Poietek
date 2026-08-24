@@ -1,0 +1,30 @@
+--- a/package.json
++++ b/package.json
+@@
+-  "name": "react-example",
++  "name": "poietek-studio",
+@@
+   "scripts": {
+     "dev": "vite --port=3000 --host=0.0.0.0",
+     "build": "vite build",
+     "preview": "vite preview",
+     "clean": "rm -rf dist server.js",
+-    "lint": "tsc --noEmit"
++    "lint": "tsc --noEmit",
++    "tauri": "tauri",
++    "desktop:dev": "tauri dev",
++    "desktop:build": "tauri build",
++    "mobile:init:android": "tauri android init",
++    "mobile:init:ios": "tauri ios init"
+   },
+@@
+-    "motion": "^12.23.24"
++    "motion": "^12.23.24",
++    "@tauri-apps/api": "^2.0.0"
+   },
+@@
+-    "@types/express": "^4.17.21"
++    "@types/express": "^4.17.21",
++    "@tauri-apps/cli": "^2.0.0"
+   }
+ }

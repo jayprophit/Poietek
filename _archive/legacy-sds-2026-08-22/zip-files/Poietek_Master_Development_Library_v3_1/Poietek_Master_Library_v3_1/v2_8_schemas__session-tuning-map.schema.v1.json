@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/session-tuning-map/v1",
+  "title": "Poietek Session Tuning Map v1",
+  "type": "object",
+  "required": [
+    "mapId",
+    "projectId",
+    "defaultProfileId",
+    "regions"
+  ],
+  "properties": {
+    "mapId": {
+      "type": "string"
+    },
+    "projectId": {
+      "type": "string"
+    },
+    "defaultProfileId": {
+      "type": "string"
+    },
+    "regions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "startTick",
+          "profileId"
+        ],
+        "properties": {
+          "startTick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "endTick": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "profileId": {
+            "type": "string"
+          },
+          "rootOverride": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "adaptiveMode": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "trackOverrides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "trackId",
+          "profileId"
+        ],
+        "properties": {
+          "trackId": {
+            "type": "string"
+          },
+          "profileId": {
+            "type": "string"
+          },
+          "applyTo": {
+            "enum": [
+              "midi_only",
+              "instrument_only",
+              "audio_and_midi",
+              "analysis_only"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,88 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.8
+
+46 — PWA, OFFLINE BOOT & LOCAL STORAGE CONTRACT
+===============================================
+
+COMPANION
+manifest.webmanifest
+
+GOAL
+After first successful load/install, core project creation/open/edit/playback must
+work with network disabled.
+
+CACHE CLASSES
+
+APP_SHELL
+HTML
+JS/CSS bundles
+icons
+essential help
+built-in tiny demo resources.
+
+LOCAL_PROJECT_DATA
+IndexedDB.
+
+LOCAL_MEDIA
+OPFS preferred; IndexedDB Blob fallback.
+
+DERIVED_CACHE
+waveform peaks
+thumbnails
+proxies
+analysis.
+
+REMOTE_HTTP_CACHE
+Never treated as only canonical copy.
+
+SERVICE WORKER POLICY
+
+App shell:
+stale-while-revalidate or versioned cache.
+
+API:
+network-first where user expects current remote state, but never blocks local
+project.
+
+Media:
+do not blindly CacheStorage giant WAV/video.
+AssetStore owns media caching.
+
+UPDATE
+New service worker waits.
+If project recording/performance active:
+do not force reload.
+Show "Update ready" later.
+
+OFFLINE START
+1 load cached shell.
+2 open local DB.
+3 list local projects.
+4 initialize audio.
+5 network services enter Offline.
+6 user works.
+
+STORAGE PERSISTENCE
+Request persistent browser storage where supported after user has meaningful
+project data, explaining why if browser UX requires.
+
+QUOTA
+StorageService monitors estimated usage where API supports it.
+Warn before failure.
+Never auto-delete sole asset copy.
+
+EVICTION
+Derived cache first.
+Downloaded replica next if another verified copy exists.
+Never canonical local original without explicit policy.
+
+PWA ACCEPTANCE
+PWA-001 first load online.
+PWA-002 reload offline.
+PWA-003 create project offline.
+PWA-004 import WAV offline.
+PWA-005 reopen offline.
+PWA-006 update does not interrupt recording.
+PWA-007 quota error visible.
+PWA-008 cache cleanup preserves sole originals.
+PWA-009 service worker never caches OAuth callback secrets.
+PWA-010 network restoration starts sync asynchronously.

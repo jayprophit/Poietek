@@ -1,0 +1,67 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.5
+
+118 — LIVE CONSOLE & RECORDING HEALTH GUARD
+===========================================
+
+CONNECTS WITH UNIVERSAL CONSOLE BRIDGE.
+
+PER CHANNEL
+
+input peak
+preamp clipping
+digital clipping
+gate/compressor gain reduction if available
+noise
+mute
+record-arm
+clock health.
+
+SYSTEM
+
+sample rate
+clock leader
+lock
+buffer underruns
+disk throughput
+remaining storage
+CPU
+network audio health
+redundancy
+record destination health.
+
+RECORDING HEALTH PANEL
+
+REC SAFE ✓
+
+Clock              Locked
+Disk               3h 42m estimated
+Vocal CH 1         Good
+Vocal CH 2         Peak warning
+Kick CH 9          Good
+Bass DI CH 12      Low level
+MADI                Locked
+Dante               Primary/Secondary healthy.
+
+AI RECOMMENDATION
+
+"CH2 reached -2.1 dBFS during the loudest chorus. There was no clip, but there is
+less headroom than your other vocal channel. Reduce the console preamp about
+3–4 dB and retest."
+
+If desk exposes verified writable preamp:
+[Preview change]
+[Apply]
+[Ignore]
+
+LIVE GUARD
+
+Never change:
+clock
+sample rate
+phantom
+routing
+master gain
+
+automatically during live recording.
+
+END DOCUMENT 118

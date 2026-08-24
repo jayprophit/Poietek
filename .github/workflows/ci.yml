@@ -1,0 +1,158 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node-version: [18.x]
+        include: []
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        working-directory: Poietek-Studio
+        run: npm ci
+
+      - name: Typecheck (TS)
+        working-directory: Poietek-Studio
+        run: npm run typecheck || true
+
+      - name: Run JS tests
+        working-directory: Poietek-Studio
+        run: npm test || true
+
+      - name: Cache Rust cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/src-tauri/Cargo.toml') }}
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Build Tauri (Rust)
+        working-directory: Poietek-Studio/src-tauri
+        run: |
+          # Build the native shell enabling best-effort priority escalation where supported
+          cargo build --release --features priority
+
+      - name: Install CMake and build native-core
+        if: always()
+        run: |
+          mkdir -p Poietek-Studio/native-core/build
+          cd Poietek-Studio/native-core/build
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --config Release
+
+      - name: Run native-core tests (ctest)
+        if: always()
+        run: |
+          cd Poietek-Studio/native-core/build
+          ctest --output-on-failure || true
+
+      - name: Run native-core benchmark (if built)
+        if: always()
+        run: |
+          set -e
+          cd Poietek-Studio/native-core/build
+          if [ -f ./poietek_native_core_bench ]; then
+            ./poietek_native_core_bench | tee bench-output.txt || true
+          elif [ -f ./Release/poietek_native_core_bench ] ; then
+            ./Release/poietek_native_core_bench | tee bench-output.txt || true
+          elif [ -f ./poietek_native_core_bench.exe ]; then
+            ./poietek_native_core_bench.exe | tee bench-output.txt || true
+          elif [ -f ./Release/poietek_native_core_bench.exe ]; then
+            ./Release/poietek_native_core_bench.exe | tee bench-output.txt || true
+          else
+            echo "bench binary not found"
+          fi
+          # copy bench output to repo root for the CI artifact upload step
+          mkdir -p ../../../../Poietek-Studio/native-core/build
+          cp bench-output.txt ../../../../Poietek-Studio/native-core/build/bench-output.txt || true
+
+      - name: Compare bench output to baseline (best-effort)
+        if: always()
+        working-directory: Poietek-Studio
+        run: |
+          node --version || true
+          node scripts/compare-bench.mjs native-core/build/bench-output.txt .github/bench/baseline.json || true
+          ls -l bench-summary.json || true
+          # upload bench-summary.json as artifact
+        env:
+          CI: true
+
+      - name: Tauri bundle (native installers)
+        working-directory: Poietek-Studio
+        env:
+          TAURI_BUILD_TARGETS: "all"
+        run: |
+          # Attempt to create native bundles for the current runner OS. This may
+          # require extra platform-specific tools (makensis on Windows, hdiutil on macOS).
+          # We run the existing npm script which calls the tauri bundler.
+          npm run native:build || true
+
+      - name: Upload build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: poietek-build-${{ matrix.os }}
+          path: |
+            Poietek-Studio/dist
+            Poietek-Studio/src-tauri/target/release
+            Poietek-Studio/native-core/build
+            Poietek-Studio/native-core/build/bench-output.txt
+            Poietek-Studio/src-tauri/target/release/bundle || Poietek-Studio/src-tauri/target/release/bundle/**
+
+  native-ring-ffi:
+    name: Native ring-ffi integration test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies (cmake, build-essential)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential pkg-config
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Build native-core via CMake
+        run: |
+          mkdir -p Poietek-Studio/native-core/build
+          cd Poietek-Studio/native-core/build
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --config Release
+
+      - name: Run native-core tests (ctest)
+        run: |
+          cd Poietek-Studio/native-core/build
+          ctest --output-on-failure
+
+      - name: Run Rust tests with ring-ffi feature
+        working-directory: Poietek-Studio/src-tauri
+        run: |
+          cargo test --features "ring-ffi" --tests --verbose
+

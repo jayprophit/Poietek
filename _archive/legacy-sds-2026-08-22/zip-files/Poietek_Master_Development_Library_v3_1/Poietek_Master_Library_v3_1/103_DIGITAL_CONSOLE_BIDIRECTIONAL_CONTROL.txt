@@ -1,0 +1,71 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.4
+
+103 — DIGITAL CONSOLE BIDIRECTIONAL CONTROL
+===========================================
+
+DIGITAL DESK TARGET
+
+Supported parameters may include:
+channel name/color
+fader
+mute
+solo
+pan
+preamp gain
+phantom power
+polarity
+HPF
+EQ
+gate
+compressor
+insert
+send levels
+bus/DCA assignments
+routing
+scene
+transport
+meters.
+
+ACTUAL SET DEPENDS ON DESK/PROTOCOL.
+
+CURRENT REAL-WORLD PATTERNS
+
+Allen & Heath documents bidirectional MIDI control over USB/TCP for current mixer
+families. Current Avantis documentation includes faders, mutes, sends, DCA,
+name/color, scene recall and MMC.
+
+Yamaha documents software that remotely controls and monitors broad ranges of its
+digital mixers and system devices.
+
+Avid maintains current EUCON control-surface documentation.
+
+AES70/OCA provides an open control/monitoring architecture designed to work
+alongside media transports such as AES67, Dante and AVB.
+
+POIETEK ADAPTER
+
+Vendor/protocol data:
+-> ConsoleAdapter
+-> logical parameter path.
+
+Example:
+vendor fader NRPN
+-> channel.input.17.faderDb.
+
+DESK MOVES
+
+Physical fader event
+-> update app immediately
+-> optionally record mixer automation.
+
+APP MOVES
+
+App fader
+-> desk write
+-> motorized desk moves when hardware supports it.
+
+If desk fader is not motorized:
+UI reflects requested parameter state but cannot physically move the fader.
+Use pickup/ghost-position UX to prevent jumps.
+
+END DOCUMENT 103

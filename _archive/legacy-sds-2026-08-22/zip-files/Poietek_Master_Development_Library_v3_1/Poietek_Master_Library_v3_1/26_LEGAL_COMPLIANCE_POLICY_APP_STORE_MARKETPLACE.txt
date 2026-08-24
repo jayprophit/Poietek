@@ -1,0 +1,242 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 1.6 ADDENDUM
+
+26 — LEGAL, COMPLIANCE, POLICY, APP-STORE & MARKETPLACE ARCHITECTURE
+===================================================================
+
+PURPOSE
+
+This volume identifies legal/compliance systems that engineering must support.
+It is not legal advice.
+
+------------------------------------------------------------------------------
+1. LEGAL DOMAINS
+------------------------------------------------------------------------------
+
+Intellectual property
+Privacy/data protection
+Consumer protection
+Payments/tax
+Marketplace/platform rules
+Content moderation
+Copyright notice/takedown
+Music publishing/recording rights
+AI/data/model licensing
+Open-source licensing
+App-store policies
+Age/youth protection
+Export/sanctions where applicable
+Accessibility obligations where applicable
+
+------------------------------------------------------------------------------
+2. TERMS / POLICIES REQUIRED BEFORE PUBLIC SERVICE
+------------------------------------------------------------------------------
+
+Terms of Service
+Privacy Notice
+Cookie/Tracking Notice where applicable
+Acceptable Use Policy
+Community Guidelines
+Marketplace Seller Terms
+Creator Monetization Terms
+Copyright/Takedown Policy
+Repeat Infringer Policy where applicable
+AI/Data Use Notice
+Developer/SDK Terms
+Storage Connector disclosure
+Refund policy if commerce exists
+
+------------------------------------------------------------------------------
+3. LOCAL-ONLY USERS
+------------------------------------------------------------------------------
+
+A local-only user should not be forced to accept unrelated cloud/community terms
+just to record audio locally, except software licence terms necessary for use.
+
+Network/community features can require additional terms at activation.
+
+------------------------------------------------------------------------------
+4. COPYRIGHT WORKFLOW
+------------------------------------------------------------------------------
+
+Report content
+Identify claimant
+Identify work
+Identify accused material
+Status
+Counter-notice/appeal workflow where legally appropriate
+Preserve audit
+Restrict content proportionately
+
+Never make AI judge final infringement liability.
+
+------------------------------------------------------------------------------
+5. SAMPLE / ASSET LICENSING
+------------------------------------------------------------------------------
+
+Store:
+source
+creator
+licence
+commercial permission
+territory
+expiry
+attribution
+proof/reference
+
+Publish workflow surfaces missing evidence.
+
+------------------------------------------------------------------------------
+6. AI LICENSING
+------------------------------------------------------------------------------
+
+Track separately:
+model code licence
+model weights licence
+dataset restrictions
+provider terms
+commercial-use status
+output terms
+attribution
+remote-code risk
+
+------------------------------------------------------------------------------
+7. MARKETPLACE COMPLIANCE
+------------------------------------------------------------------------------
+
+Seller identity
+Payout eligibility
+Tax information
+Product licence
+Refund/dispute
+Malware review
+Content rights
+Version support
+Moderation
+Reporting
+
+------------------------------------------------------------------------------
+8. PAYMENTS
+------------------------------------------------------------------------------
+
+Use established payment processors.
+Do not store raw card details unless architecture/compliance deliberately assumes
+that burden.
+
+Ledger and processor records reconcile.
+
+------------------------------------------------------------------------------
+9. APP STORE DISTRIBUTION
+------------------------------------------------------------------------------
+
+Maintain per-platform checklist:
+bundle ID
+signing
+privacy disclosures
+permissions
+subscriptions/IAP rules
+background behavior
+file access
+microphone/camera
+user-generated content moderation
+account deletion where required
+export controls if applicable
+
+Policies change; release process must verify current platform requirements.
+
+------------------------------------------------------------------------------
+10. AGE / COMMUNITY
+------------------------------------------------------------------------------
+
+If minors are permitted:
+age gates
+DM safety
+report/block
+guardian/consent requirements where applicable
+content restrictions
+data minimization
+
+Consider launching adult/general-age community first if youth-compliance burden
+is not yet ready.
+
+------------------------------------------------------------------------------
+11. PRIVACY ENGINEERING
+------------------------------------------------------------------------------
+
+Data inventory.
+Purpose.
+Retention.
+Export.
+Delete.
+Consent.
+Processor/subprocessor register.
+Regional hosting strategy later.
+
+Project audio is not telemetry.
+
+------------------------------------------------------------------------------
+12. RIGHTS OF USERS
+------------------------------------------------------------------------------
+
+Export account data.
+Delete account data.
+Disconnect providers.
+Revoke sessions.
+Delete remote replicas.
+Retain local projects if user chooses.
+
+------------------------------------------------------------------------------
+13. LICENCE INVENTORY
+------------------------------------------------------------------------------
+
+Every distributed:
+library
+font
+icon
+codec
+model
+preset
+sample
+IR
+demo project
+
+must have provenance/licence entry.
+
+------------------------------------------------------------------------------
+14. LEGAL HOLD / AUDIT
+------------------------------------------------------------------------------
+
+Do not build broad surveillance.
+For legally required/auditable systems, isolate:
+rights approvals
+payments
+moderation actions
+security events.
+
+------------------------------------------------------------------------------
+15. APP FEATURE AVAILABILITY
+------------------------------------------------------------------------------
+
+Some connectors/AI/publishing services may vary by country/provider.
+Use capability/policy flags rather than hardcoded promises.
+
+------------------------------------------------------------------------------
+16. ACCEPTANCE
+------------------------------------------------------------------------------
+
+LAW-001 local project works without community account.
+LAW-002 account deletion workflow exists for hosted data.
+LAW-003 provider token revocable.
+LAW-004 public upload requires rights declaration where policy requires.
+LAW-005 marketplace item stores licence.
+LAW-006 copyrighted demo assets have distribution rights documented.
+LAW-007 AI model has licence record.
+LAW-008 open-source notices generated.
+LAW-009 moderation action auditable.
+LAW-010 payment ledger does not use float.
+LAW-011 app-store permission disclosures generated/reviewed.
+LAW-012 privacy export excludes other users' private data.
+LAW-013 rights approvals cannot be silently rewritten.
+LAW-014 legal policies versioned.
+LAW-015 user can see terms version accepted.
+
+END DOCUMENT 26

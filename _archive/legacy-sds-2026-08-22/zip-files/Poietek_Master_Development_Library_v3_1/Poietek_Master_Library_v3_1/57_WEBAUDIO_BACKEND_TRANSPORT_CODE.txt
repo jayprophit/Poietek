@@ -1,0 +1,36 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.9
+
+57 — WEBAUDIO BACKEND / TRANSPORT STARTER
+=========================================
+
+DELIVERED
+audio-contracts/AudioBackend.ts
+audio-web/BlobAssetAudioResolver.ts
+audio-web/WebAudioBackend.ts
+
+IMPLEMENTED
+AudioContext lifecycle
+asset decode/cache
+real audio clip scheduling
+track mute/solo filtering
+clip gain/pan
+basic fades
+play/pause/stop/seek.
+
+LIMITATIONS
+This starter schedules the current visible project clips in one pass.
+Production scheduler must add:
+lookahead windows
+loop generation
+live project-edit rescheduling
+sample-accurate automation
+recording
+device-loss repair
+offline render.
+
+Do not call this production scheduler yet.
+
+AUDIOSTART-001 real stored WAV decodes.
+AUDIOSTART-002 play from middle offsets source correctly.
+AUDIOSTART-003 mute excludes track.
+AUDIOSTART-004 pause stores timeline position.

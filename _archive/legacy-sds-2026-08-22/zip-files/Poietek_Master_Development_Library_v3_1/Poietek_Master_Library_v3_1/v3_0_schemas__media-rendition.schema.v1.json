@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/media-rendition/v1",
+  "title": "Poietek Media Rendition v1",
+  "type": "object",
+  "required": [
+    "renditionId",
+    "sourceAssetId",
+    "kind",
+    "contentHash",
+    "createdAt",
+    "transform"
+  ],
+  "properties": {
+    "renditionId": {
+      "type": "string"
+    },
+    "sourceAssetId": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "original",
+        "community_playback_tuning",
+        "external_delivery",
+        "proxy",
+        "thumbnail",
+        "captioned",
+        "accessibility",
+        "compatibility"
+      ]
+    },
+    "contentHash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "transform": {
+      "type": "object",
+      "properties": {
+        "sourceReferenceHz": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "targetReferenceHz": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "pitchShiftCents": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "tempoPreserved": {
+          "type": "boolean"
+        },
+        "durationPreserved": {
+          "type": "boolean"
+        },
+        "algorithmId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "algorithmVersion": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sampleRate": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "codec": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "container": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "rightsManifestRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "provenanceRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "cachePolicy": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,68 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.1
+
+74 — FINAL MASTER RIGHTS SYNC & REGISTRATION PIPELINE
+=====================================================
+
+COMPANION
+packages/rights/src/SocietyConnector.ts
+
+DO NOT REGISTER EVERY EXPORT
+
+A rough bounce is not a release.
+
+TRIGGERS
+
+Mark as Final Master
+Create Release Candidate
+Approve Final Video
+Publish Marketplace Product.
+
+PIPELINE
+
+1 Freeze project/release metadata snapshot.
+2 Resolve contributors.
+3 Resolve external identifiers.
+4 Check missing credits.
+5 Check rights claims/splits.
+6 Request outstanding contributor approvals.
+7 Generate Rights Manifest version.
+8 Generate DDEX/CWR/bulk/portal packages as applicable.
+9 User/authorized owner approves submissions.
+10 Connector submits/exports/hands off.
+11 Save receipts and assigned external IDs.
+12 Embed approved public metadata into final deliverables.
+13 Generate commerce policy.
+14 Publish/distribute only when required gates pass.
+
+PRS/MCPS
+
+PRS assigns a unique tune code to registered works, and Nexus exposes links among
+work/recording metadata such as tunecode, ISWC, ISRC and writer IPI.
+Poietek should store these returned identifiers against the work/recording.
+
+PPL
+
+New recordings are registered by recording-rightsholder members; performers claim
+performances on existing PPL repertoire. Poietek routes users according to their
+capacity rather than submitting the wrong claim type.
+
+THE MLC
+
+Member workflows currently support individual, bulk and CWR registration routes.
+
+SOUNDEXCHANGE
+
+SoundExchange Direct lets creators/rights owners search/claim/manage repertoire;
+SoundExchange also documents DDEX and flat-file repertoire submissions for
+registered rights owners.
+
+SUBMITTED != ACCEPTED
+
+Store both states separately.
+
+ACCEPTANCE
+FINAL-001 unresolved dispute blocks automated release.
+FINAL-002 missing IPI produces warning where needed.
+FINAL-003 returned Tune Code stored.
+FINAL-004 performer is not treated as PPL recording rightsholder automatically.
+FINAL-005 submission receipt immutable.

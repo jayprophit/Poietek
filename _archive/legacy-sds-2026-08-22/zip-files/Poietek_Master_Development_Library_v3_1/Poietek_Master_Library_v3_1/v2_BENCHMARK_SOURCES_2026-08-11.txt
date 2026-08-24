@@ -1,0 +1,49 @@
+CURRENT FIRST-PARTY REFERENCE SOURCES — 11 AUGUST 2026
+
+Tauri
+https://tauri.app/
+https://v2.tauri.app/distribute/
+
+Supabase
+https://supabase.com/pricing
+https://supabase.com/docs/guides/auth
+https://supabase.com/docs/guides/realtime
+https://supabase.com/docs/guides/local-development/overview
+https://supabase.com/docs/guides/self-hosting
+https://supabase.com/docs/guides/auth/third-party/firebase-auth
+
+Firebase
+https://firebase.google.com/docs/projects/billing/firebase-pricing-plans
+https://firebase.google.com/pricing
+
+Ableton Live
+https://www.ableton.com/en/live/what-is-live/
+https://www.ableton.com/en/live/max-for-live/
+https://www.ableton.com/en/live/all-new-features/
+
+Bitwig
+https://www.bitwig.com/learnings/plug-in-hosting-crash-protection-in-bitwig-studio-20/
+https://www.bitwig.com/userguide/latest/modulator/
+
+Logic Pro / iPad
+https://support.apple.com/en-gb/HT213745
+https://support.apple.com/en-gb/101628
+
+Melodyne
+https://www.celemony.com/en/melodyne/what-is-melodyne
+https://www.celemony.com/en/melodyne/melodyne-5-editions
+
+Serato
+https://serato.com/dj/pro
+https://support.serato.com/hc/en-us/articles/203401184-Does-my-mixer-controller-interface-support-DVS-in-Serato-DJ-Pro
+
+rekordbox
+https://rekordbox.com/en/feature/overview/
+
+DaVinci Resolve
+https://www.blackmagicdesign.com/uk/products/davinciresolve/
+https://www.blackmagicdesign.com/uk/products/davinciresolve/fusion
+
+Image-Line FL Studio
+https://www.image-line.com/fl-studio-learning-content/fl-studio-online-manual/html/basics_workflow.htm
+https://www.image-line.com/fl-studio-learning/fl-studio-online-manual/html/basics_externalplugins.htm

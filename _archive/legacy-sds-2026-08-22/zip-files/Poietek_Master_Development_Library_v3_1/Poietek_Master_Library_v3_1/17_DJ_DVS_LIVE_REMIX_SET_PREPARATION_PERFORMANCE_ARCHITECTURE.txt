@@ -1,0 +1,1105 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.2 ADDENDUM
+
+17 — DJ, DVS, LIVE REMIX, SET PREPARATION & PERFORMANCE ARCHITECTURE
+=====================================================================
+
+PURPOSE
+
+This document converts the creator-supplied DJ-software comparison and verified
+first-party product capabilities into an original Poietek/SDS subsystem.
+
+The goal is NOT to clone Serato, rekordbox, Traktor, VirtualDJ, djay, Mixxx or
+Ableton Live. The goal is to understand the functional principles that successful
+DJ/performance tools solve, then implement original Poietek/SDS workflows using
+the same canonical project, asset, hardware and collaboration architecture.
+
+The current SDS repository already contains a DJ workspace prototype. Treat that
+as an interface sketch. This document specifies the engine and data architecture
+required to make DJ mode a real performance system.
+
+------------------------------------------------------------------------------
+1. CORE PRODUCT IDEA
+------------------------------------------------------------------------------
+
+DJ functionality should not be a disconnected mini-application.
+
+A DJ Set is another project mode operating on the same:
+Asset Store
+Audio Engine
+MIDI / HID / Hardware Mapper
+Stem Engine
+Video Engine
+Rights / Metadata Layer
+Community / Publishing Layer
+Sync / Offline Layer
+
+A creator can move between:
+Production Project
+DJ Set
+Live Performance Set
+Video/VJ Set
+
+without duplicating source media or losing metadata.
+
+------------------------------------------------------------------------------
+2. REFERENCE CAPABILITY FAMILIES
+------------------------------------------------------------------------------
+
+A. LIBRARY PREPARATION / CLUB-MEDIA EXPORT
+
+Current rekordbox documentation demonstrates the value of separating music
+preparation from live performance:
+- track analysis;
+- playlists;
+- cue/beatgrid data;
+- USB export to supported players;
+- device-library backup;
+- library sync across devices;
+- DVS, video and stems in performance-oriented workflows.
+
+Poietek/SDS interpretation:
+Create `PerformanceLibraryService` and `PerformanceMediaExporter`.
+
+TrackPerformanceMetadata {
+  assetId
+  bpm
+  variableTempoMap?
+  beatGrid
+  phraseMarkers[]
+  hotCues[]
+  memoryCues[]
+  loops[]
+  key
+  energy?
+  color?
+  rating?
+  tags[]
+  comments?
+  stemAnalysisId?
+  waveformPeakId
+  deckPreferences?
+}
+
+PerformanceExportProfile {
+  id
+  destinationType
+  targetHardwareFamily?
+  supportedAudioFormats[]
+  supportsCueMetadata
+  supportsBeatgridMetadata
+  supportsPlaylistMetadata
+  supportsArtwork
+  supportsStems
+  supportsVideo
+  verificationLevel
+}
+
+Critical rule:
+Never pretend SDS can write a manufacturer's proprietary media-library format
+unless the format is documented/licensed and the exporter has been tested.
+
+Generic fallback:
+Export ordinary folders/playlists/audio plus an SDS metadata sidecar.
+
+B. DECK PERFORMANCE
+
+Current Serato, Traktor, VirtualDJ and djay materials all reinforce a core live
+deck model:
+- multiple decks;
+- waveform view;
+- pitch/tempo;
+- cue;
+- loops;
+- hot cues;
+- sync;
+- effects;
+- sampler;
+- stems;
+- hardware control.
+
+Poietek/SDS should define a universal `DeckEngine`.
+
+DeckState {
+  deckId
+  loadedAssetId?
+  playState
+  positionSamples
+  tempoRatio
+  pitchPercent
+  keyLock
+  syncMode
+  beatgridId?
+  quantize
+  slipMode
+  loop?
+  activeHotCues[]
+  stemMix
+  effectsRackId?
+  outputBusId
+  controlSource
+}
+
+Deck counts are capability-driven:
+2-deck compact
+4-deck professional
+optional auxiliary/sample/stem/live-input decks
+
+Do not hardcode the entire application to two decks.
+
+C. BEATGRIDS / VARIABLE TEMPO
+
+Serato documentation shows the importance of editable beatgrids, especially for
+material with changing tempo, and Traktor Pro 4 currently advertises flexible
+beatgrids designed to follow tempo changes.
+
+Poietek/SDS needs `TempoMapAnalyzer`.
+
+BeatGrid {
+  downbeat
+  beatMarkers[]
+  barMarkers[]
+  tempoSegments[]
+  confidence
+  locked
+}
+
+Modes:
+Fixed BPM
+Variable Tempo
+Free / No Grid
+Manual Grid
+Imported Grid
+
+Grid operations:
+Set downbeat
+Move marker
+Add tempo marker
+Stretch region
+Reset section
+Lock
+Analyze selected region
+
+Sync must use the tempo map rather than only an average BPM.
+
+D. SYNC
+
+Implement multiple behaviors rather than one magic Sync button.
+
+OFF
+No sync.
+
+TEMPO SYNC
+Match tempo but leave phrase/bar position under performer control.
+
+BEAT SYNC
+Match tempo and beat phase.
+
+PHRASE ASSIST
+Optional suggested drop/transition points using phrase analysis, not forced.
+
+LINK / EXTERNAL CLOCK
+Support external synchronization adapters such as MIDI Clock and Ableton Link
+where platform/API support exists.
+
+Manual beatmatching remains fully supported.
+
+E. DVS / TURNTABLE CONTROL
+
+Serato, Traktor, VirtualDJ, Mixxx and djay all demonstrate the continuing value
+of Digital Vinyl Systems.
+
+Create `DvsEngine`.
+
+Responsibilities:
+- receive stereo timecode input;
+- calibrate signal;
+- detect speed;
+- direction;
+- relative/absolute position when control signal supports it;
+- needle/drop behavior;
+- scratch movement;
+- input-level/quality display;
+- dropout/noise resilience;
+- latency compensation;
+- deck routing.
+
+DvsCalibration {
+  inputDevice
+  inputChannels
+  signalType
+  mode
+  noiseFloor
+  signalStrength
+  channelBalance
+  polarity
+  calibrationQuality
+  latencyOffset
+}
+
+User-facing modes:
+ABSOLUTE
+RELATIVE
+INTERNAL
+
+Important clean-room/legal rule:
+Timecode formats/protocols may be proprietary.
+Support only documented/open/licensed formats or user-authorized generic
+compatible signal modes after legal review.
+
+Never copy proprietary decoder code.
+
+F. SCRATCH / JOG ENGINE
+
+DVS and platter/jog control require a different quality bar from ordinary
+timeline scrubbing.
+
+Requirements:
+- very low control-to-audio latency;
+- stable reverse;
+- rapid acceleration/deceleration;
+- key-lock behavior option;
+- vinyl brake/start curves;
+- slip mode;
+- backspin;
+- needle search;
+- motorized platter feedback adapters where documented.
+
+Add a `ScratchTransport` layer that converts hardware motion into sample-position
+changes with interpolation and no audible discontinuity.
+
+G. STEM DJING / LIVE REMIX
+
+Current Serato, rekordbox, Traktor, VirtualDJ and djay all support stem-oriented
+DJ workflows in differing forms.
+
+Poietek/SDS should reuse the central Stem Engine rather than implementing a
+second DJ-only separator.
+
+Standard performance stem buses:
+Vocals
+Drums
+Bass
+Music / Instruments
+
+Optional expanded models:
+Kick
+Snare
+Hi-hat/Percussion
+Lead
+Harmony
+Other
+
+Per deck:
+mute/solo
+level
+EQ/filter
+FX send
+crossfader assignment
+performance pad trigger
+stem-aware loop
+stem-aware cue
+stem swap
+stem capture
+
+Important:
+Realtime separation may be device-dependent.
+If live separation is too expensive:
+use pre-analyzed/pre-rendered stems from set preparation.
+
+H. STEM CROSSFADER / MORPHING
+
+Original Poietek concept:
+A normal crossfader can be switched into a multi-layer transition surface.
+
+Examples:
+Deck A vocal -> Deck B vocal
+Deck A drums -> Deck B drums
+Bass held from A while music changes to B
+Vocals removed during transition
+
+Represent crossfade as automation curves over stem buses, not destructive audio.
+
+I. REMIX / SAMPLE DECKS
+
+Traktor Remix Decks, Serato Sampler, VirtualDJ sampler decks and Ableton clip
+launching all reinforce live-triggered content.
+
+Poietek/SDS implementation:
+`PerformanceGrid`
+
+Slots can contain:
+Audio loop
+One-shot
+Stem
+MIDI clip
+Video loop
+Lighting cue
+Macro scene
+
+Grid supports:
+quantized launch
+legato launch
+gate
+toggle
+one-shot
+loop
+follow action
+scene launch
+record-to-arrangement
+MIDI/hardware feedback
+
+This integrates the existing SDS sampler/pad architecture with DJ performance.
+
+J. CLIP / SCENE PERFORMANCE
+
+Ableton Live's Session/clip model demonstrates the value of nonlinear performance
+beside a linear arrangement.
+
+Poietek/SDS Live Set should support:
+Decks + PerformanceGrid + Scenes.
+
+A scene can recall:
+clips
+stem states
+FX
+mixer snapshot
+video scene
+lighting scene
+tempo range
+hardware mappings
+
+A DJ can perform the set and optionally record the performance into the standard
+Poietek Arrangement timeline.
+
+K. VIDEO MIXING / VJ
+
+VirtualDJ and rekordbox both document video performance features, while djay has
+video-oriented workflows on mobile.
+
+Poietek/SDS DJ mode should connect directly to Document 08 Video/VFX.
+
+Video Deck:
+video clip linked to audio track
+standalone video loop
+camera input
+visualizer
+text/lyrics layer
+
+Controls:
+video crossfader
+transition
+opacity
+blend
+VFX
+beat sync
+stem-reactive visuals
+camera switching
+output display selection
+
+A music-only deck can automatically drive visualizers without inventing fake
+video media.
+
+L. CONTROLLER UNIVERSALITY
+
+VirtualDJ and Mixxx strongly demonstrate the value of broad/custom controller
+mapping; djay demonstrates class-compliant, cross-platform controller workflows.
+
+Poietek/SDS must keep the universal mapper at the center.
+
+PhysicalControl
+-> DeviceProfile
+-> LogicalDJControl
+-> Deck/Performance command.
+
+LogicalDJControl examples:
+deckA.play
+deckA.cue
+deckA.jog
+deckA.pitch
+deckA.hotcue.1
+deckA.loop.length
+mixer.crossfader
+mixer.ch1.eq.low
+stems.deckA.vocal
+performance.slot.1
+video.crossfader
+
+Profiles can be:
+built-in
+manufacturer-documented
+community-tested
+user-created
+
+M. MIDI / HID / NETWORK
+
+Support architecture should allow:
+MIDI
+HID
+OSC
+network control
+documented vendor protocols
+timecode/DVS audio input
+
+Do not force high-resolution jog wheels through ordinary 7-bit MIDI when a
+documented higher-resolution protocol exists.
+
+N. MOBILE / TABLET DJ
+
+djay's published cross-platform hardware guidance and iOS product show that a
+serious DJ workflow can be touch-first.
+
+Poietek mobile/tablet DJ mode:
+large deck controls
+waveforms
+jog/scratch
+hot cues
+loops
+stems
+performance pads
+mixer
+pre-cue
+external class-compliant controller support where platform permits
+Bluetooth MIDI where supported
+DVS where audio I/O/platform permits
+4-deck layout on sufficiently large displays
+
+Phone mode prioritizes two decks.
+Tablet can expose 4 decks, performance grid and mixer simultaneously.
+
+O. PRE-CUE / AUDIO ROUTING
+
+DJ mode requires:
+Master
+Booth
+Headphones / Cue
+Deck sends
+Sampler
+Microphone
+Aux / Live Input
+
+Headphone:
+cue mix
+cue/master blend
+split cue
+level
+
+Native desktop should support multichannel interfaces.
+Mobile supports class-compliant devices where available.
+
+P. FX
+
+Per-deck
+send
+insert
+master
+stem-specific
+performance macro
+
+FX timing can lock to beatgrid or run free.
+
+Macros can combine:
+filter + echo + reverb + stem mute + video transition.
+
+Q. LIBRARY / CRATES / SET PREP
+
+Performance Browser:
+Collection
+Playlists
+Crates/Tags
+Setlists
+History
+Recently Added
+Analyzed
+Needs Analysis
+Missing Files
+Streaming Sources
+Cloud/Team Library
+Remix Assets
+
+Track analysis:
+BPM
+variable tempo
+key
+waveform
+loudness
+phrases
+vocal position
+stem availability
+quality/problem warnings
+
+Never silently modify original media metadata if user chooses project-only
+metadata.
+
+R. SET HISTORY
+
+Every performance can create:
+PlayedTrackEvent {
+  assetId
+  loadedAt
+  playedAt
+  durationPlayed
+  deckId
+  transitionFrom?
+  cueStart?
+  recordingTimeRange?
+}
+
+Benefits:
+set history
+credits
+radio/broadcast reporting
+playlist export
+community posting
+royalty-reporting integration later where applicable
+
+S. RECORD / BROADCAST
+
+Record:
+master mix
+individual decks optional
+mic
+stems
+performance events
+video output
+
+Broadcast adapters later:
+audio stream
+video stream
+external encoder
+community live room
+
+Streaming-service restrictions can prohibit recording/export of protected
+streamed tracks. The application must enforce provider policy and clearly
+distinguish local-owned/licensed files from streams.
+
+T. MUSIC STREAMING CONNECTORS
+
+Streaming services are optional connector adapters.
+Do not make core DJ operation depend on them.
+
+StreamingTrack {
+ provider
+ providerTrackId
+ offlineRights
+ recordingAllowed
+ stemProcessingAllowed
+ cachedUntil?
+ territory?
+}
+
+Never assume a provider permits:
+offline caching
+recording
+stem separation
+export
+commercial use.
+
+U. SET PROJECT / PERFORMANCE OBJECTS
+
+DJSetProject extends the canonical Project through composition, not a separate
+file format.
+
+PerformanceSet {
+ id
+ title
+ setlist[]
+ scenes[]
+ deckLayout
+ performanceGrid
+ mixerLayout
+ preferredMappings[]
+ videoLayout?
+ lightingLayout?
+ recordingSettings
+ exportTargets[]
+}
+
+Track preparation metadata stays reusable across multiple sets.
+
+V. DJ ASSISTANT / AI
+
+AI may:
+suggest compatible next tracks
+detect phrases
+detect variable tempo
+suggest cue points
+suggest transition regions
+prepare stems
+identify key clashes
+suggest loops
+propose set flow
+create practice challenges
+analyze a recorded set
+
+AI must NOT:
+auto-publish copyrighted mixes;
+pretend streamed media can legally be recorded;
+replace the performer's choices without an explicit Automix mode.
+
+W. AUTOMIX
+
+Optional:
+party/background mode
+practice set audition
+crossfade preview
+
+Parameters:
+transition length
+beat/phrase aware
+energy curve
+key compatibility
+stem transition style
+exclude tracks
+manual override
+
+Manual live performance remains the main professional workflow.
+
+X. PERFORMANCE RELIABILITY
+
+DJ/live mode must have a stricter runtime policy than ordinary editing.
+
+Before performance:
+preload critical media
+precompute waveform/beatgrid/stems where possible
+verify audio device
+verify controller
+verify sample rate
+verify mapping
+disable sleep
+show battery/power
+show missing/offline assets
+show storage
+show CPU/GPU
+show network only if required
+
+Performance Guard:
+prevents background project migrations/large downloads/AI jobs from causing
+audio dropouts during a live set.
+
+Y. OFFLINE-FIRST DJ
+
+Once a set and its permitted media are stored locally:
+- open set offline;
+- analyze local files offline;
+- use decks;
+- use DVS;
+- use local stems/models;
+- use controller mappings;
+- record set;
+- video/VFX from local assets;
+- export history.
+
+Cloud sync and streaming are enhancements, not requirements.
+
+Z. CROSS-DEVICE SYNC
+
+Sync:
+playlists
+setlists
+hot cues
+beatgrids
+loops
+tags
+device mappings
+performance layouts
+project scenes
+analysis results where portable
+
+Large source media sync uses AssetStore policies.
+
+Per-device:
+desktop layout
+tablet performance layout
+phone compact layout.
+
+------------------------------------------------------------------------------
+3. ORIGINAL POIETEK DJ WORKSPACES
+------------------------------------------------------------------------------
+
+Suggested public names:
+
+SET PREP
+Library, analysis, cue/loop/beatgrid editing, setlist building.
+
+DECKS
+Classic multi-deck mixing.
+
+VINYL
+DVS/scratch calibration and performance.
+
+STEM MIX
+Stem-focused live remixing.
+
+PERFORMANCE GRID
+Samples, loops, clips and scenes.
+
+LIVE MIXER
+DJ mixer, cues, mic, booth and FX.
+
+VISUAL DECKS
+Video/VJ and audio-reactive visuals.
+
+SET RECORDER
+Audio/video capture, set history and metadata.
+
+HARDWARE
+Controller mapping and diagnostics.
+
+------------------------------------------------------------------------------
+4. CURRENT SDS DJWORKSPACE MIGRATION
+------------------------------------------------------------------------------
+
+Keep:
+- recognizable two-deck performance metaphor;
+- physical-hardware orientation;
+- faders/jog/FX concepts.
+
+Replace:
+- simulated deck state with DeckEngine;
+- fake local UI timing with audio clock;
+- hardcoded controller assumptions with MappingService;
+- one-screen-only DJ state with PerformanceSet domain objects;
+- visual-only FX with real AudioGraph nodes;
+- fake waveform with asset-derived peaks;
+- fake sync with BeatGrid/SyncEngine;
+- fake scratch with ScratchTransport.
+
+The existing component should eventually be renamed from a generic demo
+`DJWorkspace` implementation into a view layer over the performance services.
+
+------------------------------------------------------------------------------
+5. ENGINE SERVICES
+------------------------------------------------------------------------------
+
+PerformanceLibraryService
+TrackAnalysisService
+BeatGridService
+PhraseAnalysisService
+DeckEngine
+SyncEngine
+ScratchTransport
+DvsEngine
+PerformanceGridService
+StemPerformanceService
+DJMixerGraph
+DJFxService
+PerformanceRecordingService
+SetHistoryService
+PerformanceMediaExporter
+StreamingProviderAdapter
+VideoDeckService
+PerformanceGuard
+ControllerMappingService
+
+------------------------------------------------------------------------------
+6. DATA MODEL ADDITIONS
+------------------------------------------------------------------------------
+
+HotCue {
+ id
+ positionSamples
+ label
+ color
+ quantized
+ stemState?
+}
+
+PerformanceLoop {
+ id
+ startSamples
+ endSamples
+ beatLength?
+ saved
+ stemScope?
+}
+
+PhraseMarker {
+ id
+ type
+ start
+ end
+ confidence
+ userLocked
+}
+
+SetlistItem {
+ id
+ assetId
+ order
+ notes
+ plannedStartCue?
+ transitionNotes?
+ sceneId?
+}
+
+PerformanceScene {
+ id
+ title
+ clipLaunches[]
+ mixerSnapshot?
+ stemSnapshot?
+ fxSnapshot?
+ videoSnapshot?
+ lightingSnapshot?
+}
+
+------------------------------------------------------------------------------
+7. DVS IMPLEMENTATION PHASES
+------------------------------------------------------------------------------
+
+DVS PHASE 1
+Generic calibration UI + internal scratch transport using mouse/touch/jog.
+
+DVS PHASE 2
+Support a legally/documented generic or licensed timecode path.
+Relative mode first.
+
+DVS PHASE 3
+Absolute-position capable control where protocol permits.
+
+DVS PHASE 4
+Stems + DVS and advanced motorized-platter integrations where reliable.
+
+Do not let DVS delay core DeckEngine.
+
+------------------------------------------------------------------------------
+8. DJ HARDWARE PROFILE CAPABILITIES
+------------------------------------------------------------------------------
+
+DeviceProfile gains:
+
+djCapabilities {
+ decks
+ jogResolution
+ motorizedJog
+ pitchFaders
+ mixerChannels
+ crossfader
+ hotCuePads
+ stemControls
+ displays
+ waveformDisplays
+ haptic?
+ audioInterface
+ dvsInputs
+ phonoInputs
+ micInputs
+ boothOutput
+ midiClock
+ hid
+ rgbFeedback
+ screens
+ standaloneMedia?
+}
+
+Mappings can send visual feedback:
+pad LEDs
+VU meters
+deck status
+track title
+waveform if documented protocol permits.
+
+------------------------------------------------------------------------------
+9. PERFORMANCE GRID + DAW CONVERGENCE
+------------------------------------------------------------------------------
+
+One of Poietek's strongest differentiators should be that a beatmaker does not
+have to export a song to a separate DJ program just to perform it.
+
+Production Arrangement
+-> Publish to Performance Scene
+-> stem groups automatically available
+-> loops/hot cues suggested
+-> performance pads generated
+-> DJ version can be remixed live
+-> live performance recorded back into Arrangement.
+
+This connects the DAW, sampler, stems and DJ system directly.
+
+------------------------------------------------------------------------------
+10. VIDEO / MUSIC VIDEO PERFORMANCE CONVERGENCE
+------------------------------------------------------------------------------
+
+A finished music-video project can also generate a live set package:
+
+Audio master
+stems
+video
+alternate loops
+lyrics/title overlays
+lighting cues
+hot cues
+transition scenes
+
+The creator can then perform the release live using the same source project.
+
+------------------------------------------------------------------------------
+11. COLLABORATION
+------------------------------------------------------------------------------
+
+Team set preparation:
+DJ A edits setlist.
+Producer changes stems.
+Visual artist adds visuals.
+Lighting designer adjusts cues.
+
+Structured changes sync locally-first.
+
+During live performance:
+collaboration mode becomes conservative.
+Remote collaborators cannot unexpectedly change the currently playing deck
+unless performer explicitly enables remote-control permission.
+
+------------------------------------------------------------------------------
+12. RIGHTS / SET HISTORY
+------------------------------------------------------------------------------
+
+Set history can reference:
+recording/work identifiers
+artist
+title
+source
+time played
+
+Future radio/venue reporting systems can consume this history through explicit
+connectors.
+
+Do not promise automatic royalty payment merely because a track was detected.
+Payment/reporting depends on territory, broadcaster/venue, PRO/CMO, agreements
+and supported integrations.
+
+------------------------------------------------------------------------------
+13. CLEAN-ROOM / LICENSING NOTES
+------------------------------------------------------------------------------
+
+Mixxx is open-source and currently states GPLv2 licensing in its official GitHub
+repository. Study its architecture and user-facing principles, but integrating
+GPL code into Poietek has licensing consequences. Do not copy code unless the
+entire intended distribution model is compatible or legal counsel approves.
+
+Other referenced products are proprietary. Use only published capabilities and
+documented/open interoperability methods.
+
+Avoid public feature names that imply affiliation:
+Serato Mode
+rekordbox Mode
+Traktor Deck
+VirtualDJ Mixer
+etc.
+
+Use original Poietek terms.
+
+------------------------------------------------------------------------------
+14. ACCEPTANCE TESTS
+------------------------------------------------------------------------------
+
+DJ-001 Load two real tracks and perform uninterrupted crossfade.
+DJ-002 Four-deck mode works on capable target.
+DJ-003 Real waveform peaks follow source media.
+DJ-004 Cue points persist after restart.
+DJ-005 Saved loops persist.
+DJ-006 Beatgrid can represent changing tempo.
+DJ-007 Tempo Sync and Beat Sync behave differently.
+DJ-008 Manual pitch/jog control remains available with Sync off.
+DJ-009 Quantized hot cue lands within defined timing tolerance.
+DJ-010 Slip mode returns to expected timeline position.
+DJ-011 Stem mute/solo operates per deck.
+DJ-012 Stem analysis can be prepared offline.
+DJ-013 PerformanceGrid launches samples/loops in sync.
+DJ-014 Scene launch can trigger audio + visual states.
+DJ-015 Hardware mapping persists and provides feedback where supported.
+DJ-016 Controller disconnect does not crash audio.
+DJ-017 Replacement controller can map to same logical deck controls.
+DJ-018 Pre-cue is independent of master output.
+DJ-019 Multichannel output mapping persists.
+DJ-020 DVS calibration clearly shows signal quality.
+DJ-021 DVS scratch direction/speed follows test control signal.
+DJ-022 DVS failure falls back safely without exploding playback.
+DJ-023 Set Recorder captures allowed local media mix.
+DJ-024 Streaming policy can disable recording where provider forbids it.
+DJ-025 Set history records tracks/times accurately.
+DJ-026 Video crossfader does not disturb audio timing.
+DJ-027 Local set opens and performs with network disabled.
+DJ-028 Set metadata syncs to a second device.
+DJ-029 Performance Guard prevents heavy background jobs from causing dropouts.
+DJ-030 Variable-tempo track remains synchronized using editable tempo map.
+DJ-031 Live performance changes can be recorded back to Arrangement.
+DJ-032 DJ project can reuse DAW stems without duplicating the media asset.
+DJ-033 Rights/set history export remains metadata-only unless user invokes an
+       authorized reporting connector.
+DJ-034 Hardware-export adapter refuses unsupported proprietary destination
+       rather than fabricating compatibility.
+DJ-035 Mobile/tablet layout exposes only controls that fit the current platform.
+
+------------------------------------------------------------------------------
+15. IMPLEMENTATION ROADMAP
+------------------------------------------------------------------------------
+
+DJ PHASE A — REAL DECKS
+DeckEngine, waveform, cue, loop, pitch, crossfader, pre-cue.
+
+DJ PHASE B — BEATGRID/SYNC
+Analysis, manual grid, variable tempo, Tempo/Beat Sync, quantize.
+
+DJ PHASE C — HARDWARE
+Real controller mapping, output feedback, jog resolution, audio routing.
+
+DJ PHASE D — STEMS
+Prepared stems first, realtime separation second.
+
+DJ PHASE E — PERFORMANCE GRID
+Samples, loops, clips, scenes, record to arrangement.
+
+DJ PHASE F — DVS
+Calibration + legally supportable timecode path.
+
+DJ PHASE G — VIDEO
+Video deck + crossfader + visuals.
+
+DJ PHASE H — SET PREP / EXPORT
+Device/hardware export adapters with strict verification.
+
+DJ PHASE I — MOBILE
+Touch and class-compliant hardware.
+
+DJ PHASE J — STREAMING / COMMUNITY LIVE
+Only after provider/legal/latency architecture is stable.
+
+------------------------------------------------------------------------------
+16. VERIFIED FIRST-PARTY RESEARCH SOURCES — AUGUST 2026
+------------------------------------------------------------------------------
+
+Serato DJ Pro:
+https://serato.com/dj/pro
+https://support.serato.com/hc/en-us/articles/202856014-Beatgrids-in-Serato-DJ-Pro
+https://support.serato.com/hc/en-us/articles/226504608-Calibrating-Serato-DJ-Pro
+
+rekordbox:
+https://rekordbox.com/en/feature/overview/
+https://rekordbox.com/en/support/usb-export/
+https://rekordbox.com/en/feature/professional/
+https://rekordbox.com/en/support/faq/stems-7/
+
+Native Instruments Traktor Pro 4:
+https://www.native-instruments.com/en/products/traktor/dj-software/traktor-pro-4/
+https://www.native-instruments.com/en/products/traktor/dj-software/traktor-pro-4/compare/
+
+VirtualDJ:
+https://virtualdj.com/products/virtualdj/features.html
+https://virtualdj.com/help/stems.html
+
+Algoriddim djay:
+https://www.algoriddim.com/djay-ios
+https://help.algoriddim.com/topic/hardware/connecting-a-midi-device-to-djay
+https://help.algoriddim.com/user-manual/djay-ios/hardware/dvs
+
+Mixxx:
+https://mixxx.org/features/
+https://github.com/mixxxdj/mixxx
+
+Ableton Live:
+https://www.ableton.com/en/live/what-is-live/
+https://www.ableton.com/en/manual/launching-clips/
+
+END OF DOCUMENT 17

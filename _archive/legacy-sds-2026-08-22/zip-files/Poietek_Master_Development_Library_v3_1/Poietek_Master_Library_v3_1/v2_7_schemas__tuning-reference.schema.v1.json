@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/tuning-reference/v1",
+  "title": "Poietek Tuning Reference v1",
+  "type": "object",
+  "required": [
+    "id",
+    "label",
+    "referenceNote",
+    "referenceHz",
+    "authorityType"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "referenceNote": {
+      "type": "string"
+    },
+    "referenceHz": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "authorityType": {
+      "enum": [
+        "formal_standard",
+        "ensemble_requirement",
+        "historical_practice",
+        "creative_choice",
+        "user_custom"
+      ]
+    },
+    "sourceRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "toleranceHz": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "temperament": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

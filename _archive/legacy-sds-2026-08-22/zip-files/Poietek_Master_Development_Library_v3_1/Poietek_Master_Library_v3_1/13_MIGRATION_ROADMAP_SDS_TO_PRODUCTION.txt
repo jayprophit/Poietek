@@ -1,0 +1,97 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.0
+
+Compiled from:
+1) The complete product-development conversation supplied by the creator.
+2) Deep review of GitHub repository: jayprophit/Studio-Daw-Station-SDS-
+3) Current cross-platform/offline-first architecture recommendations.
+
+WORKING PRODUCT NAME
+Poietek is the working ecosystem name discussed in the design conversation.
+Studio DAW Station (SDS) is the current repository/product label.
+Final public branding should be chosen only after trademark/domain checks.
+
+CORE RULE
+One app. One project model. One creative graph. Many workspaces.
+Offline first. Cloud optional. Hardware agnostic. Collaboration capable.
+Professional depth without forcing beginners to see every advanced control.
+
+LEGAL / CLEAN-ROOM RULE
+Competitor products, patents, papers, hardware and interfaces may be studied for
+functional principles, workflows and interoperability requirements. Do not copy
+proprietary source code, protected assets, branded UI expression, undocumented
+confidential protocols, or patented claims without appropriate legal review or
+licensing. Compatibility layers should use documented/open interfaces wherever
+possible.
+
+===============================================================================
+
+PHASE 0 — STABILISE
+rename package, restore README, strict TS, fix state/callback types, tests,
+rename competitor-branded labels, mark simulated features honestly.
+
+PHASE 1 — DOMAIN / COMMAND CORE
+Project/Asset/Track/Clip/Device/Mapping models, command bus, project-wide undo.
+Replace AudioBuffer in serialized entities with asset IDs.
+
+PHASE 2 — LOCAL REPOSITORY
+IndexedDB web; SQLite/files native; autosave journal; migrations; asset store.
+
+PHASE 3 — REAL AUDIO TIMELINE
+audio-clock scheduler, real regions/waveforms, mixer integration, recording,
+offline render.
+
+PHASE 4 — MIDI/HARDWARE
+input + output, logical mappings, persisted profiles, routing, clock, hotplug.
+
+PHASE 5 — SAMPLER/CHOP
+real import, waveform, chop modes, pads, transport-timed steps, true stretch.
+
+PHASE 6 — PWA/NATIVE
+service worker, installable web, Tauri shell, native adapters, responsive layouts.
+
+PHASE 7 — SYNC
+auth, content-addressed assets, queue, CRDT structured state, resumable transfers.
+
+PHASE 8 — COLLAB
+members/roles, comments, presence, activity, chat, versions, forks, contributors.
+
+PHASE 9 — PROFESSIONAL DAW
+automation, comping, buses, plugins, freeze, control room, advanced MIDI/score,
+chord track, scenes and mix snapshots.
+
+PHASE 10 — STEM/PITCH/REPAIR/MASTER
+stem models, pitch editor, vocal alignment, spectral repair, mastering.
+
+PHASE 11 — VIDEO/VFX
+video timeline, proxies, captions, color, beat visuals, VFX and delivery.
+
+PHASE 12 — RIGHTS/RELEASE
+contributors, rights entities, provenance, splits, quick vs publish, signoff.
+
+PHASE 13 — COMMUNITY
+profiles, DMs, feed, follows, public media, forks, discovery, moderation.
+
+PHASE 14 — MONETISATION
+tips, sales, subscriptions, marketplace, payout/ledger/legal.
+
+PHASE 15 — EXTENSIONS
+SDK, scripts, community profiles, themes and marketplace review.
+
+FIRST 12 TICKETS
+1 Project type/repository interface.
+2 SamplePad assetId instead of AudioBuffer.
+3 ProjectStore instead of App-owned canonical state.
+4 Command bus + undo.
+5 IndexedDB autosave.
+6 real asset ingest.
+7 waveform peak cache.
+8 AudioBackend interface.
+9 audio-clock scheduler.
+10 MIDI output.
+11 persistent mappings/profiles.
+12 service worker/PWA.
+
+DO NOT DO FIRST
+blockchain, social feed, marketplace, polyphonic pitch DSP, 3D VFX, live remote
+jam, every hardware model or every plugin format.

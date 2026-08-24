@@ -1,0 +1,31 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.9
+
+58 — REACT ARRANGEMENT INTEGRATION EXAMPLE
+==========================================
+
+DELIVERED
+ArrangeWorkspace.example.tsx
+
+PURPOSE
+Show how the current React UI should become a view over:
+PoietekProject
+TimelineReadModel
+Command callbacks.
+
+It deliberately does NOT:
+own project state
+call IndexedDB directly
+call WebAudio directly.
+
+AppShell/ApplicationService should inject:
+project
+onSplit
+onSetGain.
+
+MIGRATION
+Adapt the visual design from the existing sequencer but replace fake waveform and
+timer logic with services incrementally.
+
+UISTART-001 component unmount does not lose project.
+UISTART-002 gain input invokes command.
+UISTART-003 split invokes command.

@@ -1,0 +1,121 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.0
+
+Compiled from:
+1) The complete product-development conversation supplied by the creator.
+2) Deep review of GitHub repository: jayprophit/Studio-Daw-Station-SDS-
+3) Current cross-platform/offline-first architecture recommendations.
+
+WORKING PRODUCT NAME
+Poietek is the working ecosystem name discussed in the design conversation.
+Studio DAW Station (SDS) is the current repository/product label.
+Final public branding should be chosen only after trademark/domain checks.
+
+CORE RULE
+One app. One project model. One creative graph. Many workspaces.
+Offline first. Cloud optional. Hardware agnostic. Collaboration capable.
+Professional depth without forcing beginners to see every advanced control.
+
+LEGAL / CLEAN-ROOM RULE
+Competitor products, patents, papers, hardware and interfaces may be studied for
+functional principles, workflows and interoperability requirements. Do not copy
+proprietary source code, protected assets, branded UI expression, undocumented
+confidential protocols, or patented claims without appropriate legal review or
+licensing. Compatibility layers should use documented/open interfaces wherever
+possible.
+
+===============================================================================
+
+AUDIO ENGINE
+Introduce IAudioEngine. The current WebAudio engine becomes one backend.
+
+Responsibilities:
+device configuration, transport clock, sample scheduling, recording, routing,
+effects, automation, metering, offline render and analysis feeds.
+
+CLOCK
+Replace setInterval musical timing with audio-clock scheduling/lookahead.
+Transport tracks sample position, bar/beat/tick, tempo map, signature map, loop
+and punch ranges.
+
+PITCH/TIME
+Separate resampling, pitch shifting, time stretching and warp mapping.
+Modes: beats, monophonic, polyphonic, voice, complex, sound design.
+
+RECORDING
+Input/channel selection, mono/stereo/multichannel, monitoring, count-in, punch,
+loop/takes, comping, latency compensation and performer assignment.
+
+MIXER GRAPH
+Pre gain -> inserts -> EQ/dynamics -> fader/pan -> sends -> output.
+Tracks, pads, stems, buses, returns, groups, master and cue buses.
+
+CONTROL ROOM
+Main monitors, headphones, performer cues, speaker A/B, mono, dim, talkback,
+reference level and calibration.
+
+MIDI
+IMidiService:
+enumerate inputs/outputs, open/close, timestamped send, subscribe, clock, MTC,
+SysEx permission, learn, mapping, processors and device state.
+
+Internal values should be capable of future higher resolution rather than being
+hardwired to MIDI 1 7-bit assumptions.
+
+MIDI PROCESSORS
+transpose, scale, chord, arpeggiator, velocity, humanize, quantize, random,
+probability, note/CC/channel maps, delay, LFO, envelope, Euclidean and conditions.
+
+LOGICAL MAPPING
+Physical event -> profile -> logical control -> transform -> app command/parameter.
+
+DEVICE LEARN
+Unknown controller wizard creates a reusable profile through real MIDI input.
+
+HOT SWAP
+Disconnect one controller without breaking project content. Map a replacement
+device to the same logical roles.
+
+PROFILE SAFETY
+Verification levels:
+unverified, user-tested, community-tested, manufacturer-documented, official.
+Never call a mapping official without evidence.
+
+HARDWARE WORKSPACES
+MPC, SP sampler, keyboard, e-drum, DJ, mixer, generic sampler/MIDI and DIY views
+all sit over the same DeviceService.
+
+LATENCY
+Remove timer-based fake measurement.
+Real loopback calibration sends a known signal, records it and correlates the
+return. If impossible, clearly label API-reported/estimated latency.
+
+PLUGINS
+Desktop: VST3/CLAP, AU on macOS when implemented, optional ARA-class integration.
+Web: WebAudio/WASM extension format, not fake VST hosting.
+Mobile: supported native/in-app modules; preserve unavailable plugin state and
+use freeze/bounce proxies.
+
+PLUGIN SANDBOX
+scan, quarantine, crash isolation where practical, state restore, missing-plugin
+placeholder and compatibility database.
+
+RACK
+Turn current rack into a real typed graph:
+DeviceNode, AudioPort, MidiPort, ControlPort, ModulationPort.
+Front panel = performance. Rear panel = routing.
+Combinator = devices + macros + mappings.
+
+PERFORMANCE
+No blocking I/O or allocation on realtime audio callback.
+Analysis, waveform generation, stems, AI and transcode run off the audio thread.
+
+HARDWARE EXPORT
+Each device family gets a capability-specific exporter. Never claim internal bank
+or project transfer unless the device exposes/documented it.
+
+VERSION 1.2 CROSS-REFERENCE
+Document 17 extends hardware architecture with DeckEngine, ScratchTransport, DVS calibration, high-resolution jog/HID capabilities, DJ mixer routing and controller feedback.
+
+VERSION 1.3 CROSS-REFERENCE
+Document 18 is now the detailed plugin-host and native sound-engine specification, including scan isolation, PDC, sidechains, modulation, instruments, effects and mastering. Use it as the implementation source for the plugin subsection here.

@@ -1,0 +1,59 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.7
+
+141 — CROSS-MEDIA, CROSS-SYMBOL & CROSS-IDEA INTEROPERABILITY
+=============================================================
+
+CROSS SOUND
+
+Audio clip
+MIDI transcription
+score notation
+stem
+sample
+spectral analysis
+lyrics/captions
+all link back through stable IDs/lineage.
+
+CROSS IMAGE
+
+Artwork
+frame
+thumbnail
+texture
+video frame
+colour profile
+provenance.
+
+CROSS SYMBOLS
+
+A parameter/object has stable ID:
+track.gain
+clip.start
+mixer.bus.3
+device.pad.01
+
+Displayed label can change with:
+language
+accessibility
+hardware vocabulary
+skin/theme.
+
+CROSS IDEA
+
+CreativeIntent/IdeaGraph stores the concept separately from representation.
+
+Example:
+
+"Build tension before final chorus."
+
+May become:
+automation
+drum fill
+lighting cue
+video cut
+harmony
+riser.
+
+AI can propose multiple representations without losing the original idea.
+
+END DOCUMENT 141

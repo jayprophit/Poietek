@@ -1,0 +1,104 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.0
+
+Compiled from:
+1) The complete product-development conversation supplied by the creator.
+2) Deep review of GitHub repository: jayprophit/Studio-Daw-Station-SDS-
+3) Current cross-platform/offline-first architecture recommendations.
+
+WORKING PRODUCT NAME
+Poietek is the working ecosystem name discussed in the design conversation.
+Studio DAW Station (SDS) is the current repository/product label.
+Final public branding should be chosen only after trademark/domain checks.
+
+CORE RULE
+One app. One project model. One creative graph. Many workspaces.
+Offline first. Cloud optional. Hardware agnostic. Collaboration capable.
+Professional depth without forcing beginners to see every advanced control.
+
+LEGAL / CLEAN-ROOM RULE
+Competitor products, patents, papers, hardware and interfaces may be studied for
+functional principles, workflows and interoperability requirements. Do not copy
+proprietary source code, protected assets, branded UI expression, undocumented
+confidential protocols, or patented claims without appropriate legal review or
+licensing. Compatibility layers should use documented/open interfaces wherever
+possible.
+
+===============================================================================
+
+SECURITY
+Treat projects as valuable intellectual property.
+TLS in transit, secure storage, encrypted object storage, optional future
+end-to-end private-team model.
+
+SECRETS
+Never hardcode provider secrets in frontend.
+Use secure native stores/server-side keys as appropriate.
+
+AUTH
+Account optional for local-only mode.
+Cloud: sessions, MFA, device revoke and team membership.
+
+PERMISSIONS
+Project, asset download, rights edit, publish, invite, billing and admin controls.
+
+PLUGINS/SCRIPTS
+Untrusted by default. Permission manifest for filesystem/network/MIDI/audio/
+project write/clipboard/AI/community. Sandbox and sign marketplace packages.
+
+DEVICE PROFILE SECURITY
+Declarative profiles cannot execute code. Explicit permission before SysEx or
+device-update operations.
+
+FIRMWARE
+Only manufacturer-supported flows; never silently flash.
+
+PRIVACY
+Private by default. AI provider usage disclosed. Cloud AI disable. Data export/
+delete and applicable privacy-law workflows.
+
+COMMUNITY SAFETY
+report, block, mute, DM requests, moderation, copyright report/appeal, spam
+controls and marketplace disputes.
+
+RIGHTS DATA
+Explicit confirmations, version history, access control and exportable approval
+records.
+
+SDK TYPES
+audio/MIDI/video tools, import/export, device profiles/adapters, workflows,
+UI panels, themes and AI providers.
+
+SDK STABILITY
+semantic versions, capability/permission manifests, schema version, deprecation.
+
+COMMUNITY REGISTRY
+author, version, license, checksum, compatibility, permissions, reviews,
+verification.
+
+OBSERVABILITY
+crash/performance/sync/plugin errors without silently uploading private media.
+
+TESTING
+unit, schema migration, serialization, undo, DSP, MIDI virtual fixtures, sync
+convergence, asset resume, E2E, accessibility.
+
+CI
+typecheck, lint, unit, integration, web build, security scan; cross-platform
+nightlies; signed releases and rollback.
+
+OPEN-SOURCE FILES TO ADD
+README.md
+LICENSE
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+SECURITY.md
+ARCHITECTURE.md
+ROADMAP.md
+device-profile/project-format/sync protocol docs.
+
+VERSION 1.3 CROSS-REFERENCE
+Use Document 18 for plugin scanning, process isolation, quarantine, portable-module permissions and third-party dependency/licence inventory.
+
+VERSION 1.4 CROSS-REFERENCE
+Storage connectors and model/resource installers are permissioned extensions. Use the credential, licence, sandbox and SBOM rules in Documents 19 and 20.

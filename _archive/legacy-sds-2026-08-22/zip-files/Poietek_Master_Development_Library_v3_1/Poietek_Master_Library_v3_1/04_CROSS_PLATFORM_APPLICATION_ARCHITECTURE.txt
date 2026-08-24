@@ -1,0 +1,115 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.0
+
+Compiled from:
+1) The complete product-development conversation supplied by the creator.
+2) Deep review of GitHub repository: jayprophit/Studio-Daw-Station-SDS-
+3) Current cross-platform/offline-first architecture recommendations.
+
+WORKING PRODUCT NAME
+Poietek is the working ecosystem name discussed in the design conversation.
+Studio DAW Station (SDS) is the current repository/product label.
+Final public branding should be chosen only after trademark/domain checks.
+
+CORE RULE
+One app. One project model. One creative graph. Many workspaces.
+Offline first. Cloud optional. Hardware agnostic. Collaboration capable.
+Professional depth without forcing beginners to see every advanced control.
+
+LEGAL / CLEAN-ROOM RULE
+Competitor products, patents, papers, hardware and interfaces may be studied for
+functional principles, workflows and interoperability requirements. Do not copy
+proprietary source code, protected assets, branded UI expression, undocumented
+confidential protocols, or patented claims without appropriate legal review or
+licensing. Compatibility layers should use documented/open interfaces wherever
+possible.
+
+===============================================================================
+
+TARGETS
+Web/PWA, Windows, macOS, Linux, iPadOS/iOS, Android tablet/phone.
+
+RECOMMENDED STRATEGY
+Keep React/TypeScript UI.
+Web: Vite PWA.
+Native: Tauri 2 shell using the same front end, with Rust/native plugins for
+filesystem, SQLite, hardware, low-latency audio and platform integrations.
+
+Do not claim identical capability across browser/native/mobile. Preserve one
+project format and expose platform capability differences.
+
+MONOREPO
+/apps/studio-web
+/apps/studio-native
+/packages/domain
+/packages/commands
+/packages/project
+/packages/assets
+/packages/timeline
+/packages/midi
+/packages/device-profiles
+/packages/mapping
+/packages/sync
+/packages/collaboration
+/packages/rights
+/packages/community-client
+/packages/ui
+/packages/design-system
+/packages/ai-contracts
+/native/audio-host
+/native/midi-host
+/native/plugin-host
+/server/api
+/server/sync-relay
+/server/media
+/server/community
+/server/jobs
+/docs
+/tests
+
+PLATFORM ADAPTERS
+StorageAdapter
+AudioBackend
+MidiBackend
+FileBackend
+PluginBackend
+ShareBackend
+CapabilityRegistry
+
+WEB
+Service Worker for app shell/offline.
+IndexedDB for structured local state.
+large-media cache suited to browser capabilities.
+Web Audio + AudioWorklet.
+Web MIDI where supported.
+Web Workers/WASM for analysis/non-realtime processing.
+
+NATIVE
+same UI plus:
+SQLite, filesystem, native audio/MIDI, background transfer, secure storage,
+plugin host, better large-media handling.
+
+PARITY RULE
+Project format identical. Capability may differ.
+If a desktop plugin is unavailable on web/mobile, preserve plugin state and play
+a freeze/bounce proxy instead of deleting it.
+
+MOBILE
+Touch-optimized creation/capture, not merely a viewer.
+Heavy desktop-only plugins can remain frozen while project stays editable.
+
+RESPONSIVE
+Phone: one focused workspace + drawers.
+Tablet: split views.
+Desktop: multi-panel/multi-monitor.
+Web: capability-aware.
+
+STARTUP
+1 local app shell
+2 local DB
+3 restore project
+4 initialize audio/MIDI
+5 show UI
+6 sync only if network/auth available
+
+Network login must not block local creation.

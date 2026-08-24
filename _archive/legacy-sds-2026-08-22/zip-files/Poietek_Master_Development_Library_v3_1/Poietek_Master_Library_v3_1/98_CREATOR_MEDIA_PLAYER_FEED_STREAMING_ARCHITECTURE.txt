@@ -1,0 +1,100 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.3
+
+98 — CREATOR MEDIA PLAYER, FEED & STREAMING ARCHITECTURE
+========================================================
+
+POIETEK HUB PLAYER
+
+One universal playback surface for:
+songs
+albums
+podcasts
+video
+music videos
+clips
+images
+interactive visual media
+live streams.
+
+CHANNEL
+
+Creator/collective/company profile
+catalog
+playlists
+releases
+live events
+store
+support
+credits
+verified rights/provenance indicators.
+
+DISCOVERY
+
+Following feed
+subscriptions
+search
+playlists
+tags
+recommendations
+charts/trending
+remix graph
+collaboration graph
+human editorial
+learning/tutorial discovery.
+
+RECOMMENDATION PRINCIPLE
+
+Explainable and controllable.
+No pay-to-win hidden ranking.
+Users can choose:
+Following only
+Chronological
+Personalized
+Local/private recommendations
+Explore.
+
+MEDIA DELIVERY
+
+MediaDeliveryRouter:
+local cache
+Poietek managed object storage/CDN
+BYOC
+P2P/decentralized replica
+Livepeer-style VOD/live provider
+external embed/link
+YouTube export/integration where permitted.
+
+PLAYER FEATURES
+
+adaptive playback
+captions
+chapters
+lyrics where licensed
+credits
+Rights Manifest inspector
+Content Credentials/provenance
+quality selector
+cast/external device later
+offline download where licence permits.
+
+CREATOR STUDIO ANALYTICS
+
+views/listens
+completion
+playlist adds
+followers
+sales
+tips
+territory
+referrers
+conversion.
+
+Privacy-preserving analytics should distinguish measured, estimated and unavailable.
+
+MODERATION
+
+Protocol/decentralization does not remove Poietek's responsibility for the Poietek
+app/marketplace surfaces.
+Report/block/moderation/copyright processes remain required.
+
+END DOCUMENT 98

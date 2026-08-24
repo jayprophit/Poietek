@@ -1,0 +1,39 @@
+Primary/current references reviewed 11 August 2026:
+
+ITU-R BT.709-6:
+https://www.itu.int/rec/R-REC-BT.709/en
+In-force HDTV production/programme-exchange parameter recommendation.
+
+ITU-R BT.2100-3:
+https://www.itu.int/rec/R-REC-BT.2100
+In force from February 2025 for HDR television production/international exchange.
+
+SMPTE standards overview / D-Cinema:
+https://www.smpte.org/standards/overview
+https://www.smpte.org/blog/understanding-standards-digital-cinema-format
+Current D-Cinema suites include SMPTE 428, 429, 430, 431, 432 and 433.
+
+SMPTE ST 2067 IMF:
+https://www.smpte.org/standards/st2067
+File-based interoperable masters for global/multi-platform delivery.
+
+SMPTE ST 2110:
+https://www.smpte.org/standards/st2110
+Professional video/audio/data over managed IP.
+
+EBU R128:
+https://tech.ebu.ch/loudness/
+R128 v5 family includes broadcast, streaming, radio and cinematic supplements.
+
+W3C WebVTT:
+https://www.w3.org/TR/webvtt/all/
+https://www.w3.org/WAI/media/av/captions/
+Current Candidate Recommendation Draft published 20 May 2026; WebVTT is widely
+used for web captions/subtitles.
+
+MusicBrainz genres:
+https://musicbrainz.org/doc/Genre
+https://musicbrainz.org/doc/MusicBrainz_API
+https://musicbrainz.org/genres
+MusicBrainz treats genres as part of the tag system and notes that genres are
+subjective; the API exposes an all-genres resource.

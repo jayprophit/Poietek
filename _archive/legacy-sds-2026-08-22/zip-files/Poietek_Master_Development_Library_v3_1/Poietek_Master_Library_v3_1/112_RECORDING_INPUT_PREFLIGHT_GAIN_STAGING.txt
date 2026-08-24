@@ -1,0 +1,55 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.5
+
+112 — RECORDING INPUT PREFLIGHT & GAIN STAGING
+==============================================
+
+BEFORE RECORD
+
+Poietek can run "Check My Level".
+
+1 Select input.
+2 Identify source type.
+3 Performer plays/sings expected loudest section.
+4 Observe for sufficient time.
+5 Measure peaks/noise/dynamics.
+6 Recommend hardware/input change.
+7 Retest.
+8 Arm recording.
+
+IMPORTANT
+
+A digital fader cannot undo clipping that already occurred in the analogue
+preamp/converter.
+
+When clipping originates before Poietek:
+recommend lowering hardware/console preamp/input gain.
+
+POIETEK CONSERVATIVE CAPTURE DEFAULT
+
+A configurable engineering starting profile can prefer observed peaks around or
+below -12 dBFS, advise caution as observed peaks approach -6 dBFS, and issue a
+critical headroom warning near -1 dBFS.
+
+These are Poietek defaults, NOT universal recording standards.
+
+The engine adapts after measuring:
+crest factor
+noise floor
+source consistency
+converter/device behavior.
+
+24-bit workflows normally allow healthy headroom; recording unnecessarily close
+to 0 dBFS is not a quality goal.
+
+REMOTE CONSOLE
+
+If a verified digital desk exposes remote preamp gain:
+Poietek can propose:
+"Reduce CH 7 preamp by 4 dB".
+
+Default:
+[Preview] [Apply] [Ignore].
+
+Phantom power and large preamp changes require safety permissions.
+
+END DOCUMENT 112

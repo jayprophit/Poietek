@@ -1,0 +1,71 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.8
+
+47 — FRONTEND STATE, APPLICATION SERVICES & REACT BOUNDARIES
+============================================================
+
+COMPANION
+CommandBus.ts
+ProjectRepository.ts
+
+CURRENT SDS PROBLEM
+App.tsx is acting as shell + project store + transport store + device state.
+
+TARGET
+
+AppShell
+  uses
+ApplicationContext
+  exposes
+CommandBus
+ProjectQueries
+SelectionService
+WorkspaceService
+TransportView
+SyncView
+DeviceView
+
+React components:
+read view models;
+dispatch commands;
+never retain the only durable copy.
+
+DIRECTORY TARGET
+
+/apps/web/src/
+  AppShell.tsx
+  providers/
+    ProjectProvider.tsx
+    CapabilityProvider.tsx
+    CommandProvider.tsx
+  routes/
+
+/packages/application/
+  ProjectApplicationService.ts
+  ImportService.ts
+  ExportService.ts
+
+/packages/frontend-state/
+  SelectionStore.ts
+  WorkspaceStore.ts
+  TransportViewStore.ts
+  NotificationStore.ts
+
+FAST STATE
+Meters/playhead use specialized subscription/ring-buffer pathway.
+Do not dispatch 60 commands/second for meters.
+
+FORM STATE
+Inspector may keep temporary text input state.
+Commit on change/blur/enter according to control semantics.
+
+OPTIMISTIC UI
+Allowed only after local durable transaction semantics are clear.
+If command fails, UI reverts and shows structured error.
+
+ACCEPTANCE
+STATE-001 deleting React component does not delete project truth.
+STATE-002 reload reconstructs from repository.
+STATE-003 meter updates cause no project save.
+STATE-004 selection not synced as project data.
+STATE-005 command failure reverts optimistic display.
+STATE-006 AppShell can open project without Firebase provider.

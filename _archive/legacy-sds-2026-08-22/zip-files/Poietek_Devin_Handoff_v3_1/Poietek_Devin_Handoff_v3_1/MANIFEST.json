@@ -1,0 +1,56 @@
+{
+  "name": "Poietek Devin Handoff",
+  "version": "3.1",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "7c2aee0ac83ce49bceaff8d604793e18bd0c1a008e417b1408fcde3a53f7796a",
+      "bytes": 4761
+    },
+    {
+      "path": "DEVIN_START_HERE.md",
+      "sha256": "b2a46d8485c481cb7437616cae049c28afc7c52a8c6cda955ec409295806396e",
+      "bytes": 1588
+    },
+    {
+      "path": "FIRST_DEVIN_SESSION_PROMPT.txt",
+      "sha256": "58d5f7f963b446ded4dba5382835f389ac22ed01480ac55e42f36482c61de662",
+      "bytes": 2315
+    },
+    {
+      "path": "docs/BUILD_SEQUENCE.md",
+      "sha256": "cd818906d55320c34ccbeb66f0b0ea5b08d6e9d908ffb0f31493e488ba70b89d",
+      "bytes": 2754
+    },
+    {
+      "path": "docs/DEFINITION_OF_DONE.md",
+      "sha256": "c6114e42f5a33fb9431e0b15b62f45ec69f94771e8cd6fb6a464a0e7e2e102c1",
+      "bytes": 624
+    },
+    {
+      "path": "docs/README_BUILD_v3_1.md",
+      "sha256": "ab564e5c7b01fff6a0861a9b32d88f5084fc03d95c553bbc299d4e30322dd3af",
+      "bytes": 1409
+    },
+    {
+      "path": "docs/REORGANIZATION_RULES.md",
+      "sha256": "5ac20d982f2efdbc0c2ea048c580d1e3d94be82f117202090b54219e542d7600",
+      "bytes": 793
+    },
+    {
+      "path": "docs/SOURCE_OF_TRUTH.md",
+      "sha256": "83e963fa87f63f58dd8ec5526ed930610238f1666a85e0cf3dfc85d989d6d1fa",
+      "bytes": 1183
+    },
+    {
+      "path": "docs/VALIDATION.txt",
+      "sha256": "def39b471ebc3484a108896af613e0f3b0a31c3317b652a893fe0b949c7512f3",
+      "bytes": 1032
+    },
+    {
+      "path": "inputs/PLACE_THESE_HERE.txt",
+      "sha256": "9744a0ff11df8a3a8ae5e31560a6626c5e339686ce149a80e594296be3dfc2e7",
+      "bytes": 601
+    }
+  ]
+}

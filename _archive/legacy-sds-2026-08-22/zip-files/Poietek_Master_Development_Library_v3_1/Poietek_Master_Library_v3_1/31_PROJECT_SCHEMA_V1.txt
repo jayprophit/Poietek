@@ -1,0 +1,45 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.7
+
+31 — PROJECT SCHEMA v1
+======================
+
+STATUS: BUILD CONTRACT
+Companion machine-readable file: project.schema.v1.json
+
+CORE DECISIONS
+- ULID-style durable IDs.
+- schemaVersion = 1.0.0.
+- project data contains references, not live AudioBuffer/MIDIPort/DOM objects.
+- SHA-256 content identity for binary assets.
+- asset replicas are separate from canonical asset identity.
+- plugin state may have a frozen-render fallback.
+- project settings include PPQ and storage policy.
+- extension data is namespaced for forward compatibility.
+
+MIGRATION RULES
+1. Never mutate an old project in place without recovery copy.
+2. v1 readers ignore unknown extension namespaces but retain them.
+3. Future v2 migrations are explicit functions with fixtures.
+4. Removing fields requires migration plus compatibility policy.
+5. Every project write validates against schema in development/test.
+
+NORMALIZED VS EMBEDDED
+The JSON archive is intentionally self-describing enough to move between clients.
+Runtime databases may normalize rows/documents for performance.
+
+BINARY RULE
+Audio/video/model/plugin-state bytes are stored in AssetStore. Project JSON stores
+asset IDs and content hashes only.
+
+FIRST FIXTURE REQUIREMENTS
+- blank project
+- one-audio-track project
+- MIDI project
+- missing-asset project
+- plugin-missing project
+- collaboration project
+- old-schema migration fixture
+
+DEFINITION OF DONE
+A project created on Web can serialize, reload, validate, and open in a native
+test client without vendor-specific fields becoming mandatory.

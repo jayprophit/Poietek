@@ -1,0 +1,106 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 2.0
+
+68 — 5-STAR GAP CLOSURE PROGRAM
+===============================
+
+PROGRAM RULE
+
+A module enters the 5-Star Program only after it has a real end-to-end implementation.
+
+TRACK A — FOUNDATION
+
+Project durability
+Audio playback
+recording
+render
+offline
+crash recovery.
+
+Target first.
+
+TRACK B — NATIVE
+
+Windows/macOS/Linux install.
+Then iPad/iOS/Android.
+
+TRACK C — MUSIC
+
+MIDI
+sampler
+arrangement
+mixer
+automation
+synth/effects
+plugins.
+
+TRACK D — SPECIALIST
+
+pitch
+DJ
+video/VFX.
+
+TRACK E — NETWORK
+
+sync
+collaboration
+community
+rights.
+
+TARGET PROCESS FOR EACH CATEGORY
+
+1 Establish category leader/reference version.
+2 Write 10–30 workflow tests.
+3 Write objective performance/output tests.
+4 Implement.
+5 Internal score.
+6 External creator test.
+7 Close gaps.
+8 Re-test.
+9 Evidence review.
+10 Award star.
+
+5★ cannot be inherited from another module.
+
+EXAMPLE: PLUGIN HOST
+
+Reference strength:
+Bitwig separate-process crash protection.
+
+Poietek 5★ requirement:
+- VST3/CLAP;
+- plugin scan isolation;
+- configurable process isolation;
+- crash cannot kill project;
+- state recovery;
+- PDC;
+- sidechain/multiout;
+- freeze portability;
+- soak test;
+- measurable startup/scan speed;
+- accessible missing-plugin UI.
+
+EXAMPLE: TABLET
+
+Reference strength:
+Logic Pro iPad touch-first design and Mac/iPad project interoperability.
+
+Poietek 5★ requirement:
+- touch-first;
+- stylus;
+- external MIDI/audio;
+- same project;
+- offline;
+- no desktop plugin deletion;
+- native app launch;
+- performance appropriate to device;
+- real user testing.
+
+PROGRAM OUTPUT
+benchmark/evidence/<category>/<version>/
+  reference.md
+  workflow-results.json
+  performance.json
+  screenshots/
+  crash-soak.json
+  user-test-summary.md
+  score.json

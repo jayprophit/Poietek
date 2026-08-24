@@ -1,0 +1,29 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.9
+
+54 — OPFS ASSET STORE, HASHING & WAVEFORM CODE
+==============================================
+
+DELIVERED
+AssetStore.ts
+WebLocalAssetStore.ts
+sha256.ts
+waveform.ts
+waveform.worker.ts
+
+BEHAVIOR
+- compute SHA-256;
+- prefer Origin Private File System;
+- fallback to IndexedDB Blob;
+- runtime asks AssetStore by assetId;
+- waveform worker operates on decoded PCM arrays.
+
+IMPORTANT
+Audio decoding itself stays outside worker because browser worker audio-decoding
+capabilities are inconsistent; decode with audio backend/main analysis service,
+then transfer PCM to peak worker.
+
+MEDIA-001 put/get returns same bytes.
+MEDIA-002 hash stable.
+MEDIA-003 missing returns null.
+MEDIA-004 peak pyramid reflects real sample data.
+MEDIA-005 deleting cache is distinct from deleting sole original.

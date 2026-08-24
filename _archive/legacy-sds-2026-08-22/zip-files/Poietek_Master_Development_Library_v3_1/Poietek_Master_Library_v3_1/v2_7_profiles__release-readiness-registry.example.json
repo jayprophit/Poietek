@@ -1,0 +1,57 @@
+{
+  "version": "2026-08-11",
+  "profiles": [
+    {
+      "profileId": "iso-a440",
+      "version": 1,
+      "label": "ISO Standard Musical Pitch A4=440 Hz",
+      "destinationClass": "custom",
+      "authorityType": "formal_standard",
+      "checks": {
+        "tuning": {
+          "referenceNote": "A4",
+          "referenceHz": 440.0,
+          "toleranceHz": 0.5
+        }
+      },
+      "sourceRefs": [
+        "ISO 16:1975 \u2014 confirmed current in 2022"
+      ],
+      "checkedAt": "2026-08-11T17:31:00Z"
+    },
+    {
+      "profileId": "ebu-r128-radio-broadcast",
+      "version": 1,
+      "label": "EBU R128 Radio/Broadcast Loudness",
+      "destinationClass": "radio",
+      "authorityType": "broadcaster",
+      "checks": {
+        "audioLevels": {
+          "integratedLufs": -23.0,
+          "measurement": "EBU Mode / ITU-R BS.1770 family"
+        }
+      },
+      "sourceRefs": [
+        "EBU R128 v5",
+        "ITU-R BS.1770-5"
+      ],
+      "checkedAt": "2026-08-11T17:31:00Z"
+    },
+    {
+      "profileId": "atsc-a85-2026",
+      "version": 1,
+      "label": "ATSC A/85:2026 Digital TV / Streaming Loudness Guidance",
+      "destinationClass": "television",
+      "authorityType": "broadcaster",
+      "checks": {
+        "audioLevels": {
+          "measurement": "ATSC A/85:2026 / ITU-R BS.1770-compatible loudness/true-peak workflow"
+        }
+      },
+      "sourceRefs": [
+        "ATSC A/85:2026-07"
+      ],
+      "checkedAt": "2026-08-11T17:31:00Z"
+    }
+  ]
+}

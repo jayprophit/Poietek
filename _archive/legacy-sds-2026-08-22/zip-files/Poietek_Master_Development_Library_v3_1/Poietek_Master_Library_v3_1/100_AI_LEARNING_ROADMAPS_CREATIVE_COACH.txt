@@ -1,0 +1,112 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.3
+
+100 — AI LEARNING ROADMAPS & CREATIVE COACH
+===========================================
+
+COMPANION
+schemas/learning-path.schema.v1.json
+
+GOAL
+
+Poietek should teach users inside the actual creation environment rather than
+sending them through disconnected help pages.
+
+LEARNING PATHS
+
+Make My First Beat
+Write/Arrange a Song
+Record Vocals
+Sampling & Chop Lab
+MIDI & Hardware
+Synthesis
+Mixing
+Mastering
+DJ / Live Performance
+Video Editing
+VFX / Visuals
+Rights & Royalties
+Creator Business
+Plugin/Extension Development
+Poietek App Development
+Blockchain/Provenance for Creators.
+
+SKILL GRAPH
+
+Each skill defines:
+prerequisites
+practice task
+project template
+evidence
+assessment
+optional advanced branch.
+
+AI LEARNING ASSISTANT
+
+Can:
+explain current control;
+answer "why";
+diagnose a project issue;
+suggest next lesson;
+generate a practice exercise;
+highlight relevant controls;
+compare before/after;
+quiz;
+review a mix/project against a learning rubric;
+build a personalized roadmap.
+
+Must not:
+secretly rewrite project;
+pretend subjective advice is a fact;
+force cloud AI;
+upload private media without permission.
+
+SHOW ME MODE
+
+Assistant can:
+focus/highlight UI;
+open a disposable tutorial branch;
+perform preview commands;
+let learner accept/reject.
+
+LEARNER PROJECTS
+
+Tutorial projects are forkable.
+User keeps what they make.
+Progress is portable.
+
+OFFLINE
+
+Bundled curriculum + rule-based assistant.
+Optional local model.
+Cloud AI only if enabled.
+
+PROOF OF LEARNING / COMPETENCY
+
+Optional Proof Record stores evidence that a user completed:
+lesson
+project task
+benchmark
+quiz
+hardware exercise.
+
+Not a formal professional qualification unless an accredited external partner
+explicitly provides one.
+
+ADAPTIVE ROADMAP
+
+Goal + existing skills + user pace + available hardware + interests.
+
+Example:
+"I want to release my first song."
+
+Roadmap:
+Audio setup
+Recording
+Arrangement
+Editing
+Mix basics
+Mastering/export
+Credits/rights
+Distribution/release.
+
+END DOCUMENT 100

@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/extension-manifest/v1",
+  "title": "Poietek Extension Manifest v1",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "version",
+    "type",
+    "hostVersion",
+    "permissions"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]+$"
+    },
+    "name": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "type": {
+      "enum": [
+        "audio_effect",
+        "instrument",
+        "midi_processor",
+        "analyzer",
+        "video_effect",
+        "storage_provider",
+        "device_adapter",
+        "ai_provider",
+        "workflow",
+        "theme",
+        "ui_panel"
+      ]
+    },
+    "hostVersion": {
+      "type": "string"
+    },
+    "platforms": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "web",
+          "windows",
+          "macos",
+          "linux",
+          "ios",
+          "ipados",
+          "android"
+        ]
+      }
+    },
+    "entrypoints": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "network",
+          "filesystem.read",
+          "filesystem.write",
+          "project.read",
+          "project.write",
+          "audio",
+          "midi",
+          "camera",
+          "microphone",
+          "clipboard",
+          "ai",
+          "community",
+          "storage"
+        ]
+      }
+    },
+    "networkHosts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "license": {
+      "type": "string"
+    },
+    "publisher": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "signature": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

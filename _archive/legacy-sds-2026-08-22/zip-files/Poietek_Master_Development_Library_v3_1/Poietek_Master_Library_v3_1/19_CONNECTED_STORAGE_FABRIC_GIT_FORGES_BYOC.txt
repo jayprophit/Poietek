@@ -1,0 +1,730 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.4 ADDENDUM
+
+19 — CONNECTED STORAGE FABRIC, GIT FORGES & BRING-YOUR-OWN-CLOUD
+===============================================================
+
+PURPOSE
+
+Poietek must never assume that every creator owns the same cloud service—or any
+cloud account at all.
+
+Storage is a user-controlled capability.
+
+A project may live:
+- entirely on the current device;
+- on an internal or external drive;
+- on a NAS/home server;
+- in one cloud provider;
+- across several cloud providers;
+- in a Git repository for structured/versioned files;
+- in object storage for large media;
+- in a hybrid of all of the above.
+
+CORE PRODUCT RULE
+
+NO CLOUD IS REQUIRED.
+
+Local creation, editing, saving, recording and export must remain available even
+when the user never creates or connects a cloud-storage account.
+
+------------------------------------------------------------------------------
+1. STORAGE SETUP EXPERIENCE
+------------------------------------------------------------------------------
+
+On first use, present:
+
+STORAGE MODE
+
+[ Auto — Recommended ]
+Poietek recommends locations based on what is available and connected.
+
+[ Local Only ]
+Keep all project data on this device unless I explicitly move or back it up.
+
+[ Choose Locations ]
+Set locations separately for projects, media, backups, models, cache and exports.
+
+Auto is a RECOMMENDATION MODE, not permission to upload private work silently.
+
+Before first use of any remote destination:
+- show provider;
+- show what will be uploaded;
+- show visibility;
+- show whether team members will have access;
+- request explicit confirmation.
+
+After a user approves a policy, Poietek can reuse it as their default.
+
+------------------------------------------------------------------------------
+2. DEFAULT RECOMMENDATION LOGIC
+------------------------------------------------------------------------------
+
+Always available baseline:
+
+PROJECT STATE:
+local durable database/project folder.
+
+AUDIO/VIDEO WORKING MEDIA:
+fast local storage.
+
+CACHE / WAVEFORMS / PROXIES:
+local only by default.
+
+AUTOSAVE:
+local.
+
+If a connected provider exists, Poietek may RECOMMEND:
+
+PROJECT BACKUP:
+connected cloud drive or user-selected remote target.
+
+BULK AUDIO/VIDEO BACKUP:
+provider with large-object/resumable-upload capability.
+
+STRUCTURED SOURCE / DEVICE PROFILES / SCRIPTS:
+Git forge, if user intentionally enables it.
+
+AI MODELS:
+local model cache or a dedicated model hub/cache target.
+
+IMPORTANT:
+"Recommended" is computed from capability, not provider brand.
+
+------------------------------------------------------------------------------
+3. STORAGE LOCATION PICKER
+------------------------------------------------------------------------------
+
+Every project has a Storage page.
+
+PROJECT ROOT:
+[ Browse / Change ]
+
+AUDIO RECORDINGS:
+[ Inherit Project ] [ Browse ]
+
+VIDEO:
+[ Inherit Project ] [ Browse ]
+
+SAMPLES:
+[ Inherit Project ] [ Browse ]
+
+AI MODELS:
+[ Application Default ] [ Browse ]
+
+WAVEFORM / RENDER CACHE:
+[ Fastest Local ] [ Browse ]
+
+BACKUPS:
+[ None ] [ Add Destination ]
+
+FINAL EXPORTS:
+[ Inherit Project ] [ Browse ]
+
+LICENCES / CONTRACTS:
+[ Inherit Project ] [ Encrypted Location ] [ Browse ]
+
+The user can change locations later.
+
+Poietek performs a safe move/copy operation with verification rather than merely
+rewriting file paths.
+
+------------------------------------------------------------------------------
+4. PROVIDER DETECTION
+------------------------------------------------------------------------------
+
+NATIVE DESKTOP/MOBILE CLIENT
+
+May detect:
+- mounted local volumes;
+- removable drives;
+- user-accessible mounted cloud folders;
+- configured Poietek storage connectors;
+- NAS/network mounts exposed by the OS.
+
+WEB CLIENT
+
+Must not pretend it can discover arbitrary applications installed on a device.
+
+Web can know about:
+- providers the user connected through OAuth;
+- provider connectors enabled in Poietek;
+- directories/files explicitly granted through browser APIs where supported;
+- browser-local storage.
+
+This distinction must be explicit.
+
+------------------------------------------------------------------------------
+5. ADD / INSTALL STORAGE PROVIDER
+------------------------------------------------------------------------------
+
+If the ideal provider adapter is not available:
+
+Show a non-blocking option:
+
+"Add another storage provider"
+
+Categories:
+- Cloud Drive
+- Object Storage
+- Git / Source Control
+- NAS / WebDAV
+- Model Hub
+- Custom Server
+
+Provider card actions:
+
+[ Install Connector ]
+if a Poietek provider module is not installed.
+
+[ Connect Account ]
+if connector is installed but authorization is absent.
+
+[ Configure ]
+for S3/WebDAV/NAS/custom endpoints.
+
+[ Skip ]
+always available.
+
+Core creation must never be blocked because the user refuses to install a
+storage connector.
+
+------------------------------------------------------------------------------
+6. STORAGE CONNECTOR ARCHITECTURE
+------------------------------------------------------------------------------
+
+StorageProvider interface:
+
+connect()
+disconnect()
+reauthorize()
+getCapabilities()
+getQuota()
+list()
+stat()
+upload()
+uploadResumable()
+download()
+downloadRange()
+delete()
+move()
+copy()
+createFolder()
+watchChanges()
+getVersions()
+createShareReference()
+revokeShareReference()
+
+ProviderCapabilities {
+  folders
+  versioning
+  resumableUpload
+  multipartUpload
+  rangeRead
+  streaming
+  shareLinks
+  teamAcl
+  changeFeed
+  contentHashes
+  gitSemantics
+  modelRegistry
+  objectStorage
+  webDav
+}
+
+Do not hard-code vendor quota/pricing into project files.
+Provider limits change and should be queried or maintained as updateable adapter
+metadata.
+
+------------------------------------------------------------------------------
+7. STORAGE CLASSES
+------------------------------------------------------------------------------
+
+LOCAL WORKING STORAGE
+Best for:
+recording, realtime playback, current assets, cache.
+
+PERSONAL CLOUD DRIVE
+Best for:
+backup, documents, project archives, optional media.
+
+OBJECT STORAGE
+Best for:
+large immutable WAV/video/stem objects, team media and scalable remote assets.
+
+GIT FORGE
+Best for:
+structured text, source code, schemas, presets, mappings, scripts, documentation,
+issues and change review.
+
+MODEL HUB
+Best for:
+AI models, model cards, datasets, adapters and evaluation assets.
+
+APPLICATION BACKEND
+Best for:
+accounts, permissions, comments, collaboration metadata and notifications.
+
+These are different jobs.
+
+------------------------------------------------------------------------------
+8. INITIAL PROVIDER ADAPTER CANDIDATES
+------------------------------------------------------------------------------
+
+GENERAL CLOUD / DRIVE
+- Google Drive
+- Microsoft OneDrive
+- TeraBox
+- Dropbox
+- Box
+- Nextcloud
+- generic WebDAV
+- other providers after API/security verification
+
+OBJECT STORAGE
+- generic S3-compatible endpoint
+- AWS S3
+- Cloudflare R2
+- Backblaze B2
+- Wasabi
+- Google Cloud Storage
+- Azure Blob
+- self-hosted MinIO-compatible service
+- future Poietek-managed storage
+
+GIT / SOURCE CONTROL
+- GitHub
+- GitLab
+- Bitbucket
+- Gitea
+- Forgejo
+- self-hosted Git
+
+MODEL / DATA HUB
+- Hugging Face Hub
+- self-hosted model registry
+- future compatible registries
+
+LOCAL / NETWORK
+- internal disk
+- external SSD/HDD
+- removable USB storage
+- NAS mount
+- SMB/NFS exposed by operating system
+- user-selected folder
+
+All third-party integrations remain subject to current API terms, quotas and
+authentication capabilities.
+
+------------------------------------------------------------------------------
+9. GITHUB / GIT FORGES
+------------------------------------------------------------------------------
+
+GitHub and similar services should be first-class Poietek integrations, but
+Poietek must use them intelligently.
+
+Excellent Git candidates:
+- device profiles;
+- MIDI maps;
+- schemas;
+- themes;
+- presets represented as structured text;
+- plugin/extension code;
+- workflow scripts;
+- documentation;
+- ADRs;
+- project manifests;
+- release metadata;
+- tutorial project structure;
+- issue/feature proposals;
+- test fixtures.
+
+Poor default candidates:
+- raw multitrack WAV;
+- constantly changing video;
+- render cache;
+- huge proxies.
+
+GitHub documents that Git LFS stores pointer files in the Git repository while
+the actual large objects are managed separately, and GitHub imposes plan-based
+per-file limits. Therefore Git LFS is an optional advanced bridge, not Poietek's
+universal media store.
+
+Poietek's internal versioning remains independent of Git.
+
+------------------------------------------------------------------------------
+10. OPTIONAL GIT PROJECT BRIDGE
+------------------------------------------------------------------------------
+
+Export a structured Poietek project representation to Git:
+
+/poietek-project
+  project.manifest.json
+  arrangement.json
+  device-profiles/
+  mappings/
+  presets/
+  workflows/
+  metadata/
+  rights-drafts/
+  docs/
+  README.md
+
+Large binary assets remain referenced by content hash and storage locator.
+
+This makes an open tutorial or development project inspectable on GitHub without
+requiring raw studio masters inside the repository.
+
+------------------------------------------------------------------------------
+11. HUGGING FACE ROLE
+------------------------------------------------------------------------------
+
+Hugging Face is primarily a model/data/application ecosystem, not merely a generic
+cloud disk.
+
+Current official Hub documentation describes:
+- model repositories;
+- dataset repositories;
+- Spaces;
+- Git-based versioning;
+- Xet-backed large-file handling;
+- newer non-versioned Storage Buckets for mutable object storage.
+
+Potential Poietek uses:
+- discover optional audio/MIR models;
+- host Poietek-compatible open models;
+- host model cards/evaluation results;
+- publish research datasets when licensing permits;
+- test AI demos in Spaces;
+- maintain model versions;
+- download user-selected models into a local cache.
+
+Never automatically download or execute a model because it exists on a model hub.
+
+------------------------------------------------------------------------------
+12. STORAGE LOCATOR MODEL
+------------------------------------------------------------------------------
+
+An Asset has identity independent of location.
+
+Asset {
+  assetId
+  contentHash
+  mediaType
+  metadata
+}
+
+AssetReplica {
+  replicaId
+  assetId
+  providerId
+  locator
+  state
+  byteLength
+  verifiedHash
+  availability
+  accessClass
+  lastVerified
+}
+
+Example:
+
+assetId: vocal_take_04
+hash: SHA256...
+
+replicas:
+- Local SSD / available
+- TeraBox / synced
+- External SSD / disconnected
+
+The project references assetId, NOT a single provider URL.
+
+------------------------------------------------------------------------------
+13. REDUNDANCY
+------------------------------------------------------------------------------
+
+User-selectable policies:
+
+WORKING
+1 local copy.
+
+SAFE
+1 local + 1 verified backup.
+
+IMPORTANT
+1 local + 2 independent remote/removable copies.
+
+ARCHIVE
+2 verified durable copies; local working copy may be evicted only after user
+permission and verification.
+
+Poietek shows Storage Health:
+Protected
+At Risk
+Missing
+Uploading
+Provider Offline
+Needs Reauthorization
+
+------------------------------------------------------------------------------
+14. ASSET RESOLUTION
+------------------------------------------------------------------------------
+
+When opening an asset:
+
+1. Look for verified local replica.
+2. Look in local cache.
+3. Look at mounted/removable storage.
+4. Query preferred connected provider.
+5. Query other authorized replicas.
+6. If none available, show Missing Asset resolver.
+
+Never replace missing content with a fake sound.
+
+------------------------------------------------------------------------------
+15. PROVIDER OUTAGE
+------------------------------------------------------------------------------
+
+If cloud provider becomes unavailable:
+- project still opens;
+- locally cached media works;
+- new recordings remain local;
+- sync operations queue;
+- user receives a non-destructive warning.
+
+If a remote-only asset is unavailable:
+display placeholder and all known replicas.
+
+------------------------------------------------------------------------------
+16. TEAM ACCESS
+------------------------------------------------------------------------------
+
+Personal cloud does not automatically equal team storage.
+
+Access classes:
+
+PRIVATE_OWNER
+TEAM_SHARED
+PUBLIC
+APP_MANAGED
+EXTERNAL_SHARED_LINK
+
+Before choosing a user's personal Drive/TeraBox file as team media, verify whether
+collaborators can actually access it.
+
+If not:
+- copy/upload to an approved team destination; OR
+- let collaborator provide another replica; OR
+- keep project private to owner.
+
+------------------------------------------------------------------------------
+17. SECURITY / AUTHORIZATION
+------------------------------------------------------------------------------
+
+Tokens:
+- stored in secure native credential storage where available;
+- never in project JSON;
+- never committed to Git.
+
+Scopes:
+request minimum required provider scope.
+
+Disconnecting provider:
+revokes or deletes local token according to provider capability.
+Does NOT delete user files unless explicitly requested.
+
+------------------------------------------------------------------------------
+18. ENCRYPTED STORAGE
+------------------------------------------------------------------------------
+
+Optional application-level encryption for selected remote assets.
+
+Encryption metadata:
+algorithm
+key reference
+chunking
+nonce/IV data
+version
+
+Keys remain separate from provider credentials.
+
+This can allow a user to store encrypted project backups on a generic provider.
+
+Do not implement custom cryptography casually; use mature libraries and security
+review.
+
+------------------------------------------------------------------------------
+19. PROJECT PORTABILITY
+------------------------------------------------------------------------------
+
+"Export Complete Portable Project"
+
+Options:
+- project metadata only;
+- project + currently used media;
+- project + all versions;
+- include proxies;
+- include licences/documents;
+- exclude third-party copyrighted libraries that cannot legally be repackaged.
+
+A portable archive must not depend on provider login if the chosen assets were
+included.
+
+------------------------------------------------------------------------------
+20. USER DEFAULTS
+------------------------------------------------------------------------------
+
+Global defaults:
+Project Location
+Recording Location
+Video Location
+Sample Library Locations
+Cache Location
+Model Cache
+Backup Policy
+Preferred Backup Provider
+Preferred Team Provider
+Preferred Git Provider
+Preferred Model Hub
+
+Project settings can override global defaults.
+
+------------------------------------------------------------------------------
+21. "AUTO — RECOMMENDED" EXAMPLE
+------------------------------------------------------------------------------
+
+Scenario:
+User has:
+- local SSD;
+- Google Drive connected;
+- GitHub connected;
+- no TeraBox;
+- no object store.
+
+Poietek may recommend:
+
+Working project:
+Local SSD.
+
+Recording/video:
+Local SSD.
+
+Backup:
+Google Drive.
+
+Device profiles/workflow source:
+GitHub only if this project/developer feature is explicitly enabled.
+
+Cache:
+Local SSD only.
+
+Private audio upload to GitHub:
+NOT recommended.
+
+Scenario:
+User has only local storage.
+
+Recommended:
+Local Only.
+
+Prompt:
+"Your project currently has one copy. Add a backup destination?"
+[Add Storage] [Not Now]
+
+No nagging during recording.
+
+------------------------------------------------------------------------------
+22. STORAGE PROVIDER INSTALL UX
+------------------------------------------------------------------------------
+
+Provider Browser:
+
+Installed
+Connected
+Available
+Community
+Custom
+
+Example card:
+
+Nextcloud / WebDAV
+Status: Available
+Capabilities:
+Files, folders, chunked upload, versions
+
+[Install Connector]
+
+After install:
+[Connect / Configure Server]
+
+The same architecture can support community-maintained provider adapters, but
+they must be permissioned, signed/reviewed where distributed through an official
+marketplace, and isolated from unrelated project data.
+
+------------------------------------------------------------------------------
+23. NEXTCLOUD / WEBDAV
+------------------------------------------------------------------------------
+
+Nextcloud's official developer documentation exposes WebDAV operations including
+file/folder upload, download, move, copy, deletion, version handling and chunked
+uploads.
+
+This makes Nextcloud/WebDAV particularly valuable because users can attach:
+- a hosted Nextcloud account;
+- a self-hosted server;
+- some compatible NAS/cloud systems.
+
+A generic WebDAV adapter increases Poietek's independence from consumer-cloud
+vendors.
+
+------------------------------------------------------------------------------
+24. ACCEPTANCE TESTS
+------------------------------------------------------------------------------
+
+STO-001 Create project with no account/network/cloud.
+STO-002 User chooses custom local project folder.
+STO-003 User chooses different recording folder.
+STO-004 User chooses external drive.
+STO-005 Removing external drive shows missing/offline asset, not corruption.
+STO-006 Reconnect resolves matching assets by content hash.
+STO-007 Auto mode falls back safely to Local Only.
+STO-008 Auto mode never uploads before first remote-storage consent.
+STO-009 Connected cloud can be selected as backup.
+STO-010 Cloud failure does not block recording.
+STO-011 Upload queue resumes.
+STO-012 duplicate asset does not upload twice when content hash matches.
+STO-013 user can add a new connector after project creation.
+STO-014 user can decline connector installation.
+STO-015 project continues after connector removal.
+STO-016 credentials never appear in project export.
+STO-017 personal remote asset is not assumed team-readable.
+STO-018 team storage permission is validated.
+STO-019 Git export contains structured project state.
+STO-020 huge WAV is not committed to ordinary Git by default.
+STO-021 Git LFS use is explicit.
+STO-022 model-hub assets require model licence/trust validation.
+STO-023 complete portable export opens without cloud credentials.
+STO-024 changing storage policy safely migrates selected replicas.
+STO-025 deletion requires explicit choice between removing a replica and deleting
+        the canonical asset.
+STO-026 provider quota/status is presented without hardcoded stale assumptions.
+STO-027 cache eviction never deletes the sole canonical copy.
+STO-028 encrypted remote backup can be restored with authorized key.
+STO-029 web client does not claim it detected arbitrary installed desktop apps.
+STO-030 native client lists only accessible mounted locations.
+
+------------------------------------------------------------------------------
+25. VERIFIED REFERENCE SOURCES — AUGUST 2026
+------------------------------------------------------------------------------
+
+GitHub Git LFS:
+https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-git-large-file-storage
+
+Hugging Face Hub:
+https://huggingface.co/docs/hub/en/repositories
+https://huggingface.co/docs/hub/index
+
+Nextcloud WebDAV:
+https://docs.nextcloud.com/server/stable/developer_manual/client_apis/WebDAV/index.html
+
+END DOCUMENT 19

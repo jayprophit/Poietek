@@ -1,0 +1,89 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.1
+
+77 — MARKETPLACE COMMERCE, LEDGER & AUTOMATIC SPLITS
+====================================================
+
+COMPANIONS
+schemas/commerce-policy.schema.v1.json
+packages/commerce/src/AllocationEngine.ts
+packages/commerce/src/PaymentRail.ts
+database/rights-commerce-ledger.v1.sql
+
+POIETEK ECOSYSTEM MAY SELL
+
+songs
+albums
+videos
+clips
+samples
+sample packs
+presets
+plugins
+themes/skins
+templates
+tutorials
+licences
+other digital creator goods.
+
+ONE SALE
+
+Buyer pays once.
+
+Transaction records:
+product
+rights manifest version
+commerce policy version
+gross
+tax
+processor fee
+platform fee
+refund reserve if needed
+distributable amount
+beneficiary allocations.
+
+AUTOMATIC SPLIT
+
+Use approved CommercePolicy.
+
+Example only:
+Creator A 5000 bps
+Creator B 2500 bps
+Company C 1500 bps
+Platform 1000 bps.
+
+Actual splits come from approved agreement/policy, never AI inference.
+
+INTEGER MONEY
+
+All ledger calculations use minor units and deterministic rounding.
+
+PAYMENT PROCESSOR
+
+A marketplace rail such as Stripe Connect can support splitting a platform charge
+into transfers to multiple connected accounts.
+
+Still required:
+seller onboarding;
+identity/KYC as required by processor/law;
+payout account;
+refund/chargeback reconciliation;
+tax handling;
+territory availability.
+
+HISTORICAL IMMUTABILITY
+
+Order stores CommercePolicy version.
+Changing tomorrow's split does not rewrite yesterday's sale.
+
+DISPUTE
+
+Freeze affected unpaid allocation.
+Do not delete ledger history.
+Resolve through adjustment entries.
+
+ACCEPTANCE
+SELL-001 shares total exactly 10000 bps.
+SELL-002 £/$0.01 rounding deterministic.
+SELL-003 refund creates reversal/adjustment.
+SELL-004 old sale retains old policy.
+SELL-005 missing payout account holds beneficiary balance rather than paying wrong person.

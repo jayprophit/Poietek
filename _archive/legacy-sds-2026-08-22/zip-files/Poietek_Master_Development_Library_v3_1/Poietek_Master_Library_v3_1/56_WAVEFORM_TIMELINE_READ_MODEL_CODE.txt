@@ -1,0 +1,24 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.9
+
+56 — WAVEFORM / TIMELINE READ MODEL CODE
+========================================
+
+DELIVERED
+timeline/tempo.ts
+timeline/TimelineReadModel.ts
+ArrangeWorkspace.example.tsx
+
+TEMPO
+ticksToSeconds / secondsToTicks support multiple tempo segments.
+
+UI RULE
+Timeline rendering reads derived seconds/pixel positions.
+It does not rewrite the canonical clips while merely scrolling/zooming.
+
+NEXT
+Add central TimePixelTransform for zoom/scroll.
+Add waveform-level selector based on pixels/sample.
+
+TL-001 tempo map conversion fixture.
+TL-002 read model ignores non-audio clips safely.
+TL-003 zoom is UI-only state.

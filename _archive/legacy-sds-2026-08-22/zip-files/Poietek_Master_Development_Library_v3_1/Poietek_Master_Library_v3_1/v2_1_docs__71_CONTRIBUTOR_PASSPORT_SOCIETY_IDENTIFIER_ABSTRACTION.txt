@@ -1,0 +1,68 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.1
+
+71 — CONTRIBUTOR PASSPORT & SOCIETY IDENTIFIER ABSTRACTION
+==========================================================
+
+COMPANION
+schemas/contributor-passport.schema.v1.json
+packages/identity/src/ExternalIdentifierVault.ts
+
+CORE IDEA
+
+Poietek gives every person/company a stable internal Party ID.
+
+External identifiers are attached behind it:
+PRS/MCPS membership/CAE/IPI
+PPL account/member identifiers
+The MLC identifiers
+SoundExchange identifiers
+ISNI
+publisher/label identifiers
+other societies.
+
+The everyday UI shows the creator profile, not a wall of codes.
+
+EXAMPLE
+
+Maya Jones
+Producer · Performer
+
+Verified:
+PRS ✓
+PPL ✓
+
+Behind the scenes:
+Poietek Party ID -> verified external identifiers.
+
+EXPORT/REGISTRATION resolves only the identifiers required for that destination.
+
+SECURITY
+
+Raw external IDs:
+encrypted at rest where sensitive;
+masked in normal UI;
+never embedded in public media unless the identifier is intended/public for that
+purpose;
+never shared with unrelated collaborators.
+
+DDEX FIT
+
+DDEX RIN supports standard identifiers and proprietary identifiers expressed with
+a namespace plus the identifier. Poietek can therefore preserve provider-specific
+IDs without making them its own canonical identity.
+
+IDENTIFIER VERIFICATION
+
+self_declared
+format_checked
+provider_confirmed
+admin_verified.
+
+A self-declared identifier is not presented as provider-verified.
+
+ACCEPTANCE
+ID-001 one Party links multiple societies.
+ID-002 company and person identities distinct.
+ID-003 contributor profile remains stable if provider ID changes.
+ID-004 public UI masks private external IDs.
+ID-005 registration export resolves exact provider-required identifier.

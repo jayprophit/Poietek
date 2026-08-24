@@ -1,0 +1,66 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 3.0
+
+166 — DERIVED TUNING RENDITIONS, CACHE & CDN
+============================================
+
+COMPANION
+schemas/media-rendition.schema.v1.json
+
+POPULAR RETUNE
+
+If thousands of listeners request:
+A440 -> A432
+
+Poietek need not repeatedly process the master in real time.
+
+DERIVED RENDITION
+
+source hash
+source tuning
+target tuning
+pitch cents
+algorithm/version
+tempo preserved
+duration preserved
+output hash
+rights/provenance ref.
+
+CACHE KEY
+
+sourceContentHash
++
+targetReferenceHz
++
+algorithmVersion
++
+quality.
+
+STORAGE
+
+local cache
+Poietek CDN/object store
+BYOC cache
+edge/provider cache.
+
+DERIVATIVE NEVER BECOMES ORIGINAL.
+
+Invalidate/rebuild when:
+source changes
+algorithm changes
+creator disables rendition.
+
+COST ROUTER
+
+Realtime local
+vs
+cached server
+vs
+creator-supplied
+is selected by:
+device capability
+privacy
+cost
+network
+quality.
+
+END DOCUMENT 166

@@ -1,0 +1,105 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.2
+
+90 — END-TO-END TAMPER-EVIDENT CREATOR ECONOMY FLOW
+===================================================
+
+1 CONTRIBUTOR JOINS PROJECT
+
+Poietek Party ID.
+External identifiers mapped privately.
+
+2 CONTRIBUTION EVENT
+
+Who
+role
+object/track/clip
+signed event time
+device/session
+event hash.
+
+3 RIGHTS AGREEMENT
+
+Credit graph.
+Rights graph.
+Commerce/payout graph.
+
+4 CONTRIBUTORS APPROVE
+
+Normal Poietek approval and/or optional EIP-712 signature.
+
+5 FINAL ASSET
+
+SHA-256.
+Rights Manifest version.
+DDEX/C2PA outputs.
+
+6 EVIDENCE ANCHOR
+
+Manifest hash.
+Approval Merkle/root/hash.
+Release snapshot hash.
+Blockchain transaction receipt.
+
+7 SOCIETY/DISTRIBUTOR REGISTRATION
+
+PRS/MCPS
+PPL
+The MLC
+SoundExchange
+other connector.
+
+Confirmation receipts added to private ledger.
+Receipt batch may be anchored.
+
+8 SALE/USAGE
+
+Poietek internal:
+approved CommercePolicy allocates ledger entries.
+
+External:
+royalty statements imported and reconciled.
+
+9 SETTLEMENT BATCH
+
+Private detailed allocations.
+Merkle root.
+Optional blockchain anchor.
+
+10 PAYMENT
+
+Fiat processor/store/bank/on-chain rail.
+
+Payment receipt linked.
+
+11 CONTRIBUTOR VIEW
+
+Contributor can see:
+
+Contribution recorded ✓
+Rights Manifest v4 approved ✓
+Blockchain evidence ✓
+PRS work accepted ✓
+PPL performer claim ✓
+Marketplace earnings £...
+Royalty statements £...
+Paid £...
+Pending £...
+Settlement proof ✓
+
+12 CORRECTION
+
+Never erase history.
+Create new manifest/settlement adjustment.
+Link supersession.
+
+RESULT
+
+Poietek becomes both:
+creative production system
+and
+rights/provenance/commerce operating layer.
+
+But the blockchain is evidence infrastructure—not a replacement for copyright law,
+collecting societies, contracts, tax, payment processors or dispute resolution.
+
+END DOCUMENT 90

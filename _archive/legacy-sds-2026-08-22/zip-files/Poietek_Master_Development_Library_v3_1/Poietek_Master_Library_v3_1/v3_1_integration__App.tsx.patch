@@ -1,0 +1,15 @@
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@
+   const [masterState, setMasterState] = useState<MasterState>({
+     bpm: 94,
+     isPlaying: false,
+     isRecording: false,
+     currentStep: 0,
+     metronome: false,
+     masterVolume: 0.85,
++    reverbLevel: 0.2,
++    delayLevel: 0.15,
+     activeWorkspace: 'mpc',
+     learningModeActive: false,
+   });

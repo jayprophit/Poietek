@@ -1,0 +1,107 @@
+{
+  "version": "1.0",
+  "starScale": {
+    "1": "Prototype or major capability missing",
+    "2": "Basic usable capability; materially behind professional references",
+    "3": "Competitive baseline; normal professional use possible",
+    "4": "Strong professional implementation; matches best references in most tested scenarios",
+    "5": "Best-in-class release gate: meets/exceeds strongest reference on defined tests with no critical regressions"
+  },
+  "categories": [
+    {
+      "id": "platform_native",
+      "name": "Installed desktop/mobile/tablet + web",
+      "weight": 8
+    },
+    {
+      "id": "offline_local",
+      "name": "Offline/local-first reliability",
+      "weight": 8
+    },
+    {
+      "id": "audio_engine",
+      "name": "Audio engine/recording/render",
+      "weight": 10
+    },
+    {
+      "id": "arrangement",
+      "name": "DAW arrangement/editing",
+      "weight": 8
+    },
+    {
+      "id": "midi",
+      "name": "MIDI/composition",
+      "weight": 7
+    },
+    {
+      "id": "sampler",
+      "name": "Sampler/chop/pads",
+      "weight": 6
+    },
+    {
+      "id": "mix_master",
+      "name": "Mixing/mastering",
+      "weight": 8
+    },
+    {
+      "id": "plugins",
+      "name": "Plugin/instrument ecosystem",
+      "weight": 6
+    },
+    {
+      "id": "pitch_time",
+      "name": "Pitch/time/vocal alignment",
+      "weight": 5
+    },
+    {
+      "id": "dj",
+      "name": "DJ/DVS/live remix",
+      "weight": 6
+    },
+    {
+      "id": "video_vfx",
+      "name": "Video/VFX/color/audio-post",
+      "weight": 7
+    },
+    {
+      "id": "hardware",
+      "name": "Hardware/controller/device mapping",
+      "weight": 5
+    },
+    {
+      "id": "collab",
+      "name": "Collaboration/sync/versioning",
+      "weight": 5
+    },
+    {
+      "id": "storage",
+      "name": "Storage portability/BYOC",
+      "weight": 4
+    },
+    {
+      "id": "rights_publish",
+      "name": "Credits/rights/publishing workflow",
+      "weight": 3
+    },
+    {
+      "id": "ux_accessibility",
+      "name": "UX/accessibility/learning",
+      "weight": 5
+    },
+    {
+      "id": "stability",
+      "name": "Stability/performance/recovery",
+      "weight": 9
+    }
+  ],
+  "releasePolicy": {
+    "publicClaim": "Poietek 5-Star Certified",
+    "requirements": [
+      "No category below 4.5",
+      "Weighted overall >= 4.8",
+      "Audio engine, offline/local, stability and platform-native must each be 5.0",
+      "No open P0/P1 data-loss, security or audio-dropout regression",
+      "All 5-star scores backed by reproducible test evidence"
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.9
+
+157 — COMMUNITY TUNING LIBRARY
+==============================
+
+COMPANION
+schemas/community-tuning-profile.schema.v1.json
+packages/community/src/TuningCommunityService.ts
+
+COMMUNITY CAN SHARE
+
+A432 presets
+historical temperaments
+microtonal scales
+Scala mappings
+just-intonation sets
+regional/traditional tunings
+experimental tunings
+sound-design tuning systems.
+
+PROFILE PAGE
+
+Creator
+Description
+Reference pitch
+Temperament
+Scale
+Audio preview
+Compatible instruments
+Scala download/export
+Fork lineage
+Licence
+Ratings
+Reports.
+
+FORK
+
+A user can fork:
+"Jay's Organic A432 Just"
+-> "My A432 7-limit version."
+
+Lineage remains visible.
+
+HEALTH CLAIM MODERATION
+
+Community profile may say:
+"I prefer this sound."
+
+It may not be presented by Poietek as scientifically verified medical treatment
+without evidence/review.
+
+END DOCUMENT 157

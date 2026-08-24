@@ -1,0 +1,171 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.7
+
+37 — SECURITY THREAT MODEL v1
+=============================
+
+METHOD
+STRIDE-inspired analysis over trust boundaries.
+
+TRUST BOUNDARIES
+
+1 Local UI <-> Local Domain
+2 Domain <-> Native Audio/MIDI/Plugin processes
+3 Client <-> Backend
+4 Client <-> Storage Providers
+5 Backend <-> Storage Providers
+6 Client <-> Third-party Plugins
+7 Client <-> AI Models/Providers
+8 Public Community <-> Private Projects
+9 Admin <-> Production Data
+
+ASSETS TO PROTECT
+private recordings
+videos
+project metadata
+credentials/tokens
+rights/split records
+payment data later
+private messages
+plugin/provider secrets
+release approvals
+user identity
+local files.
+
+THREATS
+
+T1 Spoofed user/session
+Mitigation:
+short-lived tokens, secure refresh, MFA/passkeys later, server authorization.
+
+T2 IDOR / project access
+Mitigation:
+authorize every project/asset operation server-side; never trust client projectId.
+
+T3 Malicious storage connector
+Mitigation:
+connector permissions, domain allowlist, review, isolated credentials, explicit install.
+
+T4 SSRF through custom provider URL
+Mitigation:
+backend URL validation, private-network deny policy, DNS rebinding protection.
+
+T5 OAuth token leakage
+Mitigation:
+secure store, never project JSON/logs, minimum scopes, revocation.
+
+T6 Malicious plugin
+Mitigation:
+separate process, scan/quarantine, restricted filesystem where practical, crash isolation.
+
+T7 Malicious model/repository code
+Mitigation:
+no auto trust_remote_code, model hash, sandbox runtime, review licence/code.
+
+T8 Project file attack
+Mitigation:
+schema validation, size/depth limits, no arbitrary executable content, zip-slip protection.
+
+T9 Path traversal on archive extract
+Mitigation:
+canonicalize paths, reject .. / absolute paths / symlink escapes.
+
+T10 Huge/decompression bomb
+Mitigation:
+input size, ratio, duration, frame limits, streaming decode.
+
+T11 Media decoder vulnerability
+Mitigation:
+maintained codecs, sandbox workers, patch cadence, fuzzing.
+
+T12 CRDT/update denial of service
+Mitigation:
+update size/rate limits, compaction, authenticated peers, document partition.
+
+T13 Collaboration privilege escalation
+Mitigation:
+server membership/permission check for relay; rights approvals outside casual CRDT.
+
+T14 Public/private data leak
+Mitigation:
+separate stores/indexes, signed short-lived media URLs, permission-filtered search.
+
+T15 XSS community content
+Mitigation:
+escape/sanitize, CSP, no raw HTML by default.
+
+T16 CSRF
+Mitigation:
+same-site secure cookie strategy or token pattern; CSRF token where required.
+
+T17 Supply-chain dependency compromise
+Mitigation:
+lockfiles, SBOM, signatures/checksums, dependency review, secret scan.
+
+T18 Update compromise
+Mitigation:
+signed native updates, HTTPS, channel validation, rollback.
+
+T19 Firebase/Supabase security-rule mistake
+Mitigation:
+provider adapter integration tests, emulator tests, deny-by-default.
+
+T20 Firestore cost abuse
+Mitigation:
+rate limits, App Check where useful, local throttling, cost alerts; local app unaffected.
+
+T21 Storage deletion mistake
+Mitigation:
+distinguish Delete Replica vs Delete Asset; confirmation; retention grace.
+
+T22 Ransomware/local corruption
+Mitigation:
+snapshots, content hashes, optional independent backup replica.
+
+T23 Plugin state secret leakage
+Mitigation:
+do not assume plugin state is safe to publish; project visibility controls.
+
+T24 AI data exfiltration
+Mitigation:
+show provider/inputs, opt-in cloud AI, local model option, data-classification policy.
+
+T25 Prompt injection from imported docs/community
+Mitigation:
+AI tool permissions; retrieved text is data, not authority; confirmation for actions.
+
+T26 Admin abuse
+Mitigation:
+least privilege, MFA, audit, break-glass process, no broad content access by default.
+
+T27 Rights approval tampering
+Mitigation:
+append-only approvals/audit, explicit amendment workflow.
+
+T28 Replay webhook
+Mitigation:
+signature + event-id dedupe + timestamp window.
+
+T29 DVS/hardware raw message abuse
+Mitigation:
+SysEx/device-writing permission and allowlisted profile capabilities.
+
+T30 Realtime audio safety
+Mitigation:
+NaN/Inf guard, feedback detection, limiter/panic, bounded parameter values.
+
+SECURITY REQUIREMENTS
+SEC-001 local-only works without network identity.
+SEC-002 all provider tokens absent from project archive.
+SEC-003 archive extraction traversal tests.
+SEC-004 private project denied to unrelated user.
+SEC-005 plugin crash isolated.
+SEC-006 malicious extension denied undeclared permission.
+SEC-007 AI cannot upload project without explicit provider policy/permission.
+SEC-008 CRDT oversized update rejected.
+SEC-009 rights approval audited.
+SEC-010 public search excludes private assets.
+SEC-011 update signatures verified.
+SEC-012 logs redact tokens.
+SEC-013 delete replica does not delete canonical asset silently.
+SEC-014 custom storage endpoint SSRF-tested.
+SEC-015 threat model reviewed at each major trust-boundary change.

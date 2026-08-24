@@ -1,0 +1,43 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.6
+
+127 — CAPTIONS, ACCESSIBILITY, DIALOGUE & CONTENT AI
+====================================================
+
+CAPTION ENGINE
+
+speech recognition
+speaker identification
+timing
+line breaking
+reading-speed checks
+caption position
+translation workflow
+human review.
+
+FORMATS
+
+WebVTT for web profiles.
+TTML/IMSC/other target formats where required.
+SRT as practical interchange where appropriate.
+
+AI
+
+Generate draft captions.
+Never mark auto captions final without confidence/review policy.
+
+ACCESSIBILITY
+
+captions
+subtitles
+transcript
+audio description workflow
+dialogue clarity
+language metadata
+flashing/visual-risk analysis where a validated standard/method exists.
+
+DAPT / TIMED TEXT
+
+Future TTML-based dubbing/audio-description workflows can integrate with the
+Video/Localization subsystem.
+
+END DOCUMENT 127

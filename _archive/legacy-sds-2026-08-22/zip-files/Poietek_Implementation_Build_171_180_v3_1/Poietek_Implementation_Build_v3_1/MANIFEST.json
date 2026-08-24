@@ -1,0 +1,412 @@
+{
+  "name": "Poietek Implementation Build",
+  "version": "3.1",
+  "documents": "171-180",
+  "targetRepository": "jayprophit/Studio-Daw-Station-SDS-",
+  "validation": {
+    "typescript": "pass",
+    "tests": "4/4 pass"
+  },
+  "files": [
+    {
+      "path": "README_BUILD_v3_1.md",
+      "bytes": 1409,
+      "sha256": "ab564e5c7b01fff6a0861a9b32d88f5084fc03d95c553bbc299d4e30322dd3af"
+    },
+    {
+      "path": "VALIDATION.txt",
+      "bytes": 1032,
+      "sha256": "def39b471ebc3484a108896af613e0f3b0a31c3317b652a893fe0b949c7512f3"
+    },
+    {
+      "path": "dist-test/app/PoietekRuntime.js",
+      "bytes": 2142,
+      "sha256": "48298a999fadb3cb78b448eaa6df946614d749e4ce9d3a03f0e0c0821946f69f"
+    },
+    {
+      "path": "dist-test/assets/AssetStore.js",
+      "bytes": 77,
+      "sha256": "d43aa81f5bc89faa359e0f97c814ba25155591ff078fbb9bfd40f8c7c9683230"
+    },
+    {
+      "path": "dist-test/assets/ImportAudioService.js",
+      "bytes": 1796,
+      "sha256": "722dcda6efb214bd8fc8feb06ed5ce9cd6d624c5ff383e1f53c389cf391893e4"
+    },
+    {
+      "path": "dist-test/assets/WebLocalAssetStore.js",
+      "bytes": 3510,
+      "sha256": "ca88e741b9d67443f2def1f09583d96b54abcacd0f4e6bde1caeb3547620b9f0"
+    },
+    {
+      "path": "dist-test/assets/sha256.js",
+      "bytes": 380,
+      "sha256": "d8e479832e2d20ce01e4bbe8854ba842556c3091fb3399d25c12228ea30e2c46"
+    },
+    {
+      "path": "dist-test/assets/waveform.js",
+      "bytes": 1614,
+      "sha256": "35bb6e4dce83ef430064e3785389f609206deb0788fc62fdf87f447b42e062b2"
+    },
+    {
+      "path": "dist-test/audio/AssetAudioResolver.js",
+      "bytes": 837,
+      "sha256": "bc3ad45f8c7461a528d1890e7c0b0b282a5016adc47b2fcb8867afebc305f650"
+    },
+    {
+      "path": "dist-test/audio/WebAudioTimelinePlayer.js",
+      "bytes": 4466,
+      "sha256": "ac8799334bd09cb73064b2d83208ef9c4c50ff82c0d317c38467fa0628f49771"
+    },
+    {
+      "path": "dist-test/domain/ids.js",
+      "bytes": 747,
+      "sha256": "2401d7663269268c5013f08363ecb650c82f3942f1a1966e6c9c4f8910480e7e"
+    },
+    {
+      "path": "dist-test/domain/projectFactory.js",
+      "bytes": 937,
+      "sha256": "9f7bad54b343c6d14bf5966fbb90a0349ea32cf6301c5051265ea900dd175fe9"
+    },
+    {
+      "path": "dist-test/domain/types.js",
+      "bytes": 77,
+      "sha256": "d43aa81f5bc89faa359e0f97c814ba25155591ff078fbb9bfd40f8c7c9683230"
+    },
+    {
+      "path": "dist-test/domain/validate.js",
+      "bytes": 1406,
+      "sha256": "a6ab7ae81a9b4e5be40fead19f2dccee79544e17a328a44f5c0b7aea7e7915cd"
+    },
+    {
+      "path": "dist-test/health/BasicAudioHealthAnalyzer.js",
+      "bytes": 3969,
+      "sha256": "7a1cde93d3b060ae21328a8caf5fd4455dd1a40952e11be9183fff14bcb42c19"
+    },
+    {
+      "path": "dist-test/health/StandardsLoudnessAnalyzer.js",
+      "bytes": 672,
+      "sha256": "9cfcffc77a2fa697490c7f6b2cc9da8d030d5b66894046939e7b35edd2ece0c6"
+    },
+    {
+      "path": "dist-test/player/TimePreservingPitchBackend.js",
+      "bytes": 937,
+      "sha256": "4b73ca887ba707b4e2b90d6f03095d0103027193836b137ca3eb2612fb39167e"
+    },
+    {
+      "path": "dist-test/project/IndexedDbProjectRepository.js",
+      "bytes": 2855,
+      "sha256": "e6db586c05a993d3282492d52ef025942cd622f70aece4e467d43d68900e8cce"
+    },
+    {
+      "path": "dist-test/project/ProjectRepository.js",
+      "bytes": 77,
+      "sha256": "d43aa81f5bc89faa359e0f97c814ba25155591ff078fbb9bfd40f8c7c9683230"
+    },
+    {
+      "path": "dist-test/project/ProjectSession.js",
+      "bytes": 1996,
+      "sha256": "324f6267d7c69f75d9e67a22053e4eb7052b20a077f0396f34e6c9c0204f9ffd"
+    },
+    {
+      "path": "dist-test/project/operations.js",
+      "bytes": 2092,
+      "sha256": "28a5555162003743fbb55ea2505662e8014a0a5d64eb2394492fdcc0fcb4a337"
+    },
+    {
+      "path": "dist-test/providers/CapabilityRouter.js",
+      "bytes": 1189,
+      "sha256": "5289311e11f7e60a3011951eb46031cb49267800ff0d1e2f08f1789073be7c87"
+    },
+    {
+      "path": "dist-test/providers/FirebaseRestProvider.js",
+      "bytes": 1389,
+      "sha256": "9e0bc05b20099c7bff33d12abf3825f539ab240a278b5220a0675138ba0b0fdf"
+    },
+    {
+      "path": "dist-test/providers/LocalProvider.js",
+      "bytes": 464,
+      "sha256": "2d7026834555fa13fac661eee8b24f5299344d19c15083021676394fe90fe08c"
+    },
+    {
+      "path": "dist-test/providers/SupabaseRestProvider.js",
+      "bytes": 1301,
+      "sha256": "5de8445be76586d3b435b629ad7c76cea342088438e378f4829f2240391d5e23"
+    },
+    {
+      "path": "dist-test/providers/types.js",
+      "bytes": 77,
+      "sha256": "d43aa81f5bc89faa359e0f97c814ba25155591ff078fbb9bfd40f8c7c9683230"
+    },
+    {
+      "path": "dist-test/release/ReleaseReadinessEngine.js",
+      "bytes": 3278,
+      "sha256": "0ff4a0d82ffe64fe465487dbc33622ffb480480146e48aa676cccaa3eea8ba25"
+    },
+    {
+      "path": "dist-test/timeline/tempo.js",
+      "bytes": 1593,
+      "sha256": "d9106eba3df92c5f64f6a1729a9dfc25e6a9d1d2129bf19c2c5368cc5c1a6c51"
+    },
+    {
+      "path": "docs/171_REPO_READY_IMPLEMENTATION_FOUNDATION.txt",
+      "bytes": 590,
+      "sha256": "7093c17dcb39e275a94a85c25795fb3a6ca500b084e31f24d38eb9dee796ac43"
+    },
+    {
+      "path": "docs/172_LOCAL_PROJECT_RUNTIME_SESSION_UNDO.txt",
+      "bytes": 451,
+      "sha256": "5e0c7e4b87aaee048e5d44de284e451a566c864d3f072f909495efcaafe54671"
+    },
+    {
+      "path": "docs/173_REAL_AUDIO_IMPORT_ASSET_WAVEFORM.txt",
+      "bytes": 476,
+      "sha256": "2036748cd8ee7c3dae1d329cbd89c7e3e715ae6050f9b58778c1b8aa179a1a3a"
+    },
+    {
+      "path": "docs/174_WEBAUDIO_TIMELINE_PLAYBACK.txt",
+      "bytes": 444,
+      "sha256": "edb68749cc8052234fc3d7ed4fce0f90b931c601219f5f29b3c005de567dc9cf"
+    },
+    {
+      "path": "docs/175_AUDIO_HEALTH_IMPLEMENTATION.txt",
+      "bytes": 392,
+      "sha256": "ed95a711ac783a0264865940e95aac4080e20aca751c2a0262150e6da45e7671"
+    },
+    {
+      "path": "docs/176_TUNING_COMMUNITY_PLAYER_BUILD_BOUNDARY.txt",
+      "bytes": 526,
+      "sha256": "c7cc4b22323f19e690069b502cc1b3bde34148c7171082a56e467dd3fc50fa4e"
+    },
+    {
+      "path": "docs/177_RELEASE_READINESS_ENGINE_CODE.txt",
+      "bytes": 373,
+      "sha256": "b72090d3cc7bbc1dd7497adeff80f2d96f536c445cc1c683f78cd7ba1f517366"
+    },
+    {
+      "path": "docs/178_MULTI_PROVIDER_CAPABILITY_ROUTER_CODE.txt",
+      "bytes": 492,
+      "sha256": "cee56142e4d7e6f48bddb38fa28bce2e615b5f7867bb6bb25fcfe12246ee99af"
+    },
+    {
+      "path": "docs/179_NATIVE_PWA_BUILD_SCAFFOLD.txt",
+      "bytes": 448,
+      "sha256": "8a6cee5606d71a799b1e90655065d960cbf5c6677e11aadaa8810035b4b1f081"
+    },
+    {
+      "path": "docs/180_REPO_INTEGRATION_VALIDATION_AND_NEXT_BUILD.txt",
+      "bytes": 794,
+      "sha256": "4ecce5f4693072b947ed29ed69e76f8cab7bbe192242581d53f89cc1ff31d147"
+    },
+    {
+      "path": "integration/App.tsx.patch",
+      "bytes": 349,
+      "sha256": "6743b5b620b33587530ae3e8666debc13fd9049d9cadad9a897f433d6f8f54f2"
+    },
+    {
+      "path": "integration/index.html.patch",
+      "bytes": 149,
+      "sha256": "f6f56f2070bd7c2580dd518224e2f8a65745b11870df86dd9b34dc82b09b9878"
+    },
+    {
+      "path": "integration/main.tsx.patch",
+      "bytes": 690,
+      "sha256": "e4ca1d4fb1dcac7b703e6c05f04b888c56c49b5b296303b2cea1e10d519fa1cd"
+    },
+    {
+      "path": "integration/package.json.patch",
+      "bytes": 720,
+      "sha256": "1f5dd46690440091e1b139fd7adf57b059ca1dcd5d7816569f3ce9ed61e049aa"
+    },
+    {
+      "path": "repo-overlay/public/poietek-sw.js",
+      "bytes": 938,
+      "sha256": "650bf3380d8d0bb132bdf805e66545f2b1af3289dc9c1d5cc46e9195f7b78356"
+    },
+    {
+      "path": "repo-overlay/public/poietek.webmanifest",
+      "bytes": 240,
+      "sha256": "065ed5850d308dc096c183450ca4b33db4f5017d137554dd7d92648c1c22d5b7"
+    },
+    {
+      "path": "repo-overlay/src/poietek/app/PoietekRuntime.ts",
+      "bytes": 1900,
+      "sha256": "9909db072c726ad77dd6750717624f12777247a5d5af11e2c355dc697e54bae6"
+    },
+    {
+      "path": "repo-overlay/src/poietek/assets/AssetStore.ts",
+      "bytes": 213,
+      "sha256": "9d93655c2741e37352cc3352d27a05fdce7ed7bbfe985c7f7c6e8c17b369db34"
+    },
+    {
+      "path": "repo-overlay/src/poietek/assets/ImportAudioService.ts",
+      "bytes": 1646,
+      "sha256": "e2b0eafa1f1d50e3164c789ad66133eaec2cbaf010c24ee536c8f725856be202"
+    },
+    {
+      "path": "repo-overlay/src/poietek/assets/WebLocalAssetStore.ts",
+      "bytes": 3274,
+      "sha256": "69bced728eb0e9ce4ac5bc8a69d4e1d7a48af8d2e33c880665303e26689c9e78"
+    },
+    {
+      "path": "repo-overlay/src/poietek/assets/sha256.ts",
+      "bytes": 286,
+      "sha256": "034925468a3a0ff8e3dd3a4aa49e068fd229192b5d008ba58cb495771e80800d"
+    },
+    {
+      "path": "repo-overlay/src/poietek/assets/waveform.ts",
+      "bytes": 1462,
+      "sha256": "f50b831e0b40a1d9bfdfb1c06a62d5e1af555899f7bb4ce650fcd8c5df6250d8"
+    },
+    {
+      "path": "repo-overlay/src/poietek/audio/AssetAudioResolver.ts",
+      "bytes": 713,
+      "sha256": "3d196527b6dec0382aa5255ef08cc98f53fde2585d0d932d7fd4362e69bd4c10"
+    },
+    {
+      "path": "repo-overlay/src/poietek/audio/WebAudioTimelinePlayer.ts",
+      "bytes": 4382,
+      "sha256": "7ad6ab658866e82af519a2548dc521b5d48e826cb30a5b9789db9920f1a87625"
+    },
+    {
+      "path": "repo-overlay/src/poietek/domain/ids.ts",
+      "bytes": 661,
+      "sha256": "309cc11d001e6a3ab3500eb612f03140014b384c42fc81cdc570ccfd90d02caa"
+    },
+    {
+      "path": "repo-overlay/src/poietek/domain/projectFactory.ts",
+      "bytes": 794,
+      "sha256": "c6e331ecc8fc93a93e0a86553547e53136926bbc99c9208400d525b583f2adc2"
+    },
+    {
+      "path": "repo-overlay/src/poietek/domain/types.ts",
+      "bytes": 1847,
+      "sha256": "71ea272351de5c752eddb044099711555aac2306b686fe6a91808d897d9db3d9"
+    },
+    {
+      "path": "repo-overlay/src/poietek/domain/validate.ts",
+      "bytes": 1246,
+      "sha256": "7a08987851468b5ac6c2b410aeeef75471cf86d7716b53a1a628ee10341e790c"
+    },
+    {
+      "path": "repo-overlay/src/poietek/health/BasicAudioHealthAnalyzer.ts",
+      "bytes": 4192,
+      "sha256": "91b6b00bd73373ea6042099e356ed16bf58d0473614a6d7b2cd8a23dc42da248"
+    },
+    {
+      "path": "repo-overlay/src/poietek/health/StandardsLoudnessAnalyzer.ts",
+      "bytes": 911,
+      "sha256": "a6a9c9d93773d8ff83158fb4b3aa14a37d659644ccb7a3fbb31c27a78cb38ab1"
+    },
+    {
+      "path": "repo-overlay/src/poietek/player/TimePreservingPitchBackend.ts",
+      "bytes": 1368,
+      "sha256": "c72951af26dc5363aca43ab3ee8124cd71eaf27520b6c6396803721b2e0ad4b8"
+    },
+    {
+      "path": "repo-overlay/src/poietek/project/IndexedDbProjectRepository.ts",
+      "bytes": 2841,
+      "sha256": "0563f69bc44c92ea765c85891e9b5a0676bf7837ba2d15c72ef29d52df499855"
+    },
+    {
+      "path": "repo-overlay/src/poietek/project/ProjectRepository.ts",
+      "bytes": 377,
+      "sha256": "6e0ffea82ef9abe9a645b74aaa319052747f22aa285c38d4277b72fb04f2c9c3"
+    },
+    {
+      "path": "repo-overlay/src/poietek/project/ProjectSession.ts",
+      "bytes": 2031,
+      "sha256": "9f4deaecf927dfa9778f4d3bcfa66c347ff63cf2b2e6316ba2bd2784e0bf5584"
+    },
+    {
+      "path": "repo-overlay/src/poietek/project/operations.ts",
+      "bytes": 2038,
+      "sha256": "cc1945881047d25b690b430574edea1cc7b62a7ea14649d429fa4e96a95f1dcc"
+    },
+    {
+      "path": "repo-overlay/src/poietek/providers/CapabilityRouter.ts",
+      "bytes": 1311,
+      "sha256": "0a5c97c1732e391826ea28e4213ff5173b6b20c95df22ed73e4684ef1176b5b9"
+    },
+    {
+      "path": "repo-overlay/src/poietek/providers/FirebaseRestProvider.ts",
+      "bytes": 1347,
+      "sha256": "92595e50e450d899bd63dd0e6b10e97737fb0348b237323a003992f58f8251ad"
+    },
+    {
+      "path": "repo-overlay/src/poietek/providers/LocalProvider.ts",
+      "bytes": 477,
+      "sha256": "6e69ac21ec385b3e9e79a5bea89887d5df85f420fa19f522ee755325fd8de49f"
+    },
+    {
+      "path": "repo-overlay/src/poietek/providers/SupabaseRestProvider.ts",
+      "bytes": 1250,
+      "sha256": "bccd589843ea1a0e30f722639975d891bda2708b4f706daa4d6261523e4a31a2"
+    },
+    {
+      "path": "repo-overlay/src/poietek/providers/types.ts",
+      "bytes": 538,
+      "sha256": "b14aff2f5ee54823c893bc3fb12afde6e93b5a3b6d7eb81c1e52f02ffb93bb01"
+    },
+    {
+      "path": "repo-overlay/src/poietek/pwa/registerServiceWorker.ts",
+      "bytes": 372,
+      "sha256": "c57f92a49d16e9d72ab9646294f4d255aa50ec75f379adac43ec1af2d530b0db"
+    },
+    {
+      "path": "repo-overlay/src/poietek/react/PoietekRuntimeProvider.tsx",
+      "bytes": 1811,
+      "sha256": "864804b25594fc316534bf3239f59a74b40c0514d36ee8b708c786cf3fed0929"
+    },
+    {
+      "path": "repo-overlay/src/poietek/react/PoietekRuntimeStatus.tsx",
+      "bytes": 1021,
+      "sha256": "ffd9a9391ce4c0fbf0bd45c18afc13301cfd5f4f7cfb716935c529c6a7213cf3"
+    },
+    {
+      "path": "repo-overlay/src/poietek/release/ReleaseReadinessEngine.ts",
+      "bytes": 3718,
+      "sha256": "1edcfd77b3d86a427117517b32f9cd7c9d870a7423e49c51ef6e37a5ae76286e"
+    },
+    {
+      "path": "repo-overlay/src/poietek/timeline/tempo.ts",
+      "bytes": 1497,
+      "sha256": "0931d3aafe08d3c6e051c6ec7636246ee284be6813482ede46f041b177ebac36"
+    },
+    {
+      "path": "repo-overlay/src-tauri/Cargo.toml",
+      "bytes": 393,
+      "sha256": "c162648bd7ba020700cf5918380b60ec55f022aa4edebbd823725510c1270488"
+    },
+    {
+      "path": "repo-overlay/src-tauri/build.rs",
+      "bytes": 39,
+      "sha256": "487059eaf8a947b80f20a9aacac038a5047b2ad69d2401b827376c67d6fe847f"
+    },
+    {
+      "path": "repo-overlay/src-tauri/src/lib.rs",
+      "bytes": 183,
+      "sha256": "318c6d7fa1e6722f86576eaac32927267d54955cd0aea77192529aeb277008af"
+    },
+    {
+      "path": "repo-overlay/src-tauri/src/main.rs",
+      "bytes": 38,
+      "sha256": "a5f5d2dc5983c3a843f633f19490f9a1ab8912c23cfa613c6a0f9a643127b00f"
+    },
+    {
+      "path": "repo-overlay/src-tauri/tauri.conf.json",
+      "bytes": 633,
+      "sha256": "be7c55720d709e3a18865a2a6863902a47cef8f8dd6f26061aa8be8080e566f2"
+    },
+    {
+      "path": "tests/pure-core.test.js",
+      "bytes": 1652,
+      "sha256": "ac46dcdf3cc7cb55f89a6a2fa308965ffff43ffb27e8c19ad78afa9f57d543e8"
+    },
+    {
+      "path": "tsconfig.core.json",
+      "bytes": 898,
+      "sha256": "55f627100c7294ea0651118787cd6adb5176f4f14509d0d8d00f6344e6e27be6"
+    }
+  ]
+}

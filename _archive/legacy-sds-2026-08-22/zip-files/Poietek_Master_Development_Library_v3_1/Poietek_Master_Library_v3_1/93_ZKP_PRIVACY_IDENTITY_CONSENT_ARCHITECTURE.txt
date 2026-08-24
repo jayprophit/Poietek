@@ -1,0 +1,33 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.3
+
+93 — ZERO-KNOWLEDGE PRIVACY, IDENTITY & CONSENT
+===============================================
+
+ZKP candidate uses:
+prove verified contributor membership without revealing raw society member ID;
+prove required seller/KYC state without exposing the identity document;
+prove inclusion in an approved settlement without revealing unrelated finances;
+prove age/eligibility threshold where lawful and useful.
+
+Every ZK feature requires:
+precise statement;
+public inputs;
+private witness;
+proof-system selection;
+setup/trust analysis;
+performance benchmark;
+privacy/threat model;
+independent cryptographic review.
+
+ZKP does not replace:
+legal agreements;
+KYC rules;
+society registrations;
+tax;
+payout compliance;
+normal access control.
+
+Recommended first pilot:
+Verified Contributor Credential.
+
+END DOCUMENT 93

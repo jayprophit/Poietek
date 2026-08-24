@@ -1,0 +1,83 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.1
+
+79 — MANAGED SERVICES, MONETIZATION & FREE-PROVIDER ABSTRACTION
+==============================================================
+
+OWNER-SIDE PROVIDERS
+
+During prototype/early operation, Poietek's operator may combine:
+Supabase
+Firebase
+object storage
+GitHub
+Hugging Face
+other free/open services
+local/self-hosted workers.
+
+END USERS SHOULD NOT NEED THOSE ACCOUNTS.
+
+User sees:
+Poietek account
+Poietek project
+Poietek cloud/sync status
+Poietek marketplace.
+
+Provider routing is infrastructure.
+
+EXCEPTIONS
+
+Users/sellers may need to onboard directly or indirectly with:
+payment/payout processor;
+collecting society;
+distributor;
+regulated identity/tax service
+
+when the external organisation legally requires the account/mandate.
+
+FREE-TIER ROUTER
+
+ServiceRouter selects provider using:
+capability
+quota
+cost
+latency
+privacy
+region
+availability
+licence.
+
+NEVER "FREE FOREVER"
+
+Free provider terms/quotas can change.
+Production architecture must support paid migration and provider replacement.
+
+MONETIZATION OPTIONS
+
+Free local core.
+Optional subscription for managed cloud/team services.
+Storage/compute tiers.
+AI compute credits.
+Marketplace commission.
+Transaction/platform fee.
+Premium collaboration/team administration.
+Creator storefront tools.
+Enterprise/studio/education plans.
+Optional paid support.
+
+DO NOT CHARGE USERS FOR THEIR OWN RIGHTS
+
+Poietek may charge for:
+software/service/automation/marketplace infrastructure.
+
+It should not imply the fee creates the copyright or royalty entitlement.
+
+SUSTAINABILITY
+
+The user experience remains simple even if Poietek internally uses many providers.
+
+ACCEPTANCE
+BIZ-001 external provider outage hidden behind graceful fallback where possible.
+BIZ-002 user can export project/data.
+BIZ-003 subscription cancellation does not erase local project.
+BIZ-004 marketplace fees disclosed.
+BIZ-005 provider cost tracked per capability.

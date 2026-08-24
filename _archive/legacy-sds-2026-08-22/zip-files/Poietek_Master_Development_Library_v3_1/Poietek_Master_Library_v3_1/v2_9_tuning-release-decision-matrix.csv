@@ -1,0 +1,9 @@
+Situation,A432 status,Poietek behavior
+Community release/listening,Allowed,Publish normally with tuning metadata
+Private project,Allowed,No advisory required unless user asks
+Streaming/public release with no explicit pitch requirement,Allowed,Pass + optional compatibility advisory
+Session musician/collaborator expects A440,Allowed original,Offer separate A440 compatibility version
+Client explicitly requires A440,Original preserved,Fail only client profile; create compatibility copy
+Historical ensemble requires A415,A432 does not meet selected ensemble target,Offer A415 compatibility/session copy
+Microtonal destination supports Scala/MTS,Allowed,Preserve tuning and export mapping
+Destination cannot reproduce microtuning live,Creative master allowed,Warn about playback/instrument compatibility

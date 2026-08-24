@@ -1,0 +1,43 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.9
+
+158 — ORGANIC TUNING COMMUNITY DISCOVERY
+========================================
+
+DISCOVERY CATEGORIES
+
+Organic
+Historical
+Microtonal
+World/Regional
+Just Intonation
+Adaptive
+Experimental
+Meditative/Ambient
+Custom.
+
+"Meditative" describes intended creative use, not a medical effect.
+
+COMMUNITY FEATURES
+
+follow creator
+save tuning
+fork tuning
+use in project
+share example
+challenge/remix
+compare A/B
+learn theory.
+
+CHALLENGE EXAMPLE
+
+"Create a track using A432 + Just Intonation."
+
+Submission stores tuning profile ID so listeners can inspect the actual system.
+
+AI can teach:
+frequency ratios
+beating
+temperament differences
+microtonal harmony.
+
+END DOCUMENT 158

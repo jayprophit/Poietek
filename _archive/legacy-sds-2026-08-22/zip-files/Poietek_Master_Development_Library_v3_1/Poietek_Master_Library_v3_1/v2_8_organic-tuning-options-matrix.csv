@@ -1,0 +1,12 @@
+Preset / system,Reference,Category,Why Poietek supports it,Health/science treatment
+ISO A440 / 12-TET,A4=440 Hz,Formal standard,Default interoperable modern pitch reference,No health claim
+A432 / 12-TET,A4=432 Hz,Creative alternative,User preference / alternate tonal reference,Do not claim universal natural/healing benefit
+A442 / 12-TET,A4=442 Hz,Ensemble option,Common ensemble/orchestral requirement where specified,No health claim
+A415,A4=415 Hz,Historical reference,Historical/Baroque-oriented workflows,No health claim
+Just intonation,Frequency ratios,Harmonic system,Intervals based on simple integer ratios,"Mathematical/acoustic rationale, not medical claim"
+Pythagorean,3:2-derived ratios,Historical temperament,Historical/modal/microtonal work,No health claim
+Quarter-comma meantone,Temperament,Historical temperament,Renaissance/Baroque/keyboard options,No health claim
+Werckmeister/Vallotti,Unequal temperament,Historical temperament,Historical keyboard/ensemble options,No health claim
+19/24/31 EDO,Equal divisions/octave,Microtonal,Alternative pitch grids,No health claim
+Scala SCL/KBM,Custom,Interchange format,Large custom tuning ecosystem,Profile carries provenance
+Adaptive just,Context-aware ratios,Poietek advanced mode,More consonant chord intervals with bounded retuning,Creative/acoustic mode

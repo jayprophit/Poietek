@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/project-access-policy/v1",
+  "title": "Poietek Project Access Policy v1",
+  "type": "object",
+  "required": [
+    "projectId",
+    "ownerPartyId",
+    "defaultRole",
+    "maxConcurrentSessions",
+    "devicePolicy"
+  ],
+  "properties": {
+    "projectId": {
+      "type": "string"
+    },
+    "ownerPartyId": {
+      "type": "string"
+    },
+    "defaultRole": {
+      "enum": [
+        "viewer",
+        "reviewer",
+        "performer",
+        "editor",
+        "producer"
+      ]
+    },
+    "maxConcurrentSessions": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "description": "null means no project-level cap"
+    },
+    "devicePolicy": {
+      "type": "object",
+      "required": [
+        "mode"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "single_device",
+            "limited_devices",
+            "unlimited_devices"
+          ]
+        },
+        "maxDevicesPerMember": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "guestPolicy": {
+      "type": "object",
+      "properties": {
+        "allowStudioDeviceGuest": {
+          "type": "boolean"
+        },
+        "claimLater": {
+          "type": "boolean"
+        },
+        "defaultExpiryMinutes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "members": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "partyId",
+          "role",
+          "accessMode",
+          "permissions",
+          "status"
+        ],
+        "properties": {
+          "partyId": {
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "owner",
+              "admin",
+              "producer",
+              "editor",
+              "performer",
+              "mixer",
+              "mastering",
+              "video_editor",
+              "visual_artist",
+              "reviewer",
+              "viewer",
+              "guest"
+            ]
+          },
+          "accessMode": {
+            "enum": [
+              "one_session",
+              "time_limited",
+              "project_lifetime",
+              "team_reusable",
+              "organisation",
+              "unlimited"
+            ]
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "expiresAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "status": {
+            "enum": [
+              "invited",
+              "active",
+              "suspended",
+              "revoked",
+              "expired"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

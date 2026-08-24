@@ -1,0 +1,46 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.2
+
+88 — WALLETLESS UX, SMART ACCOUNTS & GAS SPONSORSHIP
+=====================================================
+
+PRODUCT RULE
+
+Users should not need to understand:
+seed phrases
+gas
+chain IDs
+RPCs
+wallet networks
+
+to record a song or receive ordinary royalties.
+
+LEVEL 0
+No blockchain account.
+Poietek operates off-chain/local.
+
+LEVEL 1
+Poietek anchors evidence on behalf of user/service.
+User sees verification receipt.
+
+LEVEL 2
+User links an existing wallet if desired.
+
+LEVEL 3
+Smart-account/account-abstraction UX.
+Programmable recovery, batching and sponsored gas may improve experience.
+
+Ethereum's current account-abstraction direction explicitly supports smart-contract
+wallets and can enable applications/paymasters to sponsor transaction fees.
+
+KEY RECOVERY
+
+Never make a contributor lose rights records because a wallet key is lost.
+
+Poietek Party identity remains canonical.
+Wallets are linked proof/signing methods that can be rotated under audited policy.
+
+ACCEPTANCE
+WALLET-001 ordinary user can ignore blockchain.
+WALLET-002 lost wallet does not delete rights record.
+WALLET-003 wallet rotation audited.
+WALLET-004 sponsored gas cost tracked by platform.

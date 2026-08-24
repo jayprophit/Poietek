@@ -1,0 +1,227 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 1.6 ADDENDUM
+
+30 — MASTER GAP ANALYSIS & REMAINING ROADMAP
+============================================
+
+PURPOSE
+
+The specification is broad. This document identifies what is still missing
+between "comprehensive vision" and "buildable production product."
+
+------------------------------------------------------------------------------
+A. NOW WELL COVERED
+------------------------------------------------------------------------------
+
+Vision/product principles
+Repository audit
+Canonical project model
+Cross-platform architecture
+Offline-first/sync/collaboration
+Audio/MIDI/hardware
+DAW/sampling/mixing/mastering
+Video/VFX
+AI
+Community/rights/publishing
+UX/accessibility
+Security/extensions
+Roadmap
+Acceptance tests
+Pitch/vocal editing
+DJ/DVS/live
+Plugin/synthesis/effects
+BYOC storage
+Open resources
+Firebase prototype
+Frontend/backend/system architecture
+Engineering/release structure
+Brand architecture
+Legal/compliance structure
+Interoperability/formats
+Packaging/localization/support
+Performance/certification
+
+------------------------------------------------------------------------------
+B. STILL MISSING AS CONCRETE BUILD ARTIFACTS
+------------------------------------------------------------------------------
+
+1. ACTUAL JSON SCHEMAS
+Project v1
+DeviceProfile v1
+Storage connector manifest
+Extension manifest
+Events.
+
+2. ACTUAL DATABASE DDL
+Tables, indexes, row-level policies, migrations.
+
+3. ACTUAL API SPEC
+OpenAPI/typed RPC schema.
+
+4. ACTUAL CRDT DOCUMENT DESIGN
+Exact Yjs/other document partition and operation mapping.
+
+5. ACTUAL WIREFRAMES
+Phone/tablet/desktop screens with interactions.
+
+6. DESIGN SYSTEM AS CODE
+Tokens/components/storybook-style catalogue.
+
+7. REAL DSP TECHNICAL DESIGNS
+Scheduler
+resampler
+stretch
+EQ
+dynamics
+mix graph
+render.
+
+8. VIDEO TECHNICAL DESIGN
+decode/compositor/cache/render.
+
+9. PLUGIN-HOST PROTOTYPE DESIGN
+process IPC/shared memory/GUI embedding.
+
+10. SECURITY THREAT MODEL
+STRIDE-style or equivalent per boundary.
+
+11. PRIVACY DATA MAP
+Every collected field and retention.
+
+12. FORMAL LEGAL REVIEW
+Trademark, copyright, OSS, platform policies, payments.
+
+13. PRODUCT BUSINESS MODEL
+Operating cost, staffing, pricing, cloud economics.
+
+14. SUPPORT/COMMUNITY OPERATIONS
+Moderation staffing/escalation.
+
+15. USER RESEARCH
+Test the navigation/terminology with real creators.
+
+16. ACCESSIBILITY USER TESTING
+Assistive-tech creators.
+
+17. DEVICE LAB
+Real hardware validation.
+
+18. CODEC/FORMAT SPIKES
+Verify real portability.
+
+19. MODEL BENCHMARKS
+Stem/pitch/tagging/transcription quality.
+
+20. FIRST END-TO-END IMPLEMENTATION
+The most important missing item.
+
+------------------------------------------------------------------------------
+C. FIRST VERTICAL SLICE
+------------------------------------------------------------------------------
+
+Do not build another broad feature before this works:
+
+Create local project
+Import WAV
+Generate waveform
+Place clip
+Play
+Split
+Change gain
+Save
+Close
+Reopen
+Undo/redo
+Export
+Disconnect network throughout
+No data loss
+
+------------------------------------------------------------------------------
+D. SECOND SLICE
+------------------------------------------------------------------------------
+
+MIDI:
+detect keyboard
+record notes
+piano roll
+play internal synth
+save/reopen
+MIDI output
+mapping.
+
+------------------------------------------------------------------------------
+E. THIRD SLICE
+------------------------------------------------------------------------------
+
+Sampler:
+import
+chop
+pads
+step sequencer
+arrangement
+export.
+
+------------------------------------------------------------------------------
+F. FOURTH SLICE
+------------------------------------------------------------------------------
+
+Web PWA + optional Firebase:
+account
+project directory
+metadata sync
+comments
+offline/reconnect.
+
+------------------------------------------------------------------------------
+G. FIFTH SLICE
+------------------------------------------------------------------------------
+
+Cross-device:
+device A edit
+sync
+device B open
+offline
+reconnect.
+
+------------------------------------------------------------------------------
+H. SIXTH SLICE
+------------------------------------------------------------------------------
+
+Native desktop:
+Tauri
+SQLite/files
+native audio/MIDI
+plugin host skeleton.
+
+------------------------------------------------------------------------------
+I. DOCUMENTS TO CREATE NEXT WHEN IMPLEMENTATION STARTS
+------------------------------------------------------------------------------
+
+31 Project Schema v1
+32 API Contract v1
+33 Database Schema v1
+34 Sync/CRDT Protocol v1
+35 Audio Engine Detailed Design
+36 UI Wireframe Specification
+37 Threat Model
+38 Test Fixture Catalogue
+39 First Vertical Slice Implementation Plan
+40 Launch/Business/Cost Model
+
+These should be implementation artifacts, not more inspiration catalogues.
+
+------------------------------------------------------------------------------
+J. DEFINITION OF SPEC COMPLETENESS
+------------------------------------------------------------------------------
+
+The vision library is now sufficiently broad to begin implementation.
+
+Adding more research remains useful, but the highest-value work is now
+converting the architecture into:
+schemas
+interfaces
+tests
+wireframes
+code
+benchmarks.
+
+END DOCUMENT 30

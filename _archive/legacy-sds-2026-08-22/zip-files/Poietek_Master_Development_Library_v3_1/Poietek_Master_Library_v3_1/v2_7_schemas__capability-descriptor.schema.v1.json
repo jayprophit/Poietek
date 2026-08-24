@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/capability-descriptor/v1",
+  "title": "Poietek Capability Descriptor v1",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "version",
+    "operations",
+    "constraints"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "runtime",
+        "device",
+        "network",
+        "storage",
+        "audio",
+        "midi",
+        "video",
+        "image",
+        "plugin",
+        "ai",
+        "compute",
+        "chain",
+        "payment",
+        "rights",
+        "app",
+        "build",
+        "language_bridge"
+      ]
+    },
+    "version": {
+      "type": "string"
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mediaTypes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "protocols": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "security": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "offline": {
+      "type": "boolean"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

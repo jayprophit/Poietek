@@ -1,0 +1,5503 @@
+That's exactly what I'd do—but I wouldn't stop at a normal prompt.
+
+What you've described isn't a simple app anymore. It's an operating system for creators.
+
+It's a combination of:
+- A professional DAW.
+- A sampler.
+- A hardware controller.
+- A MIDI hub.
+- A video editor.
+- A VFX suite.
+- A collaboration platform.
+- A publishing platform.
+- A rights management platform.
+- An AI creative assistant.
+- A social network.
+- A marketplace.
+- A cloud platform.
+
+That's far beyond what a single prompt should try to build in one go.
+
+I'd actually write what's called a **Product Requirements Document (PRD)** or a **Software Design Specification**—basically the blueprint a company like Adobe, Ableton, Apple, Blackmagic, or Akai would use before writing a single line of code.
+
+That document would probably be somewhere between **200 and 500 pages**.
+
+It would include things like:
+
+- The overall vision.
+- The philosophy.
+- Every feature.
+- Every menu.
+- Every settings page.
+- Every button.
+- Every screen.
+- Every workflow.
+- Every AI feature.
+- Every hardware protocol.
+- Every database.
+- Every API.
+- Every security requirement.
+- Every cloud service.
+- Every community feature.
+- Every rights management feature.
+- Every publishing feature.
+- Every plugin standard.
+- Every SDK.
+- Every developer tool.
+- Every accessibility feature.
+- Every tutorial.
+- Every user type.
+- Every permission level.
+- Every roadmap phase.
+
+Then from that master document we'd generate:
+
+- Software architecture.
+- UI designs.
+- Database schema.
+- API documentation.
+- AI architecture.
+- Backend.
+- Frontend.
+- Mobile apps.
+- Desktop apps.
+- Web application.
+- Cloud services.
+- Deployment.
+- Testing.
+- Documentation.
+
+That's the way professional software is built.
+
+So my recommendation isn't to give Claude or another AI one enormous prompt.
+
+Instead, let me become the architect.
+
+We'll build the **master specification** first.
+
+Once that's finished, we can feed sections of it to Claude, Manus, GitHub Copilot, Codex, or any other coding AI.
+
+That massively improves the quality because every AI will be working from the same blueprint instead of inventing parts as it goes.
+
+I genuinely think this project is big enough to deserve its own specification.
+
+It could easily end up being one of the most comprehensive creative platforms ever designed if it's planned properly.
+
+So rather than writing one giant prompt, I'd write what amounts to a **professional software white paper**—the complete blueprint for what we've been calling **Poietek**—and then use that as the foundation for every stage of development. That gives you something structured, maintainable, and much more likely to succeed than trying to build everything from a single monolithic instruction.
+
+Done.
+
+You can download it here:
+
+**:chatgpt-content-reference{index="0"}**
+
+One thing I'd recommend, though: this is only the **starting specification**. Based on everything we've discussed over the last few hours, the complete document won't be a few pages—it will likely be **300–1,000+ pages** once it's fully developed.
+
+I'd split it into professional volumes, for example:
+
+1. **Vision & White Paper**
+2. **Software Architecture**
+3. **Audio Production System**
+4. **Sampler & Hardware Integration (MPC, Roland, etc.)**
+5. **Video & VFX System**
+6. **AI System Architecture**
+7. **Community & Collaboration Platform**
+8. **Rights, Licensing & Publishing**
+9. **Cloud & Synchronisation**
+10. **Database & API Specification**
+11. **Desktop, Mobile & Web UI/UX**
+12. **Plugin SDK & Developer Documentation**
+13. **Security & Privacy**
+14. **Roadmap & Release Plan**
+
+That would become a true professional blueprint that you could hand to developers—or to AI coding systems like Claude, Manus, Codex, or others—and have them build the platform consistently from the same design.
+
+I think that's the right long-term approach for a project of this scale.
+
+I actually think we should go much bigger than that.
+
+Based on everything you've described, this isn't a specification anymore—it's an entire software ecosystem. If it were being built inside Adobe, Apple, Blackmagic, Akai, Steinberg, or Avid, it would have hundreds of internal documents.
+
+I'd split it into **20 volumes**, each around **100–300 pages**, all written in order so later AI systems (Claude, Manus, Gemini, Codex, etc.) can consume them one by one.
+
+Here's the structure I'd recommend.
+
+---
+
+# POIETEK
+## Complete Development Library
+
+### Volume 01
+# Vision, White Paper & Philosophy
+
+Contains:
+
+- Mission
+- Vision
+- Goals
+- Problems being solved
+- Market analysis
+- Competitor comparison
+- User personas
+- Creator ecosystem
+- Long-term roadmap
+- Business model
+- Community philosophy
+
+---
+
+### Volume 02
+# Complete Functional Specification
+
+Every feature.
+
+Every button.
+
+Every menu.
+
+Every screen.
+
+Every interaction.
+
+Nothing omitted.
+
+---
+
+### Volume 03
+# User Interface Bible
+
+Contains
+
+- Desktop UI
+- Tablet UI
+- Mobile UI
+- Docking
+- Cascading menus
+- Tooltips
+- Accessibility
+- Themes
+- Skins
+- Window management
+- Workspaces
+
+---
+
+### Volume 04
+# Audio Engine
+
+Everything audio.
+
+Recording
+
+Editing
+
+DSP
+
+Effects
+
+Mixer
+
+Automation
+
+Routing
+
+Busses
+
+Mastering
+
+Stem export
+
+Rendering
+
+---
+
+### Volume 05
+# Sampling Engine
+
+Everything about
+
+MPC
+
+SP404
+
+Elektron
+
+Maschine
+
+Akai
+
+Native Instruments
+
+Sample chopping
+
+Pad assignment
+
+Time stretch
+
+Pitch
+
+Slice
+
+Resample
+
+AI sample tools
+
+---
+
+### Volume 06
+# MIDI & Hardware
+
+Everything
+
+USB
+
+MIDI
+
+MIDI 2
+
+OSC
+
+Bluetooth
+
+WiFi
+
+Device detection
+
+Profiles
+
+Controllers
+
+Keyboards
+
+Launchpads
+
+DJ hardware
+
+Future hardware
+
+---
+
+### Volume 07
+# Video Engine
+
+Timeline
+
+Editing
+
+Animation
+
+Visual Effects
+
+Transitions
+
+Motion Graphics
+
+Color
+
+Fusion style nodes
+
+3D
+
+AI Video
+
+Beat Sync
+
+---
+
+### Volume 08
+# Visual Effects Library
+
+Particles
+
+Smoke
+
+Fire
+
+Lighting
+
+Fog
+
+Rain
+
+Snow
+
+Visualisers
+
+Audio reactive effects
+
+Shaders
+
+GPU acceleration
+
+---
+
+### Volume 09
+# AI Architecture
+
+Every AI feature
+
+Assistant
+
+Mix engineer
+
+Mastering
+
+Producercan you rename the master folder
+
+Songwriter
+
+Teacher
+
+Project Manager
+
+Rights Assistant
+
+Marketing Assistant
+
+Video Assistant
+
+Code Assistant
+
+---
+
+### Volume 10
+# Creator Community
+
+Profiles
+
+Messages
+
+Groups
+
+Forums
+
+Following
+
+Likes
+
+Comments
+
+Creator Pages
+
+Portfolios
+
+Live Rooms
+
+Streaming
+
+Competitions
+
+Leaderboards
+
+Remixes
+
+Forking
+
+GitHub style version history
+
+---
+
+### Volume 11
+# Rights Management
+
+Contributors
+
+Songwriters
+
+Artists
+
+Labels
+
+Publishers
+
+Session musicians
+
+Video editors
+
+Camera operators
+
+Graphic designers
+
+Credits
+
+Contribution tracking
+
+AI contribution estimation
+
+Split agreements
+
+Approval workflows
+
+---
+
+### Volume 12
+# Publishing
+
+Spotify
+
+Apple Music
+
+YouTube
+
+SoundCloud
+
+BandLab
+
+TikTok
+
+Instagram
+
+Facebook
+
+X
+
+Discord
+
+Reddit
+
+Export
+
+Metadata
+
+DDEX
+
+ISRC
+
+PRO support
+
+---
+
+### Volume 13
+# Cloud Platform
+
+Accounts
+
+Sync
+
+Projects
+
+Storage
+
+Offline mode
+
+Conflict resolution
+
+Backups
+
+Version history
+
+Sharing
+
+---
+
+### Volume 14
+# Database Design
+
+Every table
+
+Every relationship
+
+Every API
+
+Permissions
+
+Users
+
+Projects
+
+Audio
+
+Video
+
+Assets
+
+Messages
+
+Rights
+
+Payments
+
+---
+
+### Volume 15
+# Plugin SDK
+
+VST3
+
+CLAP
+
+LV2
+
+OpenFX
+
+AI Plugins
+
+Hardware Drivers
+
+Marketplace
+
+Developer SDK
+
+---
+
+### Volume 16
+# Security
+
+Encryption
+
+Privacy
+
+Licensing
+
+Authentication
+
+Payments
+
+Cloud Security
+
+GDPR
+
+---
+
+### Volume 17
+# Learning Platform
+
+Tutorials
+
+Walkthroughs
+
+Interactive lessons
+
+Genre templates
+
+Example projects
+
+Music theory
+
+Mixing
+
+Mastering
+
+Video editing
+
+Certification
+
+---
+
+### Volume 18
+# Marketplace
+
+Sample packs
+
+Plugins
+
+Themes
+
+Skins
+
+Templates
+
+Projects
+
+Courses
+
+Services
+
+Collaboration
+
+Commission work
+
+---
+
+### Volume 19
+# Software Architecture
+
+Backend
+
+Frontend
+
+Cloud
+
+Desktop
+
+Mobile
+
+Audio engine
+
+Video engine
+
+GPU
+
+AI
+
+Scaling
+
+Deployment
+
+Testing
+
+---
+
+### Volume 20
+# Development Roadmap
+
+Phase 1
+
+Prototype
+
+MVP
+
+Alpha
+
+Beta
+
+Release
+
+Enterprise
+
+Future Features
+
+---
+
+## My recommendation
+
+I wouldn't stop there.
+
+I'd actually create **one master index document** that links all 20 volumes together, with each volume referencing the others. That way, any AI can load one document at a time while still understanding how it fits into the overall system.
+
+I also think we should expand each volume into multiple chapters. By the end, the complete "Poietek Development Library" would likely exceed **5,000–10,000 pages** of specifications. That sounds enormous, but for software of the scope you're envisioning—a platform combining a DAW, sampler, video editor, AI assistant, collaboration suite, publishing system, and creator community—that level of detail is comparable to what a large commercial software company would produce before and during development.
+
+I think this is where we move from **planning software** to **designing an entire digital ecosystem**.
+
+I'd actually expand the library to **50 volumes**. The first 20 cover the platform itself. The remaining 30 turn it into a complete ecosystem.
+
+---
+
+# POIETEK DEVELOPMENT LIBRARY
+## Master Collection
+
+---
+
+# PART I
+## Foundation
+
+### Volume 1
+
+Vision
+
+Mission
+
+Purpose
+
+Philosophy
+
+Ethics
+
+Creator Bill of Rights
+
+Community Values
+
+Innovation Principles
+
+---
+
+### Volume 2
+
+Functional Specification
+
+Everything the software does
+
+Every button
+
+Every screen
+
+Every workflow
+
+---
+
+### Volume 3
+
+User Interface Bible
+
+Desktop
+
+Tablet
+
+Phone
+
+Web
+
+Docking
+
+Panels
+
+Hover Help
+
+Animations
+
+Accessibility
+
+Themes
+
+Layouts
+
+---
+
+### Volume 4
+
+Complete User Experience
+
+Beginner Mode
+
+Professional Mode
+
+Studio Mode
+
+Educational Mode
+
+Accessibility Mode
+
+---
+
+### Volume 5
+
+Software Architecture
+
+Entire code architecture
+
+Backend
+
+Frontend
+
+Cloud
+
+GPU
+
+Audio Engine
+
+Video Engine
+
+AI Engine
+
+---
+
+# PART II
+
+## Audio
+
+Volumes 6–12
+
+Music Theory
+
+Composition
+
+Recording
+
+Editing
+
+Mixing
+
+Mastering
+
+DSP
+
+Synthesizers
+
+Samplers
+
+Drum Machines
+
+Sequencers
+
+Automation
+
+Routing
+
+Hardware
+
+Audio Analysis
+
+Audio AI
+
+---
+
+# PART III
+
+## Video
+
+Volumes 13–18
+
+Timeline
+
+Editing
+
+Motion Graphics
+
+Animation
+
+VFX
+
+Particles
+
+Lighting
+
+Compositing
+
+Colour
+
+Rendering
+
+AI Video
+
+Camera Tools
+
+---
+
+# PART IV
+
+## Hardware
+
+Volumes 19–23
+
+MIDI
+
+MIDI 2
+
+MPE
+
+OSC
+
+USB
+
+Bluetooth
+
+WiFi
+
+Control Surfaces
+
+MPC
+
+Roland
+
+Elektron
+
+Pioneer
+
+Denon
+
+Native Instruments
+
+Future Devices
+
+Driver SDK
+
+---
+
+# PART V
+
+## AI
+
+Volumes 24–30
+
+AI Producer
+
+AI Composer
+
+AI Songwriter
+
+AI Video Editor
+
+AI Mixing Engineer
+
+AI Mastering Engineer
+
+AI Teacher
+
+AI Assistant
+
+AI Project Manager
+
+AI Rights Advisor
+
+AI Business Advisor
+
+---
+
+# PART VI
+
+## Creator Community
+
+Volumes 31–36
+
+Profiles
+
+Messaging
+
+Teams
+
+Groups
+
+Projects
+
+Version History
+
+Git-style Forking
+
+Marketplace
+
+Competitions
+
+Streaming
+
+Monetisation
+
+Leaderboards
+
+Governance
+
+Voting
+
+Creator Reputation
+
+---
+
+# PART VII
+
+## Publishing
+
+Volumes 37–40
+
+Metadata
+
+Credits
+
+Contributor Tracking
+
+PRO Support
+
+Publishing
+
+Distribution
+
+Streaming
+
+Direct Sales
+
+Subscriptions
+
+Licensing
+
+Rights Management
+
+---
+
+# PART VIII
+
+## Cloud
+
+Volumes 41–43
+
+Servers
+
+Storage
+
+Backups
+
+Collaboration
+
+Live Editing
+
+Project Sync
+
+Offline Mode
+
+Conflict Resolution
+
+---
+
+# PART IX
+
+## Developers
+
+Volumes 44–47
+
+SDK
+
+Plugin SDK
+
+Hardware SDK
+
+Marketplace SDK
+
+Themes
+
+Extensions
+
+Developer Portal
+
+Documentation
+
+---
+
+# PART X
+
+## Company
+
+Volumes 48–50
+
+Business Plan
+
+Marketing
+
+Investment
+
+Roadmap
+
+Legal
+
+Security
+
+Privacy
+
+Testing
+
+Enterprise
+
+Future Technologies
+
+---
+
+## Then I would add appendices.
+
+Not small appendices.
+
+Entire books.
+
+### Appendix A
+
+History of Music Production
+
+From ancient instruments through analogue studios, MIDI, DAWs, AI, and modern production techniques.
+
+---
+
+### Appendix B
+
+History of Video Production
+
+Film
+
+Television
+
+Animation
+
+CGI
+
+Visual Effects
+
+Game Engines
+
+Virtual Production
+
+---
+
+### Appendix C
+
+Open Standards
+
+MIDI
+
+OSC
+
+OpenFX
+
+VST
+
+CLAP
+
+LV2
+
+DDEX
+
+Broadcast Wave
+
+AAF
+
+OMF
+
+MPEG
+
+OpenTimelineIO
+
+USD
+
+glTF
+
+---
+
+### Appendix D
+
+Research Library
+
+Survey of patents (without reproducing protected material)
+
+Academic papers
+
+DSP research
+
+Human–computer interaction
+
+Machine learning
+
+Music information retrieval
+
+Signal processing
+
+Accessibility
+
+Cloud architecture
+
+---
+
+### Appendix E
+
+Inspiration Library
+
+This is where your idea becomes unique.
+
+Rather than copying other products, we'd analyse what makes them compelling and identify transferable design principles.
+
+For example:
+
+- DAWs such as Logic Pro, Cubase, Pro Tools, Ableton Live, FL Studio, Reason, Reaper, Studio One, Bitwig, Cakewalk.
+- Video editors such as DaVinci Resolve, Premiere Pro, Final Cut Pro, CapCut, Blender, Kdenlive.
+- Digital art tools like Krita, Photoshop, Procreate.
+- Creative workflows from film production, theatre, broadcasting, and game development.
+- Open-source software projects and interface patterns.
+- Lessons from music history, studio engineering, and collaborative creative practice.
+
+The goal would be to understand **why** they work, then design original solutions inspired by those principles rather than copying their protected expression.
+
+---
+
+I also have one more idea that I think would make Poietek genuinely different.
+
+Instead of treating it as just another DAW, treat it as a **Creative Operating System**.
+
+That means every module—music, video, AI, publishing, collaboration, hardware, education, rights management—uses the same project format, the same interface language, the same asset manager, and the same AI assistant.
+
+You wouldn't be jumping between separate applications. You'd stay inside one environment, and every tool would feel like part of the same studio. That's a much bigger ambition than building another music program, and it aligns closely with the vision you've been describing throughout this conversation.
+
+This is where I think Poietek stops being "software" and becomes a **creative platform**. If I were acting as the chief software architect, I'd define the next layer as the **Poietek Operating System (POS)**—not an operating system like Windows or macOS, but an operating environment for creators.
+
+---
+
+# VOLUME 51
+# The Creative Operating System
+
+Every part of the application should behave like it belongs to one ecosystem.
+
+Instead of opening different software:
+
+- Music
+- Video
+- Graphics
+- AI
+- Rights
+- Collaboration
+- Publishing
+
+Everything exists inside one environment.
+
+---
+
+# The Core
+
+At the centre is the **Project Core**.
+
+Everything connects to it.
+
+Music
+
+↓
+
+Video
+
+↓
+
+Images
+
+↓
+
+Documents
+
+↓
+
+AI
+
+↓
+
+Hardware
+
+↓
+
+Cloud
+
+↓
+
+Publishing
+
+↓
+
+Community
+
+↓
+
+Rights
+
+↓
+
+Analytics
+
+One project.
+
+One database.
+
+One history.
+
+One save file.
+
+---
+
+# Universal Timeline
+
+Don't create separate timelines.
+
+Create one.
+
+It contains
+
+Audio
+
+MIDI
+
+Video
+
+Images
+
+Animation
+
+Lighting
+
+Camera
+
+Automation
+
+Effects
+
+AI Events
+
+Markers
+
+Comments
+
+Tasks
+
+Everything is synchronized.
+
+---
+
+# Universal Asset Manager
+
+Instead of
+
+Sample folders
+
+Image folders
+
+Video folders
+
+Plugin folders
+
+Preset folders
+
+Everything becomes an Asset.
+
+Every asset contains
+
+Preview
+
+Metadata
+
+Author
+
+License
+
+Version
+
+Tags
+
+AI Description
+
+Location
+
+Cloud Status
+
+Hardware Compatibility
+
+---
+
+# Universal Browser
+
+Instead of browsing folders
+
+Search naturally.
+
+Examples
+
+"Find all reggae basslines."
+
+"Find all orchestral strings."
+
+"Find all orange transitions."
+
+"Show me cinematic reverbs."
+
+"Find projects from 2025."
+
+"Find songs with 90 BPM."
+
+"Find every kick drum I've ever used."
+
+---
+
+# AI Memory
+
+The AI remembers
+
+Favourite plugins
+
+Favourite synths
+
+Favourite colours
+
+Favourite transitions
+
+Favourite workflow
+
+Favourite export settings
+
+Favourite mastering chain
+
+Favourite MIDI devices
+
+Favourite cameras
+
+Favourite microphones
+
+Favourite collaborators
+
+So when you start a new project
+
+It already knows your workflow.
+
+---
+
+# Creative DNA
+
+Every project creates a fingerprint.
+
+Not for copyright.
+
+For learning.
+
+The AI learns
+
+Your drum style
+
+Your mixing style
+
+Your EQ preferences
+
+Your colour grading
+
+Your camera movements
+
+Your typography
+
+Your animation timing
+
+Over time it becomes a creative assistant that understands *your* style, while still leaving the creative decisions to you.
+
+---
+
+# Intelligent Studio
+
+Imagine opening the software.
+
+The AI says
+
+"Welcome back."
+
+"Three collaborators have updated the soundtrack."
+
+"The video editor finished Scene 4."
+
+"The guitarist uploaded new stems."
+
+"Your cloud backup completed."
+
+"The mastering chain from your last project may suit this one."
+
+It becomes a studio manager, not just a chatbot.
+
+---
+
+# Smart Hardware
+
+Every connected device becomes part of the studio.
+
+MPC
+
+Roland
+
+Launchpad
+
+Keyboards
+
+DJ Controllers
+
+Mixers
+
+Lighting
+
+Cameras
+
+Microphones
+
+Audio Interfaces
+
+Everything appears visually.
+
+Click the device.
+
+Configure it.
+
+Update firmware if supported through official mechanisms.
+
+Assign shortcuts.
+
+Save profiles.
+
+Move on.
+
+---
+
+# Studio AI
+
+Not just ChatGPT.
+
+Multiple specialist assistants.
+
+Producer
+
+Engineer
+
+Mastering
+
+Composer
+
+Video Editor
+
+Colourist
+
+Graphic Designer
+
+Copyright Assistant
+
+Marketing Assistant
+
+Business Assistant
+
+Teacher
+
+Each one specialised.
+
+---
+
+# Knowledge Base
+
+Inside the application.
+
+Music Theory
+
+Video Theory
+
+Mixing
+
+Mastering
+
+Lighting
+
+Photography
+
+Cinematography
+
+Animation
+
+Copyright
+
+Business
+
+Marketing
+
+Contracts
+
+Accessible without leaving the software.
+
+---
+
+# Marketplace
+
+A proper ecosystem.
+
+People can sell
+
+Templates
+
+Projects
+
+Themes
+
+Sample Packs
+
+Videos
+
+Plugins
+
+Presets
+
+Fonts
+
+Visual Effects
+
+Courses
+
+Artwork
+
+Services
+
+Mixing
+
+Mastering
+
+Session Work
+
+Voice Overs
+
+Design
+
+Education
+
+Again, with clear licensing and attribution options.
+
+---
+
+# Studio Network
+
+Every creator has
+
+Portfolio
+
+Followers
+
+Ratings
+
+Reviews
+
+Verified identity (if they choose)
+
+Skills
+
+Availability
+
+Equipment
+
+Genres
+
+Languages
+
+Location (optional)
+
+Portfolio
+
+Resume
+
+Discography
+
+Filmography
+
+---
+
+## One thing I'd add, though
+
+I'd avoid trying to build *every* feature in version one.
+
+The vision can absolutely encompass all of this, but the architecture should be modular. If the foundation is solid, you can add modules over time without rewriting the platform.
+
+That's how you end up with something that can grow for years rather than becoming too complex to maintain after the first release.
+
+This is where I'd start thinking like the architects behind Unreal Engine, Blender, Unity, or Adobe Creative Cloud. The software itself is only half of the vision—the **ecosystem** is what makes it endure.
+
+---
+
+# VOLUME 52
+# The Poietek Ecosystem
+
+Poietek isn't just an application.
+
+It becomes a **creative ecosystem**.
+
+---
+
+# Creator Identity
+
+One account.
+
+Everything follows you.
+
+Your projects.
+
+Your layouts.
+
+Your plugins.
+
+Your themes.
+
+Your shortcuts.
+
+Your hardware profiles.
+
+Your AI preferences.
+
+Your portfolio.
+
+Your collaborators.
+
+Your licenses.
+
+Sign in anywhere and your studio is ready.
+
+---
+
+# Universal Project Format
+
+I'd create a single project format rather than dozens of disconnected files.
+
+One project contains:
+
+- Audio
+- MIDI
+- Video
+- Images
+- Lyrics
+- Sheet music
+- Automation
+- Metadata
+- Rights
+- Credits
+- AI history
+- Collaboration history
+- Hardware mappings
+- Assets
+
+Everything travels together.
+
+---
+
+# Universal Asset Format
+
+Instead of scattered folders, every asset has structured metadata:
+
+- Unique ID
+- Creator
+- License
+- Tags
+- Preview
+- BPM
+- Key
+- Duration
+- Waveform
+- Spectral analysis
+- AI-generated description
+- Related assets
+- Version history
+
+So you can search naturally rather than remembering folder names.
+
+---
+
+# Creative Graph
+
+Think beyond folders.
+
+Every project becomes part of a graph.
+
+Example:
+
+Song A uses Kick 17.
+
+Kick 17 came from Sample Pack X.
+
+Sample Pack X was created by Artist Y.
+
+Artist Y collaborated on Project Z.
+
+The graph links everything.
+
+The AI can then answer questions like:
+
+- "Show me every project that used this vocal."
+- "Which reverb do I usually pair with orchestral strings?"
+- "Which plugins do I use most?"
+
+---
+
+# Universal Search
+
+Not keyword search.
+
+Semantic search.
+
+You ask:
+
+"Find emotional piano songs."
+
+"Show unfinished projects."
+
+"Find videos using blue lighting."
+
+"Find cinematic transitions."
+
+"Show every jazz session from last month."
+
+The AI understands intent.
+
+---
+
+# Studio Dashboard
+
+Every time you open Poietek you see:
+
+Recent Projects
+
+Messages
+
+Collaboration Requests
+
+Hardware Status
+
+AI Suggestions
+
+Marketplace Updates
+
+Tutorial Progress
+
+Community News
+
+Plugin Updates
+
+Project Deadlines
+
+Everything in one place.
+
+---
+
+# AI Studio Manager
+
+Instead of waiting for commands, it helps organize your work.
+
+Examples:
+
+"Your audio interface isn't connected."
+
+"This project hasn't been backed up."
+
+"Your collaborators are waiting for approval."
+
+"These tracks may be clipping."
+
+"You haven't credited the session drummer."
+
+"This project is missing artwork."
+
+Helpful suggestions—not intrusive automation.
+
+---
+
+# Knowledge Engine
+
+Everything is searchable.
+
+User guides.
+
+Tutorials.
+
+DSP explanations.
+
+Music theory.
+
+Video production.
+
+Lighting.
+
+Colour grading.
+
+Plugin documentation.
+
+Hardware manuals.
+
+Your own notes.
+
+The goal is that creators don't need to leave the application just to learn something.
+
+---
+
+# Learning by Example
+
+Imagine opening a professional project.
+
+You can inspect it layer by layer.
+
+- See the arrangement.
+- Open the mixer.
+- Examine automation.
+- Study plugin chains.
+- Read notes from the creator.
+- Duplicate it.
+- Experiment safely.
+
+It becomes both a studio and a classroom.
+
+---
+
+# Templates
+
+Not just song templates.
+
+Templates for:
+
+Albums
+
+Podcasts
+
+Film scores
+
+Games
+
+YouTube videos
+
+Short-form content
+
+Streaming
+
+DJ performances
+
+Live shows
+
+Educational content
+
+---
+
+# Accessibility
+
+This is something many creative tools still underinvest in.
+
+Include:
+
+- Keyboard-only navigation.
+- Screen-reader compatibility.
+- High-contrast themes.
+- Adjustable UI scaling.
+- Colour-blind friendly palettes.
+- Captioning support.
+- Customisable shortcuts.
+- Voice control where practical.
+
+---
+
+# Sustainability
+
+Large creative projects consume significant computing resources.
+
+Offer settings that let users choose between:
+
+- Maximum quality.
+- Balanced mode.
+- Battery saving.
+- Cloud-assisted rendering (where available).
+
+That gives creators flexibility depending on their hardware.
+
+---
+
+## One design principle I'd keep returning to
+
+Every feature should answer one question:
+
+> "Does this help someone create, collaborate, learn, or publish more effectively?"
+
+If the answer is yes, it belongs.
+
+If it only adds complexity without clear value, it should probably remain optional or be left out.
+
+That principle helps keep a very ambitious platform coherent as it grows.
+
+I think the next stage is where Poietek becomes more than a studio. It becomes a **creative infrastructure**. Rather than adding random features, I'd organise everything into interconnected systems.
+
+---
+
+# VOLUME 53
+# The Creative Intelligence Layer
+
+## Philosophy
+
+Most software gives you tools.
+
+Poietek should understand the entire creative process.
+
+Not by taking over.
+
+By reducing friction.
+
+---
+
+# Creative Graph Intelligence
+
+Every project becomes part of one knowledge graph.
+
+For example:
+
+```
+Artist
+      │
+      │
+Album
+      │
+      │
+Song
+      │
+      │
+Project
+      │
+      │
+Audio
+      │
+      │
+Effects
+      │
+      │
+Hardware
+```
+
+Now imagine thousands of these linked together.
+
+The AI begins recognising patterns.
+
+---
+
+# Studio Memory
+
+Instead of remembering only one conversation, the software remembers your work.
+
+Examples:
+
+"I always use this compressor."
+
+"I like dark cinematic colours."
+
+"I prefer analogue saturation."
+
+"I usually export stems."
+
+"I like MPC layouts."
+
+"My favourite synth is..."
+
+"My projects usually start with drums."
+
+The AI builds a workflow profile—not to replace your choices, but to save repetitive setup.
+
+---
+
+# Universal Command System
+
+Instead of searching through menus.
+
+You type or speak:
+
+> "Create a lo-fi beat."
+
+> "Open the mixer."
+
+> "Quantise the drums."
+
+> "Colour all vocal tracks blue."
+
+> "Bounce stems."
+
+> "Export for YouTube."
+
+One command interface for the whole application.
+
+---
+
+# Smart Automation
+
+Instead of scripting with code.
+
+Use visual automation.
+
+Example:
+
+```
+Import Audio
+
+↓
+
+Normalise
+
+↓
+
+Detect BPM
+
+↓
+
+Detect Key
+
+↓
+
+Separate Stems
+
+↓
+
+Create Pads
+
+↓
+
+Assign Colours
+
+↓
+
+Generate Preview
+
+↓
+
+Backup
+
+↓
+
+Notify Collaborators
+```
+
+Users build workflows visually.
+
+---
+
+# Intelligent Organisation
+
+The software continuously organises assets.
+
+Examples:
+
+"These five snares sound similar."
+
+"These videos belong to the same project."
+
+"This project has duplicate samples."
+
+"You already own this sample pack."
+
+---
+
+# AI Music Assistant
+
+Not "write me a song."
+
+Instead:
+
+Suggest chord substitutions.
+
+Suggest arrangements.
+
+Suggest transitions.
+
+Explain harmony.
+
+Explain why something sounds muddy.
+
+Explain why the kick disappears.
+
+Explain compression.
+
+Teach while helping.
+
+---
+
+# AI Video Assistant
+
+Suggest edits.
+
+Suggest pacing.
+
+Suggest transitions.
+
+Suggest camera movement.
+
+Suggest subtitles.
+
+Suggest thumbnail ideas.
+
+Suggest colour grading.
+
+Again, explain *why*, not just *what*.
+
+---
+
+# AI Studio Teacher
+
+This becomes your mentor.
+
+Beginner?
+
+Explain everything.
+
+Professional?
+
+Only answer when asked.
+
+It adapts to the user's experience level.
+
+---
+
+# Creative Timeline Intelligence
+
+The timeline becomes intelligent.
+
+The software notices:
+
+- Long silent sections.
+- Clipping.
+- Missing transitions.
+- Unused tracks.
+- Empty automation.
+- Duplicate clips.
+- Tempo inconsistencies.
+- Colour inconsistencies in video.
+
+It suggests improvements without forcing them.
+
+---
+
+# Universal Annotation System
+
+Everything can have notes.
+
+Projects.
+
+Tracks.
+
+Video clips.
+
+Plugins.
+
+Effects.
+
+Mixer channels.
+
+Hardware.
+
+Assets.
+
+Collaborators.
+
+Imagine clicking a vocal clip and seeing:
+
+> "Need another take."
+
+> "Replace after verse."
+
+> "Artist approved."
+
+That makes collaboration much smoother.
+
+---
+
+# Studio Journal
+
+Every project keeps a timeline of decisions.
+
+For example:
+
+- Started project.
+- Recorded vocals.
+- Changed tempo.
+- Added chorus.
+- Invited collaborator.
+- Published draft.
+- Approved mix.
+
+Months later, you can see exactly how the project evolved.
+
+---
+
+# Inspiration Mode
+
+One feature I think could really set Poietek apart is an inspiration engine.
+
+You wouldn't ask it to copy another work.
+
+Instead you might say:
+
+> "I want something energetic, orchestral, electronic, with African percussion and cinematic strings."
+
+The AI could suggest:
+
+- Suitable instruments.
+- Rhythmic approaches.
+- Scales.
+- Arrangement ideas.
+- Sound palettes.
+- Visual mood boards.
+- Lighting concepts.
+
+It becomes a creative brainstorming partner rather than a generator of imitations.
+
+---
+
+## A final architectural thought
+
+As the platform grows, keep one principle at the centre:
+
+**Everything should connect through a common data model.**
+
+That means music, video, AI, collaboration, publishing, rights, hardware, and community all speak the same language internally.
+
+That's what allows a platform to scale over many years without becoming a collection of disconnected features.
+
+Yes. I’ve now treated the GitHub build **and the complete conversation transcript as one project**, rather than as separate ideas. Your uploaded history explicitly defines offline-first creation, optional cloud sync, cross-platform operation, collaboration, the production graph, sample provenance/rights, and the unified workflow we developed.  
+
+### What I found in your GitHub build
+
+Your current SDS repository is **a good product/UX prototype**, and I would **not throw it away**. The rack system, cascading menus, detachable views, MPC/SP-404/e-drum/keyboard/DJ workspaces, visual device mapper, templates, guided walkthrough and hardware-focused design are worth preserving. The latest scaffold already has those concepts represented in React. 
+
+The important issue is that quite a few features currently *look* more complete than their engines really are:
+
+- The audio engine does real Web Audio playback and recording, but pitch is currently implemented using `playbackRate`, rather than independent professional pitch/time processing. Its latency test is also an estimate rather than a true round-trip measurement. 
+- MIDI currently receives Web MIDI input, but it does **not yet enumerate and transmit through MIDI outputs**, so the app cannot yet perform the full two-way hardware-control system you're planning. 
+- The hardware mapper has a very good interface concept, but mappings are still largely demo state rather than a persistent mapping engine. 
+- Chop Lab currently draws a simulated waveform and performs equal slicing rather than working from an actual imported waveform/transient engine. 
+- The pitch editor explicitly uses simulated note blobs rather than analysing and modifying actual recorded notes. 
+- The waveform sequencer uses procedurally generated visual waveforms and UI timing rather than a true media timeline. 
+- The current “Gemini AI Groove” dialog is presently a timed simulation with keyword-based BPM selection; the Gemini package is installed, but that component does not actually call the model. 
+- `SamplePad` currently stores an `AudioBuffer` directly. That's fine in RAM but unsuitable as the portable project representation needed for device sync; the durable project should store an asset ID/hash and load the `AudioBuffer` into a runtime cache. 
+
+There is also currently no IndexedDB project database, service-worker offline layer, WebSocket/CRDT collaboration layer, or equivalent persistent cross-device system in the scaffold.
+
+### The architecture I've specified
+
+I recommend **keeping React/TypeScript as your shared interface**. For the installed desktop/mobile applications, Tauri 2 is a particularly good fit because its current official architecture supports Windows, macOS, Linux, Android and iOS while allowing an existing web frontend to remain in place. 
+
+The browser version becomes an installable offline PWA. IndexedDB provides durable browser-side structured storage, and Service Workers are specifically intended to support offline web-app bootstrapping. 
+
+For collaboration, I've designed the spec around **local-first structured project state plus separately synchronized media assets**. Yjs is a strong implementation candidate because its documented IndexedDB provider persists collaborative state locally and allows offline edits to synchronize later. 
+
+And the browser audio/hardware side remains viable: Web Audio provides the routing/processing graph and AudioWorklet mechanism, while Web MIDI is explicitly designed for enumerating MIDI input **and output** devices and sending/receiving MIDI messages. 
+
+The important change is that those browser technologies become **adapters**, rather than your whole architecture. Desktop can eventually use lower-level native audio/MIDI/plugin engines while loading exactly the same project.
+
+---
+
+## I've built the ordered document batch
+
+There are now **17 ordered `.txt` documents**, plus a manifest. I also created one combined document containing the whole specification.
+
+### Best download — entire library
+
+**:chatgpt-content-reference{index="15"}**
+
+Inside it, the documents run in order:
+
+`00` Master Index  
+`01` Product Vision & Principles  
+`02` **Current GitHub Repository Deep Audit**  
+`03` Canonical Domain Model / Universal Project Format  
+`04` Cross-Platform Architecture  
+`05` Offline-First / Sync / Collaboration / Versioning  
+`06` Audio / MIDI / Hardware / Plugin Architecture  
+`07` DAW / Sampling / Composition / Mixing / Mastering  
+`08` Video / VFX / Visual Production  
+`09` AI / Automation / Creative Intelligence  
+`10` Community / DMs / Rights / Publishing / Monetisation  
+`11` UI/UX / Learning / Accessibility / Cascading Menus  
+`12` Security / Privacy / SDK / Extensions / Operations  
+`13` **Migration Roadmap from your existing SDS build**  
+`14` **Master Prompt for Claude, Manus, Codex or another coding agent**  
+`15` Acceptance Tests / Traceability  
+`99` Everything combined into one master TXT
+
+### If another AI only accepts one file
+
+Use this:
+
+**:chatgpt-content-reference{index="16"}**
+
+That's probably the easiest one to give to Claude, Manus, Gemini or another large-context coding AI first.
+
+### Repository review by itself
+
+**:chatgpt-content-reference{index="17"}**
+
+### Cross-platform architecture
+
+**:chatgpt-content-reference{index="18"}**
+
+### Offline sync + collaboration
+
+**:chatgpt-content-reference{index="19"}**
+
+### Master AI coding prompt
+
+This is the one to give directly to a coding agent along with the repository:
+
+**:chatgpt-content-reference{index="20"}**
+
+### Implementation roadmap
+
+**:chatgpt-content-reference{index="21"}**
+
+---
+
+The biggest recommendation from the entire audit is **not to start adding another hundred screens yet**.
+
+Your next milestone should be:
+
+**Create Project → Import real audio → Save locally → Close app → Reopen → Play same project → Edit offline → Export.**
+
+Then:
+
+**MIDI in/out → hardware mapping → PWA/native wrapper → cross-device sync → team collaboration.**
+
+Once that foundation exists, the enormous feature set we've designed—DAW, sampler, rack, video/VFX, AI, rights, community, DMs, contributor footprints, marketplace and publishing—can all grow on top of it **without you having to rebuild the application later**.
+
+Continued. I’ve now incorporated this whole pitch-correction/pitch-editing family into the Poietek/SDS master architecture as a **separate clean-room subsystem**, rather than simply making the current simulated pitch editor bigger.
+
+The research supports an important distinction: these products solve several different problems. Melodyne’s documentation includes note-level editing and its DNA technology for editing individual notes in suitable polyphonic recordings; AutoTune Pro combines real-time automatic correction with detailed Graph Mode; Revoice’s APT workflow transfers timing/pitch/performance characteristics from a guide to doubles; Logic Flex Pitch and Cubase VariAudio integrate note-like pitch/timing editing directly into the DAW. 
+
+I therefore split the proposed SDS system into **six original modes**:
+
+- **Quick Tune** — simple transparent automatic correction.
+- **Live Tune** — low-latency tracking/performance correction, with scale, tolerance, humanize, vibrato and formant handling. Waves’ current documentation reinforces the architectural value of keeping the live path distinct from offline surgical editing. 
+- **Note Edit** — deep detected-note editing for pitch centre, drift, vibrato, timing, duration, formants, gain, split/join and pitch curves.
+- **Align** — guide/double/harmony/ADR synchronization inspired by the general performance-transfer concept documented by Synchro Arts. 
+- **Poly Note Lab** — later experimental polyphonic note-level editing for suitable piano/guitar/chordal recordings.
+- **Creative Pitch** — hard tuning, MIDI-targeted pitch, harmonies, formant design, microtonality and sound-design applications.
+
+I also added an important implementation rule: **Live Tune and detailed Note Edit should not just be the same algorithm with one “quality” slider.** Real-time monitoring optimizes for bounded latency; detailed editing can spend substantially more computation on analysis and rendering.
+
+For the polyphonic target, I’ve deliberately placed it later in the roadmap. Celemony’s published material confirms that genuine polyphonic note access means identifying and editing individual constituent notes in chordal material, which is significantly more difficult than ordinary monophonic vocal tuning.  SDS should first get extremely good at monophonic voice/instrument detection, correction, timing, formants and alignment, then add polyphonic R&D behind measurable quality gates.
+
+I also added **ARA research** to the architecture. Celemony describes ARA as allowing compatible DAWs and plug-ins to exchange musical information and obtain direct audio access, and says its SDK is open-source under Apache 2.0. That makes ARA worth investigating later for desktop interoperability, while keeping SDS’s own internal project format independent of it. 
+
+For actual independent pitch/time processing, I added a technology-evaluation section. Rubber Band is one current candidate because it explicitly supports independent time-stretching and pitch-shifting in both offline and real-time modes. But its licensing matters: the official documentation says its open-source distribution is GPL, with commercial licensing available for proprietary products. So it should be evaluated, **not silently dropped into the project**. 
+
+Auburn Sounds’ current Graillon 3 documentation also confirms another useful product principle from your supplied material: automatic correction can have both natural and deliberately aggressive/creative behavior, alongside pitch/formant processing. 
+
+### Updated development library — v1.1
+
+I added a complete new document:
+
+**:chatgpt-content-reference{index="8"}**
+
+It contains the research references, original SDS architecture, data structures, DSP roadmap, Live Tune signal chain, alignment system, polyphonic research strategy, collaboration behavior, offline/cross-device behavior and dedicated acceptance tests.
+
+I also updated the main DAW, AI and migration-roadmap documents and rebuilt the complete specification.
+
+**:chatgpt-content-reference{index="9"}**
+
+Or give another AI one large file:
+
+**:chatgpt-content-reference{index="10"}**
+
+One addition in Document 16 that I think is especially important for SDS is the proposed **“note ribbon” editor**. Rather than visually cloning Melodyne-style blobs or Logic/VariAudio controls, SDS can develop its own language: waveform/spectrogram underneath, detected-note ribbons, actual pitch trace through each ribbon, confidence halo, transient markers, sibilant overlays and contextual handles. That preserves the extremely useful *musical-note editing principle* while giving Poietek its own visual and interaction identity.
+
+Done. I’ve expanded the library to **v1.2** and added a full DJ/live-performance architecture rather than treating DJing as a single extra screen.
+
+Your supplied comparison was the starting framework. I then checked the important claims against current first-party documentation. For example, Serato currently documents four-deck operation, Stems, DVS and extensive supported hardware; rekordbox documents USB preparation/export, DVS, video and 3/4-part STEMS workflows; and Traktor Pro 4 documents four decks, stem separation, flexible beatgrids, DVS, external sync and customizable MIDI mappings. 
+
+VirtualDJ adds another useful set of principles: real-time stems, broad controller/mapping support, DVS and a substantial video/VJ engine. Its current site says it has plug-and-play support for more than 300 controllers and supports video mixing, effects, visualizers and DVS. 
+
+Algoriddim’s current documentation was particularly useful for your **desktop/tablet/mobile** objective: djay documents controller support across macOS, Windows, iOS and Android, class-compliant hardware workflows, DVS and real-time Neural Mix/stems. 
+
+Mixxx reinforces the open hardware philosophy you wanted: MIDI/HID controller mapping, programmable mappings, DVS and broad hardware flexibility. Its official GitHub repository states that Mixxx is GPLv2, so I’ve explicitly marked it as something we can study architecturally but **not simply copy code from** without accepting the licensing implications. 
+
+And Ableton’s Session View provides a useful general principle for SDS: nonlinear clip/scene launching can coexist with a linear arrangement, and a performance can become part of the eventual arrangement. 
+
+## The new Poietek/SDS DJ architecture
+
+I’ve split DJ performance into proper subsystems:
+
+**Set Prep** handles library analysis, playlists, beatgrids, cue points, loops and hardware/export preparation.
+
+**Decks** becomes a genuine multi-deck engine—2 decks on smaller layouts, 4 decks where appropriate, without hard-coding SDS internally to either number.
+
+**Vinyl** becomes the future DVS/scratch environment with calibration, relative/absolute/internal modes, signal quality and a dedicated low-latency scratch transport.
+
+**Stem Mix** uses the *same central stem-separation system as the DAW*, rather than building another stem engine just for DJing.
+
+**Performance Grid** merges the best principle of DJ samplers, remix decks and live clip launching: audio loops, one-shots, stems, MIDI clips, video loops and eventually lighting cues.
+
+**Live Mixer** adds main/booth/headphones, cue/master blend, microphone, multichannel interfaces, DJ FX and stem-specific processing.
+
+**Visual Decks** ties DJ mode directly into your Video/VFX system—video crossfading, visualizers, beat-reactive graphics, transitions, camera inputs and VJ performance.
+
+**Set Recorder** captures the performance and its metadata/history.
+
+And **Hardware** uses the universal mapper we designed earlier instead of creating a special controller system only for DJ equipment.
+
+### One especially important addition: variable-tempo beatgrids
+
+This goes beyond simple BPM detection.
+
+Serato's documentation explicitly discusses beat-warp markers for music whose tempo changes during the track, while Traktor Pro 4 currently promotes flexible beatgrids for changing-tempo material. 
+
+So Poietek now gets a proper:
+
+`TempoMapAnalyzer`
+
+with:
+
+`Fixed BPM`  
+`Variable Tempo`  
+`Free / No Grid`  
+`Manual Grid`  
+`Imported Grid`
+
+That matters for funk, disco, jazz, older soul, live drumming, orchestral material and anything that wasn't recorded rigidly to a modern DAW click.
+
+I've also separated **Tempo Sync** from **Beat Sync**. That lets a skilled DJ keep tempos matched but decide manually when to drop a track, rather than the software forcing bar alignment.
+
+## A bigger integration I added
+
+This is probably more interesting than simply recreating DJ software.
+
+A Poietek production could go:
+
+**Song project → stems → DJ performance version → live remix → recorded performance → back into Arrangement.**
+
+So you might finish a song in Poietek, press something like:
+
+**Create Performance Set**
+
+and it could automatically expose:
+
+master  
+vocals  
+drums  
+bass  
+music  
+loops  
+hot-cue suggestions  
+video  
+lyrics  
+visual scenes  
+MIDI mappings
+
+without duplicating all the underlying media.
+
+Then you perform it.
+
+And that performance itself can be recorded back into the original project's timeline.
+
+That starts making Poietek different from simply putting a DAW and DJ program beside each other.
+
+## Performance reliability
+
+I've also added a **Performance Guard**.
+
+Before playing live, SDS can check:
+
+audio device  
+sample rate  
+buffer  
+controller connections  
+mapping status  
+missing tracks  
+locally cached stems  
+video assets  
+storage space  
+battery/power  
+CPU/GPU load
+
+And once Performance Guard is active, things like large sync downloads, AI processing, stem jobs or database migrations must not start unexpectedly and cause an audio dropout.
+
+That should become a fundamental difference between **editing mode** and **stage mode**.
+
+## Updated files
+
+The new dedicated research/specification is:
+
+**:chatgpt-content-reference{index="7"}**
+
+I've also updated the relevant cross-platform, hardware, DAW, video, roadmap and testing documents and rebuilt the combined master.
+
+**:chatgpt-content-reference{index="8"}**
+
+For another AI that prefers one enormous context file:
+
+**:chatgpt-content-reference{index="9"}**
+
+The library now covers the chain from **DAW → sampling → MIDI/hardware → pitch/vocal editing → video/VFX → DJ/DVS/live performance → offline/cross-device sync → collaboration → contributor rights → community → publishing**, all built around the same project and asset architecture.
+
+Continued. I’ve expanded the complete library to **Poietek/SDS v1.3** and added an entire volume covering **third-party plugin hosting + Poietek’s own instruments, modulators, effects and mastering environment**.
+
+A few things in the material you supplied have evolved, so I preserved your original inspirations while also updating the research. Serum is now **Serum 2**, with wavetable, multisample, sample, granular and spectral oscillator engines.  Vital still strongly validates visual spectral-wavetable design, drag-and-drop modulation, audio-rate modulation, MPE and microtonality.  Omnisphere’s current architecture is even more relevant to your hardware ideas: Spectrasonics now describes extensive hybrid synthesis plus hardware integration covering hundreds of controller/synth profiles. 
+
+I also updated the mixing/mastering references. Your source mentioned Pro-Q 3 and Ozone 11, but the current products are **FabFilter Pro-Q 4** and **Ozone 12**. Pro-Q 4 now includes dynamic and spectral-dynamic processing, while Ozone 12 expands the modular mastering/assistant concept while explicitly positioning the AI as guidance with user control. 
+
+### The important architecture added
+
+The new specification separates two things that are often mixed together:
+
+**Plugin role:** Instrument, Modulator, Effect, MIDI/Note Effect, Analyzer, Generator or Container.
+
+**Plugin format:** VST3, CLAP, AU/AUv3, LV2, Poietek native/portable format, etc.
+
+That means Poietek isn't architecturally tied to any single plugin standard.
+
+For desktop, I've made **VST3 + CLAP the primary cross-platform targets**. Steinberg's current VST3 SDK material says the technology is available under the MIT licence, though the VST branding remains trademark-controlled.  CLAP is also MIT licensed and its current API already defines useful host concepts including state, parameters, note/audio ports, latency, tails, offline rendering, GUI, preset discovery and deeper modulation/note-expression integration. 
+
+On Apple platforms, I've added **AUv3**, including iPad/iPhone possibilities. Apple's current documentation explicitly supports AUv3 hosting on macOS and iOS and recommends AUv3 for new development. 
+
+One correction I think is especially important: I have **not** promised AAX hosting. Avid's public AAX SDK is described as a development environment for creating plugins for Pro Tools/VENUE/Media Composer, with additional commercial licensing/signing requirements. So AAX is currently treated as a potential future *Poietek plugin export/build target*, not something the Poietek DAW should claim it can host. 
+
+The new document also specifies one potentially major Poietek differentiator: a **Universal Modulation System**. The drag-and-drop modulation principles seen in Vital, LFOTool and other modern tools become available across Poietek—not just inside one synth. LFOTool's current implementation also validates the usefulness of editable LFO curves, tempo/Hz modes, multiple graphs and MIDI CC generation.  ShaperBox's current architecture similarly validates the broader concept of applying editable rhythmic shapes to volume, pan, width, filtering, time, distortion, reverb and other processors. 
+
+So one Poietek parameter could eventually have:
+
+**Base value + automation + LFO + envelope follower + MPE + hardware knob + macro + AI proposal.**
+
+And the interface would show exactly **why that parameter is moving**.
+
+I also specified the initial native Poietek sound suite: wavetable/hybrid synths, sampler/granular instruments, drum instruments, LFO/envelope/step/random modulators, precision and dynamic EQ, compression, saturation, delay, reverb, modulation effects, creative racks, analysis tools and a full mastering hub. Soundtoys' current Effect Rack and suite reinforce the value of reusable multi-effect containers, while Valhalla's current design reinforces having multiple distinct reverb algorithms inside a consistent shell. 
+
+And critically, the specification says **a creator should be able to finish a professional project using Poietek's built-in tools without having to buy third-party plugins.** Third-party support expands the ecosystem; it doesn't fill holes deliberately left in the core product.
+
+### Updated files
+
+**:chatgpt-content-reference{index="12"}**
+
+The new dedicated document is:
+
+**:chatgpt-content-reference{index="13"}**
+
+And the giant single-file version has also been rebuilt:
+
+**:chatgpt-content-reference{index="14"}**
+
+Document 18 alone now covers **50 sections**, including VST3/CLAP/AU hosting, AAX limitations, plugin scanning and quarantine, crash isolation, plugin-delay compensation, sidechains, multi-output instruments, freeze portability between desktop/mobile/web, universal modulation, wavetable/granular/hybrid synthesis, MPE, microtonality, hardware-synth mappings, native EQ/dynamics/saturation/delay/reverb, mastering, AI sound design, presets, plugin marketplace architecture, licensing inventory, CPU management and dedicated acceptance-test suites.
+
+That takes the library through **audio production → hardware → pitch editing → DJ/live performance → full plugin/synthesis/effects ecosystem**, while keeping all of it connected to the same Poietek project architecture.
+
+For **your Poietek/SDS project**, I’d use **Supabase** as the best free Firebase alternative for the first web prototype.
+
+Supabase’s current free tier gives you **PostgreSQL, authentication, realtime features, 500 MB database storage, 1 GB file storage, 5 GB egress and up to 50,000 monthly active users**. The main catch is that free projects can pause after a week of inactivity. 
+
+That fits your architecture nicely:
+
+**Poietek web app**
+→ React/Vite  
+→ IndexedDB/OPFS for offline projects and cached audio  
+→ Supabase Auth for accounts  
+→ Supabase Postgres for projects, users, collaborators, permissions, comments and metadata  
+→ Supabase Realtime for collaboration/presence  
+→ Supabase Storage initially for small project assets/previews  
+→ later add inexpensive object storage for large WAV/stem/video files.
+
+For music/video, I would **not make any Firebase-like backend the primary home of local project media**. Keep original recordings locally first and synchronize them as assets. That protects your offline-first design and dramatically reduces storage/bandwidth costs.
+
+**Appwrite** is my second choice. Its free cloud tier currently includes **2 GB storage, 5 GB bandwidth, 75,000 MAU, realtime, functions and databases**. That's generous, but the free storage tier currently has a **50 MB per-file limit**, which becomes awkward surprisingly quickly with WAV stems and especially video. 
+
+**PocketBase** is brilliant if you want something extremely lightweight that you can self-host: one small server gives you SQLite, authentication, realtime subscriptions and APIs. But its own documentation says it is still pre-1.0 and **not recommended for production-critical applications** unless you're comfortable managing migrations yourself. 
+
+**Convex** is another interesting option for realtime/collaborative applications and has a free plan including storage, auth, search, functions/actions and other backend services.  I prefer Supabase for Poietek because **PostgreSQL gives you a much more conventional long-term data foundation** for complicated relationships like projects, collaborators, credits, rights, releases, comments and marketplace data.
+
+So my ranking for what we're building would be:
+
+1. **Supabase — best overall**
+2. **Appwrite — strongest Firebase-like all-in-one alternative**
+3. **PocketBase — excellent local/self-hosted development backend**
+4. **Convex — interesting for realtime-first application development**
+
+And there's an even better architecture for Poietek: **Supabase + local-first storage**, rather than Supabase *instead of* local storage.
+
+That would give you:
+
+**Offline:** IndexedDB/OPFS  
+**Accounts/database/realtime:** Supabase  
+**Collaboration:** Yjs + Supabase/realtime transport  
+**Small files/previews:** Supabase Storage  
+**Large audio/video later:** dedicated S3-compatible object storage  
+**Desktop/mobile:** same project format through Tauri/native clients
+
+That approach also means we can replace Supabase later without rewriting the actual DAW. I’d recommend changing the Firebase section of the master specification to **“Backend Provider Abstraction — Supabase recommended for prototype”** rather than hard-wiring Poietek to Firebase.
+
+Yes. That can work very well as a **Bring Your Own Cloud / Storage Router** system rather than making Poietek pay to store everybody’s audio and video.
+
+TeraBox is more viable than I initially expected: its current official Open Platform documentation exposes OAuth-style authorization, quota checks, multipart/chunk uploads, file creation/listing/metadata APIs, and shared audio/video streaming endpoints.  Google Drive supports resumable uploads, including recovering interrupted large uploads, and OneDrive/Microsoft Graph similarly supports resumable upload sessions. 
+
+For Poietek, I’d structure it like this:
+
+**Local device = primary working copy**
+
+Your WAVs, recordings, samples, video, stems, waveform caches and current project data live locally first. The application remains fully usable without an Internet connection.
+
+**Supabase = accounts + database + realtime**
+
+Use it for users, teams, permissions, project metadata, comments, messages, rights information, device profiles, collaboration operations and sync metadata. I would *not* make its free Storage tier your main audio/video store: Supabase currently gives Free projects 1 GB of storage and limits individual uploaded files to 50 MB. 
+
+**TeraBox = bulk user-owned media storage**
+
+Potentially ideal for things like:
+
+- original recordings
+- WAV/FLAC masters
+- stems
+- video
+- proxies
+- archived takes
+- exported versions
+- project backups
+
+I would treat it primarily as **bulk/cold storage and backup**, not something the realtime audio engine directly depends on. If you're halfway through recording and TeraBox slows down, disconnects, changes an API condition or hits a quota, your DAW must continue working normally.
+
+**Google Drive + OneDrive = portable project/supporting files**
+
+Good candidates:
+
+- `.poietek` project manifests
+- JSON/project databases
+- MIDI
+- presets
+- device mappings
+- licences
+- contracts
+- lyrics
+- artwork
+- thumbnails
+- project notes
+- small rendered previews
+- collaboration documents
+
+They can handle large uploads too—both Google Drive and OneDrive have resumable upload mechanisms—so I wouldn't artificially prevent users from placing audio there.  Instead, Poietek should let **the user choose which provider stores which asset class**.
+
+### The feature I'd build: Storage Router
+
+Each creator could connect several providers at once and configure rules such as:
+
+> **Project database:** Local + Supabase  
+> **Original WAV recordings:** Local + TeraBox  
+> **Video:** Local + TeraBox  
+> **MIDI/presets:** Local + Google Drive  
+> **Contracts/licences:** Local + OneDrive  
+> **Daily project backup:** Google Drive  
+> **Final masters:** TeraBox + local  
+> **Waveform/cache/proxies:** Local only
+
+Internally Poietek wouldn't care whether a file is in TeraBox or OneDrive. It would see something like:
+
+```text
+Asset: vocal_take_04.wav
+
+Local:
+✓ Available
+
+TeraBox:
+✓ Synced
+
+Google Drive:
+Not stored
+
+OneDrive:
+Not stored
+
+Supabase:
+Metadata only
+
+SHA-256:
+83a94c...
+
+Status:
+Safe — 2 copies
+```
+
+That's significantly better than coding `uploadToTerabox()` throughout the application.
+
+I'd create one interface:
+
+```text
+CloudStorageProvider
+
+connect()
+disconnect()
+getQuota()
+
+upload()
+uploadResumable()
+download()
+downloadRange()
+
+list()
+stat()
+move()
+delete()
+
+createShareLink()
+revokeShareLink()
+
+supportsStreaming()
+supportsResumableUpload()
+supportsRangeDownload()
+supportsSharing()
+```
+
+Then:
+
+```text
+TeraBoxProvider
+GoogleDriveProvider
+OneDriveProvider
+SupabaseStorageProvider
+LocalStorageProvider
+```
+
+And later:
+
+```text
+DropboxProvider
+BoxProvider
+S3Provider
+BackblazeProvider
+CloudflareR2Provider
+NextcloudProvider
+WebDAVProvider
+NASProvider
+SynologyProvider
+HomeServerProvider
+```
+
+That last group becomes particularly valuable because Poietek wouldn't remain dependent on "free" consumer-cloud offerings forever.
+
+### Content hashes make this much stronger
+
+Every large asset should get a SHA-256 content ID.
+
+Suppose the same 800 MB video exists locally, on TeraBox and on another computer. The project doesn't need three different concepts of the video.
+
+It knows:
+
+```text
+Asset ID:
+sha256:ABC123...
+
+Copies:
+Local PC
+TeraBox
+Laptop cache
+```
+
+If the laptop already contains that exact hash, **don't download it again**.
+
+If TeraBox disappears temporarily, the project simply looks for another available copy.
+
+That moves us toward something quite interesting:
+
+**Poietek doesn't have "a cloud."**
+
+It has a **distributed asset library**.
+
+### And the user could control redundancy
+
+For each project:
+
+**Working**
+
+> Keep one local copy.
+
+**Safe**
+
+> Keep local + one cloud copy.
+
+**Important**
+
+> Keep local + two independent cloud copies.
+
+**Archive**
+
+> Keep cloud/archive copies; local copy may be removed after verification.
+
+You could even display:
+
+```text
+PROJECT STORAGE HEALTH
+
+Audio            ✓ Safe
+Video            ✓ Safe
+MIDI              ✓ Safe
+Licences          ✓ Safe
+Final Master      ⚠ Local only
+Vocal Take 17     ↑ Uploading to TeraBox
+
+Overall:
+92% PROTECTED
+```
+
+That fits beautifully with the **Studio Manager AI** idea we already designed.
+
+It could say:
+
+> "Your final master exists only on this laptop. Back it up?"
+
+or:
+
+> "The project's video is stored in TeraBox but isn't available offline on this device. Download a proxy?"
+
+### Collaboration needs one extra distinction
+
+This is the main caveat.
+
+Your **personal cloud drive** and **team-accessible project storage** aren't necessarily the same thing.
+
+Suppose you store a vocal on your private Google Drive. I invite another producer to the Poietek project. They don't automatically have permission to that Google Drive object.
+
+So each remote asset needs an access class:
+
+```text
+PRIVATE
+OWNER-CLOUD
+
+TEAM-SHARED
+TEAM-CLOUD
+
+PUBLIC
+PUBLIC-LINK
+
+APP-MANAGED
+POIETEK-CLOUD
+```
+
+For the early free prototype, personal Drive/TeraBox storage is absolutely worth using.
+
+Later, for professional realtime team projects, Poietek can optionally provide its own managed object storage—or allow a team to attach its **own S3-compatible bucket/NAS/cloud account**.
+
+That way Poietek can offer cloud collaboration **without requiring Poietek itself to pay for everybody's terabytes of media**.
+
+And I really like one further extension of your idea:
+
+## "Use My Storage"
+
+When creating an account, Poietek could say:
+
+> **Where should your projects live?**
+
+**This device only**
+
+**Connect my Google Drive**
+
+**Connect my OneDrive**
+
+**Connect my TeraBox**
+
+**Connect my own server**
+
+**Use Poietek Cloud**
+
+Then users who already have storage don't have to pay you again for storage they already own.
+
+That's very aligned with the philosophy you've been describing for Poietek from the beginning: **the software should work for the creator, not engineer artificial recurring costs around them.**
+
+Yes — that’s now built into the specification as a **user-controlled storage system**, not a requirement to own any particular cloud service.
+
+The default first-run choices are now:
+
+- **Auto — Recommended:** Poietek looks at what the user has already connected/configured and recommends sensible locations.
+- **Local Only:** everything stays on the device, external SSD, NAS, or folder the user chooses.
+- **Choose Locations:** separately choose where projects, recordings, video, samples, AI models, cache, backups, contracts and exports live.
+- **Add Storage Provider:** optional. If a suitable connector isn’t installed/configured, Poietek can offer **Install Connector**, **Connect Account**, **Configure**, or **Skip**. Skipping never blocks the DAW.
+
+There’s also an important privacy rule: **Auto may recommend a connected provider, but it does not silently upload a private project.** The first remote use requires approval. After that, the user’s chosen storage policy can become their personal default.
+
+I’ve also formally separated storage by what it’s actually good at. GitHub/GitLab-style services are mainly for versioned structured files, source code, mappings, themes, scripts, project manifests and extensions. GitHub itself uses LFS pointer files for large objects and imposes plan-dependent LFS limits, so Git is deliberately **not** Poietek’s default multitrack-WAV/video repository. 
+
+Hugging Face becomes a separate **model/data resource class**. Its Hub currently supports model, dataset and Space repositories, Xet-backed handling of large ML files, and separate Storage Buckets for mutable object storage. That makes it useful for Poietek-compatible AI models, datasets, model cards and experimentation rather than ordinary DAW project storage. 
+
+I’ve also included **Nextcloud/WebDAV and self-hosted storage**. Nextcloud’s current WebDAV interface supports normal file/folder operations plus chunked uploads, versions and related storage operations, which makes it a good route for users with their own server or NAS. 
+
+And your Firebase test plan is preserved. Firebase’s Spark plan can still be useful for the initial web prototype’s authentication, Firestore and Hosting, but Cloud Storage for Firebase now requires Blaze billing as of February 3, 2026. So Document 20 explicitly keeps large media **local/BYOC rather than Firebase Storage** for the no-billing prototype. 
+
+I’ve also started the open-resource licence registry. For example, Yjs states MIT licensing, Tauri uses MIT/Apache-2.0 where applicable, Spotify Basic Pitch is Apache-2.0, while Essentia’s official licensing is AGPLv3 for non-commercial open use with commercial licensing available—exactly why Poietek needs an **Adopt / Evaluate / Reference Only / Licence Review** gate before dependencies enter the product. 
+
+### Updated library — v1.4
+
+**:chatgpt-content-reference{index="6"}**
+
+New storage architecture:
+
+**:chatgpt-content-reference{index="7"}**
+
+New open-resource/Firebase architecture:
+
+**:chatgpt-content-reference{index="8"}**
+
+And the complete single-file specification has been rebuilt:
+
+**:chatgpt-content-reference{index="9"}**
+
+A particularly useful consequence is that a Poietek project no longer has **one storage location**. An asset has a permanent ID/hash and can have several replicas:
+
+```text
+Lead Vocal Take 07
+SHA-256: ...
+
+✓ Local SSD
+✓ TeraBox
+✓ External SSD
+— Google Drive
+— OneDrive
+
+Project metadata:
+✓ Local
+✓ Firebase
+✓ Git repository backup
+
+Status:
+SAFE — 3 verified media copies
+```
+
+So if one provider disappears, gets disconnected, or the user never had it in the first place, **the project format itself doesn’t care**. That’s the architecture I’d keep.
+
+Continued. I’ve expanded the master library to **v1.5** and added the missing architectural layer you asked for: frontend, backend, UI/UX, full system structure, repository organization, APIs, testing, deployment, DevEx and release engineering.
+
+The biggest addition is that the specification now tells a coding AI **exactly how the product should be divided**, rather than merely listing features.
+
+### New documents
+
+**:chatgpt-content-reference{index="0"}**
+
+This defines desktop/tablet/mobile/web layouts, workspace management, responsive behavior, command palette, cascading menus, inspectors, design tokens, accessibility, frontend state separation, timeline rendering, waveform rendering, Canvas/GPU usage, shortcuts, gestures and how the current React UI should be reorganized.
+
+**:chatgpt-content-reference{index="1"}**
+
+This defines identity, teams, permissions, sync relay, collaboration, asset metadata, storage connectors, uploads, jobs, notifications, messaging, rights, publishing, AI services, Firebase/Supabase adapters, databases, event buses, workers, rate limits and security.
+
+One key rule in there is:
+
+> **The backend is not the audio engine.**
+
+If Firebase, Supabase or the Internet goes down, recording/playback/editing should continue locally.
+
+**:chatgpt-content-reference{index="2"}**
+
+This is probably the most useful architectural document for a coding AI. It includes the proposed future repository:
+
+```text
+/poietek
+  /apps
+    /web
+    /native
+    /admin
+    /docs-site
+
+  /packages
+    /domain
+    /commands
+    /project
+    /assets
+    /timeline
+    /transport
+    /audio-contracts
+    /midi-contracts
+    /video-contracts
+    /plugin-contracts
+    /hardware
+    /device-profiles
+    /mapping
+    /storage
+    /sync
+    /collaboration
+    /rights
+    /publishing
+    /community
+    /ai
+    /ui
+    /design-system
+    /workspace
+    /testing
+    /telemetry
+
+  /native
+    /audio-engine
+    /midi-engine
+    /plugin-host
+    /video-engine
+    /platform-bridge
+
+  /server
+    /api
+    /realtime
+    /workers
+    /notifications
+    /community
+    /admin
+
+  /connectors
+    /firebase
+    /supabase
+    /google-drive
+    /onedrive
+    /terabox
+    /webdav
+    /github
+    /gitlab
+    /huggingface
+    /s3
+
+  /schemas
+  /docs
+  /fixtures
+  /tests
+  /tools
+```
+
+It also defines **one canonical Command Bus**, **one Transport Clock**, the realtime audio-thread boundary, plugin process isolation, asset pipelines, sync topology, crash recovery and deployment topology for web, desktop and mobile.
+
+**:chatgpt-content-reference{index="3"}**
+
+This covers CI/CD, branch rules, PR structure, test fixtures, connector contract testing, hardware lab, compatibility matrix, release channels, security scanning, licence scanning, SBOMs, crash reporting, telemetry, migrations, incident response and AI coding-agent rules.
+
+### One architecture choice I made deliberately
+
+I specified that your early backend should start as a **modular monolith**, not dozens of microservices.
+
+So initially:
+
+```text
+Poietek Server
+│
+├── Identity
+├── Teams
+├── Projects
+├── Collaboration
+├── Storage
+├── Rights
+└── Notifications
+```
+
+Those have strict internal boundaries, but can live in one deployment while you're building the product.
+
+Later, things such as media processing, community, search, AI workers and payments can separate when there is an actual technical reason.
+
+That avoids spending half the project debugging network calls between 30 services before the DAW can even reliably save a vocal take.
+
+### The UI now has a proper architecture too
+
+I separated frontend state into:
+
+```text
+Domain State
+Project truth
+
+Session State
+Recording/playback session
+
+UI State
+Panels, selections, zoom
+
+Presence State
+Remote collaborators
+
+Device State
+MIDI/audio/hardware
+
+Sync State
+Offline/queued/syncing/conflicts
+```
+
+That prevents the exact problem the current SDS prototype is moving toward, where React component state gradually becomes the application database.
+
+Your current `App.tsx` is now explicitly mapped to becoming the **AppShell**, while the project itself moves into domain and application-service packages.
+
+### Full updated batch
+
+**:chatgpt-content-reference{index="4"}**
+
+And the single combined file has also been rebuilt:
+
+**:chatgpt-content-reference{index="5"}**
+
+The library is now at **26 ordered TXT documents** covering not only what Poietek should do, but increasingly **how it should actually be engineered and structured**.
+
+I’d **retire “Studio DAW Station” as the public name but keep SDS as the prototype codename**. It isn’t a bad description; it’s just too generic and too narrow now that the project includes audio, video, DJing, AI, collaboration, hardware, publishing, rights and community.
+
+One caution: I would **not lock in the spelling “Poitek” yet**. A preliminary search found an existing **Poitek Technology Co., Ltd.** in Taiwan, and Poitek has been publicly identified as a technology developer.  My initial searches for **Poietek** did not surface an obvious current music/software company using that exact spelling, but that absolutely does **not** constitute trademark clearance. Proper searches should still be done through registries such as the UK IPO and USPTO before launch. 
+
+So my current working brand recommendation is:
+
+**Poietek** — master ecosystem  
+**Poietek Studio** — main creative application  
+**Poietek Live** — DJ/live/performance environment  
+**Poietek Bridge** — hardware/device layer  
+**Poietek Hub** — community/collaboration  
+**Poietek Learn** — education/tutorials  
+**Poietek Cloud** — optional managed services  
+**Poietek SDK** — developer ecosystem
+
+That also means we can gradually change the repository from SDS without breaking existing identifiers or project data.
+
+### What was still missing?
+
+At this point the *vision* is extremely comprehensive. The biggest remaining gaps were no longer exciting feature ideas—they were the boring-but-critical pieces that separate an ambitious prototype from something people can trust professionally:
+
+1. **Brand/IP architecture** — naming, product family, domain/trademark clearance and safe migration from SDS.
+2. **Formal legal/compliance architecture** — privacy policies, marketplace terms, copyright/takedown systems, app-store rules, model/open-source licences and rights approvals.
+3. **Interoperability** — detailed audio/video/MIDI/image formats, codecs, archives and DAW/video interchange.
+4. **Installation and lifecycle** — installers, signing, updates, rollback, app-store builds and offline installation.
+5. **Internationalization** — translations, RTL, regional formatting and terminology.
+6. **Support/admin operations** — diagnostics, troubleshooting, moderation/admin tooling and status systems.
+7. **Measured performance standards** — actual audio, UI, video, sync, DJ and mobile benchmarks instead of simply saying “low latency” or “professional”.
+8. **Certification/compatibility** — browser, plugin, hardware, firmware and OS test matrices.
+9. **Concrete implementation specifications** — the biggest gap now: actual JSON schemas, database DDL, API definitions, CRDT layout, wireframes, DSP technical designs and threat model.
+10. **The real vertical slice** — ultimately the most important missing thing is still working production code that can import a real WAV, save it, reopen it offline, edit it and export it without losing anything.
+
+I’ve now incorporated points 1–8 into **v1.6**.
+
+### Updated complete library
+
+**:chatgpt-content-reference{index="3"}**
+
+The giant combined specification has also been rebuilt:
+
+**:chatgpt-content-reference{index="4"}**
+
+And I added six new volumes:
+
+**:chatgpt-content-reference{index="5"}**
+
+**:chatgpt-content-reference{index="6"}**
+
+**:chatgpt-content-reference{index="7"}**
+
+**:chatgpt-content-reference{index="8"}**
+
+**:chatgpt-content-reference{index="9"}**
+
+**:chatgpt-content-reference{index="10"}**
+
+The important conclusion in **Document 30** is that we've reached the point where endlessly adding inspiration is no longer the highest-value move.
+
+The next batch should become much more concrete:
+
+**31 — Project Schema v1**  
+**32 — API Contract v1**  
+**33 — Database Schema v1**  
+**34 — Sync/CRDT Protocol v1**  
+**35 — Audio Engine Detailed Technical Design**  
+**36 — Desktop/Tablet/Mobile Wireframe Specification**  
+**37 — Security Threat Model**  
+**38 — Test Fixture Catalogue**  
+**39 — First Vertical Slice Implementation Plan**  
+**40 — Business, Hosting-Cost & Sustainability Model**
+
+That batch would effectively move us from **“here is everything Poietek should become”** to **“here are the exact technical documents an AI/development team can start implementing against.”**
+
+Continued — this is now the **implementation-contract stage**, not just another round of ideas.
+
+I built **Poietek Master Library v1.7** and created the planned **Documents 31–40**, plus machine-readable files that coding agents can directly implement against.
+
+The new batch contains:
+
+1. **31 — Project Schema v1** — canonical project/track/clip/asset/plugin/right structures, plus a real JSON Schema.
+2. **32 — API Contract v1** — provider-neutral network API, plus an OpenAPI 3.1 file.
+3. **33 — Database Schema v1** — PostgreSQL reference schema for users, teams, projects, assets, replicas, collaboration, rights, releases and audit.
+4. **34 — Sync / CRDT Protocol v1** — document partitioning, offline queues, Yjs abstraction, binary-media handling, conflict rules and checkpoints.
+5. **35 — Audio Engine Detailed Design** — realtime-thread boundary, canonical sample clock, scheduling, waveform cache, real clip playback, WebAudio adapter and offline render.
+6. **36 — UI Wireframe Specification** — desktop, tablet and phone layouts plus onboarding, missing-asset, collaboration and storage screens.
+7. **37 — Security Threat Model** — plugins, OAuth, project files, connectors, AI, CRDT, public/private content, updates and admin boundaries.
+8. **38 — Test Fixture Catalogue** — real project fixtures plus audio/MIDI/sync/security/hardware fixture strategy.
+9. **39 — First Vertical Slice Implementation Plan** — the exact ten-ticket sequence to turn the current SDS prototype into the first genuine Poietek build.
+10. **40 — Business, Hosting Cost & Sustainability Model** — local-first/BYOC economics, managed-cloud separation and current prototype cost assumptions.
+
+### Best download for the next coding stage
+
+**:chatgpt-content-reference{index="2"}**
+
+And the complete library including everything we've built so far:
+
+**:chatgpt-content-reference{index="3"}**
+
+I also created standalone machine-readable engineering artifacts:
+
+**:chatgpt-content-reference{index="4"}**
+
+**:chatgpt-content-reference{index="5"}**
+
+**:chatgpt-content-reference{index="6"}**
+
+The cost model was refreshed against current official information as of **August 11, 2026**. Firebase Spark currently includes Firestore no-cost quotas and Firebase Hosting no-cost capacity, while Cloud Storage for Firebase requires a Blaze billing plan; Supabase's current free tier remains useful for small prototypes; and Cloudflare R2 currently offers a 10 GB-month Standard free tier with no Internet egress charge. 
+
+Most importantly, Document 39 now makes the next coding milestone extremely concrete:
+
+**Create Project → import a real WAV → generate its real waveform → play it on a real timeline → split it → change gain → undo/redo → save locally → close → reopen offline → export the edited audio.**
+
+No Firebase, AI, community, plugin marketplace or cloud complexity is allowed to block that slice.
+
+Once *that* works reliably, Poietek has stopped being just a sophisticated prototype and has acquired its first genuine production foundation.
+
+Continued. The library is now at **v1.8**, and this batch moves even closer to something an AI coding agent can execute directly.
+
+I created **Documents 41–50 plus 13 machine-readable/code artifacts** covering the missing engineering contracts:
+
+- **41 — Command Bus, Domain Events & Undo Contract** — one mutation system for UI, MIDI, hardware, AI and automation.
+- **42 — Storage Provider SDK** — actual TypeScript interface and provider-manifest schema for local storage, Drive, TeraBox, OneDrive, WebDAV, GitHub, S3, etc.
+- **43 — Device Profile Schema** — machine-readable controller/hardware profiles plus hardware-learning workflow.
+- **44 — Extension/Plugin Manifest** — permissions, signing, platforms, network access and extension types.
+- **45 — Firebase Web MVP Mapping** — actual starter `firestore.rules` and indexes for the first web prototype.
+- **46 — PWA/Offline Contract** — service-worker behavior, OPFS/IndexedDB responsibilities, storage quota and update behavior.
+- **47 — Frontend/Application Boundaries** — actual `CommandBus.ts` and `ProjectRepository.ts` interfaces.
+- **48 — Error/Telemetry Contract** — stable error codes and privacy-safe diagnostics.
+- **49 — CI/CD & Quality Gates** — starter GitHub Actions workflow and release requirements.
+- **50 — SDS → Poietek Repository Migration Taskboard** — file-by-file mapping of the existing repository into the new architecture.
+
+### Download the new implementation batch
+
+**:chatgpt-content-reference{index="0"}**
+
+And the entire accumulated project library:
+
+**:chatgpt-content-reference{index="1"}**
+
+Some especially useful individual implementation files inside the new batch are:
+
+:chatgpt-content-reference{index="2"}
+
+:chatgpt-content-reference{index="3"}
+
+:chatgpt-content-reference{index="4"}
+
+:chatgpt-content-reference{index="5"}
+
+:chatgpt-content-reference{index="6"}
+
+:chatgpt-content-reference{index="7"}
+
+:chatgpt-content-reference{index="8"}
+
+:chatgpt-content-reference{index="9"}
+
+:chatgpt-content-reference{index="10"}
+
+The most important addition is **Document 50**. It maps the existing SDS files directly into the future Poietek structure—for example, `src/App.tsx` becomes the eventual `AppShell`, `src/audio/engine.ts` becomes the prototype `WebAudioBackend`, `src/midi/manager.ts` becomes `WebMidiBackend`, and the current simulated waveform/pitch/AI components are retained as UI prototypes until real engines exist.
+
+The next logical batch is now **51–60**, where I’d move from contracts into **actual starter implementation code**: monorepo/package setup, real IndexedDB repository, OPFS asset store, ULID/project factory, command handlers, waveform worker, WebAudio backend skeleton, real timeline model, PWA service worker and Firebase emulator tests. That would effectively become the first code foundation for converting the current repository into Poietek.
+
+Continued. **Poietek v1.9 now contains actual starter implementation code**, not just specifications.
+
+I checked the live SDS repository first. It is still the original single Vite/React application with the `react-example` package identity and no dedicated persistence/test/PWA architecture, while `App.tsx` still carries substantial master, rack and pad state directly in React.   So I kept this batch **additive** rather than attempting a dangerous all-at-once rewrite.
+
+### Batch 51–60
+
+I created **40 files** covering:
+
+- **51 — Package/bootstrap structure**
+- **52 — Real Project types, factory, IDs and validation**
+- **53 — IndexedDB local project repository**
+- **54 — OPFS/IndexedDB asset storage, SHA-256 and waveform generation**
+- **55 — Command Bus and initial undo/redo**
+- **56 — Tempo-aware timeline read model**
+- **57 — Real WebAudio backend and transport starter**
+- **58 — React arrangement integration example**
+- **59 — PWA service worker and offline boot**
+- **60 — Firebase emulator/security-rule integration**
+
+The framework-independent TypeScript core was compiled with:
+
+`tsc -p tsconfig.foundation.json`
+
+and **passes with zero TypeScript errors**.
+
+### Download the actual starter code
+
+**:chatgpt-content-reference{index="2"}**
+
+The full accumulated development library is also updated:
+
+**:chatgpt-content-reference{index="3"}**
+
+There’s also a validation report inside the starter package:
+
+**:chatgpt-content-reference{index="4"}**
+
+### What is actually coded now
+
+The project domain is no longer just an idea. The starter contains real serializable TypeScript structures for:
+
+```text
+Project
+Track
+AudioClip
+MidiClip
+VideoClip
+Asset
+AssetReplica
+TempoMap
+MixerState
+ProjectSettings
+```
+
+with no `AudioBuffer`, DOM element, MIDI port or other runtime object stored in project data.
+
+There is a real blank-project factory and local ULID-compatible ID generation:
+
+**:chatgpt-content-reference{index="5"}**
+
+**:chatgpt-content-reference{index="6"}**
+
+### Local project persistence
+
+There is now an actual:
+
+`IndexedDbProjectRepository`
+
+implementing:
+
+```text
+create()
+get()
+save()
+list()
+delete()
+```
+
+Project writes validate first and only count as committed after the IndexedDB transaction completes.
+
+**:chatgpt-content-reference{index="7"}**
+
+This is one of the most important structural changes from the existing prototype: **React no longer needs to be the database.**
+
+### Real local audio/video storage foundation
+
+I implemented a browser asset store that:
+
+1. calculates SHA-256;
+2. prefers **OPFS** for binary media;
+3. falls back to IndexedDB Blob storage;
+4. retrieves media by stable `assetId`;
+5. keeps binary storage separate from project JSON.
+
+**:chatgpt-content-reference{index="8"}**
+
+**:chatgpt-content-reference{index="9"}**
+
+That is the foundation we need before Google Drive, TeraBox, OneDrive, S3, GitHub or any other remote replica gets involved.
+
+### Real waveform generation
+
+The batch contains real min/max peak generation at multiple resolutions:
+
+```text
+64 samples
+256
+1024
+4096
+16384
+```
+
+so the eventual timeline can choose a waveform resolution according to zoom instead of repeatedly decoding/drawing fake sine waves.
+
+**:chatgpt-content-reference{index="10"}**
+
+**:chatgpt-content-reference{index="11"}**
+
+### Command Bus has begun
+
+There is now actual starter handling for:
+
+```text
+AddTrack
+SetClipGain
+SplitAudioClip
+```
+
+with immutable project updates and initial undo/redo infrastructure.
+
+**:chatgpt-content-reference{index="12"}**
+
+**:chatgpt-content-reference{index="13"}**
+
+I deliberately marked one limitation clearly: **I have not pretended every operation has correct undo yet.** Gain edits have a proper inverse; AddTrack and Split still need explicit inverse transactions before project-wide undo can honestly be called complete.
+
+### Real tempo-aware timeline
+
+The timeline code now converts between ticks and seconds using multiple tempo-map segments rather than assuming a single project BPM forever.
+
+**:chatgpt-content-reference{index="14"}**
+
+**:chatgpt-content-reference{index="15"}**
+
+That becomes shared timing infrastructure for:
+
+**DAW → MIDI → automation → video → DJ → eventually lighting/show control.**
+
+### Real WebAudio starter
+
+The new `WebAudioBackend` can resolve a stored audio asset, decode it, schedule actual clips, and apply:
+
+- playback
+- pause
+- stop
+- seek
+- clip gain
+- stereo pan
+- fades
+- track mute
+- track solo
+
+**:chatgpt-content-reference{index="16"}**
+
+**:chatgpt-content-reference{index="17"}**
+
+It is intentionally labelled a **starter**, not a production scheduler. Lookahead scheduling, loop generations, recording, realtime graph editing, automation and device-loss recovery are next.
+
+### PWA/offline starter
+
+There is now a simple service worker and web manifest:
+
+**:chatgpt-content-reference{index="18"}**
+
+**:chatgpt-content-reference{index="19"}**
+
+The design keeps large WAV/video files out of CacheStorage. `AssetStore` owns those; the service worker owns the application shell.
+
+### Firebase remains optional
+
+I also included starting Firestore security rules and emulator tests:
+
+**:chatgpt-content-reference{index="20"}**
+
+The intended sequence remains:
+
+```text
+LOCAL PROJECT
+     ↓
+LOCAL MEDIA
+     ↓
+REAL WAVEFORM
+     ↓
+REAL AUDIO
+     ↓
+SAVE / REOPEN OFFLINE
+     ↓
+EXPORT
+     ↓
+only then:
+Firebase Auth / project directory / comments / sync
+```
+
+That's important. Firebase should enhance Poietek—not become the thing keeping the DAW alive.
+
+### The next technical layer
+
+The next useful continuation is **61–70**, and now it should get even closer to a runnable first alpha:
+
+**61. Real ImportAudioService**  
+**62. Waveform cache persistence**  
+**63. Complete project-wide undo transactions**  
+**64. Timeline editing engine**  
+**65. Lookahead/sample-clock scheduler**  
+**66. Real offline WAV renderer/exporter**  
+**67. Local autosave + crash recovery journal**  
+**68. Missing-asset/relink engine**  
+**69. Automated unit/E2E tests for the complete offline slice**  
+**70. A repo-specific patch bundle showing exactly how to integrate all of this into the existing `jayprophit/Studio-Daw-Station-SDS-` tree**
+
+At that point we'd have enough foundation to start converting the actual prototype from simulated behavior to a **real local-first Poietek audio application** rather than just expanding the architecture documents.
+
+Continued. I’ve now locked those requirements into **Poietek Master Library v2.0**.
+
+The native-app rule is now explicit: **only the Web version should require a browser**. Windows, macOS, Linux, Android, iPhone and iPad builds should install and launch as normal applications from the Start menu, Applications folder, Dock, Home Screen, launcher, etc. Tauri 2 currently supports Windows, macOS, Linux, Android and iOS from a shared frontend codebase, and its official distribution documentation covers Windows installers/Store, macOS DMG/App Store, iOS App Store, Google Play and Linux packaging. 
+
+I also tightened an important quality requirement: the native editions must **behave like applications, not like a website in a window**. That means native file dialogs, application data folders, OS permissions, proper offline startup, native audio/MIDI adapters, multi-window support where appropriate, secure credentials, native installers/updates and eventually desktop plugin hosting.
+
+For the backend, I’ve made **Supabase the recommended free-first primary backend**, with Firebase optional rather than duplicated. Supabase’s current free tier includes 50,000 MAU, a 500 MB Postgres database, 1 GB file storage and 5 GB egress, plus Realtime, local development and a self-hosting path. 
+
+Firebase can still be useful for things such as Hosting, Crashlytics/Performance, Remote Config, App Distribution and later push notifications. Firebase’s Spark plan remains no-cost for many services and includes free Firestore quotas, so there’s no reason to throw your existing hobby account away. 
+
+And interestingly, Supabase now officially supports **Firebase Auth as a third-party identity provider**, so there is a legitimate future hybrid path if we need it.  For now, though, I recommend **one owner per responsibility**: Supabase owns app data/auth/realtime; Firebase optionally hosts/monitors the Web app; local/BYOC owns large creative media.
+
+### About the 5-star benchmark
+
+I implemented it, but with one non-negotiable rule: **Poietek doesn't get awarded 5★ because we want it to be 5★.**
+
+Right now, the audited prototype is **not** 5★ against Ableton, Logic, Bitwig, Melodyne, Serato, rekordbox or DaVinci Resolve. Pretending otherwise would make the benchmark useless.
+
+Instead, I created a certification system where:
+
+- **1★** = prototype/concept.
+- **2★** = basic end-to-end functionality.
+- **3★** = genuinely production usable.
+- **4★** = competitive with established category leaders.
+- **5★** = objectively meets or exceeds the strongest relevant competitor, passes reliability/performance tests, and survives structured user testing.
+
+That matters because different competitors are the benchmark for different pieces. Ableton provides mature Arrangement/Session workflows and extensibility; Bitwig provides an especially useful benchmark for deep modulation and separate-process plugin crash protection; Logic provides an important Mac/iPad and touch-production benchmark. 
+
+Melodyne is the pitch/audio-note benchmark because its current published capabilities include note-based pitch/timing/formant editing, multitrack editing and polyphonic Direct Note Access.  Serato and rekordbox provide the DJ benchmark around four-deck/stems/DVS/hardware and set-preparation/device workflows.  DaVinci Resolve is the obvious integrated video/VFX/color/audio-post benchmark, with dedicated Edit, Fusion, Color and Fairlight environments. 
+
+The goal is therefore **5★ across every declared Poietek flagship category**, but every star has to be backed by evidence.
+
+### New v2.0 batch
+
+**:chatgpt-content-reference{index="9"}**
+
+It contains:
+
+- 61 — Native Installed App Runtime Contract
+- 62 — Platform Capability & Installation Matrix
+- 63 — Supabase + Firebase Hybrid Backend Strategy
+- 64 — Supabase MVP Schema + Row-Level Security
+- 65 — Tauri Native Shell / Packaging Scaffold
+- 66 — 5-Star Competitive Benchmark Framework
+- 67 — Current Poietek Benchmark Report
+- 68 — 5-Star Gap Closure Program
+- 69 — Native Runtime / Platform Capability Code
+- 70 — Master Native/Backend/5-Star Release Gate
+
+The complete accumulated library is now:
+
+**:chatgpt-content-reference{index="10"}**
+
+A couple of useful individual artifacts are:
+
+**:chatgpt-content-reference{index="11"}**
+
+**:chatgpt-content-reference{index="12"}**
+
+**:chatgpt-content-reference{index="13"}**
+
+**:chatgpt-content-reference{index="14"}**
+
+**:chatgpt-content-reference{index="15"}**
+
+The current scorecard deliberately shows mostly **1–2★ implementation readiness**, because much of Poietek is still architecture/prototype. The point of v2.0 is that we now have a **mechanism for driving those scores upward rather than simply claiming superiority**.
+
+The next build batch should start moving actual categories from **1★ → 2★ → 3★**: real audio import/record/export, crash recovery, native Tauri desktop build, Supabase adapter, then automated benchmark tests.
+
+Added. The README now includes the full **multi-provider free-tier architecture** as a core Poietek principle.
+
+It now covers Firebase + Supabase together, local-first/offline operation, BYOC storage, TeraBox/Drive/OneDrive/WebDAV/S3-style routing, GitHub/GitLab roles, Hugging Face/model hubs, local/cloud AI and ML routing, media-processing providers, native installed apps versus browser/PWA delivery, open-source licensing gates, proprietary-product inspiration rules, native plugin strategy, and the evidence-based 5-star benchmark target.
+
+**:chatgpt-content-reference{index="1"}**
+
+I also updated the starter-foundation README used by the implementation code:
+
+**:chatgpt-content-reference{index="2"}**
+
+And rebuilt both packages:
+
+**:chatgpt-content-reference{index="3"}**
+
+**:chatgpt-content-reference{index="4"}**
+
+The central README rule is now essentially:
+
+> **Poietek should combine local resources, open-source technology, free service tiers, user-owned cloud providers, optional commercial providers, and future Poietek services through interchangeable capability routers—while keeping the creator’s project functional even when every external service is unavailable.**
+
+That gives the whole repository a much clearer architectural north star.
+
+Yes — I’ve now incorporated that into **Poietek v2.1** as a unified **Contributor Passport → Production Session → Rights Manifest → Registration → Sale/Royalty → Payout** architecture.
+
+The strongest part of your latest idea is the identifier abstraction. A contributor can have one simple **Poietek Party ID**, while PRS/MCPS, PPL, The MLC, SoundExchange and other IDs sit behind it. PRS currently uses a membership number associated with CAE/IPI for online access, and Nexus connects data such as writer IPI, PRS tune code, ISWC and recording ISRC. DDEX RIN explicitly supports provider-specific identifiers using a namespace plus the identifier, so this maps very naturally into the architecture. 
+
+That means the studio experience can stay simple. A contributor can scan a QR code, follow an invite, log in from their phone/tablet/laptop, or create a temporary contributor identity directly on the producer’s device. They can then claim that contribution later from their own account. The project owner/admin controls whether their access is one session, time-limited, project-only, reusable across the team, organisation-wide, device-limited or effectively unlimited. Revoking access or a device never erases credits or already-approved rights.
+
+When the project becomes a final master or approved release candidate, Poietek freezes a version of the contributor and rights data, resolves the external society identifiers, asks any outstanding contributors to approve their information, and then prepares the correct registration routes. PPL currently distinguishes between recording rightsholders, who register new recordings, and performers, who claim performances on existing repertoire; The MLC supports individual registration, bulk registration and CWR; SoundExchange supports creator/rightsholder repertoire management and documents ISRC-rich submissions through portal, DDEX and flat-file routes. 
+
+So the user shouldn’t have to know every royalty pathway. Poietek can present something like:
+
+```text
+Rights & Registration
+
+Writers                 ✓ Complete
+Performers              ✓ Complete
+Master owners           ✓ Approved
+Publishing splits       ✓ Approved
+
+PRS/MCPS                ✓ Accepted
+PPL Recording           ✓ Accepted
+PPL Performer Claims    ✓ Ready
+The MLC                 ✓ Prepared
+SoundExchange           ✓ Submitted
+
+ISRC                     ✓
+ISWC                     ✓
+PRS Tune Code            ✓
+
+Release status:
+READY
+```
+
+The important boundary is that **Poietek can automate and track the pathway, but it cannot force an external collecting society to pay someone merely because metadata is embedded**. Correct external payment still depends on the organisation accepting the registration, receiving usage data and applying its own distribution rules. Poietek stores the submission and confirmation separately so “Submitted” can never masquerade as “Accepted”.
+
+For Poietek’s **own marketplace**, we can be much more deterministic. Songs, videos, images, samples, plugins, presets, skins, themes, clips, templates and other creator products can reference a versioned Rights Manifest and Commerce Policy. One purchase can then produce immutable ledger entries for every approved beneficiary. Stripe Connect, for example, supports splitting a platform payment into transfers to multiple connected accounts; refunds and chargebacks still require proper reconciliation. 
+
+So a collaborative product could behave conceptually like:
+
+```text
+Song sale: £10.00
+
+Tax / processor handling
+        ↓
+Distributable amount
+        ↓
+Writer A             35%
+Writer B             15%
+Producer              15%
+Master owner          20%
+Label/company          5%
+Poietek platform      10%
+
+        ↓
+Immutable ledger
+        ↓
+Eligible payouts
+```
+
+Those percentages are never invented by AI. They come from the approved commerce/rights policy.
+
+I also extended the same system to listeners and fans. The ecosystem can support purchases, tips, gifts, pay-what-you-want, memberships/subscriptions and creator storefronts. On mobile, the checkout rail has to be chosen dynamically because Apple and Google currently impose rules around digital goods, creator content and in-app purchases, with some regional alternative-payment programs. Apple explicitly treats creator audio/video/etc. as creator content and applies its payment rules; Google Play generally requires Play Billing for in-app digital goods unless an applicable exception or alternative-billing program applies. 
+
+And I kept your infrastructure model: **Firebase, Supabase, GitHub, Hugging Face, storage services and other free/open providers are Poietek-side infrastructure**. Ordinary users don’t need accounts with each provider. Their experience is simply Poietek. The main exceptions are services that legally or operationally require the person to hold their own account or mandate—such as a collecting society or payout provider.
+
+### Updated v2.1 library
+
+**:chatgpt-content-reference{index="5"}**
+
+**:chatgpt-content-reference{index="6"}**
+
+I also updated the main README with this whole rights/identity/commerce architecture:
+
+**:chatgpt-content-reference{index="7"}**
+
+Useful implementation artifacts now include:
+
+**:chatgpt-content-reference{index="8"}**
+
+**:chatgpt-content-reference{index="9"}**
+
+**:chatgpt-content-reference{index="10"}**
+
+**:chatgpt-content-reference{index="11"}**
+
+**:chatgpt-content-reference{index="12"}**
+
+**:chatgpt-content-reference{index="13"}**
+
+**:chatgpt-content-reference{index="14"}**
+
+The architecture is now getting to an interesting point: **a contributor can enter the creative process once, and their identity can flow all the way from the studio session to credits, embedded metadata, registrations, marketplace sales, royalty reconciliation and payouts without repeatedly retyping the same information.**
+
+Continued. I’ve added the blockchain/smart-contract layer as **Poietek v2.2**, but in a way that strengthens the rights and royalty system rather than replacing it with “crypto.”
+
+The architecture is now a **hybrid ledger**:
+
+```text
+Private Poietek Ledger
+│
+├── contributor identities
+├── PRS/PPL/MLC/SoundExchange IDs
+├── contracts
+├── approved splits
+├── royalty statements
+├── sales
+├── banking/payout details
+└── complete audit history
+
+        ↓ cryptographic hashes / Merkle roots
+
+Optional Blockchain Evidence Ledger
+│
+├── Rights Manifest hash
+├── contributor approval proof
+├── final-master/release hash
+├── registration-receipt batch hash
+├── royalty settlement root
+├── payment settlement root
+├── block number
+└── blockchain inclusion timestamp
+```
+
+That gives you the immutable audit trail you’re describing **without publicly exposing contributors’ personal or financial information**.
+
+A key technical detail is that Ethereum-style smart contracts expose `block.timestamp`, but Solidity explicitly warns that block timestamps can be influenced to some degree. So Poietek now uses a **triple-time proof** rather than pretending the chain is a precision clock: Poietek’s signed UTC event time, backend/audit receipt time, and blockchain block/inclusion time. 
+
+### Contributor approvals can now be cryptographically signed
+
+I added an EIP-712-based rights-approval design. EIP-712 is specifically designed for signing structured, meaningful data rather than arbitrary opaque bytes. 
+
+So instead of somebody signing something meaningless like:
+
+```text
+0xf84b9218c....
+```
+
+they can approve a structured record equivalent to:
+
+```text
+Poietek Rights Approval
+
+Project:
+Midnight Drive
+
+Rights Manifest:
+Version 4
+
+Contributor:
+Party_83920
+
+Role:
+Producer / Performer
+
+Manifest Hash:
+SHA256...
+
+Expires:
+...
+
+APPROVE
+```
+
+The signature binds them to **that exact version and hash**.
+
+If the agreement changes, version 5 is a different approval.
+
+Smart-contract wallets are supported too through ERC-1271-compatible signature verification. 
+
+### Payment and royalty tracking gets a clever privacy layer
+
+Rather than putting everyone's earnings publicly on-chain, Poietek can create a **Merkle settlement root**.
+
+Imagine a settlement contains:
+
+```text
+Artist A       £438.17
+Producer B     £121.42
+Writer C       £76.09
+Company D      £52.20
+```
+
+Those lines remain private.
+
+Poietek cryptographically hashes the complete settlement into a root:
+
+```text
+Settlement Batch #9382
+
+Merkle root:
+0x837ACF...
+
+Rights Manifest:
+v4
+
+Period:
+July 2027
+
+Blockchain:
+Confirmed
+```
+
+Each contributor receives their own line and an inclusion proof.
+
+That means they can verify:
+
+> "My £121.42 allocation really was included in the settlement Poietek anchored."
+
+without seeing everybody else's finances.
+
+OpenZeppelin's current contract libraries include Merkle-proof utilities, EIP-712 handling, signature checking, access control, nonces and other primitives suitable for implementing this kind of system rather than inventing custom cryptography. 
+
+### Blockchain payments remain optional
+
+This distinction is now explicit.
+
+A Poietek sale might still be paid normally:
+
+```text
+Buyer
+ ↓
+Card / Apple / Google / Stripe / bank
+ ↓
+Poietek Commerce Ledger
+ ↓
+Approved allocation
+ ↓
+Artist / contributor / company balances
+ ↓
+Payout provider
+```
+
+Then Poietek anchors a proof of that settlement on-chain.
+
+Later, optional blockchain-native payments could exist too.
+
+But creators **do not need a crypto wallet or cryptocurrency to get paid normally**.
+
+That is important.
+
+Poietek's Party identity remains the creator identity.
+
+Wallets are just another linked identity/signing/payment capability.
+
+Ethereum's current account-abstraction direction is particularly useful here because smart accounts can support programmable recovery, transaction batching and mechanisms where applications or paymasters cover gas, reducing how much blockchain complexity end users need to understand. 
+
+### Blockchain does not become copyright
+
+I’ve also made this distinction impossible for future coding agents to misunderstand:
+
+```text
+Blockchain proves:
+"This data/hash was anchored."
+
+It does NOT automatically prove:
+"This copyright claim is legally correct."
+
+Blockchain can prove:
+"This contributor approved Manifest v4."
+
+It does NOT force:
+PRS / PPL / MLC / SoundExchange to accept it.
+
+Blockchain can prove:
+"This settlement was recorded."
+
+It does NOT prove:
+A bank transfer actually arrived unless the payment receipt is also reconciled.
+```
+
+That keeps the system legally and technically grounded.
+
+### Corrections are handled properly
+
+Blockchain history isn't edited.
+
+Suppose:
+
+```text
+Rights Manifest v1
+Writer A 60%
+Writer B 40%
+```
+
+gets anchored.
+
+Later everyone discovers it should have been:
+
+```text
+Rights Manifest v2
+Writer A 50%
+Writer B 50%
+```
+
+Poietek does **not** pretend v1 disappeared.
+
+Instead:
+
+```text
+v1
+Historical
+Superseded by v2
+
+v2
+Current
+Approved by both contributors
+New blockchain anchor
+```
+
+That actually gives you a much stronger audit history.
+
+### Smart-contract starter code is included
+
+I created an actual starter anchor contract:
+
+**:chatgpt-content-reference{index="7"}**
+
+It supports anchoring:
+
+```text
+Rights Manifest
+Contributor Approval Batch
+Registration Receipt Batch
+Marketplace Settlement Batch
+External Royalty Statement Batch
+Release Snapshot
+Provenance Snapshot
+```
+
+It deliberately **does not hold user funds**.
+
+That is intentional. Contracts that custody money introduce much greater security, regulatory and audit risk.
+
+I also created a separate contributor approval contract:
+
+**:chatgpt-content-reference{index="8"}**
+
+It uses the EIP-712 pattern and OpenZeppelin-style signature verification/security primitives. OpenZeppelin currently provides `SignatureChecker` supporting both regular ECDSA and ERC-1271 smart-contract signatures. 
+
+### New Documents 81–90
+
+The new architecture includes:
+
+**81 — Hybrid Blockchain Ledger Architecture**  
+**82 — Triple Time Proof & Event Chronology**  
+**83 — Contributor Cryptographic Approvals**  
+**84 — Smart-Contract Anchor Registry**  
+**85 — Settlement Merkle Roots & Payment/Royalty Proofs**  
+**86 — On-chain vs Off-chain Payment Routing**  
+**87 — Privacy, Immutability & Rights Correction**  
+**88 — Walletless UX, Smart Accounts & Gas Sponsorship**  
+**89 — Blockchain Security, Audit & Release Gate**  
+**90 — End-to-End Tamper-Evident Creator Economy Flow**
+
+### Download v2.2
+
+**:chatgpt-content-reference{index="9"}**
+
+And the entire accumulated architecture:
+
+**:chatgpt-content-reference{index="10"}**
+
+I also updated the main README so blockchain is now part of the overall Poietek architecture rather than a detached idea.
+
+The result is starting to look less like merely a DAW with blockchain added and more like a **creative provenance and economic operating system**:
+
+```text
+CREATE
+ ↓
+CONTRIBUTE
+ ↓
+IDENTIFY
+ ↓
+CREDIT
+ ↓
+AGREE RIGHTS
+ ↓
+SIGN
+ ↓
+FINALIZE
+ ↓
+HASH
+ ↓
+ANCHOR
+ ↓
+REGISTER
+ ↓
+SELL / STREAM / LICENSE
+ ↓
+RECONCILE
+ ↓
+ALLOCATE
+ ↓
+PAY
+ ↓
+PROVE
+```
+
+And every stage can point back to the exact people, project version, rights manifest and settlement evidence that produced it.
+
+Continued. I’ve added this entire layer to **Poietek v2.3** and also incorporated inspiration from decentralized music/video ecosystems without turning Poietek into a crypto-first product.
+
+The main distinction is now formalized:
+
+**Blockchain consensus proofs** such as PoW, PoS, DPoS, PoA, PBFT/FBA and Proof-of-Space are infrastructure choices for external networks.
+
+**Poietek Proofs** are evidence that directly matters to creators:
+
+- Proof of Contribution
+- Proof of Consent
+- Proof of Identity
+- Proof of Data Integrity
+- Proof of Transaction History
+- Proof of Interoperability
+- Proof of Chaos/Resilience
+- Proof of Reputation
+- Proof of Impact
+- Proof of Engagement
+- Proof of Discovery
+- Proof of Legacy
+- Proof of Environmental Impact
+- Proof of Learning/Competency
+
+That gives the proof system a real purpose rather than collecting consensus buzzwords.
+
+### Decentralized music/video inspiration
+
+Audius is particularly useful as inspiration for artist-controlled identities, developer APIs, authorized external apps and explicit remix relationships. Its current developer ecosystem exposes user/track APIs, authorized applications and remixer relationships. 
+
+Livepeer provides a very useful infrastructure pattern: it separates the **protocol, decentralized compute network and application layer**, while supporting video-on-demand, livestreaming, transcoding, access control and analytics. That maps nicely to Poietek’s new **MediaComputeRouter / Smart Resource Mesh**, where local GPU, Poietek workers and third-party/decentralized compute can all satisfy the same job contract. 
+
+LBRY/Odysee contributes another useful pattern: protocol and user-facing application are distinct; content can be delivered P2P; creators can publish free or priced material and receive support; and its historical YouTube sync demonstrates the value of making external-channel migration easy. 
+
+And I’m deliberately still borrowing strong centralized UX ideas from YouTube: channels, videos, playlists, subscriptions, comments, search, uploads and detailed creator/content-owner analytics are all exposed in its official API ecosystem. 
+
+So **Poietek Hub** now has the architectural basis for something like:
+
+```text
+Artist / Creator Channel
+          │
+          ├── Music
+          ├── Videos
+          ├── Images
+          ├── Live Streams
+          ├── Clips
+          ├── Playlists
+          ├── Store
+          ├── Samples / Plugins
+          ├── Remixes / Forks
+          ├── Learning
+          └── Rights / Provenance
+                    │
+             Content Credentials
+             Credits
+             Contributors
+             Rights
+             Purchases
+             Tips
+             Settlements
+```
+
+But the media itself can come through a router:
+
+```text
+Local copy
+   │
+   ├── Poietek CDN/storage
+   ├── user's own cloud
+   ├── P2P/decentralized replica
+   ├── Livepeer-style video provider
+   ├── object storage
+   └── external platform
+```
+
+That is much more resilient than building “another YouTube server.”
+
+### DAO, DeFi, NFTs, Ordinals and Runes
+
+I classified these rather than automatically adding everything.
+
+**DAO concepts** are useful later for things such as community grants, open-source stewardship, plugin/device-profile governance and creator collectives. They should never overrule contributor contracts or privacy rights.
+
+**NFTs/digital collectibles** can be optional representations of collectible editions, tickets, access passes or licence receipts. Token ownership must remain separate from copyright ownership.
+
+**DeFi** is research-only. Lending, liquidity pools and speculative financial products don't improve the core studio.
+
+**ETFs** are outside Poietek's core altogether—they're investment products, not creator-software functionality.
+
+Bitcoin **Ordinals/Inscriptions** are interesting as optional public digital-artifact/provenance outputs; the current Ordinals documentation supports arbitrary content plus metadata/provenance concepts. **Runes/Runestones** are fungible Bitcoin-native assets whose protocol messages are stored in transaction outputs. 
+
+I explicitly blocked Poietek from depending on **OP_CAT**. BIP 347 currently specifies a proposed OP_CAT for Tapscript, while current Bitcoin Core source still treats OP_CAT as a disabled opcode. So it can remain R&D, not a production dependency. 
+
+### Smart Resource Mesh
+
+I added a Poietek-specific meaning for **Smart Mesh**:
+
+```text
+Job
+ ↓
+Capability Router
+ ↓
+┌─────────────────────────┐
+│ Local CPU               │
+│ Local GPU               │
+│ Other studio computer   │
+│ Tablet / companion      │
+│ Home server             │
+│ Free cloud provider     │
+│ Paid provider           │
+│ Decentralized compute   │
+└─────────────────────────┘
+ ↓
+Best permitted execution target
+```
+
+Selection can consider:
+
+**privacy + cost + latency + hardware + availability + energy + licence + current free-tier quota.**
+
+So stem separation could run locally today, on another LAN machine tomorrow, or through an available cloud/decentralized worker without the feature itself knowing which backend executed it.
+
+### MML is useful too
+
+I interpreted **MML** as a possible reference to Metaverse Markup Language because its current project describes HTML-like 3D documents with models, animation, audio, images and video, including interactive stateful documents. 
+
+That's potentially excellent for a later:
+
+**Poietek Virtual Studio  
+Poietek Learning Room  
+Virtual Concert Venue  
+Interactive Album  
+Spatial Music Video  
+Collaborative 3D Studio**
+
+without making 3D a dependency of the normal DAW.
+
+I did **not** invent a technical meaning for “Digital Nano Technology” from the wording alone. It stays a research placeholder until there is a precise technology or specification to evaluate.
+
+### DevOps + MLOps are now integrated
+
+The AI stack now has a formal lifecycle.
+
+MLflow's current open-source tooling provides model lifecycle/versioning/lineage through its Model Registry, while Hugging Face Model Cards carry information including intended use, limitations, training information, datasets, evaluations and licence metadata. 
+
+So Poietek models can progress through:
+
+```text
+DISCOVERED
+    ↓
+QUARANTINED
+    ↓
+EVALUATED
+    ↓
+APPROVED LOCAL
+    ↓
+APPROVED CLOUD
+    ↓
+BETA
+    ↓
+PRODUCTION
+    ↓
+DEPRECATED
+```
+
+Popularity alone can never promote a model to Production.
+
+### Compliance framework added
+
+I mapped your compliance list into actual architecture rather than claiming blanket certification.
+
+NIST CSF **2.0** is now the cybersecurity governance baseline. NIST SSDF **1.1** remains the current final secure-software-development baseline while NIST has a draft 1.2 revision, and the AI stack maps to NIST AI RMF plus its Generative AI Profile. 
+
+PCI DSS **4.0.1** remains the current PCI DSS publication, but Poietek's preferred architecture is to keep cardholder data at payment processors so the product's PCI exposure is minimized. 
+
+Privacy is jurisdictional. For example, GDPR principles include lawfulness/transparency, purpose limitation and data minimization, while California's CCPA provides rights including access, deletion, correction and opt-out of sale/sharing. 
+
+### AI Learning Assistant
+
+This is now a substantial Poietek subsystem.
+
+A user could simply say:
+
+> “I want to release my first song.”
+
+And Poietek builds:
+
+```text
+YOUR ROADMAP
+
+1. Audio setup
+   ├── interface
+   ├── levels
+   └── latency
+
+2. Record
+   ├── vocals
+   ├── takes
+   └── comping
+
+3. Arrange
+   ├── song sections
+   └── transitions
+
+4. Edit
+   ├── timing
+   └── pitch
+
+5. Mix
+   ├── balance
+   ├── EQ
+   ├── compression
+   └── space
+
+6. Master / Export
+
+7. Credits & Contributors
+
+8. Rights / PRS / PPL
+
+9. Artwork / Metadata
+
+10. Publish
+```
+
+Or:
+
+> “Teach me sampling like an MPC.”
+
+And it could create a safe tutorial project, highlight pads and controls, give exercises, assess progress and gradually unlock deeper material.
+
+Paths now include music production, sampling, recording, MIDI/hardware, synthesis, mixing, mastering, DJ/live, video/VFX, rights/royalties, creator business, plugin development, Poietek development and blockchain/provenance.
+
+It also introduces optional **Proof of Learning/Competency**—evidence that somebody completed a project/task/benchmark—not a fake qualification.
+
+### New v2.3 documents
+
+**91 — Proof-Mechanism Adoption Matrix**  
+**92 — Poietek Creator Proof Registry**  
+**93 — Zero-Knowledge Privacy, Identity & Consent**  
+**94 — Global Privacy, Security & Compliance Architecture**  
+**95 — DevSecOps, MLOps & Model Governance**  
+**96 — Decentralized Music/Video Platform Inspiration**  
+**97 — DAO, DeFi, NFT, Ordinals, Runes & OP_CAT Classification**  
+**98 — Creator Media Player, Feed & Streaming Architecture**  
+**99 — Smart Resource Mesh, MML, Scripts, Nesting & Auto-Sequencer**  
+**100 — AI Learning Roadmaps & Creative Coach**
+
+### Downloads
+
+**:chatgpt-content-reference{index="13"}**
+
+**:chatgpt-content-reference{index="14"}**
+
+**:chatgpt-content-reference{index="15"}**
+
+**:chatgpt-content-reference{index="16"}**
+
+**:chatgpt-content-reference{index="17"}**
+
+**:chatgpt-content-reference{index="18"}**
+
+I also updated the main **README** with the proof system, decentralized media architecture, privacy/security strategy, MLOps, optional Bitcoin-native research, Smart Resource Mesh and AI learning system. :chatgpt-content-reference{index="19"}
+
+Continued — this is now **Poietek v2.4**, with a full **Universal Console Bridge** for digital, analogue and hybrid mixing desks.
+
+For supported digital desks, Poietek can be designed for genuine **two-way synchronization**:
+
+```text
+Move desk fader
+     ↓
+Poietek mixer updates
+
+Move Poietek fader
+     ↓
+Physical motorized desk fader moves
+
+Mute / pan / sends / EQ / routing / scenes
+     ↕
+Desk and Poietek stay synchronized
+```
+
+This is not theoretical as a control pattern. Current Allen & Heath documentation, for example, describes bidirectional MIDI control over USB or TCP/IP; current Avantis control documentation includes fader levels, mutes, sends, DCA assignment, names/colours, scene recall and MIDI Machine Control.  Yamaha similarly provides remote-control/monitoring software across multiple current digital mixer families, while AES70 provides an open device-control and monitoring architecture designed to operate alongside audio transports including AES67, Dante and AVB. 
+
+The architecture now separates **five different kinds of sync**, which is really important:
+
+```text
+1. AUDIO
+   USB / MADI / ADAT / AES3 /
+   AES50 / Dante / AES67 / analogue I/O
+
+2. SAMPLE CLOCK
+   Word Clock / PTP / MADI /
+   ADAT / AES3 / AES50
+
+3. MIXER CONTROL
+   MIDI / NRPN / SysEx / OSC /
+   AES70 / vendor APIs / EUCON etc.
+
+4. TRANSPORT / TIMECODE
+   MMC / MTC / timecode
+
+5. METERING / STATE
+   meters / faders / scenes /
+   touch state / routing
+```
+
+So, for example, an **optical cable** is no longer treated as one generic thing. Optical MADI and ADAT optical have very different channel/capability models. AES10/MADI supports multichannel digital audio over coaxial or fibre connections, while real MADI/Dante bridges can also participate in Word Clock/network clocking. 
+
+For networked audio, Dante currently synchronizes devices using IEEE 1588 PTP to a network leader and describes sample-accurate time alignment across the network; AES67-compatible operation can use PTPv2 where supported. 
+
+## Analogue desks are supported too
+
+I’ve made this honest rather than pretending software can control physics.
+
+A completely passive analogue fader or EQ knob with no electronics **cannot report its position to Poietek and cannot be moved remotely**.
+
+So Poietek now defines analogue integration levels:
+
+```text
+LEVEL A
+Analogue desk
+   ↓
+Audio interface / converters
+   ↓
+Poietek
+
+Audio sync/recording ✓
+Fader telemetry ✗
+```
+
+Then:
+
+```text
+LEVEL B
+Analogue desk with automation
+
+Motor faders
+VCA automation
+Mutes
+MIDI
+Digitally controlled preamps
+etc.
+
+     ↕
+Poietek
+```
+
+And for digitally controlled analogue/hybrid consoles, two-way control can become much richer.
+
+For completely manual controls, Poietek supports a **Manual Recall** system:
+
+```text
+Channel 1
+
+Preamp     32 dB       MANUAL
+HPF        80 Hz       MANUAL
+EQ Gain    +2.5 dB     MANUAL
+Fader      -4.1 dB     LIVE ✓
+Mute       Off         LIVE ✓
+```
+
+It can also store desk diagrams, photos and notes. Computer-vision reading of analogue knob positions is now explicitly a **research feature**, not something Poietek would falsely call accurate live telemetry.
+
+## Mixer State Mirror
+
+I also added actual starter code for the bidirectional state layer:
+
+**:chatgpt-content-reference{index="7"}**
+
+It tracks where a change came from:
+
+```text
+physical_console
+poietek_ui
+automation_playback
+scene_recall
+remote_client
+system
+```
+
+and supports future conflict policies such as:
+
+```text
+Last Touch
+Console Priority
+Poietek Priority
+Automation Priority
+Pickup
+Read Only
+```
+
+That is especially important for non-motorized controls.
+
+If software says:
+
+```text
+Fader = -6 dB
+```
+
+but the physical fader is sitting at:
+
+```text
++2 dB
+```
+
+Poietek can use **pickup mode** so the hardware must cross the software value before taking control. No nasty level jump.
+
+## Clock Domain management
+
+There is now a proper:
+
+**:chatgpt-content-reference{index="8"}**
+
+A studio could look like:
+
+```text
+STUDIO CLOCK DOMAIN
+
+48 kHz
+
+Leader
+└── Digital Console
+
+Followers
+├── Poietek Audio Interface       LOCKED
+├── MADI Bridge                   LOCKED
+├── Dante Network                 LOCKED
+├── Stagebox                      LOCKED
+└── Video Interface
+      └── SRC boundary
+```
+
+And Poietek should prevent accidental configuration such as two competing external clock leaders. Focusrite's current Dante guidance explicitly warns against synchronizing multiple Dante devices independently to different external clocks; one externally synchronized device can become the network leader. 
+
+## Scenes and routing are included
+
+Poietek now distinguishes:
+
+```text
+Audio Routing
+Where sound travels
+
+Control Routing
+What physical control operates what
+
+Clock Routing
+Where synchronization comes from
+```
+
+and it can eventually show scene diffs before changing the desk:
+
+```text
+Recall: Vocal Mix 03
+
+CH 1 Fader
+-3.1 → -7.0 dB
+
+CH 8 Mute
+OFF → ON
+
+Bus 4 Route
+OFF → ON
+
+Preamp CH 2
+PROTECTED — WILL NOT CHANGE
+
+Master Level
+PROTECTED
+```
+
+That is much safer than blindly firing a console scene recall.
+
+## Console Profile format
+
+Every desk can now have a versioned machine-readable profile:
+
+**:chatgpt-content-reference{index="9"}**
+
+It records:
+
+```text
+Manufacturer
+Model
+Firmware
+
+USB
+MIDI
+Ethernet
+Dante
+AES67
+MADI optical/coax
+ADAT
+AES3
+AES50
+Word Clock
+OSC
+
+Clock capabilities
+
+Readable parameters
+Writable parameters
+
+Motorized controls
+Scenes
+Routing
+Metering
+
+Manual analogue controls
+
+Verification status
+```
+
+And the actual generic integration contract is here:
+
+**:chatgpt-content-reference{index="10"}**
+
+## Security matters here too
+
+Remote mixer control can literally change live audio, so it is now treated as privileged access.
+
+Current Allen & Heath systems, for example, document network MIDI controls and optional secured TCP MIDI configurations, while their WAN guidance recommends protecting remote connections rather than simply exposing the mixer directly to the internet. 
+
+Poietek therefore has permissions like:
+
+```text
+console.read
+console.write_mix
+console.write_preamps
+console.scene_recall
+console.routing
+console.clock_change
+console.phantom_power
+console.transport
+```
+
+Changing clock source, phantom power, master level or a full scene can require extra permission/confirmation.
+
+### New Documents 101–110
+
+The new batch contains:
+
+- **101 — Universal Console Bridge Architecture**
+- **102 — Audio Clock, Timing & Sync Domains**
+- **103 — Digital Console Bidirectional Control**
+- **104 — Digital Audio Transport: USB, Optical & Network**
+- **105 — Analogue & Hybrid Console Integration**
+- **106 — Mixer State Mirror, Automation & Conflict Resolution**
+- **107 — Console Profile & Adapter SDK**
+- **108 — Patching, Routing, Scenes & Recall**
+- **109 — Console Network Security & Remote Control**
+- **110 — Console Sync Benchmark & Certification**
+
+### Downloads
+
+**:chatgpt-content-reference{index="11"}**
+
+**:chatgpt-content-reference{index="12"}**
+
+The result is that a compatible studio desk can increasingly become a **physical extension of Poietek** rather than a separate mixer sitting beside it:
+
+```text
+Poietek Project
+      ↕
+Mixer State Mirror
+      ↕
+Digital / Hybrid Console
+      ↕
+Stageboxes / Interfaces / Outboard
+      ↕
+Audio Network
+      ↕
+Performers / Studio
+```
+
+while an analogue desk still participates correctly at whatever level its real hardware capabilities allow.
+
+Continued — **Poietek is now at v2.6**, and I’ve added the new **Genre, Film, Visual & Industry-Standards AI layer**.
+
+The important distinction is now built into the architecture: **formal technical standards** and **creative genre/style conventions are not the same thing**. MusicBrainz itself treats genre as a subjective tagging system whose genre list can evolve, so Poietek should use genres as adaptive reference profiles rather than pretending every genre has one legally or technically mandated sound. 
+
+For film/video, there *are* formal technical standards. The new registry includes classes such as **ITU-R BT.709** for SDR HDTV production, the current **BT.2100-3** recommendation for HDR television, SMPTE's D-Cinema/DCP standards families, and **SMPTE ST 2067 IMF** for interoperable audiovisual masters.  Web caption delivery can use profiles such as WebVTT, whose current W3C work defines time-aligned captions/subtitles and metadata. 
+
+### How the AI now works
+
+Poietek can analyse a project and clearly label advice as:
+
+```text
+REQUIRED BY TARGET
+TECHNICAL BEST PRACTICE
+REFERENCE NORM
+CREATIVE OPTION
+```
+
+So for an Afrobeats track, for example, AI might say:
+
+```text
+Sub-bass:
+Stronger than 82% of your selected references.
+
+CREATIVE OPTION
+No correction required.
+```
+
+while separately saying:
+
+```text
+Broadcast master:
+Integrated loudness does not meet selected R128 profile.
+
+REQUIRED BY TARGET
+```
+
+That distinction stops the assistant from flattening everyone's work into the same generic sound.
+
+### Every genre can have adaptive intelligence
+
+I added an extensible genre taxonomy plus **Style Reference Profiles** for music.
+
+Profiles can learn/reference:
+
+- tempo and rhythmic range;
+- key/mode tendencies;
+- loudness and true-peak distributions;
+- dynamic/crest-factor distributions;
+- low-frequency energy;
+- spectral balance;
+- stereo width;
+- instrumentation;
+- vocal prominence;
+- arrangement density;
+- section lengths;
+- production era and regional characteristics.
+
+The reference set can come from the artist's own catalogue, explicitly selected reference songs, licensed/open datasets, project history or community aggregates.
+
+So users can eventually create personal profiles such as:
+
+**“My Sound”**
+
+which may be more valuable than generic genre matching.
+
+### Film and visual AI is included
+
+For video/film, Poietek can now distinguish **technical QC** from **creative visual style**.
+
+Technical analysis can check:
+
+```text
+Resolution
+Frame rate
+Timebase
+Colour primaries
+Transfer function
+HDR/SDR
+Bit depth
+Chroma subsampling
+Codec/container
+Audio layout
+Loudness
+Captions
+Packaging
+Metadata
+```
+
+while visual-style intelligence can examine things such as:
+
+```text
+Shot length
+Cut frequency
+Camera motion
+Contrast
+Luminance
+Colour palette
+Saturation
+Film grain/noise
+Scene pacing
+Dialogue/music balance
+```
+
+SMPTE currently maintains major professional standards families covering D-Cinema, IMF, time code and ST 2110 professional IP media workflows, so these are being treated as versioned technical profiles rather than hard-coded assumptions. 
+
+### Creative Intent Lock
+
+This is one of the most useful additions.
+
+A creator can tell Poietek:
+
+```text
+KEEP:
+Heavy sub bass
+Dry vocals
+Cassette noise
+High dynamics
+Narrow stereo
+Film grain
+Warm shadows
+Low-key lighting
+```
+
+AI is then **forbidden from treating those characteristics as mistakes merely because a reference average differs**.
+
+That should stop the classic AI-mastering problem where everything gradually turns into the same polished blob.
+
+### Universal final preflight
+
+Before export, Poietek can eventually produce something like:
+
+```text
+POIETEK FINAL CHECK
+
+AUDIO
+✓ No clipping
+✓ True peak
+✓ Phase
+✓ Noise
+✓ Clock / recording integrity
+
+MUSIC STYLE
+✓ Arrangement
+! Vocal lower than reference range
+  Creative — optional
+
+VIDEO
+✓ Resolution
+✓ Frame rate
+✓ BT.709 tagging
+✓ Legal range
+✓ A/V sync
+
+CAPTIONS
+✗ Missing broadcast captions
+
+DELIVERY
+✓ Web
+! Broadcast loudness requires conform render
+
+RIGHTS
+✓ Contributors
+✓ Rights Manifest
+✓ ISRC
+✓ Provenance
+
+EXPORT STATUS
+2 actions required
+1 creative suggestion
+```
+
+That one engine can serve music, podcasts, audiobooks, movies, television, music videos, social clips, live streams, images, animation and game assets.
+
+### New Documents 121–130
+
+I created:
+
+- **121 — Technical Standards vs Style Norms Architecture**
+- **122 — Music Genre Taxonomy & Reference Profiles**
+- **123 — AI Music Style / Mix / Master Assistant**
+- **124 — Film, TV & Visual Technical Standards Registry**
+- **125 — Film Genre & Visual Style Reference Intelligence**
+- **126 — AI Colour, HDR, Exposure & Visual QC Assistant**
+- **127 — Captions, Accessibility, Dialogue & Content AI**
+- **128 — Content Delivery Preflight Engine**
+- **129 — Content Intelligence Model & Data Governance**
+- **130 — Universal AI Standards & Creative Assistant Workflow**
+
+And machine-readable implementation files for the system.
+
+**:chatgpt-content-reference{index="5"}**
+
+**:chatgpt-content-reference{index="6"}**
+
+Useful individual engineering artifacts:
+
+**:chatgpt-content-reference{index="7"}**
+
+**:chatgpt-content-reference{index="8"}**
+
+**:chatgpt-content-reference{index="9"}**
+
+**:chatgpt-content-reference{index="10"}**
+
+**:chatgpt-content-reference{index="11"}**
+
+The README has also been updated with this architecture.
+
+The next useful continuation is to turn the assistant into a **cross-modal analysis graph**—so it can understand audio + MIDI + lyrics + video + colour + captions + rights + target platform *together*, rather than each subsystem advising independently.
+
+Exactly — I’ve corrected the architecture around that meaning of **“standard”** and continued the cross-system work at the same time.
+
+**A=440 Hz** is indeed a formal musical-pitch reference: ISO 16 specifies A on the treble stave as **440 Hz**, and ISO currently lists that edition as confirmed/current.  But it isn’t itself a universal radio requirement. For radio/TV/public delivery, Poietek now loads the relevant **release destination profile** and checks the correct technical rules for that target.
+
+For example, current **EBU R128 v5** recommends -23 LUFS programme loudness for its broadcast context, while **ITU-R BS.1770-5** is the current in-force measurement algorithm for programme loudness and true peak.  In the US television/broadcast ecosystem, **ATSC A/85 was substantially updated in July 2026** for modern broadcast and streaming loudness workflows. 
+
+So Poietek now understands four separate layers:
+
+```text
+MUSICAL STANDARD
+A440 / tuning / temperament / session reference
+
+FORMAL TECHNICAL STANDARD
+LUFS / true peak / colour / HDR / captions / cinema packaging
+
+DESTINATION REQUIREMENT
+BBC / radio station / broadcaster / Spotify / cinema / client / festival
+
+CREATIVE REFERENCE
+Genre / style / artist sound / visual aesthetic
+```
+
+That means before release, the user could choose something like **Radio Broadcast**, and Poietek would run:
+
+```text
+PUBLIC RELEASE CHECK
+
+Tuning reference          A440 ✓
+Audio format              ✓
+Sample/technical format   ✓
+Programme loudness        ✗
+True peak                 ✓
+ISRC                      ✓
+Credits                   ✓
+Rights Manifest           ✓
+Metadata                  ✓
+
+NOT READY
+
+1 required correction
+
+AI:
+Your selected broadcaster profile expects
+a different programme loudness.
+
+[Preview Compliant Version]
+[See Requirement]
+[Change Target]
+```
+
+Crucially, the AI says **“this doesn't satisfy your selected destination”**, not **“your music is wrong.”**
+
+I also finished the **Cross-System Interoperability Fabric** from your earlier list.
+
+Poietek now formally accounts for:
+
+- Cross network
+- Cross platform
+- Cross device
+- Cross chain
+- Cross system
+- Cross node
+- Cross program
+- Cross app
+- Cross dApp
+- Cross language
+- Cross code
+- Cross symbols
+- Cross image
+- Cross sound
+- Cross build
+- Cross idea
+- Cross Grid / compute mesh
+
+The central pattern is:
+
+```text
+Canonical Poietek Project
+        ↓
+Stable IDs + Schemas
+        ↓
+Capability Contracts
+        ↓
+Adapters
+   ├─ Windows
+   ├─ macOS
+   ├─ Linux
+   ├─ Web
+   ├─ iOS/iPadOS
+   ├─ Android
+   ├─ Hardware
+   ├─ Cloud
+   ├─ AI
+   ├─ Blockchain
+   ├─ Storage
+   └─ External Apps
+```
+
+So an idea, project, asset or command has one meaning regardless of which system processes it.
+
+For example:
+
+```text
+Desktop Poietek
+   ↓
+Continue on iPad
+   ↓
+same project revision
+same playhead
+same selected track
+same rights
+same assets
+```
+
+If the desktop has a VST3 that iPad cannot execute, its state isn't deleted—the tablet can use a compatible freeze/render fallback.
+
+The **cross-language bridge** is also explicit now: TypeScript/JavaScript, Rust, C/C++, Python, Swift, Kotlin and WASM can cooperate through stable schema/RPC/ABI contracts instead of exposing raw language-specific object layouts.
+
+And **cross-chain** deliberately means evidence portability rather than automatically bridging money. Poietek can anchor a rights or settlement proof to different reviewed networks while keeping a provider-neutral Evidence Receipt. Token/fund bridges remain a separate high-risk subsystem rather than being baked into the creative workflow.
+
+### New v2.7 package
+
+I created **Documents 131–142**:
+
+- 131 — Public Release Readiness Engine
+- 132 — Tuning Reference & Musical Pitch Standards
+- 133 — Radio / TV Broadcast Release Profiles
+- 134 — Release Profile AI Fix Assistant
+- 135 — Cross-System Interoperability Fabric
+- 136 — Cross-Network & Protocol Router
+- 137 — Cross-Platform / Cross-Device Handoff
+- 138 — Cross-Language, Cross-Code & Runtime Bridges
+- 139 — Cross-Node Smart Resource Grid
+- 140 — Cross-Chain Evidence Portability
+- 141 — Cross-Media, Cross-Symbol & Cross-Idea Interoperability
+- 142 — Cross-Build & Interoperability Certification
+
+**:chatgpt-content-reference{index="4"}**
+
+And the complete accumulated project library:
+
+**:chatgpt-content-reference{index="5"}**
+
+Useful individual implementation files:
+
+**:chatgpt-content-reference{index="6"}**
+
+**:chatgpt-content-reference{index="7"}**
+
+**:chatgpt-content-reference{index="8"}**
+
+**:chatgpt-content-reference{index="9"}**
+
+**:chatgpt-content-reference{index="10"}**
+
+**:chatgpt-content-reference{index="11"}**
+
+**:chatgpt-content-reference{index="12"}**
+
+I also updated the main README so this corrected meaning of **standards before public release** is now part of Poietek's permanent architecture.
+
+Continued — **Poietek is now at v2.9**, and I’ve adjusted the tuning system exactly around what you’re asking for.
+
+The historical point is worth separating from the product choice. The current ISO tuning standard is still **A=440 Hz**, published as ISO 16 in 1975 and most recently reconfirmed in 2022. Contemporary records place the major international agreement at a **1939 standards conference at BBC Broadcasting House**, following decades of differing pitch practices. I’m not finding credible evidence that the Rothschild family changed the standard “a few years ago,” so Poietek won’t present that claim as fact. 
+
+That does **not** mean Poietek should force people to use 440 Hz.
+
+### Organic tuning remains fully supported
+
+A creator can make, publish, sell and share projects using:
+
+```text
+A432
+A415
+A430
+A435
+A438
+A440
+A442
+A443
+A444
+Custom frequency
+
+Just Intonation
+Adaptive Just
+Pythagorean
+Meantone
+Werckmeister
+Vallotti
+19 / 24 / 31 EDO
+Scala SCL/KBM
+Custom ratio systems
+```
+
+And community users can publish and fork their own tuning profiles.
+
+A community profile might be:
+
+```text
+Jay's Organic A432
+
+Reference:
+A4 = 432 Hz
+
+Temperament:
+Just Intonation
+
+Tags:
+Organic
+Ambient
+Meditative
+Harmonic
+
+[Use in Project]
+[Listen A/B]
+[Fork]
+[Save]
+[Share]
+```
+
+The word **organic** remains a creative category rather than a medical claim.
+
+### Public release works differently
+
+I’ve changed this so Poietek **does not tell somebody their A432 track will be rejected** unless the actual selected destination has an explicit pitch requirement.
+
+Instead:
+
+```text
+PUBLIC RELEASE CHECK
+
+Project tuning:
+A432 / Just Intonation
+
+Destination:
+Public Streaming Release
+
+Explicit tuning requirement:
+None
+
+STATUS
+✓ PASS
+
+ADVISORY
+
+A440 is the current standard musical-pitch
+reference and may improve compatibility with
+some collaborators, instruments or production
+workflows.
+
+Your A432 master can remain unchanged.
+
+[KEEP A432 ORIGINAL]
+
+[CREATE A440 COMPATIBILITY MASTER]
+
+[EXPORT TUNING NOTES]
+```
+
+That is much more accurate.
+
+### If somebody really does require 440
+
+Then Poietek can say:
+
+```text
+CLIENT DELIVERY
+
+Required:
+A440
+
+Project:
+A432
+
+⚠ NOT READY FOR THIS CLIENT PROFILE
+
+Your original A432 project will NOT be changed.
+
+Recommended:
+Create separate compatibility version.
+
+[CREATE A440 COPY]
+```
+
+So the creator keeps:
+
+```text
+MySong_MASTER_A432.wav
+```
+
+and, if needed:
+
+```text
+MySong_MASTER_A440_COMPAT.wav
+```
+
+The original never gets overwritten.
+
+### Tuning metadata travels with the work
+
+I also extended the document-like file metadata concept.
+
+Poietek's inspector can show:
+
+```text
+MY SONG
+
+Audio
+24-bit / 48 kHz
+3:42
+
+TUNING
+A4 = 432 Hz
+
+TEMPERAMENT
+Just Intonation
+
+VARIANT
+Original Creative Master
+
+COMPATIBILITY
+A440 master available
+
+RIGHTS
+Manifest v6
+
+CONTRIBUTORS
+4
+
+PROVENANCE
+Verified ✓
+```
+
+That information can also travel in the Poietek manifest/sidecar and suitable embedded metadata so another Poietek user knows exactly how the piece was constructed.
+
+### Community tuning ecosystem
+
+The community system now explicitly supports:
+
+- publishing tuning presets;
+- ratings and reviews;
+- following tuning creators;
+- forking/remixing tunings;
+- Scala imports/exports;
+- example tracks;
+- tuning challenges;
+- microtonal communities;
+- historical tuning collections;
+- A432 communities;
+- educational material;
+- blind A/B comparisons.
+
+For example:
+
+```text
+COMMUNITY CHALLENGE
+
+432 Harmonic Week
+
+Rules:
+A432 reference
+Use Just Intonation
+Original music only
+
+Entries: 1,284
+
+[Join Challenge]
+[Learn Just Intonation]
+[Browse Entries]
+```
+
+And because the exact technical profile is attached, it isn't merely somebody putting “432 Hz” in a title.
+
+### New v2.9 documents
+
+I added:
+
+- **153 — Alternative Tuning Creative Rights Policy**
+- **154 — Public Release Tuning Compatibility Advisor**
+- **155 — Dual Master: Original + Compatibility Export**
+- **156 — Tuning Metadata & File Inspector**
+- **157 — Community Tuning Library**
+- **158 — Organic Tuning Community Discovery**
+- **159 — Tuning History & Evidence Notes**
+- **160 — Tuning Release UI End to End**
+
+I also added executable starter contracts for the release advisor.
+
+**:chatgpt-content-reference{index="2"}**
+
+**:chatgpt-content-reference{index="3"}**
+
+Useful individual files:
+
+**:chatgpt-content-reference{index="4"}**
+
+**:chatgpt-content-reference{index="5"}**
+
+**:chatgpt-content-reference{index="6"}**
+
+**:chatgpt-content-reference{index="7"}**
+
+And the main README has been updated again.
+
+The resulting policy is simple: **Poietek protects the creator's chosen tuning first, informs them about compatibility second, and only requires a different version when the actual destination explicitly requires it.**
+
+Yes — that clarification is now built into **Poietek v3.0**.
+
+Inside the **Poietek community ecosystem**—the video/audio player, wall, creator channel, feed, archive, playlists, learning rooms and similar surfaces—the music can be played using the creator’s original tuning or an optional listener/community tuning.
+
+For example:
+
+```text
+Creator original:
+A440
+
+Poietek Community Player:
+○ Original A440
+● Organic A432
+○ A442
+○ Custom
+```
+
+A440 → A432 is about **-31.77 cents**. Poietek changes pitch while preserving **tempo and duration**, so a music video stays synchronized with picture, captions and chapters.
+
+The player would clearly show:
+
+```text
+ORIGINAL MASTER
+A440
+
+CURRENT PLAYBACK
+A432
+-31.77 cents
+
+Tempo preserved ✓
+Video sync preserved ✓
+```
+
+The original master is **never modified**.
+
+For popular playback choices, Poietek can pre-render/cache a high-quality A432 rendition rather than performing the conversion every time.
+
+### External release is separate
+
+This is the crucial distinction.
+
+When sending a video to YouTube, Poietek checks **YouTube’s actual delivery profile**. YouTube’s current official requirements focus on things such as codec, sample rate, frame rate, channels and colour space; its general recommendations include 48 kHz audio and BT.709 for SDR, and its music-video partner specification recommends lossless audio with 48 kHz and 24-bit preferred. I found **no A440 tuning requirement** in those current official YouTube specifications. 
+
+So:
+
+```text
+A432 Creator Master
+        ↓
+YouTube Export
+
+Tuning:
+KEEP A432 ✓
+
+Technical conversion:
+48 kHz
+correct codec
+correct container
+BT.709/HDR profile
+captions
+metadata
+etc.
+```
+
+Poietek **does not retune it just because it is going to YouTube**.
+
+Radio/broadcast works the same way: Poietek loads the **specific broadcaster/station profile**. If there is no explicit tuning requirement, the creator’s tuning remains untouched. If a particular production/client actually specifies another reference, Poietek creates a separate compatibility rendition rather than overwriting the original.
+
+### New Documents 161–170
+
+I added:
+
+- **161 — Community Player Tuning Architecture**
+- **162 — Listener Playback Tuning Preferences**
+- **163 — Real-Time Pitch Shift & Tempo Preservation**
+- **164 — Video Player Tuning & A/V Sync**
+- **165 — Community Wall, Archive & Channel Tuning**
+- **166 — Derived Tuning Renditions, Cache & CDN**
+- **167 — External Platform Export: YouTube Profile**
+- **168 — Public Radio/Broadcast: Tuning vs Delivery**
+- **169 — Rights & Provenance for Alternate Playback Renditions**
+- **170 — Community Tuned Player Tests & 5-Star Gate**
+
+**:chatgpt-content-reference{index="3"}**
+
+**:chatgpt-content-reference{index="4"}**
+
+Useful engineering files:
+
+**:chatgpt-content-reference{index="5"}**
+
+**:chatgpt-content-reference{index="6"}**
+
+**:chatgpt-content-reference{index="7"}**
+
+**:chatgpt-content-reference{index="8"}**
+
+**:chatgpt-content-reference{index="9"}**
+
+This gives Poietek something quite distinctive: **the community player can become an active listening environment**, letting people experience the same work at A432, A440, A442 or another permitted tuning—while the creator’s master, rights, metadata and external-release versions remain separate and traceable.
+
+Continued with the actual build. **Poietek is now at implementation build v3.1.**
+
+The live GitHub repository is still the original React/Vite prototype: `package.json` is still named `react-example`, and `App.tsx` still owns major durable state directly inside React.   The new build therefore introduces a parallel **`src/poietek/` production runtime** underneath the existing UI instead of throwing the prototype away.
+
+### What is actually implemented now
+
+This batch contains working code for:
+
+- Canonical serializable `PoietekProject` v1.1.
+- IndexedDB project persistence.
+- Serialized autosave.
+- Starter whole-project undo/redo.
+- OPFS media storage with IndexedDB fallback.
+- SHA-256 asset identity.
+- Real browser audio decoding/import.
+- Real duration, sample-rate and channel detection.
+- Waveform peak generation.
+- WebAudio timeline playback.
+- Track/clip gain and pan.
+- Mute/solo.
+- Play, pause, stop and seek.
+- Basic deterministic audio-health analysis.
+- Digital clipping detection.
+- RMS/sample peak/DC-offset/stereo-correlation checks.
+- Release-readiness engine.
+- A432/A440 destination logic.
+- Multi-provider capability router.
+- Local + Supabase + Firebase adapter foundations.
+- PWA manifest/service worker.
+- Tauri 2 desktop/mobile shell scaffold.
+- React runtime/provider integration.
+
+I also fixed the current `MasterState` initialization mismatch in the integration patch by adding the missing `reverbLevel` and `delayLevel` values that the live type currently requires. 
+
+### I deliberately did not fake two things
+
+**LUFS / True Peak:** the build will not label RMS as LUFS or ordinary sample peak as dBTP. The standards analyzer currently reports “not measured” until a validated BS.1770 implementation is integrated.
+
+**Community A432/A440 video playback:** I did not use WebAudio `playbackRate`, because that would change tempo and video duration. The build now has a proper `TimePreservingPitchBackend` contract. Until the real AudioWorklet/WASM/native DSP is integrated, Poietek plays the creator original or a pre-rendered tuned rendition.
+
+### Validation passed
+
+The new framework-independent core was compiled under **strict TypeScript**:
+
+`tsc -p tsconfig.core.json`
+
+**PASS — zero TypeScript errors.**
+
+The runtime unit suite also passed:
+
+**4/4 tests**, covering:
+
+1. A440 → A432 = approximately **−31.76665 cents**.
+2. 120 BPM / 960 PPQ timing conversion.
+3. Digital clipping detection.
+4. A YouTube-style destination with no explicit tuning requirement correctly preserves an A432 project.
+
+:chatgpt-content-reference{index="3"}
+
+### Repo-ready implementation
+
+**:chatgpt-content-reference{index="4"}**
+
+The package contains the complete `repo-overlay/` plus exact patches for:
+
+- `src/main.tsx`
+- `src/App.tsx`
+- `package.json`
+- `index.html`
+
+There is also a complete native shell under `src-tauri/`.
+
+Useful individual implementation files:
+
+:chatgpt-content-reference{index="5"}
+
+:chatgpt-content-reference{index="6"}
+
+:chatgpt-content-reference{index="7"}
+
+:chatgpt-content-reference{index="8"}
+
+:chatgpt-content-reference{index="9"}
+
+:chatgpt-content-reference{index="10"}
+
+:chatgpt-content-reference{index="11"}
+
+:chatgpt-content-reference{index="12"}
+
+:chatgpt-content-reference{index="13"}
+
+:chatgpt-content-reference{index="14"}
+
+:chatgpt-content-reference{index="15"}
+
+:chatgpt-content-reference{index="16"}
+
+And the entire accumulated development library is now:
+
+**:chatgpt-content-reference{index="17"}**
+
+I have **not pushed or modified your GitHub repository**. This build is staged as a tested repo-ready overlay.
+
+The next implementation batch is now very concrete: wire real audio import into the existing Browser UI, replace the simulated waveform workspace with the canonical project timeline, connect the existing transport to `WebAudioTimelinePlayer`, add **Check My Level** to real microphone/console inputs, implement real WAV export, add crash-recovery journaling, then build the first genuine time-preserving A432/A440 DSP backend.
+
+**Don’t start from the top of the conversation and unpack every ZIP into the repository.** That would give Devin many overlapping versions of the same architecture and code, and the first thing it would have to do is untangle our history.
+
+Use the **latest consolidated material** as the active handoff.
+
+1. Keep the GitHub repository you already imported into Devin as the live codebase. Make sure Devin has indexed it and its development environment can run/install/build the repo. Devin treats repository indexing and environment setup as separate onboarding steps. 
+2. Download only the current **Master Library v3.1**, the **Implementation Build v3.1**, and the new **Devin Handoff Pack** below. Keep all older ZIPs somewhere like `poietek-archive/`; don't unpack them into `src/`.
+3. Put `AGENTS.md` from the handoff pack at the repository root, or otherwise make it available to Devin. Devin specifically recognizes files such as `AGENTS.md` as repository knowledge it can automatically use. 
+4. Let Devin **inspect and plan before reorganizing anything**. Its current recommended workflow is to use Ask Devin to understand/plan the codebase, then start an Agent session from that context for implementation. 
+5. Give Devin the included `FIRST_DEVIN_SESSION_PROMPT.txt`. That tells it to baseline the existing SDS app, compare it with the v3.1 overlay, preserve the useful rack/workspace UI, and integrate **Phase 1 only** before attempting larger refactors.
+6. After Phase 1 builds and tests successfully, continue through the supplied build sequence: real audio import → waveform/timeline → playback/editing → recording/health checks → WAV export → crash recovery → native Tauri app → Supabase/Firebase/provider routing → cross-device/team → community player.
+
+The main principle is:
+
+**Do not tell Devin “reorganize all of this and build the whole app.”**
+
+Tell it:
+
+**“Understand the existing repo, establish a passing baseline, map the new architecture onto it, integrate one verified vertical slice at a time, and never destroy working functionality before its replacement is tested.”**
+
+That will produce a much healthier codebase.
+
+### Download these three
+
+**:chatgpt-content-reference{index="6"}**  
+This is the consolidated product/architecture source of truth through documents 0–180.
+
+**:chatgpt-content-reference{index="7"}**  
+This contains the actual current `src/poietek/` implementation overlay, PWA/Tauri scaffold, integration patches and passing validation.
+
+**:chatgpt-content-reference{index="8"}**  
+I just created this specifically for your move to Devin.
+
+The handoff pack contains:
+
+`DEVIN_START_HERE.md` — tells Devin what everything is and what not to do.
+
+`AGENTS.md` — permanent engineering rules for Poietek.
+
+`SOURCE_OF_TRUTH.md` — establishes which materials override older versions.
+
+`BUILD_SEQUENCE.md` — the actual staged implementation order.
+
+`REORGANIZATION_RULES.md` — stops Devin doing a destructive big-bang monorepo rewrite.
+
+`DEFINITION_OF_DONE.md` — establishes what “finished” means.
+
+`FIRST_DEVIN_SESSION_PROMPT.txt` — the prompt I recommend you give Devin first.
+
+There is also a simple placement guide inside the pack.
+
+A good local layout would be:
+
+```text
+Development/
+│
+├── Studio-Daw-Station-SDS-/
+│   ├── AGENTS.md
+│   ├── src/
+│   ├── package.json
+│   └── ...
+│
+├── poietek-handoff/
+│   ├── Master Library v3.1 extracted/
+│   ├── Implementation Build v3.1 extracted/
+│   └── Devin Handoff v3.1 extracted/
+│
+└── poietek-archive/
+    ├── v1.8.zip
+    ├── v1.9.zip
+    ├── v2.0.zip
+    ├── ...
+    └── v3.0.zip
+```
+
+So **GitHub stays clean**, the latest specifications sit beside it as reference material, and all the older work remains available without contaminating the current build.
+
+Devin's own documentation describes its environment as essentially its development machine—with the repo, dependencies and tools configured—and emphasizes that good environment setup lets the agent spend its time coding instead of repeatedly rebuilding its setup. 
+
+So yes: **you are at the point where Devin can take over a lot of the implementation workload.** But start it from **v3.1 forward**, not conversation-message-one forward. The conversation was our design laboratory; the v3.1 Master Library + Implementation Build + Devin Handoff are the cleaned-up engineering handoff.
+

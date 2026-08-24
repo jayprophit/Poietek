@@ -1,0 +1,38 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.7
+
+140 — CROSS-CHAIN EVIDENCE PORTABILITY
+======================================
+
+COMPANION
+packages/chains/src/ChainEvidenceAdapter.ts
+
+CHAIN SUPPORT IS OPTIONAL.
+
+Poietek may anchor:
+Rights Manifest hash
+approval root
+settlement root
+release snapshot.
+
+Different adapters may support:
+EVM networks
+Bitcoin evidence formats
+other reviewed ledgers.
+
+CANONICAL EVIDENCE
+
+Poietek Evidence Receipt is provider-independent.
+
+CHAIN SWITCH
+
+Future evidence can use another network.
+Old receipts remain verifiable against their original network.
+
+NO DEFAULT CROSS-CHAIN BRIDGE
+
+Moving tokens/funds between chains is not required for creative interoperability
+and introduces materially higher security risk.
+
+Keep payment-bridge functionality separate and disabled by default.
+
+END DOCUMENT 140

@@ -1,0 +1,56 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 3.0
+
+162 — LISTENER PLAYBACK TUNING PREFERENCES
+==========================================
+
+COMPANIONS
+schemas/community-player-tuning.schema.v1.json
+packages/player/src/PlayerTuningController.ts
+
+CREATOR SETTINGS
+
+Recommended playback:
+Creator Original.
+
+Allow listener retune:
+Yes/No.
+
+Community preset:
+Optional.
+
+LISTENER SETTINGS
+
+Always play creator original.
+Prefer A432 when available.
+Prefer A440.
+Prefer A442.
+Custom.
+Ask each time.
+
+PREFERENCE IS OPTIONAL
+
+Poietek must not silently retune every release because a listener once selected
+A432.
+
+PLAYER INDICATOR
+
+ORIGINAL
+A432
+
+or:
+
+PLAYBACK RETUNED
+A440 -> A432
+-31.77 cents.
+
+This keeps the experience transparent.
+
+CREATOR OVERRIDE
+
+Creator can disable live listener retuning for:
+mastering-critical works
+binaural/special spatial works
+fixed-media installations
+other releases where pitch alteration would damage intent.
+
+END DOCUMENT 162

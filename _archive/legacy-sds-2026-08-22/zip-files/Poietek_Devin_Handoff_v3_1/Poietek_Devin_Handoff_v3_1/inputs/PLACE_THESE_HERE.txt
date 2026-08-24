@@ -1,0 +1,19 @@
+Recommended local folder before starting Devin Agent work:
+
+poietek-handoff/
+  DEVIN_START_HERE.md
+  AGENTS.md
+  docs/
+  Poietek_Master_Development_Library_v3_1.zip
+  Poietek_Implementation_Build_171_180_v3_1.zip
+
+Optional archive outside the working repo:
+
+poietek-archive/
+  older Poietek ZIPs...
+
+Do not unpack all historical ZIPs into the Git repository.
+
+Unpack the latest Master Library and latest Implementation Build into a temporary
+handoff/reference directory or make them available to Devin as attachments/files.
+Then let Devin inspect and selectively integrate the implementation overlay.

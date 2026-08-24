@@ -1,0 +1,64 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.4
+
+109 — CONSOLE NETWORK SECURITY & REMOTE CONTROL
+===============================================
+
+CONTROL NETWORKS CAN MOVE REAL AUDIO PARAMETERS.
+
+Treat them as privileged device control.
+
+LOCAL FIRST
+
+Default console discovery/control:
+local network / direct USB.
+
+REMOTE WAN
+
+Use:
+VPN/secure tunnel
+authenticated Poietek Bridge
+manufacturer-secure method.
+
+Do not simply expose desk control TCP/UDP ports to the public internet.
+
+Allen & Heath currently documents optional SSL for TCP MIDI on supported dLive
+systems, and its remote-WAN guidance recommends protecting the network rather than
+exposing a desk directly.
+
+PERMISSIONS
+
+console.read
+console.write_mix
+console.write_preamps
+console.scene_recall
+console.routing
+console.clock_change
+console.phantom_power
+console.transport.
+
+DANGEROUS ACTIONS
+
+Clock source
+sample rate
+phantom power
+large monitor/master gain
+scene recall
+routing replacement
+
+require appropriate permission and confirmation/safety mode.
+
+LIVE/PERFORMANCE GUARD
+
+During active show/recording:
+disable connector updates
+block unsafe clock changes
+rate-limit remote admin
+freeze non-essential background jobs.
+
+SEC-001 unauthenticated remote client cannot control desk.
+SEC-002 read-only contributor cannot move fader.
+SEC-003 WAN access defaults off.
+SEC-004 control-token logs redact secrets.
+SEC-005 desk remains independently operable if Poietek disconnects.
+
+END DOCUMENT 109

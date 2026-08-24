@@ -1,0 +1,18 @@
+Cross dimension,Poietek meaning,Mechanism,Boundary
+Cross system,OS/backend/hardware/provider portability,Ports/adapters/versioned schemas,Canonical project not vendor-shaped
+Cross network,LAN/WAN/offline/P2P/provider,Transport router + durable queue,Local-first commit
+Cross platform,Web/Windows/macOS/Linux/iOS/iPadOS/Android,Shared UI + platform adapters,Capability-honest
+Cross device,Desktop/tablet/phone/console/companion,Sync/handoff/presence,Progressive asset hydration
+Cross chain,Optional evidence ledgers,ChainEvidenceAdapter,No default token/fund bridge
+Cross node,Local/LAN/cloud/decentralized workers,ComputeNode scheduler,Privacy/trust/cost routing
+Cross program,Modules/native engines/external tools,IPC/RPC/files/intents,Stable contracts
+Cross app,Studio/Live/Hub/mobile/external apps,Scoped APIs/deep links,Least privilege
+Cross dApp,Optional decentralized services,Signed provider/chain capabilities,Never core dependency
+Cross language,TS/Rust/C++/Python/Swift/Kotlin/WASM,C ABI/WASM/RPC/schema,No raw-layout coupling
+Cross code,Source/build/plugin portability,Git/packages/ABI/component boundaries,Versioned interfaces
+Cross symbols,Stable object/parameter/command meaning,Namespaced IDs,Labels can localize/change
+Cross image,Formats/colour/provenance,Asset/colour/C2PA adapters,Preserve source metadata
+Cross sound,PCM/codecs/MIDI/loudness/provenance,Audio adapters/canonical timeline,Target profiles separate
+Cross build,Web/native/mobile/server/worker,CI matrix/SBOM/artifact manifest,Traceable same-commit builds
+Cross idea,Text/audio/MIDI/video representation,CreativeIntent/IdeaGraph,Idea survives representation changes
+Cross grid,Resource/compute mesh,ComputeNode/Job,Route by capability/privacy/cost

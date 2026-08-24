@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "node": {
+    "version": "24.18.0",
+    "status": "pinned-lts"
+  },
+  "rust": {
+    "version": "1.97.1",
+    "profile": "minimal",
+    "components": ["clippy", "rustfmt"]
+  },
+  "tauri": {
+    "cliVersion": "2.11.4",
+    "crateVersion": "2.11.5",
+    "buildCrateVersion": "2.6.3"
+  },
+  "desktop": {
+    "windows": {
+      "runner": "windows-2022",
+      "targets": ["x86_64-pc-windows-msvc", "aarch64-pc-windows-msvc"],
+      "previewRunner": "windows-11-arm",
+      "bundles": ["nsis", "msi"],
+      "unsignedOutput": "installable for testing; publisher identity is unverified"
+    },
+    "macos": {
+      "runner": "macos-latest",
+      "targets": ["aarch64-apple-darwin", "x86_64-apple-darwin"],
+      "bundles": ["app", "dmg"],
+      "minimumSystemVersion": "10.15",
+      "unsignedOutput": "build validation only; distribution requires signing and notarization"
+    },
+    "linux": {
+      "runner": "ubuntu-22.04",
+      "targets": ["x86_64-unknown-linux-gnu", "aarch64-unknown-linux-gnu"],
+      "previewRunner": "ubuntu-22.04-arm",
+      "bundles": ["appimage", "deb", "rpm"],
+      "unsignedOutput": "installable for testing; package signing remains a release gate"
+    }
+  },
+  "mobile": {
+    "android": {
+      "runner": "ubuntu-22.04",
+      "javaVersion": "17",
+      "minSdkVersion": 24,
+      "compileSdkPackage": "platforms;android-35",
+      "buildToolsPackage": "build-tools;35.0.0",
+      "ndkPackage": "ndk;27.2.12479018",
+      "rustTargets": [
+        "aarch64-linux-android",
+        "armv7-linux-androideabi",
+        "i686-linux-android",
+        "x86_64-linux-android"
+      ],
+      "validationArtifact": "debug APK",
+      "signedArtifact": "AAB"
+    },
+    "ios": {
+      "runner": "macos-latest",
+      "minimumSystemVersion": "14.0",
+      "rustTargets": [
+        "aarch64-apple-ios",
+        "aarch64-apple-ios-sim",
+        "x86_64-apple-ios"
+      ],
+      "validationArtifact": "simulator app",
+      "signedArtifact": "IPA",
+      "hostRequirement": "macOS with full Xcode",
+      "signingRequirement": "Apple Developer certificate, team and provisioning profile"
+    }
+  },
+  "releasePolicy": {
+    "automaticStoreUpload": false,
+    "signedArtifactsRequireProtectedEnvironment": "native-signing",
+    "publishingRequiresExplicitApproval": true,
+    "webPortalRemainsAvailable": true,
+    "pwaRemainsAvailable": true
+  }
+}

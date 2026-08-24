@@ -1,0 +1,82 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.5
+
+120 — END-TO-END RECORD -> MIX -> MASTER -> EXPORT ASSISTANT
+============================================================
+
+BEFORE RECORD
+
+Audio interface/console detected.
+Clock checked.
+Disk checked.
+Input selected.
+
+[Check My Level]
+
+Performer performs loud section.
+
+Poietek:
+Peak -13.4 dBFS
+Noise floor good
+No clipping
+No DC problem
+
+"Good recording headroom."
+
+RECORD
+
+Live Health Guard watches:
+clipping
+dropout
+clock
+storage
+device disconnect.
+
+EDIT
+
+Click/pop
+silence/dropout
+phase warnings.
+
+MIX
+
+Headroom
+bus clipping
+phase
+noise
+spectral comparison
+reference comparison
+dynamic density.
+
+MASTER
+
+Integrated LUFS
+true peak
+loudness range
+delivery preview.
+
+EXPORT
+
+Choose:
+High-quality archive
+Spotify preview
+Apple Digital Masters audition workflow
+EBU broadcast
+Video
+Custom.
+
+PRE-FLIGHT RESULT
+
+Audio Integrity        ✓
+No Digital Clips       ✓
+True Peak              ✓
+Target Preview         ✓
+Metadata               ✓
+Rights Manifest        ✓
+Contributors           ✓
+
+Ready to Export.
+
+The assistant recommends.
+The creator decides.
+
+END DOCUMENT 120

@@ -1,0 +1,19 @@
+175 — AUDIO HEALTH IMPLEMENTATION
+=================================
+
+Implemented deterministic:
+sample peak
+RMS
+digital clip count
+near-clip events
+crest factor
+DC offset
+stereo correlation
+basic evidence-backed recommendations.
+
+Not faked:
+LUFS
+True Peak.
+
+StandardsLoudnessAnalyzer deliberately reports unavailable until a validated
+ITU-R BS.1770 implementation is integrated and tested.

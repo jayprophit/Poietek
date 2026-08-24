@@ -1,0 +1,192 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 1.6 ADDENDUM
+
+28 — INSTALLATION, UPDATES, PACKAGING, LOCALIZATION, SUPPORT & ADMIN
+===================================================================
+
+PURPOSE
+
+A production product needs more than runtime architecture.
+
+------------------------------------------------------------------------------
+1. INSTALLERS
+------------------------------------------------------------------------------
+
+Windows installer.
+macOS signed/notarized package.
+Linux packages/AppImage-style options where appropriate.
+iOS/iPadOS store distribution.
+Android distribution.
+Web PWA.
+
+------------------------------------------------------------------------------
+2. FIRST RUN
+------------------------------------------------------------------------------
+
+Audio permission
+Microphone permission
+MIDI permission
+Storage
+Optional account
+Optional providers
+Demo project.
+
+No giant permission request wall.
+
+------------------------------------------------------------------------------
+3. UPDATE CHANNELS
+------------------------------------------------------------------------------
+
+Nightly
+Alpha
+Beta
+Stable
+
+Update:
+app
+device profiles
+presets
+help
+models
+connectors
+plugins separately where appropriate.
+
+------------------------------------------------------------------------------
+4. SAFE UPDATE
+------------------------------------------------------------------------------
+
+Before schema migration:
+backup/checkpoint.
+
+Rollback app does not corrupt newer project.
+
+------------------------------------------------------------------------------
+5. OFFLINE INSTALL / UPDATE
+------------------------------------------------------------------------------
+
+Desktop should support offline installer where distribution allows.
+Core docs/help cached.
+
+------------------------------------------------------------------------------
+6. LOCALIZATION
+------------------------------------------------------------------------------
+
+All user-visible strings externalized.
+
+Locale:
+language
+number
+date
+decimal
+currency
+pluralization
+text direction
+
+Audio terminology glossary maintained.
+
+------------------------------------------------------------------------------
+7. RTL
+------------------------------------------------------------------------------
+
+Layout direction designed, not patched later.
+Timelines may remain temporally left-to-right depending UX research, while
+surrounding UI follows locale direction.
+
+------------------------------------------------------------------------------
+8. TRANSLATION WORKFLOW
+------------------------------------------------------------------------------
+
+Source keys
+context
+screenshots
+glossary
+review
+fallback English
+community translation later with review.
+
+------------------------------------------------------------------------------
+9. SUPPORT
+------------------------------------------------------------------------------
+
+In-app diagnostics bundle:
+version
+OS
+drivers
+device profiles
+plugin list optional
+logs optional
+never audio/project media unless user attaches it.
+
+------------------------------------------------------------------------------
+10. TROUBLESHOOTING
+------------------------------------------------------------------------------
+
+Audio device
+MIDI
+plugin
+missing files
+sync
+storage
+login
+video
+performance.
+
+------------------------------------------------------------------------------
+11. ADMIN PORTAL
+------------------------------------------------------------------------------
+
+Hosted services:
+user support
+moderation
+provider health
+feature flags
+release versions
+schema versions
+job health
+billing later.
+
+Admin access highly privileged and audited.
+
+------------------------------------------------------------------------------
+12. STATUS PAGE
+------------------------------------------------------------------------------
+
+Cloud/sync/community services should publish operational status when public.
+
+Local DAW status unaffected.
+
+------------------------------------------------------------------------------
+13. FEEDBACK
+------------------------------------------------------------------------------
+
+Bug
+feature request
+crash
+device profile correction
+documentation issue.
+
+Attach logs only with explicit consent.
+
+------------------------------------------------------------------------------
+14. DOCUMENTATION VERSIONING
+------------------------------------------------------------------------------
+
+Docs tied to app versions.
+
+------------------------------------------------------------------------------
+15. ACCEPTANCE
+------------------------------------------------------------------------------
+
+OPS-001 clean install.
+OPS-002 upgrade preserves project.
+OPS-003 rollback recovery documented.
+OPS-004 locale changes without restart where feasible.
+OPS-005 missing translation falls back safely.
+OPS-006 RTL smoke tests.
+OPS-007 diagnostics exclude media.
+OPS-008 admin actions audited.
+OPS-009 offline help works.
+OPS-010 user can choose update channel.
+OPS-011 update does not begin during Performance Guard.
+OPS-012 provider connector update can roll back.
+
+END DOCUMENT 28

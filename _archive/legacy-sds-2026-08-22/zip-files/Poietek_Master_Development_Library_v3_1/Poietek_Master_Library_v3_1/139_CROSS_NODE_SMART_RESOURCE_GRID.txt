@@ -1,0 +1,44 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.7
+
+139 — CROSS-NODE SMART RESOURCE GRID
+====================================
+
+COMPANION
+packages/grid/src/ComputeNode.ts
+
+NODE OPTIONS
+
+same process
+same machine worker
+local GPU
+other LAN workstation
+home server
+free-tier cloud
+managed cloud
+decentralized provider.
+
+JOBS
+
+stem separation
+AI inference
+video transcode
+waveform generation
+proxy render
+analysis
+thumbnail
+backup verification.
+
+ROUTER SCORES
+
+privacy
+trust
+cost
+latency
+capability
+availability
+energy
+data locality.
+
+PRIVATE media does not leave the device merely because remote compute is faster.
+
+END DOCUMENT 139

@@ -1,0 +1,71 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.5
+
+114 — AUDIO FAULT & QUALITY DETECTION
+=====================================
+
+CHECKS
+
+HARD CLIPPING
+samples at/over representable digital limit.
+
+NEAR CLIPPING
+frequent peaks too close to ceiling.
+
+TRUE-PEAK RISK
+inter-sample peak risk from standards analyzer.
+
+DC OFFSET
+non-zero mean.
+
+POLARITY / PHASE
+negative correlation
+channel polarity anomalies
+mono compatibility.
+
+NOISE
+broadband noise floor
+hiss
+room/air-conditioning
+preamp noise.
+
+HUM
+50/60 Hz family plus harmonics.
+Region-aware but detect rather than assume.
+
+DROPOUT
+unexpected digital silence/discontinuity during active programme.
+
+CLICK/POP
+transient anomaly detection.
+
+SIBILANCE
+spectral/context detector.
+
+PLOSIVE
+low-frequency transient detector.
+
+RUMBLE
+low-frequency persistent energy.
+
+HARSHNESS / RESONANCE
+advisory spectral features, not universal artistic faults.
+
+STEREO
+left/right imbalance
+excessive anti-correlation
+unexpected mono channel.
+
+SPECTRAL
+
+AI can compare spectral features against:
+the same project's reference tracks
+user-chosen reference
+source-class ranges.
+
+Never say:
+"Correct EQ is X".
+
+Say:
+"Compared with your reference, 2–5 kHz is 4 dB more prominent."
+
+END DOCUMENT 114

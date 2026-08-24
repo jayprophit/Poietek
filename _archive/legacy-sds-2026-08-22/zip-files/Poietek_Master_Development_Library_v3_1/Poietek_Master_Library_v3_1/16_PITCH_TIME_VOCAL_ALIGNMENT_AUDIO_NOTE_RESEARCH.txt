@@ -1,0 +1,667 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.1 ADDENDUM
+
+16 — PITCH, TIME, VOCAL ALIGNMENT & AUDIO-NOTE EDITING RESEARCH
+==============================================================
+
+PURPOSE
+
+This document converts functional ideas from established pitch/timing products
+into an original Poietek/SDS architecture. It is a clean-room product
+specification: study the workflow principles and published capabilities, but do
+not copy proprietary source code, patented algorithms, product artwork, UI
+layouts, branding, or undocumented behavior.
+
+The SDS repository currently contains a visual pitch-editor prototype with
+simulated note blobs. This addendum defines the real subsystem that should
+eventually sit behind that view.
+
+------------------------------------------------------------------------------
+1. REFERENCE CAPABILITY FAMILIES
+------------------------------------------------------------------------------
+
+A. NOTE-LEVEL / MUSICAL AUDIO EDITING
+Reference principle:
+Detect musical events in audio and expose editable note-like objects rather than
+forcing the user to edit raw waveforms only.
+
+Useful published capabilities found in current Melodyne documentation include:
+- monophonic and polyphonic analysis modes;
+- editing pitch, timing, duration, formants, level and sibilant-related behavior;
+- chord/key context;
+- multitrack note editing;
+- audio-to-MIDI;
+- polyphonic note access for suitable instruments.
+
+Poietek/SDS interpretation:
+Create an original `AudioNoteLayer` derived from an immutable audio asset.
+
+AudioNote {
+  id
+  sourceClipId
+  startSeconds
+  durationSeconds
+  detectedMidiPitch
+  pitchCurveCents[]
+  confidence
+  amplitudeEnvelope[]
+  voicedProbability[]
+  formantEstimate?
+  sibilantRegions[]
+  transientClass?
+}
+
+Edits are separate operations:
+PitchCenterOperation
+PitchDriftOperation
+PitchCurveOperation
+TimeMoveOperation
+TimeStretchOperation
+FormantOperation
+GainOperation
+VibratoOperation
+SibilanceOperation
+NoteSplitOperation
+NoteMergeOperation
+
+B. REAL-TIME AUTOMATIC PITCH CORRECTION
+Reference principle:
+A low-latency path is different from a deep offline/manual editor.
+
+Published current AutoTune Pro information describes:
+- real-time automatic mode;
+- graph/manual editing mode;
+- formant/vibrato controls;
+- scale/key targeting;
+- MIDI mapping/harmony functions.
+
+Waves Tune Real-Time documentation similarly demonstrates the need for a
+performance/monitoring path with extremely low or near-zero plugin latency,
+formant handling, scale control and MIDI control.
+
+Poietek/SDS interpretation:
+Implement two separate processing tiers.
+
+1) LIVE TUNE
+- designed for monitoring/tracking/live performance;
+- bounded lookahead;
+- low-latency F0 detection;
+- key/scale;
+- correction speed;
+- tolerance/dead-band;
+- humanize;
+- vibrato preservation;
+- formant preserve/shift;
+- MIDI note/scale target;
+- creative hard-tune mode;
+- automatic bypass when detection confidence is low.
+
+2) EDIT TUNE
+- rendered/previewed high-quality analysis;
+- note segmentation;
+- per-note curves;
+- unlimited undo;
+- higher-quality offline render;
+- detailed timing/formant/gain control.
+
+Do not make Live Tune and Edit Tune one algorithm with one quality setting.
+Their latency/quality constraints differ.
+
+C. GUIDE / DOUBLE / HARMONY ALIGNMENT
+Reference principle:
+One performance can guide timing/pitch characteristics of one or more alternate
+performances.
+
+Published Revoice Pro documentation describes Audio Performance Transfer (APT):
+timing relationships are derived between a Guide and Dub; timing, pitch,
+vibrato and level characteristics can be transferred with adjustable tightness.
+It also supports manual time/pitch warping and workflows for multiple doubles.
+
+Poietek/SDS interpretation:
+Create `PerformanceAlignmentService`.
+
+AlignmentJob {
+  guideClipId
+  targetClipIds[]
+  dimensions {
+    timing
+    pitchCenter
+    pitchModulation
+    level
+  }
+  strength
+  tolerance
+  protectedRanges[]
+  mode: music | dialog | rhythm
+}
+
+Output remains non-destructive:
+AlignmentMap + preview render.
+
+Use cases:
+- lead vocal -> doubles;
+- lead -> harmony timing only;
+- dialogue -> ADR;
+- guitar double alignment;
+- backing-vocal stack cleanup;
+- drum layer timing where material is suitable.
+
+Critical UX:
+Natural differences can be retained by tolerance controls.
+Users can protect regions that must not be altered.
+
+D. DAW-INTEGRATED NOTE EDITING
+Reference principle:
+Pitch editing is most useful when it feels like part of the project rather than
+a separate file-transfer application.
+
+Current Apple Logic documentation shows note-style pitch/timing editing inside
+the audio editor, including note position/length, split/merge, pitch drift,
+vibrato, gain, fine pitch and formant controls.
+
+Current Steinberg VariAudio documentation describes analysis/segmentation of
+monophonic vocals into note representations for pitch and timing editing, with
+undo and audio-to-MIDI-related workflows.
+
+Poietek/SDS interpretation:
+The Note Editor must be a native project workspace:
+- double-click audio clip -> Note Edit;
+- edits belong to the source clip/version;
+- no manual capture/transfer step;
+- same transport and timeline;
+- notes can optionally be shown over waveform/spectrogram;
+- inspector changes the selected note(s);
+- A/B original/processed;
+- render/freeze only when requested.
+
+E. HOST/PLUGIN DEEP INTEGRATION
+Reference principle:
+ARA-style integrations avoid real-time “capture into the plugin” workflows and
+let compatible hosts/plugins share musical/audio context.
+
+Celemony states the ARA SDK has been available as open-source software under
+Apache 2.0, and describes direct audio access plus exchange of musical
+information such as notes, tempo and chords.
+
+Poietek/SDS interpretation:
+- research ARA hosting for desktop plugin interoperability;
+- keep Poietek's own internal clip-analysis API independent of ARA;
+- use ARA only as an external compatibility adapter, not as the project model.
+
+------------------------------------------------------------------------------
+2. PRODUCT MODES
+------------------------------------------------------------------------------
+
+The pitch/time system should expose six user-facing modes.
+
+MODE 1 — QUICK TUNE
+One control strip for creators who simply want transparent correction.
+Controls:
+Key/Scale
+Amount
+Speed
+Humanize
+Formant Preserve
+Natural <-> Effect
+
+MODE 2 — LIVE TUNE
+For input monitoring and live performance.
+Controls:
+Input
+Key/Scale
+MIDI target
+Retune speed
+Tolerance
+Vibrato preservation
+Formant
+Latency/quality mode
+Confidence meter
+
+MODE 3 — NOTE EDIT
+Detailed detected-note editing.
+Tools:
+Select
+Pitch
+Fine pitch
+Pitch curve
+Drift
+Timing
+Duration
+Split
+Join
+Gain
+Vibrato
+Formant
+Sibilance
+Reset
+Audition
+
+MODE 4 — ALIGN
+Guide/Dub workflow.
+Timing, pitch and level transfer with independent strengths and protected areas.
+
+MODE 5 — POLY NOTE LAB
+Research/advanced mode for suitable polyphonic sources.
+This must be treated as a separate R&D tier, because decomposing a chordal
+recording into reliable editable note objects is materially harder than
+monophonic pitch correction.
+
+MODE 6 — CREATIVE PITCH / FORMANT
+Not correction-centric.
+Robot/hard tune
+scale quantization
+harmonization
+formant character
+octave layers
+microtonal/alternative tuning
+pitch-follow modulation
+MIDI-controlled pitch targets
+
+------------------------------------------------------------------------------
+3. ENGINE ARCHITECTURE
+------------------------------------------------------------------------------
+
+PitchTimeEngine
+  AnalysisService
+  NoteSegmentationService
+  F0Estimator
+  MultiPitchEstimator?          // later R&D
+  TimeStretchBackend
+  PitchShiftBackend
+  FormantBackend
+  AlignmentService
+  AudioToMidiService
+  PitchRenderService
+  LiveTuneProcessor
+  AnalysisCache
+  PreviewCache
+
+Separation of concerns is mandatory:
+Pitch detection does not own rendering.
+Note segmentation does not own the UI.
+Time stretching does not own project state.
+The project stores edit operations, not processor-private memory.
+
+------------------------------------------------------------------------------
+4. MONOPHONIC IMPLEMENTATION PATH — BUILD THIS FIRST
+------------------------------------------------------------------------------
+
+Phase A
+- resample/normalize analysis input;
+- detect voiced/unvoiced frames;
+- estimate F0;
+- smooth with confidence-aware filtering;
+- detect note boundaries from pitch + energy + onset cues;
+- compute median/target pitch per note;
+- draw pitch curve.
+
+Phase B
+- semitone/fine-pitch movement;
+- pitch correction amount;
+- scale quantization;
+- note split/join;
+- time movement/duration;
+- A/B preview.
+
+Phase C
+- formant preservation;
+- vibrato amount;
+- drift;
+- sibilance-aware processing;
+- audio-to-MIDI;
+- batch macros.
+
+Phase D
+- multitrack editing;
+- reference/guide alignment;
+- local/offline AI suggestions.
+
+------------------------------------------------------------------------------
+5. TIME STRETCH / PITCH SHIFT IMPLEMENTATION OPTIONS
+------------------------------------------------------------------------------
+
+The present SDS engine uses AudioBufferSourceNode.playbackRate, which changes
+pitch and duration together. That remains useful only as a deliberate resampling
+effect.
+
+The production engine needs independent pitch and time.
+
+Candidate engineering paths:
+A. Clean-room DSP implementation using published time-domain/phase-vocoder
+   literature.
+B. Licensed third-party DSP library.
+C. Platform/native DSP where legally and technically suitable.
+D. Future ML/neural resynthesis for selected offline modes.
+
+A practical current library to evaluate is Rubber Band Library, which supports
+independent time stretching/pitch shifting, real-time and offline modes, and
+formant-related options. IMPORTANT: its official site states it is GPL for open
+source use and requires a commercial licence for proprietary distribution.
+Licensing must be decided before integration.
+
+aubio is useful as a research/reference implementation for pitch/onset/tempo
+analysis, but its official repository is GPL-3.0. Do not copy/integrate it into a
+non-GPL product without satisfying its licence.
+
+------------------------------------------------------------------------------
+6. REAL-TIME TUNING DESIGN
+------------------------------------------------------------------------------
+
+Signal path:
+Input
+-> optional noise/gate preparation
+-> F0 detector
+-> target note resolver
+-> correction trajectory generator
+-> pitch shifter
+-> formant handling
+-> wet/dry
+-> output
+
+Target Resolver priorities:
+1. explicit MIDI target
+2. chord-track allowed tones
+3. active key/scale
+4. chromatic fallback
+
+Naturalness controls:
+- correction speed;
+- note-transition speed;
+- tolerance around target;
+- preserve attacks;
+- preserve vibrato;
+- preserve unvoiced/sibilant segments;
+- confidence-based bypass;
+- formant preservation.
+
+The engine must display processing latency honestly.
+
+------------------------------------------------------------------------------
+7. NOTE EDITOR UX — ORIGINAL DESIGN
+------------------------------------------------------------------------------
+
+Use an original visual language rather than reproducing Melodyne, Flex Pitch or
+VariAudio layouts.
+
+Suggested Poietek visual:
+- waveform/spectrogram underlay;
+- “note ribbons” rather than proprietary-style blobs;
+- center line = detected/target pitch;
+- thin trace = actual pitch curve;
+- colored confidence halo;
+- onset/transient flag;
+- sibilant/noise region overlay;
+- handles appear only on selection;
+- side inspector for numerical values.
+
+Gestures:
+Drag vertically = note pitch.
+Alt/Option-drag = fine cents.
+Drag body horizontally = timing.
+Drag left/right edge = duration.
+Draw tool = pitch contour.
+Split at cursor.
+Join selected notes.
+Double-click property = reset to original.
+
+Accessibility:
+All operations also available in inspector and keyboard commands.
+
+------------------------------------------------------------------------------
+8. POLYPHONIC AUDIO RESEARCH
+------------------------------------------------------------------------------
+
+Goal:
+Detect/edit meaningful simultaneous note events in suitable sources such as
+piano/guitar, without marketing the capability until objective quality gates are
+met.
+
+Research components:
+- harmonic/percussive separation;
+- constant-Q/spectral representations;
+- multi-pitch estimation;
+- onset/offset tracking;
+- harmonic assignment;
+- source/timbre consistency;
+- note-specific resynthesis;
+- confidence and ambiguity visualization.
+
+Fallback:
+If confidence is insufficient, do not pretend individual-note editability.
+Offer:
+- stem/source separation;
+- harmonic-region transpose;
+- chord detection;
+- spectral editing;
+- convert/re-record suggestion.
+
+Patent/legal review is mandatory before implementing any method derived from
+patented commercial techniques. Prefer published research and clean-room
+implementation.
+
+------------------------------------------------------------------------------
+9. VOCAL STACK WORKFLOW
+------------------------------------------------------------------------------
+
+Example:
+Lead vocal recorded.
+Three doubles and two harmonies recorded.
+
+1. Analyze Lead.
+2. User optionally tunes Lead manually.
+3. Select doubles.
+4. Align timing to Lead at 70%.
+5. Keep pitch identity but correct target notes at 45%.
+6. Preserve protected breaths/ad-libs.
+7. Apply level matching lightly.
+8. Render previews.
+9. Accept creates AlignmentOperations, not destructive replacements.
+10. Harmonies can use timing guide but preserve their harmonic interval.
+
+This reproduces the useful *workflow principle* of alignment products without
+copying their implementation.
+
+------------------------------------------------------------------------------
+10. DIALOGUE / ADR MODE
+------------------------------------------------------------------------------
+
+Video/VFX project integration:
+Guide = production dialogue.
+Target = ADR recording.
+
+Prioritize:
+word/onset timing
+phrase duration
+consonant/transient alignment
+level consistency
+
+Pitch transfer should be optional/minimal for dialogue.
+
+Store alignment map with the linked video scene/take.
+
+------------------------------------------------------------------------------
+11. AUDIO-TO-MIDI
+------------------------------------------------------------------------------
+
+Monophonic:
+detected note -> MIDI pitch/start/duration/velocity/confidence.
+
+Options:
+quantize timing
+retain microtiming
+pitch bend from actual contour
+vibrato to pitch bend
+expression from level envelope
+
+Polyphonic audio-to-MIDI is a later research mode and should expose uncertainty.
+
+------------------------------------------------------------------------------
+12. CHORD / SCALE CONTEXT
+------------------------------------------------------------------------------
+
+The pitch editor should not own its own unrelated scale system.
+Consume the project's:
+ChordTrack
+KeyMap
+ScaleMap
+TuningSystem
+
+Correction target modes:
+Nearest Chromatic
+Project Scale
+Chord Tones
+Chord + Allowed Extensions
+MIDI Guide
+Reference Melody
+Custom Microtonal Scale
+
+------------------------------------------------------------------------------
+13. AI ASSISTANCE
+------------------------------------------------------------------------------
+
+AI does not directly rewrite PCM without a preview/operation record.
+
+Possible commands:
+AnalyzeVocalPitch
+SuggestPitchCorrections
+SuggestNoteSplits
+SuggestVocalAlignment
+DetectHarmonyParts
+CreateHarmonyMidi
+SuggestNaturalnessSettings
+
+AI must preserve the user's expressive intent by default.
+Offer:
+Transparent
+Tight
+Effect
+Custom.
+
+------------------------------------------------------------------------------
+14. OFFLINE / CROSS-DEVICE BEHAVIOR
+------------------------------------------------------------------------------
+
+Store:
+analysis version
+note segmentation data
+edit operations
+render settings
+
+Do not require recomputation after every device switch if compatible cached
+analysis exists.
+
+If device cannot run high-quality render:
+- edit operations remain editable;
+- play a cached proxy/freeze;
+- render later on capable device.
+
+Core monophonic edit should remain available offline once media and analysis
+models/code are local.
+
+------------------------------------------------------------------------------
+15. COLLABORATION
+------------------------------------------------------------------------------
+
+Pitch edits are collaborative structured operations:
+user A moves note 42 +14 cents.
+user B changes vibrato on note 42.
+
+Different parameters can merge.
+Conflicting edits to the same parameter use revision history/conflict UI.
+
+Comments can anchor to:
+note
+time range
+word/phrase
+audio clip
+
+Activity example:
+“Jordan adjusted pitch center of 8 notes on Lead Vocal.”
+“Sam aligned BGV Double 2 to Lead at 65% timing strength.”
+
+------------------------------------------------------------------------------
+16. TESTING / QUALITY GATES
+------------------------------------------------------------------------------
+
+PIT-001 Monophonic pitch detector reports cents error against synthetic fixtures.
+PIT-002 Voiced/unvoiced detection does not tune breaths/silence.
+PIT-003 Scale correction is deterministic.
+PIT-004 Fine-pitch edits survive save/reopen.
+PIT-005 Edits are reversible.
+PIT-006 Time movement does not alter target pitch unintentionally.
+PIT-007 Pitch movement preserves duration in Edit Tune.
+PIT-008 Formant preserve mode has measurable expected behavior.
+PIT-009 Original/processed A/B gain is matched within tolerance.
+PIT-010 Live Tune latency is measured/reported.
+PIT-011 Low-confidence frames fail safely.
+PIT-012 Alignment protected regions remain unchanged.
+PIT-013 Guide/Dub timing strength interpolates predictably.
+PIT-014 Audio-to-MIDI timestamps align to detected notes.
+PIT-015 Collaboration converges on non-conflicting note parameters.
+PIT-016 Polyphonic mode stays hidden/experimental until benchmark thresholds pass.
+
+------------------------------------------------------------------------------
+17. CLEAN-ROOM / BRAND RULE
+------------------------------------------------------------------------------
+
+Internal research notes may cite:
+Celemony Melodyne
+Antares AutoTune
+Synchro Arts Revoice Pro
+Waves Tune
+Apple Logic Flex Pitch
+Steinberg VariAudio
+Auburn Sounds Graillon
+
+Public Poietek features should use original names such as:
+Quick Tune
+Live Tune
+Note Edit
+Align
+Poly Note Lab
+Creative Pitch
+
+Do not use competitors' trademarks as Poietek feature names.
+
+------------------------------------------------------------------------------
+18. VERIFIED FIRST-PARTY RESEARCH SOURCES — AUGUST 2026
+------------------------------------------------------------------------------
+
+Celemony — audio algorithms / DNA / editions:
+https://helpcenter.celemony.com/M5/doc/melodyneStudio5/en/M5tour_AudioAlgorithms
+https://www.celemony.com/en/service1/about-celemony/technologies
+https://www.celemony.com/en/melodyne/melodyne-5-editions
+
+Antares — AutoTune Pro 11:
+https://www.antarestech.com/products/pitch-correction/pro
+https://help.antarestech.com/hc/en-us/articles/41117430548628-AutoTune-Pro-11-Release-Notes
+
+Synchro Arts — Revoice APT / Warp documentation:
+https://www.synchroarts.com/manuals/legacy/RevoiceProV4.3/Manual/AudioPerformanceTransferAPT.html
+https://www.synchroarts.com/manuals/legacy/RevoiceProV4.3/Manual/WhatsNew.html
+
+Apple — Logic Flex Pitch:
+https://support.apple.com/guide/logicpro/edit-pitch-and-timing-with-flex-pitch-lgcpc53e6bef/mac
+
+Steinberg — Cubase VariAudio:
+https://www.steinberg.help/r/cubase-artist/15.0/en/cubase_nuendo/topics/sample_editor_variaudio/sample_editor_variaudio_c.html
+
+Waves — Tune Real-Time:
+https://www.waves.com/plugins/waves-tune-real-time
+
+Auburn Sounds — Graillon:
+https://www.auburnsounds.com/products/Graillon.html
+
+Celemony — ARA background:
+https://www.celemony.com/en/10-years-of-ara
+ARA SDK repository:
+https://github.com/Celemony/ARA_SDK
+
+Rubber Band Library:
+https://www.breakfastquay.com/rubberband/index.html
+https://www.breakfastquay.com/rubberband/license.html
+
+aubio:
+https://github.com/aubio/aubio
+
+END OF DOCUMENT 16

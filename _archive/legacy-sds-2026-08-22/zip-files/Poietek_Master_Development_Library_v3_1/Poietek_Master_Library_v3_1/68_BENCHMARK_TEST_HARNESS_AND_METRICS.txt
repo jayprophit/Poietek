@@ -1,0 +1,112 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.10
+
+68 — BENCHMARK TEST HARNESS & METRICS
+=====================================
+
+BENCHMARK RESULTS STORE
+
+BenchmarkRun {
+ id
+ version
+ gitCommit
+ platform
+ hardware
+ category
+ fixture
+ metrics
+ score
+ referenceVersion
+ evidence
+}
+
+AUDIO
+roundtrip latency
+callback misses
+recording dropout
+render accuracy
+PDC
+automation timing
+loop timing
+100-track CPU.
+
+MIDI
+input latency
+output timing
+jitter
+clock drift
+MPE event integrity.
+
+UI
+startup
+project open
+timeline FPS
+input latency
+100/500-track navigation
+memory.
+
+STORAGE
+local write
+hash
+resume upload
+offline
+provider failure.
+
+SYNC
+offline edits
+convergence
+latency
+1000 operations
+asset conflict.
+
+VIDEO
+decode FPS
+proxy
+scrub latency
+render
+4K timeline
+GPU memory.
+
+DJ
+8-hour soak
+jog response
+beat sync
+controller hotplug
+stem load
+zero dropout.
+
+NATIVE
+install
+launch
+upgrade
+downgrade recovery
+permissions
+sleep/wake
+audio-device loss.
+
+COMPETITOR LAB METHOD
+
+Record:
+product/version
+OS
+audio interface
+buffer
+sample rate
+project fixture where legally reproducible
+measurement method.
+
+Do not redistribute copyrighted competitor assets.
+
+SCORING
+
+Five stars requires threshold definitions, not subjective "feels good."
+
+Example audio five-star gate:
+zero avoidable dropouts in reference soak fixtures
+sample/timing accuracy within documented tolerance
+no data loss
+professional routing/render functions pass
+latency comparable to strong reference on equivalent hardware.
+
+INDEPENDENT BETA
+Before public "best" claims, invite external engineers/producers/DJs/editors to
+repeat benchmark suite.

@@ -1,0 +1,44 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.7
+
+138 — CROSS-LANGUAGE, CROSS-CODE & RUNTIME BRIDGES
+==================================================
+
+COMPANION
+packages/runtime/src/RuntimeBridge.ts
+
+EXPECTED LANGUAGES
+
+TypeScript/JavaScript:
+UI/application.
+
+Rust:
+Tauri/native systems/services candidate.
+
+C/C++:
+DSP/plugin/media interoperability.
+
+Python:
+research/ML/training/tools, not realtime audio thread.
+
+Swift:
+Apple-native integrations where needed.
+
+Kotlin:
+Android-native integrations where needed.
+
+WASM:
+portable DSP/AI/extension components.
+
+BOUNDARY OPTIONS
+
+C ABI
+WASM Component/WIT style contract
+process RPC
+schema-generated message
+native plugin ABI.
+
+RULE
+
+Never serialize raw language object memory across boundaries.
+
+END DOCUMENT 138

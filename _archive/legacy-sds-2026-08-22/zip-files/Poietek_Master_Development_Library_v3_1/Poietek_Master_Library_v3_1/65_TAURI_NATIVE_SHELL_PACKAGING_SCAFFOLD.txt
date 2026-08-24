@@ -1,0 +1,52 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 2.0
+
+65 — TAURI NATIVE SHELL / PACKAGING SCAFFOLD
+============================================
+
+COMPANION
+src-tauri/tauri.conf.example.json
+
+IMPORTANT
+This is an integration example, not a signed production configuration.
+CSP/permissions must be hardened before release.
+
+BUILD TARGETS
+
+Desktop:
+Windows
+macOS
+Linux.
+
+Mobile:
+Android
+iOS/iPadOS.
+
+PHASE A
+Wrap existing Vite build.
+Native file picker.
+App data path.
+Open project.
+Save/export.
+Offline launch.
+
+PHASE B
+Native audio/MIDI bridge.
+Secure credentials.
+Multi-window.
+
+PHASE C
+Desktop plugin host.
+Video acceleration.
+Native updates/signing.
+
+WEB STILL EXISTS
+The same frontend continues as Web/PWA.
+Native packaging does not replace website/web app.
+
+NATIVE SHELL ACCEPTANCE
+TAURI-001 npm/Vite UI loads inside app window.
+TAURI-002 installed app launches with network disabled.
+TAURI-003 native open/save returns filesystem path/handle.
+TAURI-004 project directory not browser cache.
+TAURI-005 desktop build has no visible browser chrome/address bar.
+TAURI-006 mobile build uses mobile app lifecycle.

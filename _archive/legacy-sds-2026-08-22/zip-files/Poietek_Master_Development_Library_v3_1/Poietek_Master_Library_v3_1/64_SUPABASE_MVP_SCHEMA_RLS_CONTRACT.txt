@@ -1,0 +1,43 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 2.0
+
+64 — SUPABASE MVP SCHEMA + RLS CONTRACT
+======================================
+
+COMPANION
+supabase/migrations/0001_poietek_mvp.sql
+
+TABLES
+profiles
+projects
+project_members
+comments.
+
+This is intentionally smaller than the future full backend.
+
+NO REMOTE PCM/VIDEO IN DATABASE.
+
+RLS
+Every project and comment query must be protected by membership.
+Client role text never bypasses database policy.
+
+FIRST SIGN-UP FLOW
+Auth user
+-> profile
+-> create project directory
+-> insert owner membership
+-> local Project remains canonical creative document.
+
+REALTIME
+Use Broadcast/Presence for ephemeral collaboration.
+Use database rows for durable comments/project directory.
+
+CRDT
+Do not push every CRDT byte into project row.
+Dedicated sync channel/service comes later.
+
+ACCEPTANCE
+SUPA-001 stranger cannot select private project.
+SUPA-002 owner can update.
+SUPA-003 viewer cannot edit project directory.
+SUPA-004 member can comment.
+SUPA-005 local-only project needs no row.

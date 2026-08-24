@@ -1,0 +1,61 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.4
+
+101 — UNIVERSAL CONSOLE BRIDGE ARCHITECTURE
+===========================================
+
+GOAL
+
+A supported mixing desk can appear inside Poietek as one logical mixer.
+
+Physical desk movement:
+-> ConsoleAdapter
+-> normalized parameter event
+-> Mixer State Mirror
+-> Poietek UI updates.
+
+Poietek control movement:
+-> command/automation
+-> Mixer State Mirror
+-> ConsoleAdapter
+-> physical desk parameter changes when hardware supports remote writing.
+
+SEPARATE PLANES
+
+AUDIO PLANE
+actual audio channels.
+
+CLOCK PLANE
+sample synchronization.
+
+CONTROL PLANE
+faders, mutes, EQ, sends, routing, scenes.
+
+METER PLANE
+high-rate telemetry.
+
+TRANSPORT/TIMECODE PLANE
+play/stop/locate/time reference.
+
+These may use different cables/protocols on the same desk.
+
+Example:
+MADI fibre carries audio/clock.
+Ethernet carries MIDI/vendor control.
+Word Clock provides house sync.
+
+CAPABILITY NEGOTIATION
+
+Poietek never assumes every digital desk supports every parameter.
+A ConsoleProfile declares verified capabilities.
+
+SUPPORTED CLASSES
+
+digital console
+analogue console
+hybrid console
+control surface
+stagebox
+network bridge
+automation bridge.
+
+END DOCUMENT 101

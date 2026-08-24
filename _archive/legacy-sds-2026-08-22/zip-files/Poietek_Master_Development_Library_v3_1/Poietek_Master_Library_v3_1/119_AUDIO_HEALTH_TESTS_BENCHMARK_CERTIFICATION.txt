@@ -1,0 +1,72 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.5
+
+119 — AUDIO HEALTH TEST & BENCHMARK CERTIFICATION
+=================================================
+
+TEST SIGNAL FIXTURES
+
+silence
+1 kHz sine
+known RMS/peak
+known clipped samples
+known DC offset
+positive stereo correlation
+negative polarity
+50 Hz hum
+60 Hz hum
+dropout
+noise
+plosive-like transient
+known true-peak/loudness conformance fixtures.
+
+BASIC ANALYZER
+
+sample peak
+RMS
+DC offset
+clip count
+near-clip events
+crest
+silence
+correlation.
+
+STANDARDS ANALYZER
+
+Must pass appropriate ITU/EBU reference/conformance material before Poietek calls
+its output LUFS/dBTP compliant.
+
+AI TEST
+
+Given the same measurements/context:
+recommendation must not contradict facts.
+
+AI cannot say:
+"No clipping"
+when DSP clip count >0.
+
+FALSE POSITIVE TESTS
+
+intentional distorted guitar
+lo-fi noise
+hard-limited genre master
+phase-designed stereo effect
+silent artistic passage.
+
+The assistant must distinguish:
+technical evidence
+from
+artistic judgement.
+
+5-STAR CATEGORY
+
+Accuracy
+false-positive rate
+usefulness
+latency
+CPU
+accessibility
+hardware integration
+explainability
+non-destructive behavior.
+
+END DOCUMENT 119

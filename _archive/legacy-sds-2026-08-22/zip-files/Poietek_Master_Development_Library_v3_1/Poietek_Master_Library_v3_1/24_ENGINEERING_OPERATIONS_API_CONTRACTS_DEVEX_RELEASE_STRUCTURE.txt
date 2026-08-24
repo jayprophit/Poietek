@@ -1,0 +1,612 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.5 ADDENDUM
+
+24 — ENGINEERING OPERATIONS, API CONTRACTS, DEVEX, TESTING & RELEASE STRUCTURE
+=============================================================================
+
+PURPOSE
+
+This document captures the "other" engineering structure required to turn the
+architecture into a maintainable product.
+
+------------------------------------------------------------------------------
+1. ENGINEERING WORKSTREAMS
+------------------------------------------------------------------------------
+
+Frontend
+Audio/DSP
+MIDI/Hardware
+Video
+Backend
+Sync/Collaboration
+AI
+Rights/Publishing
+Community
+Security
+QA/Automation
+DevOps/Release
+Developer Platform
+
+------------------------------------------------------------------------------
+2. REPOSITORY GOVERNANCE
+------------------------------------------------------------------------------
+
+CODEOWNERS.
+Protected main.
+Pull requests.
+Required checks.
+Conventional change notes.
+Architecture review for cross-boundary changes.
+
+------------------------------------------------------------------------------
+3. BRANCHING
+------------------------------------------------------------------------------
+
+main = releasable.
+
+Short-lived feature branches.
+
+Release branches only if required.
+
+Avoid long-lived giant rewrite branches.
+
+------------------------------------------------------------------------------
+4. COMMIT STYLE
+------------------------------------------------------------------------------
+
+Small coherent commits.
+
+Examples:
+feat(project): add canonical Asset entity
+fix(audio): prevent scheduler drift
+refactor(ui): route menu via CommandRegistry
+test(sync): add offline convergence fixture
+
+------------------------------------------------------------------------------
+5. PR TEMPLATE
+------------------------------------------------------------------------------
+
+Problem
+Scope
+Architecture
+Screenshots
+Tests
+Migration
+Performance
+Accessibility
+Security
+Offline behavior
+Known limitations
+
+------------------------------------------------------------------------------
+6. DEFINITION OF DONE
+------------------------------------------------------------------------------
+
+Implemented.
+Tested.
+Persisted.
+Undoable if edit.
+Offline behavior.
+Sync behavior.
+Accessibility.
+Error states.
+Docs.
+No false capability label.
+
+------------------------------------------------------------------------------
+7. API CONTRACT REPOSITORY
+------------------------------------------------------------------------------
+
+/schemas/api/v1
+/auth
+/projects
+/assets
+/collaboration
+/storage
+/rights
+
+Generate clients where useful.
+
+------------------------------------------------------------------------------
+8. CONNECTOR CONTRACT TESTS
+------------------------------------------------------------------------------
+
+StorageProviderTestSuite
+BackendAdapterTestSuite
+AIProviderTestSuite
+AudioBackendTestSuite
+MidiBackendTestSuite
+
+Any new adapter must pass shared suite.
+
+------------------------------------------------------------------------------
+9. MOCKS
+------------------------------------------------------------------------------
+
+FakeAudioBackend
+FakeMidiBackend
+InMemoryProjectRepository
+FakeStorageProvider
+FakeBackendAdapter
+FakeAIProvider
+
+Allows deterministic tests.
+
+------------------------------------------------------------------------------
+10. FIXTURES
+------------------------------------------------------------------------------
+
+tiny_project
+missing_asset_project
+old_schema_project
+large_track_project
+collaboration_conflict_project
+plugin_missing_project
+video_project
+dj_set
+rights_project
+
+------------------------------------------------------------------------------
+11. HARDWARE LAB
+------------------------------------------------------------------------------
+
+Maintain tested devices:
+generic MIDI keyboard
+pad controller
+MPC-style
+SP-style
+e-drum
+DJ controller
+audio interface
+control surface
+
+Record:
+firmware
+OS
+driver
+mapping profile
+test result.
+
+------------------------------------------------------------------------------
+12. COMPATIBILITY MATRIX
+------------------------------------------------------------------------------
+
+OS
+browser
+audio backend
+MIDI
+plugins
+video
+storage connectors
+
+Published internally and eventually user-facing.
+
+------------------------------------------------------------------------------
+13. CI PIPELINE
+------------------------------------------------------------------------------
+
+On PR:
+install
+typecheck
+lint
+unit
+schema
+license scan
+security scan
+web build
+server build
+
+Selective integration.
+
+------------------------------------------------------------------------------
+14. NIGHTLY
+------------------------------------------------------------------------------
+
+native builds
+E2E
+DSP fixtures
+plugin scan fixtures
+migration
+sync soak
+video render
+accessibility.
+
+------------------------------------------------------------------------------
+15. RELEASE PIPELINE
+------------------------------------------------------------------------------
+
+Version
+changelog
+SBOM
+sign
+package
+smoke
+publish
+monitor
+rollback.
+
+------------------------------------------------------------------------------
+16. VERSIONING
+------------------------------------------------------------------------------
+
+App version.
+Project schema version.
+API version.
+Extension API version.
+Device profile schema.
+Event schema.
+
+Independent.
+
+------------------------------------------------------------------------------
+17. FEATURE MATURITY LABELS
+------------------------------------------------------------------------------
+
+Prototype
+Experimental
+Beta
+Stable
+Deprecated
+
+UI reflects maturity for risky features.
+
+------------------------------------------------------------------------------
+18. PERFORMANCE TESTS
+------------------------------------------------------------------------------
+
+Audio underrun test.
+100-track session.
+1000 MIDI clip test.
+large waveform.
+plugin load.
+sync 2 clients.
+sync 10 clients later.
+video 4K proxy.
+storage upload resume.
+
+------------------------------------------------------------------------------
+19. SOAK TESTS
+------------------------------------------------------------------------------
+
+8-hour playback.
+4-hour recording.
+DJ performance.
+continuous collaboration.
+storage reconnect.
+plugin crash/restart.
+
+------------------------------------------------------------------------------
+20. SECURITY PIPELINE
+------------------------------------------------------------------------------
+
+dependency vulnerability scan
+secret scan
+SBOM
+signed artifacts
+permission review
+static analysis
+web headers/CSP
+container scan.
+
+------------------------------------------------------------------------------
+21. LICENCE PIPELINE
+------------------------------------------------------------------------------
+
+Detect licences.
+Compare against allow/review/deny list.
+Generate notices.
+
+Models separately tracked.
+
+------------------------------------------------------------------------------
+22. DOCUMENTATION
+------------------------------------------------------------------------------
+
+User docs.
+Developer docs.
+Architecture docs.
+SDK docs.
+Device profile docs.
+Project format.
+Storage provider docs.
+Troubleshooting.
+
+------------------------------------------------------------------------------
+23. INTERNAL DEVELOPER PORTAL
+------------------------------------------------------------------------------
+
+Build status.
+Compatibility.
+Metrics.
+Feature flags.
+Provider health.
+Schema versions.
+Test fixtures.
+
+------------------------------------------------------------------------------
+24. LOGGING
+------------------------------------------------------------------------------
+
+Structured.
+Stable event names.
+No audio content.
+No tokens.
+No private message bodies in ordinary diagnostics.
+
+------------------------------------------------------------------------------
+25. TELEMETRY
+------------------------------------------------------------------------------
+
+Opt-in/consent appropriate.
+
+Performance:
+startup
+underruns
+crashes
+plugin failures.
+
+Product analytics:
+avoid tracking creative content.
+
+------------------------------------------------------------------------------
+26. CRASH REPORTS
+------------------------------------------------------------------------------
+
+Include:
+app version
+OS
+stack
+feature
+plugin names if user permits
+project schema
+
+Never attach WAV/project automatically.
+
+------------------------------------------------------------------------------
+27. LOCAL DEV
+------------------------------------------------------------------------------
+
+One command:
+dev web
+dev server
+dev all
+
+Seed demo project.
+
+Fake providers.
+
+No real cloud account required for normal unit dev.
+
+------------------------------------------------------------------------------
+28. ENVIRONMENTS
+------------------------------------------------------------------------------
+
+local
+dev
+staging
+production
+
+Separate credentials/projects/buckets.
+
+Never use production Firebase in local tests by default.
+
+------------------------------------------------------------------------------
+29. FIREBASE EMULATOR / LOCAL BACKEND
+------------------------------------------------------------------------------
+
+When Firebase adapter is used:
+prefer emulator/local tooling for development and tests where supported.
+
+Contract tests should run against emulator and fake adapter.
+
+------------------------------------------------------------------------------
+30. DATABASE MIGRATION RELEASE RULE
+------------------------------------------------------------------------------
+
+Expand
+migrate
+contract.
+
+Avoid destructive one-step DB changes during rolling deployment.
+
+------------------------------------------------------------------------------
+31. CLIENT PROJECT MIGRATION
+------------------------------------------------------------------------------
+
+Backup.
+Migrate.
+Validate.
+Commit.
+Keep recovery copy.
+
+------------------------------------------------------------------------------
+32. PROVIDER DEPRECATION
+------------------------------------------------------------------------------
+
+If provider API disappears:
+mark connector deprecated.
+Allow export/migration.
+Do not break project format.
+
+------------------------------------------------------------------------------
+33. API DEPRECATION
+------------------------------------------------------------------------------
+
+Warn one version ahead where practical.
+Telemetry estimates remaining old clients.
+Document upgrade.
+
+------------------------------------------------------------------------------
+34. INCIDENT RESPONSE
+------------------------------------------------------------------------------
+
+Severity.
+Owner.
+Communication.
+Mitigation.
+Postmortem.
+
+Security incidents have separate process.
+
+------------------------------------------------------------------------------
+35. BACKUP OF BACKEND
+------------------------------------------------------------------------------
+
+DB backup.
+Point-in-time if available.
+Object metadata.
+Secrets backup policy.
+Restore drills.
+
+User BYOC media remains user's storage responsibility unless Poietek promises a
+managed backup tier.
+
+------------------------------------------------------------------------------
+36. DISASTER RECOVERY
+------------------------------------------------------------------------------
+
+Define:
+RPO
+RTO
+
+for hosted services.
+
+Local-only users remain independent.
+
+------------------------------------------------------------------------------
+37. SDK RELEASE
+------------------------------------------------------------------------------
+
+Examples.
+Templates.
+Version matrix.
+Permission docs.
+Test harness.
+Signing.
+
+------------------------------------------------------------------------------
+38. DEVICE PROFILE COMMUNITY REVIEW
+------------------------------------------------------------------------------
+
+Automated schema validation.
+Human/community testing.
+Verification label.
+No "official" label without manufacturer approval.
+
+------------------------------------------------------------------------------
+39. PROVIDER CONNECTOR COMMUNITY REVIEW
+------------------------------------------------------------------------------
+
+Inspect:
+OAuth scopes
+network domains
+data access
+delete semantics
+security
+licence
+maintenance.
+
+------------------------------------------------------------------------------
+40. ARCHITECTURE REVIEW CHECKLIST
+------------------------------------------------------------------------------
+
+Does this feature:
+introduce vendor lock-in?
+block offline?
+store runtime object in project?
+bypass command bus?
+touch audio thread?
+need migration?
+need permission?
+affect rights?
+affect privacy?
+add licence?
+need fallback?
+need capability check?
+
+------------------------------------------------------------------------------
+41. AI CODING AGENT RULES
+------------------------------------------------------------------------------
+
+Before coding:
+read relevant docs.
+identify module boundary.
+state assumptions.
+
+During:
+small patch.
+no duplicate architecture.
+no vendor SDK in domain.
+tests.
+
+After:
+run tests.
+update docs.
+record migration.
+list limitations.
+
+------------------------------------------------------------------------------
+42. PRIORITY LABELS
+------------------------------------------------------------------------------
+
+NOW
+Needed for first vertical slice.
+
+NEXT
+Needed for reliable alpha/beta.
+
+LATER
+Important but dependent.
+
+RESEARCH
+Uncertain feasibility/legal/performance.
+
+------------------------------------------------------------------------------
+43. FIRST RELEASE ENGINEERING TARGET
+------------------------------------------------------------------------------
+
+NOW:
+Project domain
+Local repository
+Asset store
+Audio import/playback
+Timeline
+MIDI input/output
+Sampler
+Mixer basics
+PWA
+storage selection
+basic web auth optional
+
+NEXT:
+sync
+collab
+native shell
+plugins
+advanced audio
+video basics
+
+LATER:
+community
+marketplace
+advanced publishing
+polyphonic audio editing
+deep VFX
+live network jam.
+
+------------------------------------------------------------------------------
+44. V1.5 MASTER SYSTEM RULE
+------------------------------------------------------------------------------
+
+Any new feature must answer all six:
+
+1. Where is its canonical data?
+2. Which service owns it?
+3. How does it work offline?
+4. How is it persisted/migrated?
+5. How is it exposed in UI?
+6. What happens when dependency/provider/device is unavailable?
+
+If any answer is missing, architecture is incomplete.
+
+END DOCUMENT 24

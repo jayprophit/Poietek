@@ -1,0 +1,102 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.3
+
+99 — SMART RESOURCE MESH, MML, SCRIPTS, NESTING & AUTO-SEQUENCER
+===============================================================
+
+SMART MESH — POIETEK DEFINITION
+
+No stable external "smartmeshing" standard was identified from the supplied term,
+so Poietek defines Smart Resource Mesh explicitly:
+
+A capability scheduler that can route tasks among:
+local CPU
+local GPU
+mobile/tablet companion
+LAN workstation
+self-hosted worker
+free-tier provider
+managed provider
+decentralized compute provider.
+
+Examples:
+stem separation
+proxy render
+AI inference
+video transcode
+waveform generation
+backup.
+
+RULES:
+permission;
+privacy;
+cost;
+latency;
+capability;
+availability;
+energy;
+licence.
+
+MML
+
+Metaverse Markup Language is an open 3D document approach with elements for models,
+animation, audio, images and video, including interactive shared-state documents.
+
+Research uses:
+virtual studio;
+3D learning room;
+interactive album;
+virtual venue;
+spatial performance;
+visualizer/community world.
+
+It is not required for the core DAW.
+
+SCRIPTS
+
+Safe Poietek Workflow Script/DSL:
+batch export
+naming
+routing
+project setup
+device mapping
+release validation
+tutorial automation.
+
+Sandboxed, permissioned and undoable where it mutates projects.
+
+NESTING
+
+Support nested:
+projects/subprojects
+sequences
+compound clips
+racks
+effect containers
+video compositions
+learning exercises.
+
+Never create circular project references without explicit handling.
+
+AUTO-SEQUENCER
+
+Rule/AI-assisted sequence creation:
+drums
+MIDI
+automation
+lighting
+video cuts
+performance scenes.
+
+Always:
+seed/reproducibility
+preview
+structured commands
+undo
+human edit.
+
+DIGITAL NANO TECHNOLOGY
+
+No reliable standard/product meaning was located from this exact term.
+Keep as RESEARCH PLACEHOLDER until a precise technology/specification is supplied.
+
+END DOCUMENT 99

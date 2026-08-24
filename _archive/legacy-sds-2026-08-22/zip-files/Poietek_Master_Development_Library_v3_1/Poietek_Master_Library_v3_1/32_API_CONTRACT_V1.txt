@@ -1,0 +1,22 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.7
+
+32 — API CONTRACT v1
+====================
+
+Companion machine-readable file: openapi.v1.yaml
+
+SCOPE
+This API is for network services only. Local audio/MIDI/timeline operations are
+not HTTP APIs.
+
+RULES
+- /api/v1 version boundary.
+- bearer identity abstracted from Firebase/Supabase.
+- project directory != entire project file.
+- CRDT sync update endpoint carries structured update bytes.
+- asset bytes upload through provider upload sessions, not API server buffering.
+- rights/release approvals use authenticated endpoints and audit.
+- all mutating operations need idempotency support in implementation.
+
+NEXT
+Generate TypeScript/Rust clients from the contract after route semantics stabilize.

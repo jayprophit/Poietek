@@ -1,0 +1,35 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.7
+
+136 — CROSS-NETWORK & PROTOCOL ROUTER
+=====================================
+
+NETWORK CLASSES
+
+same process
+same device
+direct USB
+LAN
+WAN
+offline
+provider
+P2P/decentralized.
+
+TRANSPORTS
+
+HTTP/REST
+WebSocket
+WebRTC where justified
+native IPC
+object storage protocols
+Git
+MIDI/OSC/AES70/vendor hardware adapters.
+
+Logical payload uses InteropEnvelope.
+Transport can change without changing project meaning.
+
+OFFLINE
+
+Remote send queue is asynchronous.
+Local durable commit remains source of immediate success.
+
+END DOCUMENT 136

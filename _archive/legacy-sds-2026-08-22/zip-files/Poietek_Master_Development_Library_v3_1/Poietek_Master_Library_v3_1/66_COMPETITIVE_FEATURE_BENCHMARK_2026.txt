@@ -1,0 +1,150 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.10
+
+66 — COMPETITIVE FEATURE BENCHMARK — AUGUST 2026
+================================================
+
+TYPE OF TEST
+
+This is a published-capability/design benchmark based on first-party product
+documentation, combined with the audited current Poietek/SDS implementation.
+
+It is NOT a lab measurement of competitor latency, DSP transparency or crash rate.
+
+REFERENCE FINDINGS
+
+ABLETON LIVE
+Current Live materials reinforce:
+Arrangement + Session workflows
+audio/MIDI recording
+takes/comping
+warping
+audio-to-MIDI
+native instruments/effects
+third-party plugins
+stem separation.
+
+POIETEK REQUIREMENT
+Match those professional DAW/live capabilities, then differentiate with native
+hardware mapping, DJ/video/rights/storage integration.
+
+LOGIC PRO
+Apple's current Logic material reinforces:
+professional Mac/iPad creation
+Session Players
+Stem Splitter
+advanced creation/mixing.
+
+POIETEK REQUIREMENT
+Installed tablet workflow cannot be a toy companion.
+
+PRO TOOLS
+Current Avid material demonstrates:
+professional editing/mixing
+Dolby Atmos/internal renderer workflows
+ARA/Melodyne-related integration
+professional post-production expectations.
+
+POIETEK REQUIREMENT
+Professional recording/editing, routing and immersive workflows need measurable
+accuracy before five stars.
+
+FL STUDIO
+Current Image-Line materials reinforce:
+fast pattern/beat workflow
+audio recording
+stem separation
+large native instrument/effect family
+plugin support
+lifetime-update value proposition.
+
+POIETEK REQUIREMENT
+Beatmaking must remain fast and immediate despite broader architecture.
+
+SERATO
+Current Serato DJ Pro documents:
+4 decks
+stems
+100+ supported hardware devices
+FX
+sampler
+DVS expansion
+club hardware workflows.
+
+REKORDBOX
+Current rekordbox documents:
+library/set preparation
+STEMS
+cloud library sync
+DVS
+video
+USB export/library workflows.
+
+DJAY
+Current Algoriddim documentation confirms installed operation across:
+macOS
+iOS/iPad
+Windows
+Android
+with a cross-device account and platform-dependent capabilities.
+
+POIETEK REQUIREMENT
+Installed cross-platform creative app behavior is a competitive requirement, not
+only a technical preference.
+
+DAVINCI RESOLVE
+Current Resolve 21 documentation presents:
+editing
+color
+Fusion VFX/motion graphics
+Fairlight audio
+media/delivery
+multi-user collaboration
+in one application.
+Fairlight claims up to 2,000 realtime audio tracks in its published feature page.
+
+POIETEK REQUIREMENT
+The video/VFX ambition needs a dedicated GPU/proxy/render architecture; a basic
+video timeline is not five stars.
+
+CURRENT POIETEK IMPLEMENTATION SCORE
+
+The current SDS prototype + v1.9 starter code is NOT five stars.
+
+Approximate implementation-readiness scoring:
+Installed platform behavior      0.5 / 5
+Offline/local architecture       2.0 / 5
+Audio engine                     1.5 / 5
+DAW arrangement                  1.0 / 5
+MIDI                             1.0 / 5
+Sampler                          1.0 / 5
+Mix/master                       1.0 / 5
+Plugins                          0.25 / 5
+Pitch/time                       0.5 / 5
+DJ                               0.5 / 5
+Video/VFX                        0.25 / 5
+Hardware                         1.0 / 5
+Collaboration                    0.5 / 5
+Storage                          1.5 / 5
+Rights/publishing                0.5 / 5
+UX/accessibility concept         2.5 / 5
+Stability/performance evidence   0.75 / 5
+
+STATUS
+NOT CERTIFIED.
+
+WHY THIS IS GOOD
+It prevents architecture documents from being mistaken for shipped capability.
+
+TARGET
+Every category has a test plan leading to 5-star certification.
+
+FIRST-PARTY SOURCES
+https://www.ableton.com/en/live/what-is-live/
+https://www.ableton.com/en/live/all-new-features/
+https://www.apple.com/logic-pro/
+https://www.avid.com/pro-tools
+https://www.image-line.com/fl-studio/
+https://serato.com/dj/pro
+https://rekordbox.com/en/feature/overview/
+https://www.algoriddim.com/
+https://www.blackmagicdesign.com/products/davinciresolve/

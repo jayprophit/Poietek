@@ -1,0 +1,63 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function memberDoc(projectId) {
+      return /databases/$(database)/documents/projects/$(projectId)/members/$(request.auth.uid);
+    }
+
+    function isMember(projectId) {
+      return signedIn() && exists(memberDoc(projectId));
+    }
+
+    function role(projectId) {
+      return get(memberDoc(projectId)).data.role;
+    }
+
+    function canEdit(projectId) {
+      return isMember(projectId) && role(projectId) in ['owner', 'admin', 'producer', 'editor'];
+    }
+
+    match /users/{uid} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+
+    match /projects/{projectId} {
+      allow create: if signedIn()
+        && request.resource.data.ownerUserId == request.auth.uid;
+      allow read: if isMember(projectId);
+      allow update: if canEdit(projectId);
+      allow delete: if isMember(projectId) && role(projectId) in ['owner', 'admin'];
+
+      match /members/{uid} {
+        allow read: if isMember(projectId);
+        allow create, update, delete:
+          if isMember(projectId) && role(projectId) in ['owner', 'admin'];
+      }
+
+      match /comments/{commentId} {
+        allow read: if isMember(projectId);
+        allow create: if isMember(projectId)
+          && request.resource.data.authorUserId == request.auth.uid;
+        allow update, delete:
+          if isMember(projectId)
+          && (
+            resource.data.authorUserId == request.auth.uid
+            || role(projectId) in ['owner', 'admin']
+          );
+      }
+
+      match /syncUpdates/{updateId} {
+        allow read: if isMember(projectId);
+        allow create: if canEdit(projectId)
+          && request.resource.data.actorUserId == request.auth.uid;
+        allow update, delete: if false;
+      }
+    }
+  }
+}

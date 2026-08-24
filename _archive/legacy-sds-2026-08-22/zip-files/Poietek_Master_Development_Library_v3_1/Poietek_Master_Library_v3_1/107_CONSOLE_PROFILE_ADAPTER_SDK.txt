@@ -1,0 +1,58 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.4
+
+107 — CONSOLE PROFILE & ADAPTER SDK
+===================================
+
+COMPANIONS
+schemas/console-profile.schema.v1.json
+packages/console/src/ConsoleAdapter.ts
+packages/console/src/AnalogueConsoleCapability.ts
+
+PROFILE DESCRIBES
+
+manufacturer/model/firmware
+connections
+audio channels
+clocking
+control protocols
+logical parameters
+metering
+scene support
+analog/manual limitations
+verification.
+
+PROTOCOL ADAPTERS
+
+Generic MIDI
+MIDI over TCP
+OSC
+AES70
+EUCON where licensed/documented
+HUI/Mackie Control where lawful/appropriate
+vendor documented protocol/API.
+
+CLEAN ROOM
+
+Manufacturer-specific adapters:
+use public/manufacturer documentation
+licensed SDKs/APIs
+user-provided mapping.
+
+Do not reverse engineer protected encrypted protocols unlawfully or ship vendor
+code/assets without rights.
+
+PROFILE VERIFICATION
+
+UNVERIFIED
+COMMUNITY TESTED
+POIETEK TESTED
+MANUFACTURER DOCUMENTED
+MANUFACTURER VERIFIED.
+
+SDK-001 capabilities generated from profile.
+SDK-002 unsupported parameter disabled.
+SDK-003 firmware range warning.
+SDK-004 community profile cannot claim manufacturer verification.
+SDK-005 analogue manual-only controls represented.
+
+END DOCUMENT 107

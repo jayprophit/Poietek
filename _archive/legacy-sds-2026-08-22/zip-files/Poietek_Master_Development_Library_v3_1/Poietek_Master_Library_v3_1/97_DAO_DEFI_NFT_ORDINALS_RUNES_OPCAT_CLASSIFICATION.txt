@@ -1,0 +1,69 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.3
+
+97 — DAO, DEFI, NFT, ORDINALS, RUNES & OP_CAT CLASSIFICATION
+============================================================
+
+DAO
+ADAPT LATER.
+
+Possible:
+community grants;
+open-source roadmap voting;
+extension/device-profile stewardship;
+creator collective treasury proposals.
+
+Never use token votes to override:
+copyright contracts;
+contributor approvals;
+privacy rights;
+legal obligations;
+individual payout entitlements.
+
+DEFI
+RESEARCH ONLY.
+
+No lending/yield/liquidity-pool system belongs in the core creative app.
+Any future financial protocol requires separate legal/security/product review.
+
+NFT / DIGITAL COLLECTIBLE
+OPTIONAL.
+
+Possible:
+collectible edition;
+access pass;
+event ticket;
+proof-linked digital edition;
+license receipt.
+
+Token ownership never automatically equals copyright ownership.
+
+BITCOIN ORDINAL INSCRIPTIONS
+RESEARCH/OPTIONAL EXPORT.
+
+Inscriptions can hold arbitrary content/metadata as Bitcoin-native digital
+artifacts. Poietek may someday export an approved public collectible/provenance
+artifact, but should not put private Rights Manifests or large studio masters
+on-chain by default.
+
+RUNES / RUNESTONES
+RESEARCH ONLY.
+
+Runes are fungible Bitcoin-native digital commodities with protocol messages
+encoded as runestones. Possible future community/collectible experiments are
+separate from royalties and legal rights.
+
+OP_CAT
+DO NOT DEPEND ON IT.
+
+BIP 347 proposes OP_CAT in Tapscript, but current Bitcoin Core still treats OP_CAT
+as disabled. Poietek must not build product-critical functionality on an
+unactivated consensus proposal.
+
+ETFs
+REJECT FROM CORE.
+
+An exchange-traded fund is a regulated investment product, not a creator-app
+feature. If Poietek ever enters investment/securities products it is a separate
+regulated business.
+
+END DOCUMENT 97

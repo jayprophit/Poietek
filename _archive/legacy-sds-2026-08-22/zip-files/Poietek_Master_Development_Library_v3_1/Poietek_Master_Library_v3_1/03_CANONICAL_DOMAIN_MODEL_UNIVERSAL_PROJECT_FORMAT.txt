@@ -1,0 +1,129 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.0
+
+Compiled from:
+1) The complete product-development conversation supplied by the creator.
+2) Deep review of GitHub repository: jayprophit/Studio-Daw-Station-SDS-
+3) Current cross-platform/offline-first architecture recommendations.
+
+WORKING PRODUCT NAME
+Poietek is the working ecosystem name discussed in the design conversation.
+Studio DAW Station (SDS) is the current repository/product label.
+Final public branding should be chosen only after trademark/domain checks.
+
+CORE RULE
+One app. One project model. One creative graph. Many workspaces.
+Offline first. Cloud optional. Hardware agnostic. Collaboration capable.
+Professional depth without forcing beginners to see every advanced control.
+
+LEGAL / CLEAN-ROOM RULE
+Competitor products, patents, papers, hardware and interfaces may be studied for
+functional principles, workflows and interoperability requirements. Do not copy
+proprietary source code, protected assets, branded UI expression, undocumented
+confidential protocols, or patented claims without appropriate legal review or
+licensing. Compatibility layers should use documented/open interfaces wherever
+possible.
+
+===============================================================================
+
+FOUNDATION
+Canonical project data must be independent of React and hardware.
+
+Project {
+ id, schemaVersion, title, ownerId, teamId,
+ createdAt, updatedAt,
+ tempoMap, timeSignatureMap, keyMap,
+ tracks, buses, scenes, rackGraph,
+ deviceAssignments, mappings, assets,
+ comments, contributors, rights, releases,
+ uiWorkspaceReferences
+}
+
+Do NOT serialize AudioBuffer, MediaStream, DOM objects, MIDIPort or plugin process
+handles.
+
+ASSET
+Asset {
+ id, contentHash, mediaType, originalName, mimeType, byteLength,
+ duration, channels, sampleRate, bitDepth, width, height, frameRate,
+ bpm, key, tags, provenance, license, versions
+}
+
+TRACK
+Track {
+ id, type, name, color, order,
+ clips, routing, mixer, plugins, automation, contributorAssignments
+}
+
+CLIP
+BaseClip:
+id, trackId, timelineStart, timelineDuration, sourceOffset, sourceDuration,
+loop, muted, gain, fades, operations, assetVersionId.
+
+Audio adds warp/pitch/stretch.
+MIDI adds notes/controllers/per-note expression/groove.
+Video adds transform/speed/color/effects.
+
+MIDI NOTE
+id, startTick, durationTicks, note, velocity, releaseVelocity,
+probability, repeat, microTiming, pitch/pressure/timbre/articulation.
+
+UNIVERSAL HARDWARE
+Project uses LogicalControl, not raw “MPC Pad A01”.
+LogicalControl -> PhysicalBinding -> DeviceProfile.
+
+DEVICE PROFILE
+id, schemaVersion, manufacturer, model, hardwareRevision, firmwareRange,
+vendor/product IDs, categories, connection methods, capabilities,
+inputBindings, outputBindings, transport, clock, storageTransfer, audioIO,
+provenance, verificationLevel, profileVersion.
+
+PRODUCTION GRAPH
+Operation {
+ id, commandType, actorId, timestamp,
+ inputIds, outputIds, parameters, parentRevision, reversible
+}
+This traces original -> stem -> chop -> pitch -> pad -> pattern -> arrangement ->
+mix -> master.
+
+CONTRIBUTORS
+Contributor assignments exist at project, track, clip and asset level.
+ContributionEvent records actor/object/action/time/revision.
+Activity can inform split discussion but must not automatically determine legal
+ownership.
+
+RIGHTS
+Store work/master parties, performer/writer/producer credits, labels/publishers,
+society/member identifiers, sample licences, visual rights, agreement references,
+release signoffs and optional blockchain proof hashes.
+
+QUICK EXPORT vs PUBLISH
+Quick Export: no rights IDs required.
+Publish: optional structured metadata validation and approval.
+
+SCHEMA VERSIONING
+Every project has a schemaVersion and tested migrations.
+
+PROJECT ARCHIVE
+project.json
+manifest.json
+assets/
+previews/
+waveforms/
+proxies/
+licenses/
+documents/
+optional-render-cache/
+
+COMMAND MODEL
+All meaningful edits become commands:
+AddTrack, MoveClip, SplitClip, AssignPad, SetMixerParameter, CreateMapping,
+ApplyWarp, AddComment, AssignContributor, AcceptSplit, etc.
+
+Commands power undo/redo, activity history, collaboration, automation and AI.
+
+VERSION 1.3 CROSS-REFERENCE
+PluginInstance, native-module state, modulation bindings and freeze-render references should use the serialization/asset rules in this document together with Document 18.
+
+VERSION 1.4 CROSS-REFERENCE
+Document 19 defines AssetReplica and provider-independent asset location. Canonical Asset IDs must never depend on Google Drive, TeraBox, GitHub, OneDrive or any other provider path.

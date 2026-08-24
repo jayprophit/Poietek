@@ -1,0 +1,44 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.8
+
+148 — AUDIO RETUNING & SAMPLE INTEGRITY
+=======================================
+
+A project can contain audio recorded or sampled at different references.
+
+EXAMPLE
+
+Instrument stem:
+A440.
+
+Session:
+A432.
+
+Poietek can detect approximate stable pitched content and report the reference
+difference.
+
+USER OPTIONS
+
+Keep original.
+Pitch-shift preview.
+Render tuned copy.
+Change project reference.
+Mark source as intentionally detuned.
+
+NON-DESTRUCTIVE
+
+Original asset remains unchanged.
+
+AudioClip stores tuning/pitch operation.
+
+FORMANTS
+
+For vocals/instruments, pitch shift can optionally preserve formants where the
+selected algorithm supports it.
+
+PERCUSSION
+
+Do not force harmonic retuning onto unpitched/percussive sources.
+
+AI asks when classification confidence is low.
+
+END DOCUMENT 148

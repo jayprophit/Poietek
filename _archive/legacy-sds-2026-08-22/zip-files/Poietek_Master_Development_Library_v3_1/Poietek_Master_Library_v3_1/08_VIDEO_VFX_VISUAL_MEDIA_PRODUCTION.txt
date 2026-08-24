@@ -1,0 +1,90 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.0
+
+Compiled from:
+1) The complete product-development conversation supplied by the creator.
+2) Deep review of GitHub repository: jayprophit/Studio-Daw-Station-SDS-
+3) Current cross-platform/offline-first architecture recommendations.
+
+WORKING PRODUCT NAME
+Poietek is the working ecosystem name discussed in the design conversation.
+Studio DAW Station (SDS) is the current repository/product label.
+Final public branding should be chosen only after trademark/domain checks.
+
+CORE RULE
+One app. One project model. One creative graph. Many workspaces.
+Offline first. Cloud optional. Hardware agnostic. Collaboration capable.
+Professional depth without forcing beginners to see every advanced control.
+
+LEGAL / CLEAN-ROOM RULE
+Competitor products, patents, papers, hardware and interfaces may be studied for
+functional principles, workflows and interoperability requirements. Do not copy
+proprietary source code, protected assets, branded UI expression, undocumented
+confidential protocols, or patented claims without appropriate legal review or
+licensing. Compatibility layers should use documented/open interfaces wherever
+possible.
+
+===============================================================================
+
+CURRENT REPO GAP
+Video/VFX is not yet a real subsystem. Add it as a first-class project domain.
+
+UNIFIED TIMELINE
+Audio, MIDI, video, still images, text/captions, motion graphics, automation,
+markers, comments, lighting/show-control events.
+
+VIDEO EDITING
+Import, trim, split, slip, roll, ripple, duplicate, speed, reverse, freeze,
+crop, transform, opacity, blend, keyframes, transitions, proxy and render cache.
+
+AUDIO POST
+linked/unlinked A/V, dialogue/music/FX buses, timecode, frame grid, ADR, Foley,
+ambience and sync markers.
+
+COLOUR
+Exposure, contrast, white balance, curves, hue/saturation, LUT support where
+legal/technical, waveform/vectorscope/histogram.
+
+VFX
+Layer compositing first; node graph later.
+Blur, glow, key, mask, tracking, stabilization, transform, distortion, lighting,
+particles, fog/smoke/rain/snow, grain, lens/glitch/stylization.
+
+MOTION GRAPHICS
+Titles, lyrics, captions, lower thirds, logos, shapes, keyframes and templates.
+
+AUDIO-REACTIVE
+Spectrum, waveform, beat/onset triggers, frequency bands, MIDI-reactive graphics.
+Examples: kick -> flash, bass -> particle scale, MIDI note -> scene trigger.
+
+LIGHTING / SHOW CONTROL
+General control timeline prepared for MIDI/OSC and future lighting adapters.
+
+VISUAL ASSETS
+Video, image, font references/licenses, LUT, template, 3D model, shader, overlay.
+
+3D LATER
+Objects, camera, lights, materials, particles and GPU shaders after core editor.
+
+MOBILE VIDEO
+Touch-first trim, captions, transitions, beat sync, filters and overlays.
+Heavy processing can use desktop/native background or optional cloud services.
+
+DELIVERY
+Master archive, landscape, vertical, square, transparent graphics where codec
+allows, audio-only and stems. Social presets must be data-driven.
+
+THIRD-PARTY VFX
+Desktop extension architecture can later support standard/native video effects.
+Internal SDK: frame processor, generator, transition, analyzer and metadata tool.
+
+RIGHTS
+Visual contributors and licences use the same contribution/rights system as
+audio contributors.
+
+ACCEPTANCE
+Import music + video, edit to beats, add captions/effects, credit all creators
+and export a finished music video inside one project.
+
+VERSION 1.2 CROSS-REFERENCE
+Document 17 defines the DJ/VJ layer: video decks, video crossfader, live visualizers, beat-reactive visuals and performance-scene integration.

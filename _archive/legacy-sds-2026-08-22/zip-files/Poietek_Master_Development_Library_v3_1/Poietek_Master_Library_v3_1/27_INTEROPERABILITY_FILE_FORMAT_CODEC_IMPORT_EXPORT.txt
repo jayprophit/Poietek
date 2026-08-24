@@ -1,0 +1,210 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 1.6 ADDENDUM
+
+27 — INTEROPERABILITY, FILE FORMATS, CODECS, IMPORT/EXPORT & ARCHIVAL
+====================================================================
+
+PURPOSE
+
+Poietek must not become a closed island.
+
+------------------------------------------------------------------------------
+1. FORMAT REGISTRY
+------------------------------------------------------------------------------
+
+FormatDescriptor:
+id
+type
+extensions
+mime
+read
+write
+metadata
+stream
+platforms
+licenceNotes
+limitations
+
+------------------------------------------------------------------------------
+2. AUDIO
+------------------------------------------------------------------------------
+
+Priorities:
+WAV/BWF
+AIFF
+FLAC
+MP3 where codec available
+AAC/M4A where platform/licensing permits
+Ogg/Opus where useful
+
+Preserve:
+sample rate
+bit depth
+channels
+time reference where available
+metadata.
+
+------------------------------------------------------------------------------
+3. MIDI / MUSIC
+------------------------------------------------------------------------------
+
+Standard MIDI File
+MusicXML
+Scala/tuning files
+SFZ evaluation
+other open musical interchange where useful.
+
+------------------------------------------------------------------------------
+4. VIDEO
+------------------------------------------------------------------------------
+
+Container/codec architecture separated:
+container != codec.
+
+Import/export adapters selected per platform/build.
+
+Proxy formats separately configurable.
+
+Do not promise patent/licence-sensitive codecs until build is verified.
+
+------------------------------------------------------------------------------
+5. IMAGE
+------------------------------------------------------------------------------
+
+PNG
+JPEG
+WebP
+SVG for safe trusted project assets
+other formats through media adapter.
+
+------------------------------------------------------------------------------
+6. PROJECT INTERCHANGE
+------------------------------------------------------------------------------
+
+Evaluate:
+AAF
+OMF
+OpenTimelineIO
+DAWproject
+EDL/XML variants
+stem package export
+
+No claim of lossless transfer where third-party feature cannot be represented.
+
+------------------------------------------------------------------------------
+7. PLUGIN STATE
+------------------------------------------------------------------------------
+
+Never pretend proprietary plugin state is portable across plugin formats.
+Store exact plugin identity/state and render fallback.
+
+------------------------------------------------------------------------------
+8. HARDWARE EXPORT
+------------------------------------------------------------------------------
+
+Adapter-specific.
+Documented/verified only.
+
+------------------------------------------------------------------------------
+9. METADATA
+------------------------------------------------------------------------------
+
+Credits
+ISRC
+ISWC
+BWF metadata
+ID3/Vorbis-like tags
+artwork
+lyrics
+DDEX-related export later
+
+Canonical internal metadata maps outward.
+
+------------------------------------------------------------------------------
+10. ARCHIVAL
+------------------------------------------------------------------------------
+
+Portable archive includes:
+manifest
+schema
+media chosen
+checksums
+licences
+credits
+optional rendered stems
+README.
+
+Avoid requiring active SaaS to open archival project.
+
+------------------------------------------------------------------------------
+11. MISSING/UNSUPPORTED
+------------------------------------------------------------------------------
+
+Import creates:
+unsupported placeholder
+conversion option
+external-open suggestion
+documentation.
+
+Never silently drop unknown project data.
+
+------------------------------------------------------------------------------
+12. CODEC SERVICE
+------------------------------------------------------------------------------
+
+MediaCodecRegistry decides:
+available decoder
+available encoder
+hardware acceleration
+licence
+quality.
+
+------------------------------------------------------------------------------
+13. FFmpeg / THIRD-PARTY MEDIA
+------------------------------------------------------------------------------
+
+If used, exact build configuration and effective licence must be documented.
+Do not assume "FFmpeg" has one universal licensing outcome independent of build.
+
+------------------------------------------------------------------------------
+14. BATCH CONVERSION
+------------------------------------------------------------------------------
+
+Project-safe:
+copy original
+generate derived asset
+preserve hash lineage.
+
+------------------------------------------------------------------------------
+15. EXPORT PRESETS
+------------------------------------------------------------------------------
+
+Music master
+Streaming preview
+Stem package
+Podcast
+Film/video
+Social video
+DJ set
+Hardware package
+Archive.
+
+Presets are updateable data.
+
+------------------------------------------------------------------------------
+16. ACCEPTANCE
+------------------------------------------------------------------------------
+
+FMT-001 WAV roundtrip.
+FMT-002 FLAC lossless verification.
+FMT-003 MIDI timing roundtrip within tolerance.
+FMT-004 MusicXML import/export fixtures.
+FMT-005 video proxy relinks to original.
+FMT-006 unsupported codec fails clearly.
+FMT-007 archive checksums verify.
+FMT-008 project metadata maps to export.
+FMT-009 plugin fallback preserved.
+FMT-010 external project interchange reports unsupported features.
+FMT-011 conversion never overwrites source by default.
+FMT-012 codec licence/build recorded.
+
+END DOCUMENT 27

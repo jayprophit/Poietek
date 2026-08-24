@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "stars": {
+    "1": "Prototype/idea exists; not reliable production workflow.",
+    "2": "Basic end-to-end function works with important limitations.",
+    "3": "Production-usable for ordinary workflows; measurable reliability.",
+    "4": "Competitive with established category leaders in capability and UX.",
+    "5": "Meets or exceeds best-in-class reference on agreed tests, reliability and user validation; no critical gap."
+  },
+  "rule": "A category may not be manually set to 5. Evidence IDs and passing acceptance tests are required."
+}

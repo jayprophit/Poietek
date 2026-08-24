@@ -1,0 +1,23 @@
+Official/current sources reviewed 11 August 2026:
+
+YouTube Help — Recommended upload encoding settings
+https://support.google.com/youtube/answer/1722171
+Current recommendations include MP4/H.264, AAC-LC/Opus/Eclipsa audio, 48 kHz
+audio sample rate, native frame rate and BT.709 for SDR. No A440 tuning-reference
+requirement was found on the page.
+
+YouTube Help — Encoding specifications for music videos
+https://support.google.com/youtube/answer/6039860
+Current partner specification recommends FLAC or Linear PCM, 48 kHz recommended,
+24-bit recommended, stereo (plus current immersive options). No A440 tuning
+requirement was found on the page.
+
+YouTube Help — Live encoder settings
+https://support.google.com/youtube/answer/2853702
+Current live delivery requirements focus on codecs, bitrate, sample rate, frame
+rate, keyframes and colour space.
+
+EBU R128:
+https://tech.ebu.ch/publications/r128
+Broadcast loudness profile remains a separate technical delivery concern from
+musical tuning reference.

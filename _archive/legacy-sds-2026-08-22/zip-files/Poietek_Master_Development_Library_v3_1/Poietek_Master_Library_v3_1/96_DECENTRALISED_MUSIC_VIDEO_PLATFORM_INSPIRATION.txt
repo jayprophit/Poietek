@@ -1,0 +1,89 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.3
+
+96 — DECENTRALISED MUSIC/VIDEO PLATFORM INSPIRATION
+===================================================
+
+REFERENCE PRINCIPLE
+
+Study current public architectures and workflows; do not copy proprietary assets
+or assume token economics are required.
+
+AUDIUS INSPIRATION
+
+Useful:
+artist-controlled music/community identity;
+public developer API;
+authorized external applications;
+remix/remixer relationships;
+direct creator/fan ecosystem;
+community/protocol separation.
+
+POIETEK ADAPTATION:
+Creator Channel
+Release Library
+Remix/Fork lineage
+Authorized Apps
+Creator APIs
+fan support
+portable identity.
+
+LIVEPEER INSPIRATION
+
+Useful:
+separate protocol, network compute and creator-facing platform layers;
+decentralized GPU/video/AI compute;
+VOD/livestream;
+transcoding;
+stream health;
+access control;
+analytics;
+multistream.
+
+POIETEK ADAPTATION:
+MediaComputeRouter selects local GPU, Poietek worker, Livepeer-like decentralized
+provider or other provider without changing the Project.
+
+LBRY/ODYSEE INSPIRATION
+
+Useful:
+protocol vs app separation;
+P2P content delivery;
+desktop/mobile/web clients;
+free or priced content;
+tips/support;
+channel/content syncing;
+content address/distribution distinct from user-facing site.
+
+POIETEK ADAPTATION:
+optional P2P replicas;
+creator-owned export;
+provider-independent channel identity;
+cross-platform sync;
+one-click external channel import/export where APIs permit.
+
+YOUTUBE INSPIRATION
+
+Useful centralized product patterns:
+channels;
+playlists;
+subscriptions;
+comments;
+search;
+uploads;
+captions;
+analytics/reporting;
+creator/content-owner dashboards.
+
+POIETEK ADAPTATION:
+modern creator UX without requiring central ownership of the canonical media.
+
+WHAT NOT TO COPY
+
+Forced-wallet onboarding.
+Speculative token reward loops.
+Public-by-default finances.
+Unmoderated illegal/infringing distribution.
+One blockchain as the only index.
+One provider as the only content host.
+
+END DOCUMENT 96

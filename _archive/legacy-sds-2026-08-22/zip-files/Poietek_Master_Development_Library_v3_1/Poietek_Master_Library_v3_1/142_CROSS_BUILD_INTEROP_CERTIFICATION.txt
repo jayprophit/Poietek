@@ -1,0 +1,57 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.7
+
+142 — CROSS-BUILD & INTEROPERABILITY CERTIFICATION
+==================================================
+
+BUILD MATRIX
+
+Web
+Windows
+macOS
+Linux
+iOS/iPadOS
+Android
+server
+worker
+native engine.
+
+SAME SOURCE REVISION
+
+Every artifact records:
+Git commit
+schema versions
+dependency lock
+compiler/toolchain
+SBOM
+build timestamp
+signature/checksum.
+
+INTEROP TESTS
+
+Project:
+web -> Windows -> iPad -> web.
+
+Audio:
+import/export/rehydrate.
+
+Rights:
+manifest survives export/import.
+
+Console:
+profile round-trip.
+
+Provider:
+Supabase/Firebase/local adapters produce same logical outcomes.
+
+Chain:
+evidence receipt verifies independent of active chain adapter.
+
+Language:
+TS -> Rust -> TS schema fixture.
+
+5-STAR INTEROP
+
+No category reaches 5★ without real round-trip evidence across declared supported
+targets.
+
+END DOCUMENT 142

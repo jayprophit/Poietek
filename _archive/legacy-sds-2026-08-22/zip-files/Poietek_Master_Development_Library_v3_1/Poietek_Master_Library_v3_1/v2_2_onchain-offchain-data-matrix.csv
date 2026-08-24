@@ -1,0 +1,9 @@
+Record,Private/off-chain,Public chain,Reason
+Contributor identity,"Full Party profile, external society IDs",Salted/hash commitment if needed,Protect PII
+Rights Manifest,Full versioned JSON,Content hash + metadata root + version,Tamper evidence
+Contributor approvals,Full signature/audit record,Approval event/hash optionally,Verifiable approval
+PRS/PPL/MLC/SoundExchange receipt,Full receipt + IDs,Receipt batch hash/root optional,Proof without publishing details
+Marketplace transaction,"Order, fees, beneficiary lines",Settlement batch root optional,Privacy + audit
+Royalty statement,Full statement,Statement hash / settlement root optional,Source integrity
+Fiat payout,Processor/bank receipt,Receipt hash optional,No bank details on-chain
+Blockchain-native payout,Full accounting mirror,Transaction itself,Future optional audited mode

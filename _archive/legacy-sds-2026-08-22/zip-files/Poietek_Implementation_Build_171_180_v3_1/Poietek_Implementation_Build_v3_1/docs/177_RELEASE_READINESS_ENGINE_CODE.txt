@@ -1,0 +1,13 @@
+177 — RELEASE READINESS ENGINE CODE
+===================================
+
+Implemented:
+destination profile
+sample-rate check
+explicit/advisory/no tuning requirement
+LUFS/true-peak not-measured states
+required-tuning compatibility behavior.
+
+A current YouTube-style profile with no tuning requirement preserves A432.
+
+The engine never invents an A440 platform requirement.

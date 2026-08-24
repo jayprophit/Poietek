@@ -1,0 +1,66 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.4
+
+104 — DIGITAL AUDIO TRANSPORT: USB, OPTICAL & NETWORK
+====================================================
+
+POIETEK ROUTING GRAPH
+
+Console port
+-> AudioEndpoint
+-> channel map
+-> Poietek AudioBackend.
+
+USB AUDIO
+
+Potential:
+multichannel recording/playback
+low-latency native driver path on desktop
+device-specific channel count.
+
+USB MIDI/control may be a separate logical connection.
+
+MADI
+
+AES10 MADI supports multichannel serial digital audio and can use fibre-optic or
+coaxial point-to-point links.
+
+A MADI bridge can provide:
+many console channels
+bidirectional audio
+clock connection
+network bridge to Dante.
+
+ADAT OPTICAL
+
+Useful for smaller optical multichannel expansion.
+Control still usually uses a separate mechanism.
+
+AES3
+
+Two-channel professional digital transport.
+Can participate in synchronization depending device/system design.
+
+AES50
+
+Point-to-point multichannel full-duplex digital audio/control-adjacent auxiliary
+link. It is not generic Ethernet networking even though the physical layer uses
+structured Category cable.
+
+DANTE / AES67
+
+Network audio.
+Dante PTP clock state is monitored separately from channel subscriptions.
+
+ANALOGUE
+
+Balanced analogue console outputs/inputs connect through an audio interface or
+network converter.
+Poietek then controls/records the converter's digital side.
+
+TRANSPORT-001 channel map stored per device profile/project.
+TRANSPORT-002 reconnect validates channel identities.
+TRANSPORT-003 clock lock validated before recording.
+TRANSPORT-004 audio transport failure never fakes silence as valid recording.
+TRANSPORT-005 optical UI identifies protocol.
+
+END DOCUMENT 104

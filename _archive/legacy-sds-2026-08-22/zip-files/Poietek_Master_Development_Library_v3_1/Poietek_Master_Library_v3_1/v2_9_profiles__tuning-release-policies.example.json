@@ -1,0 +1,82 @@
+{
+  "version": "2026-08-11",
+  "releasePolicies": [
+    {
+      "policyId": "preserve-original-tuning",
+      "label": "Preserve Creative Tuning",
+      "mode": "preserve_creative_tuning",
+      "compatibility": {
+        "referencePitchHz": null,
+        "referenceNote": "A4",
+        "requiredByDestination": false,
+        "advisoryOnly": true,
+        "reason": "Preserve the creator's selected tuning unless the destination explicitly requires another reference."
+      },
+      "actions": [
+        {
+          "id": "embed",
+          "label": "Embed tuning metadata",
+          "effect": "embed_tuning_metadata"
+        },
+        {
+          "id": "notes",
+          "label": "Export tuning notes",
+          "effect": "export_tuning_notes"
+        }
+      ]
+    },
+    {
+      "policyId": "public-compatibility-advisory",
+      "label": "Public Release Compatibility Advisory",
+      "mode": "compatibility_advisory",
+      "compatibility": {
+        "referencePitchHz": 440.0,
+        "referenceNote": "A4",
+        "requiredByDestination": false,
+        "advisoryOnly": true,
+        "reason": "A440 is the current ISO standard musical-pitch reference; many collaborators/instruments expect it, but public destinations do not automatically reject alternate tuning."
+      },
+      "actions": [
+        {
+          "id": "keep",
+          "label": "Keep original tuning",
+          "effect": "no_change"
+        },
+        {
+          "id": "compat",
+          "label": "Create separate A440 compatibility master",
+          "effect": "create_compatibility_render"
+        },
+        {
+          "id": "notes",
+          "label": "Export tuning notes",
+          "effect": "export_tuning_notes"
+        }
+      ]
+    },
+    {
+      "policyId": "strict-destination-tuning",
+      "label": "Strict Destination Tuning",
+      "mode": "strict_destination",
+      "compatibility": {
+        "referencePitchHz": 440.0,
+        "referenceNote": "A4",
+        "requiredByDestination": true,
+        "advisoryOnly": false,
+        "reason": "Use only when the client, ensemble, broadcaster, production or other destination explicitly specifies the tuning reference."
+      },
+      "actions": [
+        {
+          "id": "compat",
+          "label": "Create required compatibility render",
+          "effect": "create_compatibility_render"
+        },
+        {
+          "id": "manual",
+          "label": "Review before release",
+          "effect": "manual_review"
+        }
+      ]
+    }
+  ]
+}

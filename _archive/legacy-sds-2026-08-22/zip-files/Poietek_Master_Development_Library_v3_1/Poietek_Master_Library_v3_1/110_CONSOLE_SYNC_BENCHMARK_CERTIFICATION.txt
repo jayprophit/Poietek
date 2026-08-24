@@ -1,0 +1,97 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.4
+
+110 — CONSOLE SYNC BENCHMARK & CERTIFICATION PROGRAM
+====================================================
+
+5-STAR CONSOLE CATEGORY TARGET
+
+Poietek must prove:
+reliable discovery
+correct channel map
+clock lock
+bidirectional parameter mirror
+low control latency
+no control feedback loops
+automation time alignment
+scene safety
+reconnect
+offline project survival
+security
+real hardware validation.
+
+TEST TYPES
+
+DIGITAL DESK
+
+Desk -> app:
+1000 fader moves
+1000 mutes
+pan
+send
+scene
+route.
+
+App -> desk:
+same.
+
+POWER/NETWORK:
+disconnect/reconnect
+switch failure if redundant
+desk reboot
+Poietek restart.
+
+CLOCK:
+leader loss
+invalid external clock
+sample-rate mismatch
+SRC bridge.
+
+AUDIO:
+multichannel record
+multichannel playback
+long soak.
+
+ANALOGUE
+
+Validate only declared capabilities:
+audio path
+converter sync
+motor/VCA automation
+manual recall.
+
+CERTIFICATION LABEL
+
+Audio Connected
+Clock Verified
+Control Read
+Control Read/Write
+Automation Verified
+Scene Verified
+Poietek Tested
+Manufacturer Verified.
+
+REFERENCE CLASSES
+
+Open control:
+AES70.
+
+Digital console bidirectional MIDI/network:
+current documented Allen & Heath patterns.
+
+Network audio/clock:
+Dante PTP/AES67.
+
+MADI:
+AES10 class.
+
+Professional control-surface ecosystem:
+EUCON class reference.
+
+BENCH-001 no 5★ without hardware evidence.
+BENCH-002 analogue desk not scored down for impossible unsupported telemetry; its
+declared integration class is scored honestly.
+BENCH-003 control failure never causes project data loss.
+BENCH-004 sample clock failure detected before corrupt recording.
+BENCH-005 8-hour live/record soak for flagship console adapters.
+
+END DOCUMENT 110

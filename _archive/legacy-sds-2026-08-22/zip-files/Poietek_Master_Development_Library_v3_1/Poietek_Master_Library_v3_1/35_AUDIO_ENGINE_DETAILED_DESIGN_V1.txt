@@ -1,0 +1,249 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.7
+
+35 — AUDIO ENGINE DETAILED TECHNICAL DESIGN v1
+===============================================
+
+FIRST TARGET
+A reliable real-audio vertical slice, not a complete Pro Tools competitor.
+
+THREAD / PROCESS MODEL
+
+UI THREAD
+- React
+- commands
+- views
+
+CONTROL THREAD / SERVICE
+- graph mutation
+- asset decode requests
+- scheduling lookahead
+- automation preparation
+
+REALTIME AUDIO THREAD
+- fixed-size callback
+- reads immutable/prepared graph state
+- no network
+- no blocking filesystem
+- no JSON
+- no React
+- no plugin scan
+- bounded allocation policy
+
+WORKERS
+- waveform peaks
+- hash
+- analysis
+- offline render
+- transcode
+
+AUDIO BACKEND CONTRACT
+
+interface AudioBackend {
+  open(config)
+  close()
+  start()
+  stop()
+  getDeviceInfo()
+  getClock()
+  submitGraphMutation(...)
+  schedule(...)
+  getMeters(...)
+  renderOffline(...)
+}
+
+WEB V1
+WebAudio AudioContext.
+AudioWorklet for custom scheduler/DSP when required.
+Decoded AudioBuffer exists only in runtime cache.
+
+NATIVE LATER
+Rust/C++/platform backend behind same contract.
+
+CLOCK
+Canonical sample clock.
+Project musical position derived from:
+sample position -> seconds -> tempo map -> ticks/bars.
+
+PPQ default: 960.
+
+SCHEDULING
+Use lookahead scheduling from audio clock.
+Never setInterval as timing authority.
+
+For Web V1:
+- UI/control timer may wake scheduler.
+- events scheduled against AudioContext.currentTime sufficiently ahead.
+- scheduler window dynamically sized.
+- underrun telemetry.
+
+GRAPH V1
+
+Master
+  <- Track buses
+Track
+  SourceNode
+  ClipGain
+  TrackGain
+  Pan
+  Inserts later
+  Sends later
+
+V1 minimum:
+multiple audio clips
+mute
+solo
+gain
+pan
+master gain
+
+CLIP PLAYBACK
+Clip defines:
+assetId
+timeline start/duration
+source offset/duration
+gain
+fades
+
+At playback:
+resolve assetId -> decoded runtime buffer
+calculate overlap with transport
+create/schedule source
+apply gain/fade
+connect graph.
+
+SEEK
+Stop scheduled sources.
+Increment transport generation.
+Rebuild schedule from new position.
+Old generation callbacks ignored.
+
+LOOP
+Transport loop is authoritative.
+Scheduler splits events crossing boundary.
+
+MUTE/SOLO
+Calculate audible set before scheduling/mixing.
+Do not merely hide UI.
+
+GAIN
+Store dB canonical.
+Convert:
+linear = 10^(dB/20)
+
+PAN
+V1 equal-power stereo pan where backend supports.
+
+FADES
+Sample/time-based gain ramps.
+Prevent clicks.
+Fade handles persist in project.
+
+IMPORT
+File picker
+-> stream/read
+-> SHA-256
+-> copy/reference into local AssetStore
+-> metadata decode
+-> waveform worker
+-> project Asset
+-> AudioClip.
+
+ASSET STORE WEB
+IndexedDB for metadata.
+OPFS preferred for large local media when available.
+Fallback Blob/IndexedDB with capability warning.
+
+RUNTIME AUDIO CACHE
+LRU decoded buffers.
+Key: contentHash + decode settings.
+Never serialized.
+
+WAVEFORM
+Generate multi-resolution peak pyramids:
+min/max per block.
+Store derived cache keyed by source hash/version.
+
+RECORDING V2 OF ENGINE
+Input backend
+-> ring buffer / MediaStream strategy on web
+-> local staging
+-> finalize asset
+-> hash
+-> clip.
+Recording must not depend on remote upload.
+
+OFFLINE RENDER
+V1 can use OfflineAudioContext for supported native WebAudio graph.
+Render same canonical graph.
+Third-party/native plugin host later gets its own render adapter.
+
+ERRORS
+ASSET_MISSING
+DECODE_FAILED
+DEVICE_LOST
+SCHEDULER_UNDERRUN
+RENDER_FAILED
+UNSUPPORTED_FORMAT
+
+DEVICE LOSS
+Pause/mute safely.
+Preserve project.
+Offer new output.
+
+METERS
+Realtime thread writes compact peak/RMS telemetry.
+UI samples at animation rate.
+Meters never enter project/sync state.
+
+PERFORMANCE BUDGET INITIAL PLACEHOLDERS
+These are engineering targets to benchmark, not public promises:
+- no avoidable audio underruns in 30-minute V1 fixture.
+- UI actions must not block callback.
+- waveform generation off main thread.
+- project with 16 stereo clips opens from local store without decoding all clips at once.
+
+TEST SIGNALS
+sine 1kHz
+impulse
+silence
+pink noise
+stereo phase fixture
+known fade fixture.
+
+UNIT TESTS
+dB conversion
+tempo/tick conversion
+clip overlap
+fade curves
+solo/mute set
+loop scheduling.
+
+INTEGRATION
+two clips overlap
+seek
+loop
+save/reopen
+missing file
+decode failure
+offline render.
+
+MIGRATION FROM CURRENT src/audio/engine.ts
+1. freeze existing implementation as PrototypeWebAudioBackend.
+2. define AudioBackend interface.
+3. move AudioContext ownership into adapter.
+4. remove SamplePad AudioBuffer serialization.
+5. add AssetRuntimeCache.
+6. route MPC/sample views through commands.
+7. replace setInterval sequencers with transport scheduler.
+
+NOT IN V1
+VST
+time stretch
+pitch correction
+comping
+buses/sends
+multichannel
+DVS
+stem separation.
+
+Those follow only after core transport/import/save/render is stable.
