@@ -125,6 +125,28 @@ import {
   type TechniquePlaybackPlan,
 } from './poietek/technique-workflows';
 
+type ImportedAudioAsset = {
+  id: string;
+  name: string;
+  url: string;
+  size: number;
+};
+
+const VIRTUAL_KEYBOARD_NOTES = [
+  'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B',
+];
+
+function readStoredSession() {
+  if (typeof window === 'undefined') return { user: 'Local Producer', platform: 'Desktop' };
+  const saved = window.localStorage.getItem('poietek-desktop-session');
+  if (!saved) return { user: 'Local Producer', platform: 'Desktop' };
+  try {
+    return JSON.parse(saved);
+  } catch {
+    return { user: 'Local Producer', platform: 'Desktop' };
+  }
+}
+
 export default function App() {
   const {
     runtime: projectRuntime,
@@ -133,6 +155,97 @@ export default function App() {
   } = usePoietekRuntime();
   const [canonicalProject, setCanonicalProject] = useState<PoietekProject | null>(null);
   const [projectEditBusy, setProjectEditBusy] = useState(false);
+  const [sessionProfile, setSessionProfile] = useState(() => readStoredSession());
+  const [deviceMode, setDeviceMode] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
+  const [virtualKeyboardOpen, setVirtualKeyboardOpen] = useState(true);
+  const [controlRoomPinned, setControlRoomPinned] = useState(true);
+  const [mixerPinned, setMixerPinned] = useState(true);
+  const [dropActive, setDropActive] = useState(false);
+  const [importedAudio, setImportedAudio] = useState<ImportedAudioAsset[]>([]);
+  const [syncCode, setSyncCode] = useState('PST-42D7');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('poietek-desktop-session', JSON.stringify(sessionProfile));
+    }
+  }, [sessionProfile]);
+
+  useEffect(() => {
+    const handleStorage = () => {
+      setSessionProfile(readStoredSession());
+    };
+    if (typeof window !== 'undefined') {
+      window.addEventListener('storage', handleStorage);
+      return () => window.removeEventListener('storage', handleStorage);
+    }
+    return undefined;
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const generated = `PST-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+    setSyncCode(generated);
+  }, []);
+
+  const handleAudioDrop = useCallback((files: FileList | File[]) => {
+    const nextFiles = Array.from(files)
+      .filter((file) => file.type.startsWith('audio/') || file.name.toLowerCase().endsWith('.wav') || file.name.toLowerCase().endsWith('.aiff') || file.name.toLowerCase().endsWith('.mp3'))
+      .map((file) => ({
+        id: `${file.name}-${file.lastModified}-${Math.random().toString(36).slice(2, 8)}`,
+        name: file.name,
+        url: URL.createObjectURL(file),
+        size: file.size,
+      }));
+
+    if (nextFiles.length > 0) {
+      setImportedAudio((current) => [...nextFiles, ...current].slice(0, 12));
+    }
+  }, []);
+
+  const handleVirtualMIDI = useCallback((note: string) => {
+    const pitch = { C: 60, 'C#': 61, D: 62, 'D#': 63, E: 64, F: 65, 'F#': 66, G: 67, 'G#': 68, A: 69, 'A#': 70, B: 71 }[note] ?? 60;
+    const firstDev = connectedDevices[0]?.id || 'virt_mpc_01';
+    midiManager.simulateInput(firstDev, 'note_on', 1, pitch, 100);
+    window.setTimeout(() => midiManager.simulateInput(firstDev, 'note_off', 1, pitch, 0), 160);
+  }, [connectedDevices]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const updateUser = () => {
+      const nextLocal = readStoredSession();
+      setSessionProfile((current) => ({ ...current, ...nextLocal }));
+    };
+    updateUser();
+    window.addEventListener('poietek:preferences-applied', updateUser);
+    return () => window.removeEventListener('poietek:preferences-applied', updateUser);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const onDrop = (event: DragEvent) => {
+      event.preventDefault();
+      setDropActive(false);
+      if (event.dataTransfer?.files?.length) {
+        handleAudioDrop(event.dataTransfer.files);
+      }
+    };
+    const onDragOver = (event: DragEvent) => {
+      event.preventDefault();
+      setDropActive(true);
+    };
+    const onDragLeave = (event: DragEvent) => {
+      event.preventDefault();
+      setDropActive(false);
+    };
+    window.addEventListener('drop', onDrop);
+    window.addEventListener('dragover', onDragOver);
+    window.addEventListener('dragleave', onDragLeave);
+    return () => {
+      window.removeEventListener('drop', onDrop);
+      window.removeEventListener('dragover', onDragOver);
+      window.removeEventListener('dragleave', onDragLeave);
+    };
+  }, [handleAudioDrop]);
 
   useEffect(() => {
     if (projectRuntimeStatus !== 'ready') return;
@@ -951,6 +1064,141 @@ export default function App() {
               onToggleFlip={() => setIsFlipped((prev) => !prev)}
             />
           </div>
+
+          <div className="shrink-0 border-b border-stone-800 bg-[#1a1817] px-4 py-3">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="rounded border border-emerald-500/60 bg-emerald-500/10 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-300">
+                  Local-first session
+                </div>
+                <div className="text-sm text-stone-200">
+                  <span className="text-stone-400">Logged in as</span> {sessionProfile.user || 'Local Producer'}
+                </div>
+                <div className="rounded-full border border-amber-500/50 bg-amber-500/10 px-2 py-1 text-[10px] uppercase tracking-[0.2em] text-amber-200">
+                  {deviceMode}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.22em] text-stone-400">
+                <button
+                  type="button"
+                  onClick={() => setDeviceMode('desktop')}
+                  className={`rounded border px-2 py-1 ${deviceMode === 'desktop' ? 'border-cyan-500 bg-cyan-500/10 text-cyan-200' : 'border-stone-700 bg-stone-900 text-stone-300'}`}
+                >
+                  Desktop
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setDeviceMode('tablet')}
+                  className={`rounded border px-2 py-1 ${deviceMode === 'tablet' ? 'border-violet-500 bg-violet-500/10 text-violet-200' : 'border-stone-700 bg-stone-900 text-stone-300'}`}
+                >
+                  Tablet
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setDeviceMode('mobile')}
+                  className={`rounded border px-2 py-1 ${deviceMode === 'mobile' ? 'border-fuchsia-500 bg-fuchsia-500/10 text-fuchsia-200' : 'border-stone-700 bg-stone-900 text-stone-300'}`}
+                >
+                  Mobile
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setVirtualKeyboardOpen((value) => !value)}
+                  className="rounded border border-stone-700 bg-stone-900 px-2 py-1 text-stone-200"
+                >
+                  {virtualKeyboardOpen ? 'Hide MIDI keyboard' : 'Show MIDI keyboard'}
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-stone-300">
+              <div className="rounded border border-stone-700 bg-stone-900 px-2 py-1">
+                Sync code: <span className="font-semibold text-amber-300">{syncCode}</span>
+              </div>
+              <div className="rounded border border-stone-700 bg-stone-900 px-2 py-1">
+                Cloud/browser login: <span className="text-emerald-300">ready</span>
+              </div>
+              <div className="rounded border border-stone-700 bg-stone-900 px-2 py-1">
+                Local project store: <span className="text-cyan-300">{canonicalProject ? 'synced' : 'initialising'}</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setMixerPinned((value) => !value)}
+                className="rounded border border-stone-700 bg-stone-900 px-2 py-1"
+              >
+                {mixerPinned ? 'Mixer pinned' : 'Mixer floating'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setControlRoomPinned((value) => !value)}
+                className="rounded border border-stone-700 bg-stone-900 px-2 py-1"
+              >
+                {controlRoomPinned ? 'Control room pinned' : 'Control room compact'}
+              </button>
+            </div>
+          </div>
+
+          <div className="shrink-0 border-b border-stone-800 bg-stone-950/80 px-4 py-3">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.28em] text-stone-400">
+                <span className="rounded bg-stone-800 px-2 py-1">Tracks + buses</span>
+                <span className="rounded bg-stone-800 px-2 py-1">Mix / master</span>
+                <span className="rounded bg-stone-800 px-2 py-1">Control room</span>
+              </div>
+
+              <div className="flex items-center gap-3 text-xs text-stone-300">
+                <div className="rounded border border-stone-700 bg-stone-900 px-2 py-1">Drum bus</div>
+                <div className="rounded border border-stone-700 bg-stone-900 px-2 py-1">Synth bus</div>
+                <div className="rounded border border-stone-700 bg-stone-900 px-2 py-1">Vocal bus</div>
+                <div className="rounded border border-amber-500/50 bg-amber-500/10 px-2 py-1 text-amber-200">Master</div>
+              </div>
+            </div>
+          </div>
+
+          <div className={`shrink-0 border-b border-stone-800 bg-[#141110] px-4 py-3 transition-all ${dropActive ? 'ring-2 ring-cyan-500/60' : ''}`}>
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3 text-xs text-stone-300">
+                <span className="text-[10px] uppercase tracking-[0.28em] text-stone-500">Audio import</span>
+                <div className="rounded border border-dashed border-cyan-500/50 bg-cyan-500/5 px-3 py-2 text-cyan-200">
+                  Drag audio files here for instant queue + preview
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs text-stone-200">
+                {importedAudio.length === 0 ? (
+                  <span className="text-stone-500">No audio loaded</span>
+                ) : (
+                  importedAudio.map((asset) => (
+                    <div key={asset.id} className="rounded border border-stone-700 bg-stone-900 px-2 py-1">
+                      {asset.name}
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+
+          {virtualKeyboardOpen && (
+            <div className="shrink-0 border-b border-stone-800 bg-[#191715] px-4 py-3">
+              <div className="flex items-center justify-between gap-4 mb-2">
+                <div className="text-[10px] uppercase tracking-[0.3em] text-stone-400">Virtual MIDI keyboard</div>
+                <div className="text-[10px] uppercase tracking-[0.2em] text-emerald-300">USB / browser controller</div>
+              </div>
+              <div className="flex gap-1 overflow-x-auto pb-1">
+                {VIRTUAL_KEYBOARD_NOTES.map((note) => (
+                  <button
+                    key={note}
+                    type="button"
+                    onPointerDown={() => handleVirtualMIDI(note)}
+                    onPointerUp={() => handleVirtualMIDI(note)}
+                    className={`min-w-[38px] rounded-t border px-1 py-2 text-[10px] font-semibold ${note.includes('#') ? 'border-stone-700 bg-stone-900 text-stone-100 shadow-inner shadow-black/40' : 'border-amber-500/40 bg-amber-500/10 text-amber-200'}`}
+                  >
+                    {note}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Main Virtual Studio Infinite Stacked Rack Display */}
           <main className="poietek-legacy-rack-main min-h-0 flex flex-1 flex-col overflow-hidden p-4">
