@@ -1,0 +1,60 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "noEmitOnError": true,
+    "rootDir": "./src/poietek",
+    "outDir": "./tests/.compiled-core"
+  },
+  "include": [
+    "src/poietek/domain/**/*.ts",
+    "src/poietek/project/**/*.ts",
+    "src/poietek/assets/**/*.ts",
+    "src/poietek/capture/**/*.ts",
+    "src/poietek/export/**/*.ts",
+    "src/poietek/recovery/**/*.ts",
+    "src/poietek/timeline/**/*.ts",
+    "src/poietek/audio/**/*.ts",
+    "src/poietek/health/**/*.ts",
+    "src/poietek/player/**/*.ts",
+    "src/poietek/release/**/*.ts",
+    "src/poietek/providers/**/*.ts",
+    "src/poietek/app/**/*.ts",
+    "src/poietek/platform/**/*.ts",
+    "src/poietek/business/**/*.ts",
+    "src/poietek/community/**/*.ts",
+    "src/poietek/hardware/**/*.ts",
+    "src/poietek/settings/**/*.ts",
+    "src/poietek/library/**/*.ts",
+    "src/poietek/diagnostics/**/*.ts",
+    "src/poietek/deployment/**/*.ts",
+    "src/poietek/creative-os/**/*.ts",
+    "src/poietek/vision/**/*.ts",
+    "src/poietek/progress/**/*.ts",
+    "src/poietek/ai/**/*.ts",
+    "src/poietek/native/**/*.ts"
+    ,"src/poietek/unified/**/*.ts"
+    ,"src/poietek/engines/**/*.ts"
+    ,"src/poietek/creative-tools/**/*.ts"
+    ,"src/poietek/rack/**/*.ts"
+    ,"src/poietek/production-workflows/**/*.ts"
+    ,"src/poietek/technique-workflows/**/*.ts"
+    ,"src/poietek/composition-workflows/**/*.ts"
+    ,"src/poietek/action-workflows/**/*.ts"
+    ,"src/poietek/modulation-workflows/**/*.ts"
+    ,"src/poietek/performance-workflows/**/*.ts"
+    ,"src/poietek/region-workflows/**/*.ts"
+    ,"src/poietek/tracking-workflows/**/*.ts"
+    ,"src/poietek/editorial-workflows/**/*.ts"
+  ],
+  "exclude": [
+    "src/poietek/react/**",
+    "src/poietek/pwa/**"
+  ]
+}
