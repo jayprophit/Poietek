@@ -38,7 +38,7 @@
     "verify": "npm run format:check && npm run native:verify-config && npm run typecheck && npm test && npm run build"
   },
   "dependencies": {
-    "lucide-react": "^0.546.0",
+    "lucide-react": "^1.33.0",
     "react": "^19.0.1",
     "react-dom": "^19.0.1"
   },
