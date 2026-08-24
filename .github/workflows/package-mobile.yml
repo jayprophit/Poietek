@@ -59,7 +59,7 @@ jobs:
           npm run mobile:android:build --
           --debug --apk --split-per-abi
           --target aarch64 --target armv7 --ci
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: poietek-android-validation-apk
           path: src-tauri/gen/android/app/build/outputs/apk/**/*.apk
@@ -85,7 +85,7 @@ jobs:
       - run: npm run verify
       - run: npm run mobile:ios:init -- --ci
       - run: npm run mobile:ios:build:simulator -- --ci
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: poietek-ios-simulator-app
           path: src-tauri/gen/apple/build/**/*.app
@@ -133,7 +133,7 @@ jobs:
         run: node scripts/configure-android-signing.mjs
       - name: Build signed Play Store AAB
         run: npm run mobile:android:build:aab -- --ci
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: poietek-android-signed-aab
           path: src-tauri/gen/android/app/build/outputs/bundle/**/*.aab
@@ -184,7 +184,7 @@ jobs:
       - run: npm run mobile:ios:init -- --ci
       - name: Build signed App Store Connect IPA
         run: npm run mobile:ios:build:app-store -- --ci
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: poietek-ios-signed-ipa
           path: src-tauri/gen/apple/build/**/*.ipa

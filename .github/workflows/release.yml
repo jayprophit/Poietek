@@ -56,7 +56,7 @@ jobs:
         run: npm run native:build --if-present
 
       - name: Collect artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-artifacts-${{ matrix.os }}
           path: |
