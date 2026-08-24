@@ -1,4 +1,4 @@
-# Poietek Studio
+  # Poietek Studio [Studio Daw Station - SDS]
 
 Poietek Studio is the production migration of the Studio DAW Station (SDS): a
 local-first creative audio workspace that preserves the useful hardware/rack UX
