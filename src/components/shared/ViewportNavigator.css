@@ -18,8 +18,8 @@
 .poietek-viewport-navigator--rack {
   --viewport-accent: #dfa34e;
   flex: 1 1 auto;
-  height: auto;
-  min-height: 0;
+  height: 100%;
+  min-height: 420px;
   border-color: #5a3c1e;
   background: #120e0a;
 }

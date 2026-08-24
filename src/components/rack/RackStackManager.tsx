@@ -618,7 +618,7 @@ export const RackStackManager: React.FC<RackStackManagerProps> = ({
       fitContentWidth={760}
       zoomPresets={[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.6]}
       variant="rack"
-      contentClassName="min-w-[760px] p-3"
+      contentClassName="min-w-[960px] p-3"
     >
     <div
       className={`relative space-y-4 pb-12 font-mono select-none transition ${isLibraryDragOver ? 'rounded-2xl ring-2 ring-cyan-300 ring-offset-4 ring-offset-slate-950' : ''}`}

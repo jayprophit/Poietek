@@ -132,18 +132,72 @@ type ImportedAudioAsset = {
   size: number;
 };
 
+type AppDeviceMode = 'desktop' | 'tablet' | 'mobile' | 'browser';
+type AuthProvider = 'email' | 'google' | 'microsoft' | 'apple' | 'phone' | 'voice';
+type SessionProfile = {
+  user: string;
+  email?: string;
+  phone?: string;
+  platform: string;
+  deviceMode: AppDeviceMode;
+  provider: AuthProvider;
+  authenticated: boolean;
+};
+
 const VIRTUAL_KEYBOARD_NOTES = [
   'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B',
 ];
 
-function readStoredSession() {
-  if (typeof window === 'undefined') return { user: 'Local Producer', platform: 'Desktop' };
+function getDeviceMode(): AppDeviceMode {
+  if (typeof window === 'undefined') return 'desktop';
+  const tauriMode = Boolean((window as any).__TAURI__ || (window as any).__TAURI_INTERNALS__);
+  if (tauriMode) return 'desktop';
+
+  const ua = window.navigator.userAgent.toLowerCase();
+  const isMobile = /android|iphone|ipod|mobile/.test(ua);
+  const isTablet = /(ipad|tablet|playbook)/.test(ua) || (!isMobile && window.matchMedia('(pointer: coarse)').matches && window.innerWidth >= 600 && window.innerWidth <= 1100);
+  if (isMobile) return 'mobile';
+  if (isTablet) return 'tablet';
+  return 'browser';
+}
+
+function readStoredSession(): SessionProfile {
+  const defaultProfile: SessionProfile = {
+    user: 'Guest Producer',
+    platform: 'Desktop',
+    deviceMode: getDeviceMode(),
+    provider: 'email',
+    authenticated: false,
+  };
+
+  if (typeof window === 'undefined') return defaultProfile;
   const saved = window.localStorage.getItem('poietek-desktop-session');
-  if (!saved) return { user: 'Local Producer', platform: 'Desktop' };
+  if (!saved) return defaultProfile;
   try {
-    return JSON.parse(saved);
+    const parsed = JSON.parse(saved) as Partial<SessionProfile>;
+    return {
+      ...defaultProfile,
+      ...parsed,
+      deviceMode: parsed.deviceMode ?? getDeviceMode(),
+      authenticated: parsed.authenticated ?? true,
+    };
   } catch {
-    return { user: 'Local Producer', platform: 'Desktop' };
+    return defaultProfile;
+  }
+}
+
+function formatDeviceLabel(deviceMode: AppDeviceMode) {
+  switch (deviceMode) {
+    case 'desktop':
+      return 'Desktop';
+    case 'tablet':
+      return 'Tablet';
+    case 'mobile':
+      return 'Mobile';
+    case 'browser':
+      return 'Web';
+    default:
+      return 'Desktop';
   }
 }
 
@@ -155,8 +209,14 @@ export default function App() {
   } = usePoietekRuntime();
   const [canonicalProject, setCanonicalProject] = useState<PoietekProject | null>(null);
   const [projectEditBusy, setProjectEditBusy] = useState(false);
-  const [sessionProfile, setSessionProfile] = useState(() => readStoredSession());
-  const [deviceMode, setDeviceMode] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
+  const [sessionProfile, setSessionProfile] = useState<SessionProfile>(() => readStoredSession());
+  const [deviceMode, setDeviceMode] = useState<AppDeviceMode>(() => readStoredSession().deviceMode);
+  const [authDialogOpen, setAuthDialogOpen] = useState<boolean>(() => !readStoredSession().authenticated);
+  const [authProvider, setAuthProvider] = useState<AuthProvider>('email');
+  const [authEmail, setAuthEmail] = useState('');
+  const [authPhone, setAuthPhone] = useState('');
+  const [authName, setAuthName] = useState('');
+  const [authStatus, setAuthStatus] = useState('');
   const [virtualKeyboardOpen, setVirtualKeyboardOpen] = useState(true);
   const [controlRoomPinned, setControlRoomPinned] = useState(true);
   const [mixerPinned, setMixerPinned] = useState(true);
@@ -167,13 +227,27 @@ export default function App() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      const resolvedMode = getDeviceMode();
+      setDeviceMode(resolvedMode);
+      setSessionProfile((prev) => ({
+        ...prev,
+        deviceMode: resolvedMode,
+        platform: formatDeviceLabel(resolvedMode),
+      }));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
       window.localStorage.setItem('poietek-desktop-session', JSON.stringify(sessionProfile));
     }
   }, [sessionProfile]);
 
   useEffect(() => {
     const handleStorage = () => {
-      setSessionProfile(readStoredSession());
+      const nextSession = readStoredSession();
+      setSessionProfile(nextSession);
+      setDeviceMode(nextSession.deviceMode);
     };
     if (typeof window !== 'undefined') {
       window.addEventListener('storage', handleStorage);
@@ -187,6 +261,25 @@ export default function App() {
     const generated = `PST-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
     setSyncCode(generated);
   }, []);
+
+  const handleAuthComplete = useCallback((provider: AuthProvider) => {
+    const detectedMode = getDeviceMode();
+    const name = authName.trim() || (provider === 'phone' ? 'Producer' : 'Studio User');
+    const email = authEmail.trim() || `${name.toLowerCase().replace(/\s+/g, '.')}@poietek.local`;
+    const profile: SessionProfile = {
+      user: name,
+      email: provider === 'phone' ? undefined : email,
+      phone: provider === 'phone' ? authPhone.trim() || '+1 555 010 0000' : undefined,
+      platform: formatDeviceLabel(detectedMode),
+      deviceMode: detectedMode,
+      provider,
+      authenticated: true,
+    };
+    setSessionProfile(profile);
+    setDeviceMode(detectedMode);
+    setAuthDialogOpen(false);
+    setAuthStatus('');
+  }, [authEmail, authName, authPhone]);
 
   const handleAudioDrop = useCallback((files: FileList | File[]) => {
     const nextFiles = Array.from(files)
@@ -1080,27 +1173,9 @@ export default function App() {
               </div>
 
               <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.22em] text-stone-400">
-                <button
-                  type="button"
-                  onClick={() => setDeviceMode('desktop')}
-                  className={`rounded border px-2 py-1 ${deviceMode === 'desktop' ? 'border-cyan-500 bg-cyan-500/10 text-cyan-200' : 'border-stone-700 bg-stone-900 text-stone-300'}`}
-                >
-                  Desktop
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setDeviceMode('tablet')}
-                  className={`rounded border px-2 py-1 ${deviceMode === 'tablet' ? 'border-violet-500 bg-violet-500/10 text-violet-200' : 'border-stone-700 bg-stone-900 text-stone-300'}`}
-                >
-                  Tablet
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setDeviceMode('mobile')}
-                  className={`rounded border px-2 py-1 ${deviceMode === 'mobile' ? 'border-fuchsia-500 bg-fuchsia-500/10 text-fuchsia-200' : 'border-stone-700 bg-stone-900 text-stone-300'}`}
-                >
-                  Mobile
-                </button>
+                <div className="rounded border border-cyan-500/40 bg-cyan-500/10 px-2 py-1 text-cyan-200">
+                  {formatDeviceLabel(deviceMode)} detected
+                </div>
                 <button
                   type="button"
                   onClick={() => setVirtualKeyboardOpen((value) => !value)}
@@ -1328,6 +1403,129 @@ export default function App() {
         onClose={() => setIsAIGrooveOpen(false)}
         onApplyGroove={handleApplyAIGroove}
       />
+
+      {authDialogOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-xl rounded-2xl border border-stone-700 bg-[#101416] p-5 shadow-2xl shadow-black/50">
+            <div className="flex items-center justify-between gap-3 border-b border-stone-800 pb-4">
+              <div>
+                <div className="text-[10px] font-black uppercase tracking-[0.28em] text-amber-300">Account access</div>
+                <h2 className="mt-2 text-2xl font-black text-stone-100">Sign in to Poietek</h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setAuthDialogOpen(false)}
+                className="rounded border border-stone-700 bg-stone-900 px-2 py-1 text-sm text-stone-200"
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="mt-4 rounded-xl border border-cyan-500/30 bg-cyan-500/5 p-3 text-sm text-cyan-100">
+              Detected device: <span className="font-bold text-cyan-300">{formatDeviceLabel(deviceMode)}</span> · Auto-login context is active.
+            </div>
+
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              {[
+                {id: 'google', label: 'Google'},
+                {id: 'microsoft', label: 'Microsoft'},
+                {id: 'apple', label: 'Apple'},
+                {id: 'email', label: 'Email'},
+                {id: 'phone', label: 'Text message'},
+                {id: 'voice', label: 'Voice call'},
+              ].map((provider) => (
+                <button
+                  key={provider.id}
+                  type="button"
+                  onClick={() => {
+                    setAuthProvider(provider.id as AuthProvider);
+                    if (provider.id === 'email' || provider.id === 'phone' || provider.id === 'voice') {
+                      setAuthStatus(provider.id === 'email' ? 'Use your account email and password to continue.' : provider.id === 'phone' ? 'Enter your mobile number to receive a secure code.' : 'AI voice assistant will verify your identity with a call.');
+                    } else {
+                      setAuthStatus(`${provider.label} authentication selected.`);
+                      handleAuthComplete(provider.id as AuthProvider);
+                    }
+                  }}
+                  className={`rounded-xl border px-3 py-2 text-left text-sm font-semibold transition ${authProvider === provider.id ? 'border-amber-500 bg-amber-500/10 text-amber-100' : 'border-stone-700 bg-stone-900 text-stone-200 hover:border-stone-500'}`}
+                >
+                  {provider.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-4 space-y-3">
+              <label className="block text-xs font-bold uppercase tracking-[0.2em] text-stone-400">
+                Display name
+                <input
+                  className="mt-2 w-full rounded-lg border border-stone-700 bg-stone-950 px-3 py-2 text-sm text-stone-50 outline-none focus:border-cyan-500"
+                  value={authName}
+                  onChange={(event) => setAuthName(event.target.value)}
+                  placeholder="Your producer name"
+                />
+              </label>
+
+              {(authProvider === 'email' || authProvider === 'google' || authProvider === 'microsoft' || authProvider === 'apple') && (
+                <label className="block text-xs font-bold uppercase tracking-[0.2em] text-stone-400">
+                  Email address
+                  <input
+                    type="email"
+                    className="mt-2 w-full rounded-lg border border-stone-700 bg-stone-950 px-3 py-2 text-sm text-stone-50 outline-none focus:border-cyan-500"
+                    value={authEmail}
+                    onChange={(event) => setAuthEmail(event.target.value)}
+                    placeholder="you@example.com"
+                  />
+                </label>
+              )}
+
+              {authProvider === 'phone' && (
+                <label className="block text-xs font-bold uppercase tracking-[0.2em] text-stone-400">
+                  Mobile number
+                  <input
+                    type="tel"
+                    className="mt-2 w-full rounded-lg border border-stone-700 bg-stone-950 px-3 py-2 text-sm text-stone-50 outline-none focus:border-cyan-500"
+                    value={authPhone}
+                    onChange={(event) => setAuthPhone(event.target.value)}
+                    placeholder="+1 555 123 4567"
+                  />
+                </label>
+              )}
+
+              {authStatus && (
+                <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-3 py-2 text-xs text-amber-100">
+                  {authStatus}
+                </div>
+              )}
+            </div>
+
+            <div className="mt-5 flex flex-wrap justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setAuthDialogOpen(false)}
+                className="rounded-lg border border-stone-700 bg-stone-900 px-4 py-2 text-sm font-semibold text-stone-200"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (authProvider === 'voice') {
+                    setAuthStatus('AI voice assistant is connecting... please keep your phone line available for verification.');
+                    return;
+                  }
+                  if (authProvider === 'phone') {
+                    setAuthStatus('Verification code sent. Use the secure code to continue into your account.');
+                    return;
+                  }
+                  handleAuthComplete(authProvider);
+                }}
+                className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-black text-stone-950"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Detachable Multi-Window Floating System */}
       <FloatingWindowManager

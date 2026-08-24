@@ -47,7 +47,9 @@
 
 .poietek-menu-popover {
   position: fixed;
-  top: 29px;
+  left: 0;
+  top: 0;
+  z-index: 13001;
   min-width: 250px;
   max-width: min(340px, calc(100vw - 16px));
   display: grid;
@@ -56,8 +58,8 @@
   border-radius: 0 0 8px 8px;
   background: linear-gradient(155deg, #20272a, #121719);
   box-shadow: 0 18px 45px rgba(0,0,0,.65);
+  transform-origin: top left;
 }
-.poietek-menu-root:nth-last-child(-n+3) .poietek-menu-popover { right: 8px; }
 .poietek-menu-popover > button {
   min-height: 28px;
   display: grid;

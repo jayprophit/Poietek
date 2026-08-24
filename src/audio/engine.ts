@@ -114,26 +114,27 @@ class AudioEngine {
 
     for (let i = 0; i < buffer.length; i++) {
       const t = i / rate;
-      const currentFreq = freq * Math.exp(-t * 25);
-      const envelope = Math.exp(-t * 8);
-      data[i] = Math.sin(2 * Math.PI * currentFreq * t) * envelope;
+      const click = Math.exp(-t * 220) * Math.sin(2 * Math.PI * 2600 * t) * 0.35;
+      const bodyFreq = freq * Math.exp(-t * 18) + 18;
+      const body = Math.sin(2 * Math.PI * bodyFreq * t) * Math.exp(-t * 9.5);
+      const sub = Math.sin(2 * Math.PI * (freq * 0.5) * t) * Math.exp(-t * 6);
+      data[i] = (body + sub + click) * 1.1;
     }
     return buffer;
   }
 
   private synthesizePunchKick(): AudioBuffer {
     const rate = this.ctx!.sampleRate;
-    const duration = 0.35;
+    const duration = 0.38;
     const buffer = this.ctx!.createBuffer(1, rate * duration, rate);
     const data = buffer.getChannelData(0);
 
     for (let i = 0; i < buffer.length; i++) {
       const t = i / rate;
-      const currentFreq = 150 * Math.exp(-t * 40) + 40;
-      const body = Math.sin(2 * Math.PI * currentFreq * t);
-      const click = (Math.random() * 2 - 1) * Math.exp(-t * 150) * 0.4;
-      const envelope = Math.exp(-t * 10);
-      data[i] = (body + click) * envelope;
+      const body = Math.sin(2 * Math.PI * (150 * Math.exp(-t * 35) + 18) * t) * Math.exp(-t * 11);
+      const click = (Math.random() * 2 - 1) * Math.exp(-t * 120) * 0.45;
+      const harmonics = Math.sin(2 * Math.PI * 2.4 * t * 150) * Math.exp(-t * 16) * 0.2;
+      data[i] = (body + click + harmonics) * 1.15;
     }
     return buffer;
   }
@@ -145,26 +146,28 @@ class AudioEngine {
 
     for (let i = 0; i < buffer.length; i++) {
       const t = i / rate;
-      const tone = Math.sin(2 * Math.PI * (180 * Math.exp(-t * 20)) * t) * Math.exp(-t * 15);
-      const noise = (Math.random() * 2 - 1) * Math.exp(-t * 12);
-      data[i] = (tone * 0.5 + noise * 0.6) * Math.exp(-t * 8);
+      const tone = Math.sin(2 * Math.PI * (180 * Math.exp(-t * 28)) * t) * Math.exp(-t * 14);
+      const body = Math.sin(2 * Math.PI * 220 * t) * Math.exp(-t * 12) * 0.45;
+      const noise = (Math.random() * 2 - 1) * Math.exp(-t * 14) * 0.7;
+      const snap = Math.sin(2 * Math.PI * 2400 * t) * Math.exp(-t * 55) * 0.12;
+      data[i] = (tone * 0.7 + body + noise + snap) * 1.2;
     }
     return buffer;
   }
 
   private synthesizeLofiSnare(): AudioBuffer {
     const rate = this.ctx!.sampleRate;
-    const duration = 0.3;
+    const duration = 0.32;
     const buffer = this.ctx!.createBuffer(1, rate * duration, rate);
     const data = buffer.getChannelData(0);
 
     for (let i = 0; i < buffer.length; i++) {
       const t = i / rate;
-      const tone = Math.sin(2 * Math.PI * 140 * t) * Math.exp(-t * 18);
-      const noise = (Math.random() * 2 - 1) * Math.exp(-t * 10);
-      // Add slight bit-crush grit
-      let val = (tone * 0.4 + noise * 0.7) * Math.exp(-t * 9);
-      val = Math.round(val * 16) / 16;
+      const tone = Math.sin(2 * Math.PI * 160 * t) * Math.exp(-t * 19);
+      const noise = (Math.random() * 2 - 1) * Math.exp(-t * 18);
+      const crack = (Math.random() * 2 - 1) * Math.exp(-t * 26) * 0.25;
+      let val = (tone * 0.6 + noise * 0.75 + crack) * Math.exp(-t * 9);
+      val = Math.round(val * 24) / 24;
       data[i] = val;
     }
     return buffer;
@@ -175,40 +178,38 @@ class AudioEngine {
     const buffer = this.ctx!.createBuffer(1, rate * duration, rate);
     const data = buffer.getChannelData(0);
 
-    let b0 = 0, b1 = 0, b2 = 0;
-    const decay = isOpen ? 12 : 60;
+    let b0 = 0, b1 = 0;
+    const decay = isOpen ? 20 : 62;
 
     for (let i = 0; i < buffer.length; i++) {
       const t = i / rate;
       const white = Math.random() * 2 - 1;
-      // High pass filter emulation
-      b0 = white - b1;
+      b0 = (white - b1) * 0.62;
       b1 = white;
-      b2 = b0 - b2 * 0.1;
-
-      const envelope = Math.exp(-t * decay);
-      data[i] = b0 * envelope * 0.5;
+      const top = (b0 + Math.sin(2 * Math.PI * 7800 * t) * 0.08) * Math.exp(-t * decay);
+      const envelope = Math.exp(-t * (isOpen ? 16 : 40));
+      data[i] = top * envelope * 0.85;
     }
     return buffer;
   }
 
   private synthesizeClap(): AudioBuffer {
     const rate = this.ctx!.sampleRate;
-    const duration = 0.3;
+    const duration = 0.32;
     const buffer = this.ctx!.createBuffer(1, rate * duration, rate);
     const data = buffer.getChannelData(0);
 
     for (let i = 0; i < buffer.length; i++) {
       const t = i / rate;
-      // Multi burst envelope
       let burst = 0;
-      if (t < 0.01) burst = Math.exp(-t * 200);
-      else if (t < 0.02) burst = Math.exp(-(t - 0.01) * 200);
-      else if (t < 0.03) burst = Math.exp(-(t - 0.02) * 200);
-      else burst = Math.exp(-(t - 0.03) * 25);
+      if (t < 0.012) burst = Math.exp(-t * 240);
+      else if (t < 0.024) burst = Math.exp(-(t - 0.012) * 300);
+      else if (t < 0.038) burst = Math.exp(-(t - 0.024) * 260);
+      else burst = Math.exp(-(t - 0.038) * 22);
 
       const noise = Math.random() * 2 - 1;
-      data[i] = noise * burst * 0.8;
+      const resonant = Math.sin(2 * Math.PI * 1700 * t) * Math.exp(-t * 22) * 0.1;
+      data[i] = (noise * burst * 0.9 + resonant) * 1.2;
     }
     return buffer;
   }
@@ -220,10 +221,11 @@ class AudioEngine {
 
     for (let i = 0; i < buffer.length; i++) {
       const t = i / rate;
-      const f = startFreq * Math.exp(-t * 15);
-      const tone = Math.sin(2 * Math.PI * f * t);
-      const env = Math.exp(-t * 10);
-      data[i] = tone * env * 0.8;
+      const f = startFreq * Math.exp(-t * 18);
+      const tone = Math.sin(2 * Math.PI * f * t) * 0.8;
+      const harmonic = Math.sin(2 * Math.PI * f * 2 * t) * 0.14;
+      const env = Math.exp(-t * 10.5);
+      data[i] = (tone + harmonic) * env * 0.88;
     }
     return buffer;
   }
@@ -236,24 +238,25 @@ class AudioEngine {
 
     for (let i = 0; i < buffer.length; i++) {
       const t = i / rate;
-      const noise = Math.random() * 2 - 1;
+      const noise = (Math.random() * 2 - 1) * 0.9;
+      const shimmer = Math.sin(2 * Math.PI * 8500 * t) * Math.exp(-t * 8) * 0.1;
       const env = Math.exp(-t * 3.5);
-      data[i] = noise * env * 0.4;
+      data[i] = (noise + shimmer) * env * 0.6;
     }
     return buffer;
   }
 
   private synthesizeRim(): AudioBuffer {
     const rate = this.ctx!.sampleRate;
-    const duration = 0.08;
+    const duration = 0.12;
     const buffer = this.ctx!.createBuffer(1, rate * duration, rate);
     const data = buffer.getChannelData(0);
 
     for (let i = 0; i < buffer.length; i++) {
       const t = i / rate;
-      const tone = Math.sin(2 * Math.PI * 1200 * t);
-      const env = Math.exp(-t * 90);
-      data[i] = tone * env * 0.7;
+      const tone = Math.sin(2 * Math.PI * 1200 * t) * Math.exp(-t * 90);
+      const accent = Math.sin(2 * Math.PI * 1730 * t) * Math.exp(-t * 110) * 0.28;
+      data[i] = (tone + accent) * 0.75;
     }
     return buffer;
   }
@@ -265,33 +268,43 @@ class AudioEngine {
 
     for (let i = 0; i < buffer.length; i++) {
       const t = i / rate;
+      const detune = 1 + 0.005 * Math.sin(2 * Math.PI * 4 * t);
+      const baseFreq = freq * detune;
       let wave = 0;
       if (type === 'sawtooth') {
-        wave = 2 * (t * freq - Math.floor(0.5 + t * freq));
+        wave = 2 * ((baseFreq * t) - Math.floor((baseFreq * t) + 0.5));
       } else if (type === 'square') {
-        wave = Math.sin(2 * Math.PI * freq * t) >= 0 ? 0.7 : -0.7;
+        wave = Math.sin(2 * Math.PI * baseFreq * t) >= 0 ? 0.85 : -0.85;
+      } else if (type === 'triangle') {
+        wave = 2 * Math.abs(2 * ((baseFreq * t) % 1) - 1) - 1;
+      } else {
+        wave = Math.sin(2 * Math.PI * baseFreq * t);
       }
-      const env = Math.exp(-t * 3);
-      data[i] = wave * env * 0.5;
+
+      const body = wave * (0.78 + 0.2 * Math.sin(2 * Math.PI * 1.5 * t));
+      const overtone = Math.sin(2 * Math.PI * (baseFreq * 2) * t) * 0.24;
+      const env = Math.exp(-t * 2.2);
+      data[i] = (body + overtone) * env * 0.7;
     }
     return buffer;
   }
 
   private synthesizeChordTone(): AudioBuffer {
     const rate = this.ctx!.sampleRate;
-    const duration = 0.8;
+    const duration = 0.85;
     const buffer = this.ctx!.createBuffer(1, rate * duration, rate);
     const data = buffer.getChannelData(0);
-    const freqs = [261.63, 329.63, 392.00, 493.88]; // Cmaj7 (C4, E4, G4, B4)
+    const freqs = [261.63, 329.63, 392.00, 493.88];
 
     for (let i = 0; i < buffer.length; i++) {
       const t = i / rate;
       let sum = 0;
-      freqs.forEach(f => {
-        sum += Math.sin(2 * Math.PI * f * t);
+      freqs.forEach((f, index) => {
+        const harmonic = Math.sin(2 * Math.PI * f * t) + Math.sin(2 * Math.PI * (f * (index + 1)) * t) * 0.18;
+        sum += harmonic;
       });
-      const env = Math.exp(-t * 2);
-      data[i] = (sum / freqs.length) * env * 0.6;
+      const env = Math.exp(-t * 2.4);
+      data[i] = (sum / freqs.length) * env * 0.72;
     }
     return buffer;
   }
