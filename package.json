@@ -4,7 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "node ./scripts/web-preview.mjs --port=3000",
+    "dev": "node ./scripts/run-tauri.mjs dev",
+    "dev:web": "node ./scripts/web-preview.mjs --port=3000",
     "dev:hmr": "node ./node_modules/vite/bin/vite.js --configLoader runner --port=3000 --host=0.0.0.0",
     "build": "node ./scripts/build-web.mjs",
     "preview": "node ./scripts/web-preview.mjs --port=4173",

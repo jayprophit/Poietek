@@ -21,7 +21,12 @@ export default defineConfig(() => {
       strictPort: true,
       // File watching can be disabled in constrained development environments.
       // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
-      watch: process.env.DISABLE_HMR === 'true' ? null : {},
+      watch:
+        process.env.DISABLE_HMR === 'true'
+          ? null
+          : {
+              ignored: ['**/src-tauri/target/**', '**/dist/**', '**/node_modules/**'],
+            },
       hmr: mobileDevHost
         ? {
             protocol: 'ws',
