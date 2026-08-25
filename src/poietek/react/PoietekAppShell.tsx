@@ -236,7 +236,7 @@ export function PoietekAppShell({children}: {children: ReactNode}) {
         </nav>
         <div className="poietek-command-utilities">
           <DeviceOrientationControl deviceProfile={deviceProfile} />
-          {nativeDevices.runtime === 'native' && <button type="button" className={`poietek-native-device-status is-${nativeDevices.status}`} onClick={() => openSetup(nativeDevices.inventory?.audioInputs.length || nativeDevices.inventory?.audioOutputs.length ? 'audio' : 'midi')} title="Open native device inventory">
+          {nativeDevices.runtime === 'native' && <button type="button" className={`poietek-native-device-status is-${nativeDevices.status}`} onClick={() => openSetup('devices')} title="Open native device inventory">
             <span aria-hidden="true">●</span>
             <strong>{nativeDevices.status === 'ready' && nativeDevices.inventory ? `${nativeDevices.inventory.audioInputs.length + nativeDevices.inventory.audioOutputs.length} audio · ${nativeDevices.inventory.midiInputs.length + nativeDevices.inventory.midiOutputs.length} MIDI` : nativeDevices.status === 'scanning' ? 'Scanning devices…' : nativeDevices.status === 'error' ? 'Device scan error' : 'Desktop devices'}</strong>
             <small>{nativeDevices.status === 'ready' ? 'detected · inventory only' : 'open Studio Setup'}</small>
