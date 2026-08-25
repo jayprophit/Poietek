@@ -43,8 +43,13 @@ export interface StudioSetupModalProps {
   initialTab?: StudioSetupTab;
 }
 
-const tabs: Array<{id: StudioSetupTab; label: string; icon: React.ComponentType<{className?: string}>}> = [
+const tabs: Array<{
+  id: StudioSetupTab;
+  label: string;
+  icon: React.ComponentType<{className?: string}>;
+}> = [
   {id: 'profiles', label: 'Profiles', icon: UserRoundCog},
+  {id: 'devices', label: 'Devices', icon: Plug},
   {id: 'audio', label: 'Audio', icon: Sliders},
   {id: 'midi', label: 'MIDI & Sync', icon: Music},
   {id: 'recording', label: 'Recording', icon: Activity},
@@ -328,6 +333,148 @@ export const StudioSetupModal: React.FC<StudioSetupModalProps> = ({isOpen, onClo
             <div className="rounded-xl border border-stone-700 bg-stone-900/70 p-4"><strong className="text-sm text-white">Save the current settings as a profile</strong><div className="mt-3 flex gap-2"><input value={profileName} onChange={(event) => setProfileName(event.target.value)} placeholder="Profile name" className="min-w-0 flex-1 rounded border border-stone-600 bg-stone-950 px-3 py-2 text-xs" /><button type="button" onClick={() => {try {setSettings(repository.saveCustomProfile(settings, profileName)); setProfileName('');} catch (reason) {setError(reason instanceof Error ? reason.message : String(reason));}}} className="rounded bg-stone-100 px-3 py-2 text-xs font-bold text-stone-950">Save profile</button></div></div>
             <div className="flex flex-wrap gap-2"><button type="button" onClick={() => downloadJson('poietek-studio-settings.json', settings)} className="flex items-center gap-2 rounded border border-stone-600 px-3 py-2 text-xs hover:border-amber-500"><Download className="h-4 w-4" />Export settings</button><label className="flex cursor-pointer items-center gap-2 rounded border border-stone-600 px-3 py-2 text-xs hover:border-amber-500"><Upload className="h-4 w-4" />Import settings<input type="file" accept="application/json,.json" className="hidden" onChange={(event) => void importSettings(event.target.files?.[0] ?? null)} /></label><button type="button" onClick={() => setSettings(createDefaultStudioSettingsDocument())} className="rounded border border-red-900 px-3 py-2 text-xs text-red-300">Reset unsaved defaults</button></div>
           </section>}
+
+          {activeTab === 'devices' && (
+  <section className="space-y-4">
+    <div>
+      <h3 className="text-base font-black text-white">
+        Device setup
+      </h3>
+
+      <p className="text-xs text-stone-400">
+        Inspect the audio and MIDI hardware available to Poietek.
+        Browser-accessible devices and native desktop devices are
+        reported separately because the current native engine does
+        not yet open production audio streams or MIDI connections.
+      </p>
+    </div>
+
+    <Notice title="Current device-engine status">
+      Poietek can currently discover native desktop audio and MIDI
+      endpoints. Native device selection, production audio streams,
+      MIDI connections, hardware buffer control, and measured
+      round-trip latency will become available as the native realtime
+      engine is implemented.
+    </Notice>
+
+    <div className="flex flex-wrap gap-2">
+      <button
+        type="button"
+        onClick={() => void nativeStudioDeviceInventory.scan()}
+        disabled={nativeDevices.status === 'scanning'}
+        className="flex items-center gap-2 rounded bg-amber-500 px-3 py-2 text-xs font-black text-stone-950 disabled:opacity-50"
+      >
+        <RefreshCw
+          className={`h-4 w-4 ${
+            nativeDevices.status === 'scanning' ? 'animate-spin' : ''
+          }`}
+        />
+
+        {nativeDevices.status === 'scanning'
+          ? 'Scanning native devices…'
+          : 'Scan native devices'}
+      </button>
+
+      <button
+        type="button"
+        onClick={() => void scanAudioDevices(false)}
+        className="flex items-center gap-2 rounded border border-stone-600 px-3 py-2 text-xs"
+      >
+        <RefreshCw className="h-4 w-4" />
+        Scan browser audio
+      </button>
+
+      <button
+        type="button"
+        onClick={() => void scanAudioDevices(true)}
+        className="rounded border border-amber-600 px-3 py-2 text-xs text-amber-300"
+      >
+        Request microphone access
+      </button>
+
+      <button
+        type="button"
+        onClick={() => void initializeMidi()}
+        className="rounded border border-stone-600 px-3 py-2 text-xs"
+      >
+        Initialize Web MIDI
+      </button>
+    </div>
+
+    <NativeInventoryPanel
+      kind="audio"
+      snapshot={nativeDevices}
+      onScan={() => void nativeStudioDeviceInventory.scan()}
+    />
+
+    <NativeInventoryPanel
+      kind="midi"
+      snapshot={nativeDevices}
+      onScan={() => void nativeStudioDeviceInventory.scan()}
+    />
+
+    <div className="grid gap-3 md:grid-cols-2">
+      <article className="rounded-xl border border-stone-700 bg-stone-900/70 p-4">
+        <strong className="text-sm text-white">
+          Browser audio devices
+        </strong>
+
+        <p className="mt-2 text-[11px] leading-5 text-stone-400">
+          {
+            audioDevices.filter(
+              (device) => device.kind === 'audioinput',
+            ).length
+          }{' '}
+          input endpoint(s)
+        </p>
+
+        <p className="text-[11px] leading-5 text-stone-400">
+          {
+            audioDevices.filter(
+              (device) => device.kind === 'audiooutput',
+            ).length
+          }{' '}
+          output endpoint(s)
+        </p>
+
+        <p className="mt-2 text-[10px] leading-4 text-stone-500">
+          {audioReport}
+        </p>
+      </article>
+
+      <article className="rounded-xl border border-stone-700 bg-stone-900/70 p-4">
+        <strong className="text-sm text-white">
+          Web MIDI
+        </strong>
+
+        <p className="mt-2 text-[11px] leading-5 text-stone-400">
+          Status: {midiState.capability.status}
+        </p>
+
+        <p className="text-[11px] leading-5 text-stone-400">
+          Connected devices:{' '}
+          {
+            midiState.connectedDevices.filter(
+              (device) => device.connected,
+            ).length
+          }
+        </p>
+
+        <p className="mt-2 text-[10px] leading-4 text-stone-500">
+          {midiState.capability.message ||
+            'Web MIDI has not been initialized in this session.'}
+        </p>
+      </article>
+    </div>
+
+    <Notice title="Why these devices are separated" tone="green">
+      The web version can use browser-approved devices while the
+      desktop version is being progressively connected to Poietek's
+      native C++ realtime engine. This keeps the existing application
+      usable while the native foundation is built underneath it.
+    </Notice>
+  </section>
+)}
 
           {activeTab === 'audio' && <section className="space-y-4">
             <div><h3 className="text-base font-black text-white">Audio engine and devices</h3><p className="text-xs text-stone-400">Browser controls are requested policies. Native desktop endpoints are inventoried separately from devices the current Web Audio engine can select.</p></div>
