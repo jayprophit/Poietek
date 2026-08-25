@@ -32,6 +32,34 @@ function projectWithClip() {
   });
 }
 
+test('add MIDI track creates an empty canonical MIDI track without generated content', () => {
+  const project = operations.addAudioTrack(
+    factory.createBlankProject('MIDI Track'),
+    'Audio Track',
+  );
+
+  const updated = operations.addMidiTrack(project);
+  const midiTrack = updated.tracks[1];
+
+  assert.equal(updated.tracks.length, 2);
+  assert.equal(project.tracks.length, 1);
+
+  assert.notEqual(midiTrack.id, project.tracks[0].id);
+  assert.equal(midiTrack.type, 'midi');
+  assert.equal(midiTrack.name, 'MIDI Track');
+  assert.equal(midiTrack.order, 1);
+
+  assert.deepEqual(midiTrack.clips, []);
+  assert.deepEqual(midiTrack.mixer, {
+    gainDb: 0,
+    pan: 0,
+    mute: false,
+    solo: false,
+  });
+
+  assert.deepEqual(updated.extensions, project.extensions);
+});
+
 test('arranger edits persist validated track and clip mixer values', () => {
   const project = projectWithClip();
   const track = project.tracks[0];

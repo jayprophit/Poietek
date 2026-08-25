@@ -812,7 +812,7 @@ export function PoietekStudioWorkspace({
           'MIDI track added and saved locally.',
         );
         break;
-        
+
       case 'track-duplicate': {
         setActiveDesk('arrange');
 

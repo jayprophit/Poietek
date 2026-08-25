@@ -13,9 +13,13 @@ import {formatClock, readWaveformPreview, type StoredWaveformPreview} from './au
 import {ViewportNavigator} from '../../components/shared/ViewportNavigator';
 import {getProjectEditorialWorkflow} from '../editorial-workflows';
 
-export interface ArrangerSelection {
+export interface ArrangerSelectionItem {
   trackId: string;
   clipId: string;
+}
+
+export interface ArrangerSelection extends ArrangerSelectionItem {
+  items?: ArrangerSelectionItem[];
 }
 
 export interface StudioArrangerViewProps {
@@ -24,6 +28,7 @@ export interface StudioArrangerViewProps {
   playheadSeconds: number;
   busy: boolean;
   focusFadesRequest?: number;
+  selectAllRequest?: number;
   initialSelection?: ArrangerSelection | null;
   onSelectionChange?(selection: ArrangerSelection | null): void;
   onSeek(seconds: number): void;
@@ -62,6 +67,7 @@ export function StudioArrangerView({
   playheadSeconds,
   busy,
   focusFadesRequest = 0,
+  selectAllRequest = 0,
   initialSelection = null,
   onSelectionChange,
   onSeek,
@@ -76,6 +82,7 @@ export function StudioArrangerView({
   const [zoom, setZoom] = useState(1);
   const fadeInInputRef = useRef<HTMLInputElement>(null);
   const lastFocusFadesRequestRef = useRef(0);
+  const lastSelectAllRequestRef = useRef(0);
   const playheadPercent = (playheadSeconds / timelineSpan) * 100;
   const editorial = useMemo(() => {
     try {
@@ -96,15 +103,123 @@ export function StudioArrangerView({
   const selectedClip =
     selectedTrack?.clips.find((clip) => clip.id === selection?.clipId) ?? null;
 
-  useEffect(() => {
-    if (selection && !selectedClip) {
-      setSelection(null);
-      onSelectionChange?.(null);
-      return;
-    }
+  const selectedItems = useMemo<ArrangerSelectionItem[]>(() => {
+  if (!selection) return [];
 
-    onSelectionChange?.(selection);
-  }, [onSelectionChange, selectedClip, selection]);
+  return selection.items?.length
+    ? selection.items
+    : [{trackId: selection.trackId, clipId: selection.clipId}];
+}, [selection]);
+
+const selectedItemKeys = useMemo(
+  () =>
+    new Set(
+      selectedItems.map(
+        (item) => `${item.trackId}:${item.clipId}`,
+      ),
+    ),
+  [selectedItems],
+);
+
+const selectedTrackIds = useMemo(
+  () => new Set(selectedItems.map((item) => item.trackId)),
+  [selectedItems],
+);
+
+  useEffect(() => {
+  if (!selection) {
+    onSelectionChange?.(null);
+    return;
+  }
+
+  const validItems = selectedItems.filter((item) => {
+    const track = project.tracks.find(
+      (candidate) => candidate.id === item.trackId,
+    );
+
+    return Boolean(
+      track?.clips.some((clip) => clip.id === item.clipId),
+    );
+  });
+
+  if (!validItems.length) {
+    setSelection(null);
+    return;
+  }
+
+  const primaryIsValid = validItems.some(
+    (item) =>
+      item.trackId === selection.trackId &&
+      item.clipId === selection.clipId,
+  );
+
+  if (
+    !primaryIsValid ||
+    validItems.length !== selectedItems.length
+  ) {
+    const primary = primaryIsValid
+      ? {
+          trackId: selection.trackId,
+          clipId: selection.clipId,
+        }
+      : validItems[0];
+
+    setSelection({
+      ...primary,
+      items: validItems,
+    });
+    return;
+  }
+
+  onSelectionChange?.(selection);
+}, [
+  onSelectionChange,
+  project.tracks,
+  selectedItems,
+  selection,
+]);
+
+useEffect(() => {
+  if (
+    !selectAllRequest ||
+    selectAllRequest === lastSelectAllRequestRef.current
+  ) {
+    return;
+  }
+
+  lastSelectAllRequestRef.current = selectAllRequest;
+
+  const items: ArrangerSelectionItem[] = orderedTracks.flatMap(
+    (track) =>
+      track.clips.map((clip) => ({
+        trackId: track.id,
+        clipId: clip.id,
+      })),
+  );
+
+  if (!items.length) {
+    setSelection(null);
+    return;
+  }
+
+  const currentPrimary =
+    selection &&
+    items.some(
+      (item) =>
+        item.trackId === selection.trackId &&
+        item.clipId === selection.clipId,
+    )
+      ? {
+          trackId: selection.trackId,
+          clipId: selection.clipId,
+        }
+      : items[0];
+
+  setSelection({
+    ...currentPrimary,
+    items,
+  });
+}, [orderedTracks, selectAllRequest, selection]);
 
   useEffect(() => {
   if (
@@ -201,7 +316,7 @@ export function StudioArrangerView({
           ) : (
             <div className="poietek-track-list">
               {orderedTracks.map((track) => (
-                <div className={`poietek-track-row ${selectedTrack?.id === track.id ? 'is-selected' : ''} ${pinnedTrackIds.has(track.id) ? 'is-pinned' : ''}`} key={track.id}>
+                <div className={`poietek-track-row ${selectedTrackIds.has(track.id) ? 'is-selected' : ''} ${pinnedTrackIds.has(track.id) ? 'is-pinned' : ''}`} key={track.id}>
                   <div className="poietek-track-header" style={{'--track-color': track.color ?? '#62cbbf'} as CSSProperties}>
                     <div className="poietek-track-title-row">
                       <span className="poietek-track-number">{String(track.order + 1).padStart(2, '0')}</span>
@@ -241,7 +356,9 @@ export function StudioArrangerView({
                       const asset = project.assets.find((candidate) => candidate.id === clip.assetId);
                       const clipStart = ticksToSeconds(clip.startTick, project.tempoMap, project.settings.ppq);
                       const clipEnd = ticksToSeconds(clip.startTick + clip.durationTicks, project.tempoMap, project.settings.ppq);
-                      const selected = selection?.clipId === clip.id;
+                      const selected = selectedItemKeys.has(
+                        `${track.id}:${clip.id}`,
+                      );
                       const style: CSSProperties = {
                         left: `${(clipStart / timelineSpan) * 100}%`,
                         width: `${Math.max(0.7, ((clipEnd - clipStart) / timelineSpan) * 100)}%`,
@@ -279,7 +396,11 @@ export function StudioArrangerView({
             <div className="poietek-inspector-title">
               <span>Clip inspector</span>
               <strong>{selectedClip.name}</strong>
-              <small>All active edits commit through project undo/redo.</small>
+              <small>
+                {selectedItems.length > 1
+                  ? `${selectedItems.length} clips selected · Inspector edits the primary clip.`
+                  : 'All active edits commit through project undo/redo.'}
+              </small>
             </div>
             <label>
               Start
