@@ -798,7 +798,15 @@ export function PoietekStudioWorkspace({
     }
   };
 
-  useEffect(() => subscribeStudioCommands((command) => commandHandlerRef.current(command)), []);
+    useEffect(() => subscribeStudioCommands((command) => commandHandlerRef.current(command)), []);
+
+  useEffect(() => {
+    markStudioCommandAreaReady('arrange', true);
+
+    return () => {
+      markStudioCommandAreaReady('arrange', false);
+    };
+  }, []);
 
   useEffect(() => () => {
     const active = activeRecordingRef.current;
