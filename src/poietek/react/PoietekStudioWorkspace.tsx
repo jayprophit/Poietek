@@ -12,6 +12,7 @@ import type { Asset, AudioClip, PoietekProject, Track } from "../domain/types";
 import { createBlankProject } from "../domain/projectFactory";
 import { addAsset, addAudioClip, addAudioTrack } from "../project/operations";
 import {
+  duplicateAudioClip,
   removeAudioClip,
   splitAudioClipAtTick,
   updateAudioClip,
