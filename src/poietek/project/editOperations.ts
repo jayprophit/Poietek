@@ -126,6 +126,37 @@ export function removeAudioClip(
   };
 }
 
+export function duplicateAudioClip(
+  project: PoietekProject,
+  trackId: string,
+  clipId: string,
+): PoietekProject {
+  const {clip} = findAudioClip(project, trackId, clipId);
+
+  const duplicate: AudioClip = {
+    ...clip,
+    id: newId('clp'),
+    name: `${clip.name} Copy`,
+    startTick: clip.startTick + clip.durationTicks,
+  };
+
+  return {
+    ...project,
+    tracks: project.tracks.map((track) =>
+      track.id === trackId
+        ? {
+            ...track,
+            clips: track.clips.flatMap((candidate) =>
+              candidate.id === clipId
+                ? [candidate, duplicate]
+                : [candidate],
+            ),
+          }
+        : track,
+    ),
+  };
+}
+
 export function splitAudioClipAtTick(
   project: PoietekProject,
   trackId: string,
