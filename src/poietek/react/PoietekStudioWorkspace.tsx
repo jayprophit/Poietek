@@ -137,20 +137,20 @@ export function PoietekStudioWorkspace({
   const [error, setError] = useState<string | null>(null);
   const [transport, setTransport] = useState<TransportState>("stopped");
   const [playheadSeconds, setPlayheadSeconds] = useState(0);
-  const [activeDesk, setActiveDesk] =
-		useState<'arrange' | 'console' | 'health'>('arrange');
+    const [activeDesk, setActiveDesk] =
+    useState<'arrange' | 'console' | 'health'>('arrange');
   const [arrangerSelection, setArrangerSelection] =
-  		useState<ArrangerSelection | null>(null);
+    useState<ArrangerSelection | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [sampleRecorderOpen, setSampleRecorderOpen] = useState(false);
   const [sampleInputDevices, setSampleInputDevices] =
-		useState<MediaDeviceInfo[]>([]);
+    useState<MediaDeviceInfo[]>([]);
   const [sampleInputDeviceId, setSampleInputDeviceId] = useState('');
   const [sampleInputMode, setSampleInputMode] =
-		useState<SampleInputMode>('stereo');
+    useState<SampleInputMode>('stereo');
   const [sampleMonitoring, setSampleMonitoring] = useState(false);
-  const [lastRecordedTake, setLastRecordedTake] = useState<{fileName: string;
-		startTick: number} | null>(null);
+  const [lastRecordedTake, setLastRecordedTake] =
+    useState<{fileName: string; startTick: number} | null>(null);
   const recorder = useMemo(() => new BrowserAudioRecorder(runtime.importAudio), [runtime]);
 
   const refreshSampleInputs = useCallback(async () => {
@@ -774,7 +774,7 @@ export function PoietekStudioWorkspace({
       case 'audio-import':
         importInputRef.current?.click();
         break;
-            case 'audio-export-wav':
+      case 'audio-export-wav':
         void exportWav();
         break;
 
@@ -1151,12 +1151,12 @@ export function PoietekStudioWorkspace({
 
           {activeDesk === 'arrange' ? (
             <StudioArrangerView
-  							project={project}
-  							timelineSpan={timelineSpan}
-  							playheadSeconds={playheadSeconds}
-  							busy={Boolean(busyAction)}
-  							onSelectionChange={setArrangerSelection}
-  							onSeek={(seconds) => void seek(seconds)}
+              project={project}
+              timelineSpan={timelineSpan}
+              playheadSeconds={playheadSeconds}
+              busy={Boolean(busyAction)}
+              onSelectionChange={setArrangerSelection}
+              onSeek={(seconds) => void seek(seconds)}
               onSetTrackMixer={setTrackMixer}
               onSetClip={setClip}
               onSplitClip={splitClip}
