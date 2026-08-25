@@ -138,7 +138,9 @@ export function PoietekStudioWorkspace({
   const [transport, setTransport] = useState<TransportState>("stopped");
   const [playheadSeconds, setPlayheadSeconds] = useState(0);
   const [activeDesk, setActiveDesk] = useState<'arrange' | 'console' | 'health'>('arrange');
-  const [isRecording, setIsRecording] = useState(false);
+const [arrangerSelection, setArrangerSelection] =
+  useState<ArrangerSelection | null>(null);
+const [isRecording, setIsRecording] = useState(false);
   const [sampleRecorderOpen, setSampleRecorderOpen] = useState(false);
   const [sampleInputDevices, setSampleInputDevices] = useState<MediaDeviceInfo[]>([]);
   const [sampleInputDeviceId, setSampleInputDeviceId] = useState('');
