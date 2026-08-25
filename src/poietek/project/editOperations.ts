@@ -35,6 +35,48 @@ function findAudioClip(project: PoietekProject, trackId: string, clipId: string)
   return {track, clip};
 }
 
+export function duplicateTrack(
+  project: PoietekProject,
+  trackId: string,
+): PoietekProject {
+  const track = project.tracks.find((candidate) => candidate.id === trackId);
+
+  if (!track) {
+    throw new Error(`Track ${trackId} was not found.`);
+  }
+
+  const duplicate: Track = {
+    ...track,
+    id: newId('trk'),
+    name: `${track.name} Copy`,
+    order: track.order + 1,
+    clips: track.clips.map((clip) => ({
+      ...clip,
+      id: newId('clp'),
+    })),
+  };
+
+  return {
+    ...project,
+    tracks: project.tracks.flatMap((candidate) => {
+      if (candidate.id === trackId) {
+        return [candidate, duplicate];
+      }
+
+      if (candidate.order > track.order) {
+        return [
+          {
+            ...candidate,
+            order: candidate.order + 1,
+          },
+        ];
+      }
+
+      return [candidate];
+    }),
+  };
+}
+
 export function updateTrackMixer(
   project: PoietekProject,
   trackId: string,
