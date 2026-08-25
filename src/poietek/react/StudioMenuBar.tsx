@@ -130,6 +130,16 @@ function buildMenus(activeArea: StudioArea): MenuGroup[] {
         {label: 'Play / Pause', command: 'transport-play-toggle', area: transportArea},
         {label: 'Record', command: 'transport-record-toggle', area: transportArea},
         {label: 'Stop', command: 'transport-stop', area: transportArea},
+        {label: 'Return to Zero', command: 'transport-return-zero', area: transportArea},
+        {
+          label: 'Metronome Click',
+          command: 'transport-metronome-toggle',
+          area: 'rack',
+          disabledReason:
+            activeArea === 'rack'
+              ? undefined
+              : 'Metronome click is currently implemented in the Rack transport only.',
+        },
       ],
     },
     {

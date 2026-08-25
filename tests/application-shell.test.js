@@ -62,6 +62,77 @@ test('Edit Select All reaches real arranger multi-selection', async () => {
   );
 });
 
+test('Transport metronome menu reaches the real Rack click engine', async () => {
+  const [menu, rack, engine, commands] = await Promise.all([
+    read('src/poietek/react/StudioMenuBar.tsx'),
+    read('src/App.tsx'),
+    read('src/audio/engine.ts'),
+    read('src/poietek/react/studioCommands.ts'),
+  ]);
+
+  assert.match(commands, /'transport-metronome-toggle'/);
+
+  assert.match(menu, /label: 'Metronome Click'/);
+  assert.match(menu, /command: 'transport-metronome-toggle'/);
+  assert.match(menu, /area: 'rack'/);
+  assert.match(menu, /activeArea === 'rack'/);
+  assert.match(
+    menu,
+    /Metronome click is currently implemented in the Rack transport only\./,
+  );
+
+  assert.match(
+    rack,
+    /case 'transport-metronome-toggle':\s*setMasterState\(\(current\) => \(\{\.\.\.current, metronome: !current\.metronome\}\)\);\s*break;/,
+  );
+
+  assert.match(
+    rack,
+    /if \(!masterState\.isPlaying \|\| !masterState\.metronome\) return;/,
+  );
+
+  assert.match(
+    rack,
+    /audioEngine\.triggerMetronome\(step % 4 === 0\)/,
+  );
+
+  assert.match(
+    engine,
+    /public triggerMetronome\(isAccent = false\)/,
+  );
+});
+
+test('Transport Return to Zero reaches both active production areas', async () => {
+  const [menu, workspace, rack, commands] = await Promise.all([
+    read('src/poietek/react/StudioMenuBar.tsx'),
+    read('src/poietek/react/PoietekStudioWorkspace.tsx'),
+    read('src/App.tsx'),
+    read('src/poietek/react/studioCommands.ts'),
+  ]);
+
+  assert.match(commands, /'transport-return-zero'/);
+
+  assert.match(
+    menu,
+    /label: 'Return to Zero', command: 'transport-return-zero', area: transportArea/,
+  );
+
+  assert.match(
+    menu,
+    /const transportArea: StudioArea = activeArea === 'rack' \? 'rack' : 'arrange';/,
+  );
+
+  assert.match(
+    workspace,
+    /case 'transport-return-zero':\s*void seek\(0\);\s*break;/,
+  );
+
+  assert.match(
+    rack,
+    /case 'transport-return-zero':\s*setMasterState\(\(current\) => \(\{\.\.\.current, currentStep: 0\}\)\);\s*break;/,
+  );
+});
+
 test('rack transport is de-duplicated and canonical recording performs real ingestion', async () => {
   const [rackTransport, workspace] = await Promise.all([
     read('src/components/rack/StudioTransport.tsx'),
