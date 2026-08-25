@@ -83,3 +83,55 @@ test('fade envelope is derived from clip time and never exceeds unity', () => {
   assert.equal(player.clipFadeGainAtTime(4, 1, 1, 4), 0);
 });
 
+test('duplicate clip creates a fresh clip id, reuses media, and follows the source clip', () => {
+  const project = projectWithClip();
+  const track = project.tracks[0];
+  const clip = track.clips[0];
+
+  const duplicated = edits.duplicateAudioClip(
+    project,
+    track.id,
+    clip.id,
+  );
+
+  const [original, copy] = duplicated.tracks[0].clips;
+
+  assert.equal(original.id, clip.id);
+  assert.notEqual(copy.id, clip.id);
+  assert.equal(copy.assetId, clip.assetId);
+  assert.equal(copy.startTick, clip.startTick + clip.durationTicks);
+  assert.equal(copy.name, `${clip.name} Copy`);
+});
+
+test('duplicate track creates fresh track and clip ids while preserving media references', () => {
+  let project = projectWithClip();
+  project = operations.addAudioTrack(project, 'Second Track');
+
+  const sourceTrack = project.tracks[0];
+  const laterTrack = project.tracks[1];
+
+  const duplicated = edits.duplicateTrack(
+    project,
+    sourceTrack.id,
+  );
+
+  const original = duplicated.tracks[0];
+  const copy = duplicated.tracks[1];
+  const shiftedLaterTrack = duplicated.tracks[2];
+
+  assert.equal(duplicated.tracks.length, 3);
+
+  assert.equal(original.id, sourceTrack.id);
+  assert.notEqual(copy.id, sourceTrack.id);
+  assert.equal(copy.name, `${sourceTrack.name} Copy`);
+  assert.equal(copy.order, sourceTrack.order + 1);
+
+  assert.equal(shiftedLaterTrack.id, laterTrack.id);
+  assert.equal(shiftedLaterTrack.order, laterTrack.order + 1);
+
+  assert.equal(copy.clips.length, sourceTrack.clips.length);
+  assert.notEqual(copy.clips[0].id, sourceTrack.clips[0].id);
+  assert.equal(copy.clips[0].assetId, sourceTrack.clips[0].assetId);
+
+  assert.deepEqual(copy.mixer, sourceTrack.mixer);
+});

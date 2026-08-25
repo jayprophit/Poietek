@@ -28,7 +28,13 @@ const textExtensions = new Set([
   '.yaml',
   '.yml',
 ]);
-const ignoredDirectories = new Set(['.compiled-core', 'build', 'target']);
+const ignoredDirectories = new Set([
+  '.compiled-core',
+  'build',
+  'gen',
+  'target',
+]);
+
 const problems = [];
 
 async function inspectDirectory(directory) {
