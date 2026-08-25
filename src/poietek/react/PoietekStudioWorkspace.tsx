@@ -13,6 +13,7 @@ import { createBlankProject } from "../domain/projectFactory";
 import { addAsset, addAudioClip, addAudioTrack } from "../project/operations";
 import {
   duplicateAudioClip,
+	duplicateTrack,
   removeAudioClip,
   splitAudioClipAtTick,
   updateAudioClip,
@@ -794,6 +795,25 @@ export function PoietekStudioWorkspace({
           'Audio track added and saved locally.',
         );
         break;
+
+      case 'track-duplicate': {
+        setActiveDesk('arrange');
+
+        if (!arrangerSelection) {
+          setError('Select a clip on the track you want to duplicate.');
+          break;
+        }
+
+        void commitProjectEdit(
+          (current) =>
+            duplicateTrack(
+              current,
+              arrangerSelection.trackId,
+            ),
+          'Track duplicated and saved locally.',
+        );
+        break;
+      }
 
       case 'clip-split': {
         setActiveDesk('arrange');
