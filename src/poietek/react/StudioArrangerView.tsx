@@ -1,4 +1,11 @@
-import {useEffect, useMemo, useState, type CSSProperties, type MouseEvent} from 'react';
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type MouseEvent,
+} from 'react';
 import {Pin} from 'lucide-react';
 import type {AudioClip, PoietekProject, Track} from '../domain/types';
 import {secondsToTicks, ticksToSeconds} from '../timeline/tempo';
@@ -16,6 +23,8 @@ export interface StudioArrangerViewProps {
   timelineSpan: number;
   playheadSeconds: number;
   busy: boolean;
+  focusFadesRequest?: number;
+  initialSelection?: ArrangerSelection | null;
   onSelectionChange?(selection: ArrangerSelection | null): void;
   onSeek(seconds: number): void;
   onSetTrackMixer(trackId: string, patch: Partial<Track['mixer']>, message: string): void;
@@ -52,6 +61,8 @@ export function StudioArrangerView({
   timelineSpan,
   playheadSeconds,
   busy,
+  focusFadesRequest = 0,
+  initialSelection = null,
   onSelectionChange,
   onSeek,
   onSetTrackMixer,
@@ -60,8 +71,11 @@ export function StudioArrangerView({
   onRemoveClip,
   onToggleTrackPin,
 }: StudioArrangerViewProps) {
-  const [selection, setSelection] = useState<ArrangerSelection | null>(null);
+  const [selection, setSelection] =
+    useState<ArrangerSelection | null>(initialSelection);
   const [zoom, setZoom] = useState(1);
+  const fadeInInputRef = useRef<HTMLInputElement>(null);
+  const lastFocusFadesRequestRef = useRef(0);
   const playheadPercent = (playheadSeconds / timelineSpan) * 100;
   const editorial = useMemo(() => {
     try {
@@ -91,6 +105,22 @@ export function StudioArrangerView({
 
     onSelectionChange?.(selection);
   }, [onSelectionChange, selectedClip, selection]);
+
+  useEffect(() => {
+  if (
+    !focusFadesRequest ||
+    focusFadesRequest === lastFocusFadesRequestRef.current
+  ) {
+    return;
+  }
+
+  lastFocusFadesRequestRef.current = focusFadesRequest;
+
+  if (!selectedClip) return;
+
+  fadeInInputRef.current?.focus();
+  fadeInInputRef.current?.select();
+}, [focusFadesRequest, selectedClip]);
 
   const seekFromLane = (event: MouseEvent<HTMLDivElement>) => {
     if ((event.target as HTMLElement).closest('.poietek-audio-clip')) return;
@@ -283,11 +313,41 @@ export function StudioArrangerView({
             </label>
             <label>
               Fade in
-              <input type="number" min="0" step="0.05" value={selectedClip.fadeInSeconds} onChange={(event) => onSetClip(selectedTrack.id, selectedClip.id, {fadeInSeconds: Number(event.target.value)}, 'Clip fade-in updated.')} disabled={busy} />
+              <input
+                ref={fadeInInputRef}
+                type="number"
+                min="0"
+                step="0.05"
+                value={selectedClip.fadeInSeconds}
+                onChange={(event) =>
+                  onSetClip(
+                    selectedTrack.id,
+                    selectedClip.id,
+                    {fadeInSeconds: Number(event.target.value)},
+                    'Clip fade-in updated.',
+                  )
+                }
+                disabled={busy}
+              />
             </label>
+
             <label>
               Fade out
-              <input type="number" min="0" step="0.05" value={selectedClip.fadeOutSeconds} onChange={(event) => onSetClip(selectedTrack.id, selectedClip.id, {fadeOutSeconds: Number(event.target.value)}, 'Clip fade-out updated.')} disabled={busy} />
+              <input
+                type="number"
+                min="0"
+                step="0.05"
+                value={selectedClip.fadeOutSeconds}
+                onChange={(event) =>
+                  onSetClip(
+                    selectedTrack.id,
+                    selectedClip.id,
+                    {fadeOutSeconds: Number(event.target.value)},
+                    'Clip fade-out updated.',
+                  )
+                }
+                disabled={busy}
+              />
             </label>
             <div className="poietek-inspector-actions">
               <button type="button" onClick={() => onSplitClip(selectedTrack.id, selectedClip.id, secondsToTicks(playheadSeconds, project.tempoMap, project.settings.ppq))} disabled={busy}>Split at playhead</button>

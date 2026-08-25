@@ -13,7 +13,7 @@ import { createBlankProject } from "../domain/projectFactory";
 import { addAsset, addAudioClip, addAudioTrack } from "../project/operations";
 import {
   duplicateAudioClip,
-	duplicateTrack,
+  duplicateTrack,
   removeAudioClip,
   splitAudioClipAtTick,
   updateAudioClip,
@@ -141,8 +141,12 @@ export function PoietekStudioWorkspace({
   const [playheadSeconds, setPlayheadSeconds] = useState(0);
   const [activeDesk, setActiveDesk] =
     useState<'arrange' | 'console' | 'health'>('arrange');
+
   const [arrangerSelection, setArrangerSelection] =
     useState<ArrangerSelection | null>(null);
+
+  const [focusFadesRequest, setFocusFadesRequest] = useState(0);
+
   const [isRecording, setIsRecording] = useState(false);
   const [sampleRecorderOpen, setSampleRecorderOpen] = useState(false);
   const [sampleInputDevices, setSampleInputDevices] =
@@ -859,6 +863,18 @@ export function PoietekStudioWorkspace({
         break;
       }
 
+      case 'clip-fades': {
+        setActiveDesk('arrange');
+
+        if (!arrangerSelection) {
+          setError('Select a clip before editing its fades.');
+          break;
+        }
+
+        setFocusFadesRequest((current) => current + 1);
+        break;
+      }
+
       case 'transport-play-toggle':
         void (transport === 'playing' ? pause() : play());
         break;
@@ -1196,6 +1212,8 @@ export function PoietekStudioWorkspace({
               timelineSpan={timelineSpan}
               playheadSeconds={playheadSeconds}
               busy={Boolean(busyAction)}
+              focusFadesRequest={focusFadesRequest}
+              initialSelection={arrangerSelection}
               onSelectionChange={setArrangerSelection}
               onSeek={(seconds) => void seek(seconds)}
               onSetTrackMixer={setTrackMixer}
