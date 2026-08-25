@@ -137,7 +137,7 @@ export function PoietekStudioWorkspace({
   const [error, setError] = useState<string | null>(null);
   const [transport, setTransport] = useState<TransportState>("stopped");
   const [playheadSeconds, setPlayheadSeconds] = useState(0);
-    const [activeDesk, setActiveDesk] =
+  const [activeDesk, setActiveDesk] =
     useState<'arrange' | 'console' | 'health'>('arrange');
   const [arrangerSelection, setArrangerSelection] =
     useState<ArrangerSelection | null>(null);
