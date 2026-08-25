@@ -39,7 +39,10 @@ import {
 } from "./audioWorkspaceModel";
 import "./PoietekStudioWorkspace.css";
 import {StudioArrangerView} from './StudioArrangerView';
-import {StudioConsoleView} from './StudioConsoleView';
+import {
+  StudioArrangerView,
+  type ArrangerSelection,
+} from './StudioArrangerView';
 import {
   markStudioCommandAreaReady,
   subscribeStudioCommands,
