@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "offlineWorkerSchema": 3,
-  "version": "9caa4b8ec7bcd38f",
+  "version": "1286fc357802aecf",
   "assetCount": 30,
   "privacyBoundary": "Private project media is stored in OPFS/IndexedDB and is not placed in the application cache."
 }

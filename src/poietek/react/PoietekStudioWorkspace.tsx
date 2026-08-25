@@ -10,7 +10,12 @@ import {
 } from "react";
 import type { Asset, AudioClip, PoietekProject, Track } from "../domain/types";
 import { createBlankProject } from "../domain/projectFactory";
-import { addAsset, addAudioClip, addAudioTrack } from "../project/operations";
+import {
+  addAsset,
+  addAudioClip,
+  addAudioTrack,
+  addMidiTrack,
+} from "../project/operations";
 import {
   duplicateAudioClip,
   duplicateTrack,
@@ -800,6 +805,14 @@ export function PoietekStudioWorkspace({
         );
         break;
 
+      case 'track-add-midi':
+        setActiveDesk('arrange');
+        void commitProjectEdit(
+          (current) => addMidiTrack(current),
+          'MIDI track added and saved locally.',
+        );
+        break;
+        
       case 'track-duplicate': {
         setActiveDesk('arrange');
 

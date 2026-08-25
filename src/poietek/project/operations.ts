@@ -19,6 +19,23 @@ export function addAudioTrack(
   return { ...project, tracks: [...project.tracks, track] };
 }
 
+export function addMidiTrack(
+  project: PoietekProject,
+  name = "MIDI Track",
+): PoietekProject {
+  const track: Track = {
+    id: newId("trk"),
+    type: "midi",
+    name,
+    order: project.tracks.length,
+    color: null,
+    clips: [],
+    mixer: { gainDb: 0, pan: 0, mute: false, solo: false },
+  };
+
+  return { ...project, tracks: [...project.tracks, track] };
+}
+
 export function addAsset(
   project: PoietekProject,
   asset: Asset,
