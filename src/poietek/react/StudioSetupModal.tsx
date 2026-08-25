@@ -34,7 +34,19 @@ import {
   validateStudioSettingsDocument,
 } from '../settings';
 
-export type StudioSetupTab = 'profiles' | 'audio' | 'midi' | 'recording' | 'editing' | 'files' | 'plugins' | 'library' | 'appearance' | 'privacy' | 'diagnostics';
+export type StudioSetupTab =
+  | 'profiles'
+  | 'devices'
+  | 'audio'
+  | 'midi'
+  | 'recording'
+  | 'editing'
+  | 'files'
+  | 'plugins'
+  | 'library'
+  | 'appearance'
+  | 'privacy'
+  | 'diagnostics';
 
 export interface StudioSetupModalProps {
   isOpen: boolean;
