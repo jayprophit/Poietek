@@ -40,7 +40,11 @@ import {
 import "./PoietekStudioWorkspace.css";
 import {StudioArrangerView} from './StudioArrangerView';
 import {StudioConsoleView} from './StudioConsoleView';
-import {subscribeStudioCommands, type StudioCommandDetail} from './studioCommands';
+import {
+  markStudioCommandAreaReady,
+  subscribeStudioCommands,
+  type StudioCommandDetail,
+} from './studioCommands';
 import {getProjectEditorialWorkflow, toggleProjectEditorialTrackPin} from '../editorial-workflows';
 
 type TransportState = "stopped" | "starting" | "playing" | "paused";
