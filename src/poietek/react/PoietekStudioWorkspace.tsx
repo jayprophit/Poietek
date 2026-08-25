@@ -151,7 +151,7 @@ export function PoietekStudioWorkspace({
     useState<ArrangerSelection | null>(null);
 
   const [focusFadesRequest, setFocusFadesRequest] = useState(0);
-
+  const [selectAllRequest, setSelectAllRequest] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const [sampleRecorderOpen, setSampleRecorderOpen] = useState(false);
   const [sampleInputDevices, setSampleInputDevices] =
@@ -797,6 +797,11 @@ export function PoietekStudioWorkspace({
         void redo();
         break;
 
+      case 'edit-select-all':
+        setActiveDesk('arrange');
+        setSelectAllRequest((current) => current + 1);
+        break;
+
       case 'track-add-audio':
         setActiveDesk('arrange');
         void commitProjectEdit(
@@ -1226,6 +1231,7 @@ export function PoietekStudioWorkspace({
               playheadSeconds={playheadSeconds}
               busy={Boolean(busyAction)}
               focusFadesRequest={focusFadesRequest}
+              selectAllRequest={selectAllRequest}
               initialSelection={arrangerSelection}
               onSelectionChange={setArrangerSelection}
               onSeek={(seconds) => void seek(seconds)}
