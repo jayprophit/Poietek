@@ -75,14 +75,22 @@ export function StudioArrangerView({
     () => [...project.tracks].sort((a, b) => Number(pinnedTrackIds.has(b.id)) - Number(pinnedTrackIds.has(a.id)) || a.order - b.order),
     [pinnedTrackIds, project.tracks],
   );
-  const selectedTrack = selection
+    const selectedTrack = selection
     ? project.tracks.find((track) => track.id === selection.trackId)
     : null;
-  const selectedClip = selectedTrack?.clips.find((clip) => clip.id === selection?.clipId) ?? null;
+
+  const selectedClip =
+    selectedTrack?.clips.find((clip) => clip.id === selection?.clipId) ?? null;
 
   useEffect(() => {
-    if (selection && !selectedClip) setSelection(null);
-  }, [selectedClip, selection]);
+    if (selection && !selectedClip) {
+      setSelection(null);
+      onSelectionChange?.(null);
+      return;
+    }
+
+    onSelectionChange?.(selection);
+  }, [onSelectionChange, selectedClip, selection]);
 
   const seekFromLane = (event: MouseEvent<HTMLDivElement>) => {
     if ((event.target as HTMLElement).closest('.poietek-audio-clip')) return;
