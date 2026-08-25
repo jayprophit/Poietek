@@ -140,10 +140,10 @@ export function PoietekStudioWorkspace({
   const [activeDesk, setActiveDesk] =
 		useState<'arrange' | 'console' | 'health'>('arrange');
   const [arrangerSelection, setArrangerSelection] =
-  	useState<ArrangerSelection | null>(null);
+  		useState<ArrangerSelection | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [sampleRecorderOpen, setSampleRecorderOpen] = useState(false);
-  const [sampleInputDevices, setSampleInputDevices]
+  const [sampleInputDevices, setSampleInputDevices] =
 		useState<MediaDeviceInfo[]>([]);
   const [sampleInputDeviceId, setSampleInputDeviceId] = useState('');
   const [sampleInputMode, setSampleInputMode] =
@@ -774,10 +774,15 @@ export function PoietekStudioWorkspace({
       case 'audio-import':
         importInputRef.current?.click();
         break;
-      case 'audio-export-wav':
+            case 'audio-export-wav':
         void exportWav();
         break;
-            case 'edit-redo':
+
+      case 'edit-undo':
+        void undo();
+        break;
+
+      case 'edit-redo':
         void redo();
         break;
 
