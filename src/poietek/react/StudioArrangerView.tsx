@@ -75,7 +75,7 @@ export function StudioArrangerView({
     () => [...project.tracks].sort((a, b) => Number(pinnedTrackIds.has(b.id)) - Number(pinnedTrackIds.has(a.id)) || a.order - b.order),
     [pinnedTrackIds, project.tracks],
   );
-    const selectedTrack = selection
+  const selectedTrack = selection
     ? project.tracks.find((track) => track.id === selection.trackId)
     : null;
 
