@@ -38,7 +38,6 @@ import {
   type StoredWaveformPreview,
 } from "./audioWorkspaceModel";
 import "./PoietekStudioWorkspace.css";
-import {StudioArrangerView} from './StudioArrangerView';
 import {
   StudioArrangerView,
   type ArrangerSelection,
