@@ -819,6 +819,26 @@ export function PoietekStudioWorkspace({
         break;
       }
 
+      case 'clip-duplicate': {
+        setActiveDesk('arrange');
+
+        if (!arrangerSelection) {
+          setError('Select a clip before using Duplicate Clip.');
+          break;
+        }
+
+        void commitProjectEdit(
+          (current) =>
+            duplicateAudioClip(
+              current,
+              arrangerSelection.trackId,
+              arrangerSelection.clipId,
+            ),
+          'Clip duplicated and saved locally.',
+        );
+        break;
+      }
+
       case 'transport-play-toggle':
         void (transport === 'playing' ? pause() : play());
         break;
