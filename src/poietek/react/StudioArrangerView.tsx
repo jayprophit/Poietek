@@ -52,6 +52,7 @@ export function StudioArrangerView({
   timelineSpan,
   playheadSeconds,
   busy,
+  onSelectionChange,
   onSeek,
   onSetTrackMixer,
   onSetClip,
