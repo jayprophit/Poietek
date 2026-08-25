@@ -1101,11 +1101,12 @@ const [isRecording, setIsRecording] = useState(false);
 
           {activeDesk === 'arrange' ? (
             <StudioArrangerView
-              project={project}
-              timelineSpan={timelineSpan}
-              playheadSeconds={playheadSeconds}
-              busy={Boolean(busyAction)}
-              onSeek={(seconds) => void seek(seconds)}
+  project={project}
+  timelineSpan={timelineSpan}
+  playheadSeconds={playheadSeconds}
+  busy={Boolean(busyAction)}
+  onSelectionChange={setArrangerSelection}
+  onSeek={(seconds) => void seek(seconds)}
               onSetTrackMixer={setTrackMixer}
               onSetClip={setClip}
               onSplitClip={splitClip}
