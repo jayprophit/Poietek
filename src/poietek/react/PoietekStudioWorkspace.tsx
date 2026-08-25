@@ -42,6 +42,7 @@ import {
   StudioArrangerView,
   type ArrangerSelection,
 } from './StudioArrangerView';
+import {StudioConsoleView} from './StudioConsoleView';
 import {
   markStudioCommandAreaReady,
   subscribeStudioCommands,
