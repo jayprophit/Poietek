@@ -29,6 +29,39 @@ test('the application shell owns one professional menu system', async () => {
   }
 });
 
+test('Edit Select All reaches real arranger multi-selection', async () => {
+  const [workspace, arranger, commands, menu] = await Promise.all([
+    read('src/poietek/react/PoietekStudioWorkspace.tsx'),
+    read('src/poietek/react/StudioArrangerView.tsx'),
+    read('src/poietek/react/studioCommands.ts'),
+    read('src/poietek/react/StudioMenuBar.tsx'),
+  ]);
+
+  assert.match(commands, /'edit-select-all'/);
+  assert.match(menu, /command: 'edit-select-all'/);
+
+  assert.match(
+    workspace,
+    /case 'edit-select-all':\s*setActiveDesk\('arrange'\);\s*setSelectAllRequest\(\(current\) => current \+ 1\);\s*break;/,
+  );
+
+  assert.match(
+    workspace,
+    /selectAllRequest=\{selectAllRequest\}/,
+  );
+
+  assert.match(arranger, /selectAllRequest\?: number/);
+  assert.match(arranger, /lastSelectAllRequestRef/);
+  assert.match(arranger, /orderedTracks\.flatMap/);
+  assert.match(arranger, /track\.clips\.map/);
+  assert.match(arranger, /items: validItems/);
+  assert.match(arranger, /selectedItemKeys\.has/);
+  assert.match(
+    arranger,
+    /Inspector edits the primary clip\./,
+  );
+});
+
 test('rack transport is de-duplicated and canonical recording performs real ingestion', async () => {
   const [rackTransport, workspace] = await Promise.all([
     read('src/components/rack/StudioTransport.tsx'),
