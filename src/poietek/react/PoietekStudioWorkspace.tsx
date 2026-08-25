@@ -137,16 +137,20 @@ export function PoietekStudioWorkspace({
   const [error, setError] = useState<string | null>(null);
   const [transport, setTransport] = useState<TransportState>("stopped");
   const [playheadSeconds, setPlayheadSeconds] = useState(0);
-  const [activeDesk, setActiveDesk] = useState<'arrange' | 'console' | 'health'>('arrange');
-const [arrangerSelection, setArrangerSelection] =
-  useState<ArrangerSelection | null>(null);
-const [isRecording, setIsRecording] = useState(false);
+  const [activeDesk, setActiveDesk] =
+		useState<'arrange' | 'console' | 'health'>('arrange');
+  const [arrangerSelection, setArrangerSelection] =
+  	useState<ArrangerSelection | null>(null);
+  const [isRecording, setIsRecording] = useState(false);
   const [sampleRecorderOpen, setSampleRecorderOpen] = useState(false);
-  const [sampleInputDevices, setSampleInputDevices] = useState<MediaDeviceInfo[]>([]);
+  const [sampleInputDevices, setSampleInputDevices]
+		useState<MediaDeviceInfo[]>([]);
   const [sampleInputDeviceId, setSampleInputDeviceId] = useState('');
-  const [sampleInputMode, setSampleInputMode] = useState<SampleInputMode>('stereo');
+  const [sampleInputMode, setSampleInputMode] =
+		useState<SampleInputMode>('stereo');
   const [sampleMonitoring, setSampleMonitoring] = useState(false);
-  const [lastRecordedTake, setLastRecordedTake] = useState<{fileName: string; startTick: number} | null>(null);
+  const [lastRecordedTake, setLastRecordedTake] = useState<{fileName: string;
+		startTick: number} | null>(null);
   const recorder = useMemo(() => new BrowserAudioRecorder(runtime.importAudio), [runtime]);
 
   const refreshSampleInputs = useCallback(async () => {
@@ -773,12 +777,42 @@ const [isRecording, setIsRecording] = useState(false);
       case 'audio-export-wav':
         void exportWav();
         break;
-      case 'edit-undo':
-        void undo();
-        break;
-      case 'edit-redo':
+            case 'edit-redo':
         void redo();
         break;
+
+      case 'track-add-audio':
+        setActiveDesk('arrange');
+        void commitProjectEdit(
+          (current) => addAudioTrack(current),
+          'Audio track added and saved locally.',
+        );
+        break;
+
+      case 'clip-split': {
+        setActiveDesk('arrange');
+
+        if (!project) break;
+
+        if (!arrangerSelection) {
+          setError('Select a clip before using Split Clip.');
+          break;
+        }
+
+        const splitTick = secondsToTicks(
+          playheadSeconds,
+          project.tempoMap,
+          project.settings.ppq,
+        );
+
+        splitClip(
+          arrangerSelection.trackId,
+          arrangerSelection.clipId,
+          splitTick,
+        );
+        break;
+      }
+
       case 'transport-play-toggle':
         void (transport === 'playing' ? pause() : play());
         break;
@@ -803,15 +837,26 @@ const [isRecording, setIsRecording] = useState(false);
     }
   };
 
-  useEffect(() => subscribeStudioCommands((command) => commandHandlerRef.current(command)), []);
+  useEffect(
+    () =>
+      subscribeStudioCommands((command) =>
+        commandHandlerRef.current(command),
+      ),
+    [],
+  );
 
   useEffect(() => {
+    if (runtimeStatus !== 'ready' || !project) {
+      markStudioCommandAreaReady('arrange', false);
+      return;
+    }
+
     markStudioCommandAreaReady('arrange', true);
 
     return () => {
       markStudioCommandAreaReady('arrange', false);
     };
-  }, []);
+  }, [runtimeStatus, project?.id]);
 
   useEffect(() => () => {
     const active = activeRecordingRef.current;
