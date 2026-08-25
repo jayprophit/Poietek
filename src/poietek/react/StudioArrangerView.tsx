@@ -16,6 +16,7 @@ export interface StudioArrangerViewProps {
   timelineSpan: number;
   playheadSeconds: number;
   busy: boolean;
+  onSelectionChange?(selection: ArrangerSelection | null): void;
   onSeek(seconds: number): void;
   onSetTrackMixer(trackId: string, patch: Partial<Track['mixer']>, message: string): void;
   onSetClip(trackId: string, clipId: string, patch: Partial<AudioClip>, message: string): void;
