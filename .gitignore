@@ -2,6 +2,13 @@
 node_modules/
 dist/
 build/
+.npm-cache-local/
+
+# Native/CMake build artifacts
+native-core/build/
+native-core/build-msvc/
+native-core/build-ninja/
+
 *.log
 
 # Local security material
