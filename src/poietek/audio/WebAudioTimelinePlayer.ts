@@ -1,5 +1,6 @@
 import type { AudioClip, PoietekProject } from "../domain/types";
 import type { AssetStore } from "../assets/AssetStore";
+import type {TimelinePlayer} from './TimelinePlayer';
 import { AssetAudioResolver } from "./AssetAudioResolver";
 import { ticksToSeconds } from "../timeline/tempo";
 
@@ -31,7 +32,7 @@ export function clipFadeGainAtTime(
   return Math.max(0, Math.min(1, fadeInGain, fadeOutGain));
 }
 
-export class WebAudioTimelinePlayer {
+export class WebAudioTimelinePlayer implements TimelinePlayer {
   private context: AudioContext | null = null;
   private resolver: AssetAudioResolver | null = null;
   private scheduled: ScheduledSource[] = [];
