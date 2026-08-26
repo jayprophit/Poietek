@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <new>
+#include <utility>
 
 namespace poietek {
 
