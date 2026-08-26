@@ -62,6 +62,53 @@ test('Edit Select All reaches real arranger multi-selection', async () => {
   );
 });
 
+test('Arrange track selection supports empty tracks while clip commands remain guarded', async () => {
+  const [workspace, arranger] = await Promise.all([
+    read('src/poietek/react/PoietekStudioWorkspace.tsx'),
+    read('src/poietek/react/StudioArrangerView.tsx'),
+  ]);
+
+  assert.match(
+    arranger,
+    /export interface ArrangerSelection \{\s*trackId: string;\s*clipId\?: string;/,
+  );
+
+  assert.match(
+    arranger,
+    /onClick=\{\(\) => setSelection\(\{trackId: track\.id\}\)\}/,
+  );
+
+  assert.match(
+    arranger,
+    /if \(!selection\.clipId && !selection\.items\?\.length\) \{\s*onSelectionChange\?\.\(selection\);\s*return;/,
+  );
+
+  assert.match(
+    workspace,
+    /case 'track-duplicate':[\s\S]*if \(!arrangerSelection\) \{[\s\S]*Select the track you want to duplicate\./,
+  );
+
+  assert.match(
+    workspace,
+    /duplicateTrack\([\s\S]*arrangerSelection\.trackId/,
+  );
+
+  assert.match(
+    workspace,
+    /case 'clip-split':[\s\S]*if \(!arrangerSelection\?\.clipId\)/,
+  );
+
+  assert.match(
+    workspace,
+    /case 'clip-duplicate':[\s\S]*if \(!arrangerSelection\?\.clipId\)/,
+  );
+
+  assert.match(
+    workspace,
+    /case 'clip-fades':[\s\S]*if \(!arrangerSelection\?\.clipId\)/,
+  );
+});
+
 test('Transport metronome menu reaches the real Rack click engine', async () => {
   const [menu, rack, engine, commands] = await Promise.all([
     read('src/poietek/react/StudioMenuBar.tsx'),
