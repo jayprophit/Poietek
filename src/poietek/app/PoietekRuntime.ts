@@ -13,13 +13,14 @@ export class PoietekRuntime {
   readonly projects = new IndexedDbProjectRepository();
   readonly assets = new WebLocalAssetStore();
   readonly importAudio = new ImportAudioService(this.assets);
-  readonly player: TimelinePlayer = new WebAudioTimelinePlayer(this.assets);
+  readonly player: TimelinePlayer;
   readonly providers = new CapabilityRouter();
 
   private session: ProjectSession | null = null;
   private initialization: Promise<PoietekProject> | null = null;
 
-  constructor() {
+  constructor(player?: TimelinePlayer) {
+    this.player = player ?? new WebAudioTimelinePlayer(this.assets);
     this.providers.register(new LocalProvider());
   }
 
