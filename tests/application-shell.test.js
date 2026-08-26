@@ -38,17 +38,32 @@ test('Edit Select All reaches real arranger multi-selection', async () => {
   ]);
 
   assert.match(commands, /'edit-select-all'/);
-  assert.match(menu, /command: 'edit-select-all'/);
+	assert.match(menu, /command: 'edit-select-all'/);
 
-  assert.match(
-    workspace,
-    /case 'edit-select-all':\s*setActiveDesk\('arrange'\);\s*setSelectAllRequest\(\(current\) => current \+ 1\);\s*break;/,
-  );
+assert.match(
+  menu,
+  /label: 'Select All'[\s\S]*command: 'edit-select-all'[\s\S]*area: 'arrange'/,
+);
 
-  assert.match(
-    workspace,
-    /selectAllRequest=\{selectAllRequest\}/,
-  );
+assert.match(
+  menu,
+  /Select All is currently implemented in the Arrange workspace only\./,
+);
+
+assert.match(
+  menu,
+  /activeArea === 'arrange'/,
+);
+
+assert.match(
+  workspace,
+  /case 'edit-select-all':\s*setActiveDesk\('arrange'\);\s*setSelectAllRequest\(\(current\) => current \+ 1\);\s*break;/,
+);
+
+assert.match(
+  workspace,
+  /selectAllRequest=\{selectAllRequest\}/,
+);
 
   assert.match(arranger, /selectAllRequest\?: number/);
   assert.match(arranger, /lastSelectAllRequestRef/);
