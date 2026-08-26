@@ -18,7 +18,9 @@ export interface ArrangerSelectionItem {
   clipId: string;
 }
 
-export interface ArrangerSelection extends ArrangerSelectionItem {
+export interface ArrangerSelection {
+  trackId: string;
+  clipId?: string;
   items?: ArrangerSelectionItem[];
 }
 
@@ -101,14 +103,27 @@ export function StudioArrangerView({
     : null;
 
   const selectedClip =
-    selectedTrack?.clips.find((clip) => clip.id === selection?.clipId) ?? null;
+  selection?.clipId
+    ? selectedTrack?.clips.find((clip) => clip.id === selection.clipId) ?? null
+    : null;
 
-  const selectedItems = useMemo<ArrangerSelectionItem[]>(() => {
+const selectedItems = useMemo<ArrangerSelectionItem[]>(() => {
   if (!selection) return [];
 
-  return selection.items?.length
-    ? selection.items
-    : [{trackId: selection.trackId, clipId: selection.clipId}];
+  if (selection.items?.length) {
+    return selection.items;
+  }
+
+  if (selection.clipId) {
+    return [
+      {
+        trackId: selection.trackId,
+        clipId: selection.clipId,
+      },
+    ];
+  }
+
+  return [];
 }, [selection]);
 
 const selectedItemKeys = useMemo(
@@ -121,14 +136,35 @@ const selectedItemKeys = useMemo(
   [selectedItems],
 );
 
-const selectedTrackIds = useMemo(
-  () => new Set(selectedItems.map((item) => item.trackId)),
-  [selectedItems],
-);
+const selectedTrackIds = useMemo(() => {
+  const trackIds = new Set(
+    selectedItems.map((item) => item.trackId),
+  );
+
+  if (selection) {
+    trackIds.add(selection.trackId);
+  }
+
+  return trackIds;
+}, [selectedItems, selection]);
 
   useEffect(() => {
   if (!selection) {
     onSelectionChange?.(null);
+    return;
+  }
+
+  const selectedTrackStillExists = project.tracks.some(
+    (track) => track.id === selection.trackId,
+  );
+
+  if (!selectedTrackStillExists) {
+    setSelection(null);
+    return;
+  }
+
+  if (!selection.clipId && !selection.items?.length) {
+    onSelectionChange?.(selection);
     return;
   }
 
@@ -317,7 +353,11 @@ useEffect(() => {
             <div className="poietek-track-list">
               {orderedTracks.map((track) => (
                 <div className={`poietek-track-row ${selectedTrackIds.has(track.id) ? 'is-selected' : ''} ${pinnedTrackIds.has(track.id) ? 'is-pinned' : ''}`} key={track.id}>
-                  <div className="poietek-track-header" style={{'--track-color': track.color ?? '#62cbbf'} as CSSProperties}>
+                  <div
+										className="poietek-track-header"
+  										style={{'--track-color': track.color ?? '#62cbbf'} as CSSProperties}
+										onClick={() => setSelection({trackId: track.id})}
+>
                     <div className="poietek-track-title-row">
                       <span className="poietek-track-number">{String(track.order + 1).padStart(2, '0')}</span>
                       <strong>{track.name}</strong>
