@@ -64,7 +64,16 @@ function buildMenus(activeArea: StudioArea): MenuGroup[] {
       items: [
         {label: 'Undo', shortcut: 'Ctrl+Z', command: 'edit-undo', area: transportArea},
         {label: 'Redo', shortcut: 'Ctrl+Shift+Z', command: 'edit-redo', area: transportArea},
-        {label: 'Select All', shortcut: 'Ctrl+A', command: 'edit-select-all', area: transportArea},
+        {
+  					label: 'Select All',
+  					shortcut: 'Ctrl+A',
+  					command: 'edit-select-all',
+  					area: 'arrange',
+  					disabledReason:
+    					activeArea === 'arrange'
+      					? undefined
+      					: 'Select All is currently implemented in the Arrange workspace only.',
+				},
       ],
     },
     {
