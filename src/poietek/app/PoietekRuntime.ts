@@ -1,5 +1,6 @@
 import { createBlankProject } from "../domain/projectFactory";
 import type { PoietekProject } from "../domain/types";
+import type {TimelinePlayer} from '../audio/TimelinePlayer';
 import { IndexedDbProjectRepository } from "../project/IndexedDbProjectRepository";
 import { ProjectSession } from "../project/ProjectSession";
 import { WebLocalAssetStore } from "../assets/WebLocalAssetStore";
@@ -12,7 +13,7 @@ export class PoietekRuntime {
   readonly projects = new IndexedDbProjectRepository();
   readonly assets = new WebLocalAssetStore();
   readonly importAudio = new ImportAudioService(this.assets);
-  readonly player = new WebAudioTimelinePlayer(this.assets);
+  readonly player: TimelinePlayer = new WebAudioTimelinePlayer(this.assets);
   readonly providers = new CapabilityRouter();
 
   private session: ProjectSession | null = null;
