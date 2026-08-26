@@ -822,9 +822,9 @@ export function PoietekStudioWorkspace({
         setActiveDesk('arrange');
 
         if (!arrangerSelection) {
-          setError('Select a clip on the track you want to duplicate.');
-          break;
-        }
+					setError('Select the track you want to duplicate.');
+  					break;
+				}
 
         void commitProjectEdit(
           (current) =>
@@ -842,10 +842,10 @@ export function PoietekStudioWorkspace({
 
         if (!project) break;
 
-        if (!arrangerSelection) {
-          setError('Select a clip before using Split Clip.');
-          break;
-        }
+        if (!arrangerSelection?.clipId) {
+  					setError('Select a clip before using Split Clip.');
+  					break;
+			}
 
         const splitTick = secondsToTicks(
           playheadSeconds,
@@ -864,10 +864,10 @@ export function PoietekStudioWorkspace({
       case 'clip-duplicate': {
         setActiveDesk('arrange');
 
-        if (!arrangerSelection) {
-          setError('Select a clip before using Duplicate Clip.');
-          break;
-        }
+        if (!arrangerSelection?.clipId) {
+  					setError('Select a clip before using Duplicate Clip.');
+  					break;
+				}
 
         void commitProjectEdit(
           (current) =>
@@ -884,10 +884,10 @@ export function PoietekStudioWorkspace({
       case 'clip-fades': {
         setActiveDesk('arrange');
 
-        if (!arrangerSelection) {
-          setError('Select a clip before editing its fades.');
-          break;
-        }
+        if (!arrangerSelection?.clipId) {
+  					setError('Select a clip before editing its fades.');
+  					break;
+				}
 
         setFocusFadesRequest((current) => current + 1);
         break;
