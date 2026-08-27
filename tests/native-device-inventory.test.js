@@ -92,7 +92,7 @@ test('native device inventory rejects direction and capability inflation', () =>
 });
 
 test('Rust inventory command enumerates ports without opening realtime resources', async () => {
-  const source = await read('src-tauri/src/commands.rs');
+  const source = await read('src-tauri/src/commands/devices.rs');
   assert.match(source, /cpal::available_hosts\(\)/);
   assert.match(source, /host\.input_devices\(\)/);
   assert.match(source, /MidiInput::new/);
