@@ -1,0 +1,10 @@
+C:/Users/jpowe/Desktop/Poietek-native-build/CMakeFiles/poietek_native_core.dir
+C:/Users/jpowe/Desktop/Poietek-native-build/CMakeFiles/poietek_native_core_tests.dir
+C:/Users/jpowe/Desktop/Poietek-native-build/CMakeFiles/poietek_ringbuffer_tests.dir
+C:/Users/jpowe/Desktop/Poietek-native-build/CMakeFiles/poietek_ring_api_tests.dir
+C:/Users/jpowe/Desktop/Poietek-native-build/CMakeFiles/poietek_ring_bulk_tests.dir
+C:/Users/jpowe/Desktop/Poietek-native-build/CMakeFiles/poietek_native_core_bench.dir
+C:/Users/jpowe/Desktop/Poietek-native-build/CMakeFiles/RUN_TESTS.dir
+C:/Users/jpowe/Desktop/Poietek-native-build/CMakeFiles/INSTALL.dir
+C:/Users/jpowe/Desktop/Poietek-native-build/CMakeFiles/ALL_BUILD.dir
+C:/Users/jpowe/Desktop/Poietek-native-build/CMakeFiles/ZERO_CHECK.dir
