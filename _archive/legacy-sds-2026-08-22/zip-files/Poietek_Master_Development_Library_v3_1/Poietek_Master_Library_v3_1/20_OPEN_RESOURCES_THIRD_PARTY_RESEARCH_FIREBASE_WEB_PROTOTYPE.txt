@@ -1,0 +1,569 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.4 ADDENDUM
+
+20 — OPEN RESOURCES, THIRD-PARTY RESEARCH & FIRST WEB PROTOTYPE BACKEND
+======================================================================
+
+PURPOSE
+
+Poietek should deliberately reuse high-quality public standards, open-source
+libraries, open research and model ecosystems rather than reinvent every low-level
+component.
+
+At the same time, proprietary/closed products can be studied for published
+workflow and capability inspiration.
+
+Nothing enters the production codebase merely because it is available online.
+
+Every dependency/model/resource must pass:
+- technical review;
+- licence review;
+- security review;
+- maintenance/health review;
+- platform review;
+- provenance/data-rights review where applicable.
+
+------------------------------------------------------------------------------
+1. RESOURCE CLASSIFICATION
+------------------------------------------------------------------------------
+
+ADOPT
+Licence/architecture are suitable and project approves direct dependency.
+
+EVALUATE
+Promising; prototype/benchmark before commitment.
+
+REFERENCE ONLY
+Study algorithms/API/workflow, but do not include code/assets.
+
+LICENCE REVIEW REQUIRED
+Potentially useful but licence obligations may conflict with project distribution.
+
+VENDOR / COMMERCIAL OPTION
+Could be licensed later.
+
+RESEARCH
+Paper/prototype not suitable for production yet.
+
+DEPRECATED / ARCHIVED
+Do not build critical future architecture around it without a maintained fork.
+
+------------------------------------------------------------------------------
+2. OPEN RESOURCE REGISTRY
+------------------------------------------------------------------------------
+
+Create a repository file:
+
+/docs/resources/RESOURCE_REGISTRY.yaml
+
+Entry:
+
+id
+name
+category
+source
+version
+upstreamStatus
+licence
+modelLicence?
+datasetLicence?
+patentNotes?
+purpose
+classification
+securityNotes
+platforms
+lastReviewed
+decision
+replacementCandidates
+
+Keep code licence, model licence and training-data licence separate.
+
+------------------------------------------------------------------------------
+3. CURRENT HIGH-VALUE OPEN RESOURCES
+------------------------------------------------------------------------------
+
+CROSS PLATFORM
+
+Tauri
+Use case:
+shared web UI packaged for desktop/mobile, native plugins.
+Current repository uses MIT/Apache-2.0 licensing where applicable.
+Status: EVALUATE / strong candidate.
+
+COLLABORATION
+
+Yjs
+Use case:
+CRDT structured collaborative state and local-first ecosystem.
+Current project states MIT licensing.
+Status: EVALUATE / strong candidate.
+
+SOURCE SEPARATION
+
+Demucs
+Use case:
+music source-separation research/benchmark.
+The Meta repository states MIT for the code but was archived in January 2025.
+Pretrained-model rights must be reviewed independently.
+Status: REFERENCE / EVALUATE MAINTAINED FORKS OR RETRAINED MODELS.
+
+AUDIO TO MIDI
+
+Spotify Basic Pitch
+Use case:
+polyphonic-ish audio-to-MIDI/pitch-bend research/prototype.
+Official repository states Apache-2.0.
+Status: EVALUATE.
+Still review model/data dependencies.
+
+MUSIC INFORMATION RETRIEVAL
+
+Essentia
+Use case:
+music analysis/classification/beat/key/audio descriptors.
+Official licensing documentation states AGPLv3 for non-commercial open use with
+commercial licensing options; official pretrained models have their own
+noncommercial/proprietary licensing conditions.
+Status: LICENCE REVIEW / potentially commercial licence.
+
+MEDIA
+
+FFmpeg
+Use case:
+decode/encode/transcode/media probing.
+Build configuration changes licensing obligations.
+Status: EVALUATE WITH BUILD-SPECIFIC LICENCE REVIEW.
+
+Timeline interchange:
+OpenTimelineIO-style standards/libraries should be evaluated for video timeline
+interchange.
+
+PLUGIN STANDARDS:
+VST3 / CLAP / AUv3 / LV2 per Document 18.
+
+STORAGE:
+Git, WebDAV, S3-compatible protocols per Document 19.
+
+------------------------------------------------------------------------------
+4. GITHUB AS RESEARCH SOURCE
+------------------------------------------------------------------------------
+
+Use GitHub for:
+- open-source libraries;
+- DSP implementations;
+- test fixtures;
+- device mapping examples;
+- protocol libraries;
+- UI frameworks;
+- build tools;
+- standards implementations;
+- plugin SDK examples;
+- issue discussions describing edge cases.
+
+Research procedure:
+1. record exact repo/commit/tag;
+2. inspect licence;
+3. inspect activity/maintenance;
+4. inspect security advisories;
+5. inspect transitive dependencies;
+6. classify;
+7. prototype behind adapter;
+8. add tests;
+9. document decision.
+
+Do not paste code from a repository before licence classification.
+
+------------------------------------------------------------------------------
+5. HUGGING FACE AS MODEL/DATA RESEARCH SOURCE
+------------------------------------------------------------------------------
+
+Hugging Face currently provides versioned repositories for models, datasets and
+Spaces and documents Xet-backed large-file handling; it also offers storage
+buckets.
+
+Poietek use cases:
+- discover source separation models;
+- pitch/transcription models;
+- speech/music embeddings;
+- tagging/classification;
+- transcription/captioning;
+- visual generation/research;
+- publish Poietek-compatible open models;
+- benchmark alternatives;
+- maintain model cards.
+
+MODEL IMPORT GATE
+
+Before enabling a model:
+- model licence;
+- code licence;
+- dataset/training provenance if known;
+- commercial-use permissions;
+- derivative restrictions;
+- attribution;
+- architecture compatibility;
+- model size;
+- inference memory;
+- offline capability;
+- latency;
+- quality benchmark;
+- malicious/custom-code risk.
+
+Never enable "trust remote code" automatically.
+
+------------------------------------------------------------------------------
+6. CLOSED / PRIVATE PRODUCT INSPIRATION
+------------------------------------------------------------------------------
+
+Proprietary tools are legitimate sources of high-level product research through:
+- public documentation;
+- product demos;
+- publicly available UI;
+- reviews;
+- patents as legal/technical research;
+- user feedback;
+- published APIs;
+- documented interoperability.
+
+Examples already covered in the Poietek library:
+DAWs
+pitch editors
+DJ software
+synth/effect suites
+video/VFX editors
+creative platforms
+
+Clean-room rule:
+Research team writes capability requirements.
+Implementation team works from requirements/open specifications, not copied
+private code/assets.
+
+Do not solicit leaked source code, stolen SDKs, cracked products, confidential
+documents or bypassed vendor protections.
+
+------------------------------------------------------------------------------
+7. PATENTS
+------------------------------------------------------------------------------
+
+Patent publications can inspire research but publication is not permission.
+
+For novel/high-risk implementation areas:
+- polyphonic note editing;
+- advanced source separation;
+- DVS protocols;
+- time stretching;
+- proprietary hardware transfer;
+- ML audio transformations;
+
+create:
+PriorArtRecord
+PotentialPatentConcern
+FTOReviewStatus
+
+Avoid implementing a known active claim solely because its patent text is public.
+
+------------------------------------------------------------------------------
+8. FIREBASE FIRST-WEB-PROTOTYPE OPTION
+------------------------------------------------------------------------------
+
+The creator has access to a Firebase hobbyist/no-cost setup and may use it for the
+first Poietek Web prototype.
+
+Design Firebase as an adapter, not the canonical backend.
+
+FirebaseBackendAdapter:
+Authentication
+Firestore
+Hosting
+App Check
+Crashlytics/Performance where desired
+Cloud Messaging later
+
+MEDIA STORAGE:
+Do NOT require Firebase Cloud Storage for the Spark prototype.
+
+Current Firebase documentation states that as of 3 February 2026 access to Cloud
+Storage for Firebase requires the Blaze billing plan, even though no-cost usage
+may still exist after upgrading.
+
+Therefore the first no-billing prototype can use:
+- local IndexedDB/OPFS for media;
+- Firestore for metadata/collaboration prototypes;
+- external BYOC storage connectors from Document 19;
+- optional Supabase/object storage later.
+
+------------------------------------------------------------------------------
+9. FIREBASE SPARK WEB VERTICAL SLICE
+------------------------------------------------------------------------------
+
+Goal:
+Test browser UX, account sync and lightweight collaboration without making
+Firebase responsible for the realtime audio engine or large media.
+
+Suggested:
+
+Firebase Hosting:
+web UI.
+
+Firebase Authentication:
+optional sign-in.
+
+Firestore:
+users
+project index
+team membership
+comments
+lightweight project sync envelope
+presence-ish metadata where cost/behavior is acceptable
+
+Local:
+actual project state cache
+audio/video media
+waveform cache
+offline operation
+
+StorageProvider:
+Google Drive / OneDrive / TeraBox / WebDAV / user-selected provider for remote
+asset replicas.
+
+------------------------------------------------------------------------------
+10. BACKEND ABSTRACTION
+------------------------------------------------------------------------------
+
+BackendServices {
+ AuthService
+ ProjectDirectoryService
+ CollaborationRelay
+ NotificationService
+ CommunityService
+ AnalyticsService
+ StorageRegistry
+}
+
+Implement adapters:
+
+FirebaseAdapter
+SupabaseAdapter
+SelfHostedAdapter
+
+This allows a future migration from Firebase without rewriting the DAW.
+
+------------------------------------------------------------------------------
+11. FIREBASE VS SUPABASE PROTOTYPING
+------------------------------------------------------------------------------
+
+Firebase strengths:
+- quick web/mobile onboarding;
+- mature Firebase tooling;
+- no-cost Spark usage for many development scenarios;
+- Hosting/Auth/Firestore integration.
+
+Supabase strengths:
+- relational PostgreSQL foundation;
+- SQL;
+- open-source/self-host options;
+- Realtime/Auth/Storage ecosystem.
+
+Poietek should avoid ideological dependence on either.
+
+Prototype choice may be Firebase because the creator already has an account.
+Canonical architecture remains provider-neutral.
+
+------------------------------------------------------------------------------
+12. OFFLINE FIRST WITH FIREBASE
+------------------------------------------------------------------------------
+
+Do not interpret Firestore offline cache as the entire Poietek offline system.
+
+Poietek needs its own:
+LocalProjectRepository
+AssetStore
+CommandLog
+SyncQueue
+MigrationManager
+
+Reason:
+project media and durable DAW state must remain portable even if the backend
+provider changes.
+
+------------------------------------------------------------------------------
+13. RESOURCE MARKETPLACE / DISCOVERY
+------------------------------------------------------------------------------
+
+Future in-app Resource Browser can search approved sources:
+
+Open Source
+Models
+Datasets
+Device Profiles
+Plugins
+Presets
+Templates
+Tutorials
+
+Each result displays:
+source
+author
+licence
+version
+platform
+size
+trust
+permissions
+last update
+review status
+
+Installation is always explicit.
+
+------------------------------------------------------------------------------
+14. CLOSED-RESOURCE FEATURE RESEARCH DATABASE
+------------------------------------------------------------------------------
+
+Maintain:
+
+FeatureReference {
+ sourceProduct
+ publicSource
+ capability
+ problemSolved
+ userBenefit
+ implementationConstraints
+ cleanRoomRequirement
+ patentReview?
+ PoietekDesignDecision
+}
+
+This ensures Poietek uses competitors as research rather than becoming a collage
+of copied screens.
+
+------------------------------------------------------------------------------
+15. AI MODEL PROVIDER ABSTRACTION
+------------------------------------------------------------------------------
+
+ModelSource:
+Bundled
+Local User Model
+HuggingFace
+Remote API
+Enterprise
+Community Registry
+
+AIModelDescriptor:
+id
+task
+version
+licence
+runtime
+size
+hardware
+offline
+inputs
+outputs
+qualityBenchmark
+trustStatus
+
+Model download and model execution are separate permissions.
+
+------------------------------------------------------------------------------
+16. SECURITY
+------------------------------------------------------------------------------
+
+Never execute downloaded repository/model code inside the main DAW automatically.
+
+Use:
+sandbox
+WASM where applicable
+worker/process isolation
+hash validation
+signed releases
+allowlist/review
+network permissions
+filesystem permissions
+
+Model files are treated as untrusted external content.
+
+------------------------------------------------------------------------------
+17. RESOURCE LOCKFILE
+------------------------------------------------------------------------------
+
+Every Poietek release should generate an SBOM/resource lock:
+
+Third-party code
+Models
+Plugin SDKs
+Media codecs
+Datasets used in distributed components
+Fonts/assets
+Build tools
+
+Include versions and licences.
+
+------------------------------------------------------------------------------
+18. FIREBASE COST GUARD
+------------------------------------------------------------------------------
+
+For Spark prototype:
+- conservative Firestore writes;
+- batch/debounce project metadata;
+- do not write mixer meters/playhead every animation frame;
+- do not store large waveforms as Firestore documents;
+- do not sync PCM/video through Firestore;
+- cache locally;
+- surface quota errors cleanly.
+
+If quota unavailable:
+app remains locally usable.
+
+------------------------------------------------------------------------------
+19. ACCEPTANCE TESTS
+------------------------------------------------------------------------------
+
+RES-001 Every dependency has licence metadata.
+RES-002 Model licence stored separately from code licence.
+RES-003 archived project warning exists for critical dependency.
+RES-004 unreviewed model cannot execute automatically.
+RES-005 remote custom code disabled by default.
+RES-006 Firebase can be removed without changing project schema.
+RES-007 web app opens existing local project while Firebase offline.
+RES-008 Firebase quota error does not corrupt project.
+RES-009 Firestore is not used for WAV/video binary data.
+RES-010 Spark prototype works without Firebase Cloud Storage.
+RES-011 user can select BYOC remote media provider.
+RES-012 closed-product research has public source reference.
+RES-013 no proprietary source/assets enter repo through research notes.
+RES-014 licence-incompatible library is marked Reference/Licence Review.
+RES-015 SBOM/resource lock generated for release.
+RES-016 model hash is checked after download.
+RES-017 user can delete cached model without deleting project.
+RES-018 AI-disabled app remains usable.
+RES-019 backend provider adapter integration tests pass.
+RES-020 local-only mode requires no Firebase/Supabase account.
+
+------------------------------------------------------------------------------
+20. VERIFIED RESEARCH SOURCES — AUGUST 2026
+------------------------------------------------------------------------------
+
+Firebase pricing/plans:
+https://firebase.google.com/docs/projects/billing/firebase-pricing-plans
+https://firebase.google.com/docs/storage/faqs-storage-changes-announced-sept-2024
+
+Hugging Face Hub:
+https://huggingface.co/docs/hub/index
+https://huggingface.co/docs/hub/en/repositories
+
+Tauri:
+https://github.com/tauri-apps/tauri
+
+Yjs:
+https://github.com/yjs/yjs
+
+Demucs:
+https://github.com/facebookresearch/demucs
+
+Spotify Basic Pitch:
+https://github.com/spotify/basic-pitch
+
+Essentia licensing:
+https://essentia.upf.edu/licensing_information.html
+
+END DOCUMENT 20

@@ -1,0 +1,48 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.2
+
+87 — PRIVACY, IMMUTABILITY & RIGHTS CORRECTION
+==============================================
+
+BLOCKCHAINS ARE HARD TO ERASE.
+
+Therefore never write:
+legal name unless specifically public/appropriate
+email
+home address
+tax ID
+bank details
+private society login/member secret
+private contracts
+unreleased lyrics/audio
+private messages.
+
+USE HASHES/COMMITMENTS.
+
+RIGHT TO CORRECTION
+
+Blockchain record isn't edited.
+
+Example:
+Manifest v1 anchored.
+Contributor spelling/split later corrected.
+Create Manifest v2.
+All required people approve v2.
+Anchor v2.
+Record v1 -> superseded by v2.
+
+The history remains auditable while current application truth points to v2.
+
+HASH PRIVACY
+
+Naively hashing low-entropy personal data can still leak via guessing.
+
+Use:
+random/salted identifiers
+commitments
+or avoid anchoring personal fields entirely.
+
+ACCEPTANCE
+PRIVCHAIN-001 delete account can remove off-chain PII.
+PRIVCHAIN-002 public chain contains no raw email.
+PRIVCHAIN-003 correction generates new version.
+PRIVCHAIN-004 UI clearly shows current vs historical manifest.

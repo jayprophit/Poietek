@@ -1,0 +1,47 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.6
+
+129 — CONTENT INTELLIGENCE MODEL & DATA GOVERNANCE
+==================================================
+
+AI REFERENCE ANALYSIS CAN CREATE BIAS.
+
+Controls:
+
+REFERENCE PROVENANCE
+Where did profile come from?
+
+RIGHTS
+Was analysis permitted?
+
+REPRESENTATION
+Does data overrepresent one region/era/platform?
+
+RECENCY
+When was profile generated?
+
+CONFIDENCE
+How many references?
+
+CULTURAL SENSITIVITY
+Genre taxonomies are not universal facts.
+
+STYLE HOMOGENIZATION
+
+Poietek must not optimize all music toward a commercial average.
+
+The assistant should preserve outliers and creative intent.
+
+PRIVATE ARTIST PROFILE
+
+An artist can create:
+"My sound"
+from their own catalogue/project history.
+
+This may be more useful than generic genre advice.
+
+FEDERATED/LOCAL LEARNING — RESEARCH
+
+Future privacy-preserving aggregate learning may update style statistics without
+uploading raw songs.
+
+END DOCUMENT 129

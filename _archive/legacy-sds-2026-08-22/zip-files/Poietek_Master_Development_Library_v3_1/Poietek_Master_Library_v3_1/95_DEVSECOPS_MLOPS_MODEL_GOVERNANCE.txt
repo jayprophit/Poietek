@@ -1,0 +1,78 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.3
+
+95 — DEVSECOPS, MLOPS & MODEL GOVERNANCE
+========================================
+
+DEVOPS
+GitHub-based PR workflow
+CI
+schema validation
+unit/integration/E2E
+SBOM
+secret scanning
+dependency/license scanning
+signed builds
+staged release channels.
+
+DEVSECOPS
+NIST SSDF mapping
+threat-model gates
+supply-chain provenance
+vulnerability response
+reproducible release evidence.
+
+MLOPS
+Poietek AI models need:
+model ID/version/hash
+licence
+base model
+dataset/provenance notes
+evaluation
+hardware/runtime profile
+privacy classification
+quality metrics
+known limits
+deployment status.
+
+OPEN TOOLS TO EVALUATE
+
+MLflow:
+experiment tracking/model lifecycle/registry/lineage.
+
+Hugging Face Hub:
+model repositories, model cards, licences, datasets/evaluation metadata.
+
+DVC:
+optional dataset/experiment/data-versioning workflow.
+
+GitHub:
+code/reviews/releases/CI.
+
+MODEL PROMOTION
+
+DISCOVERED
+-> QUARANTINED
+-> EVALUATED
+-> APPROVED_LOCAL
+-> APPROVED_CLOUD
+-> BETA
+-> PRODUCTION
+-> DEPRECATED.
+
+No model enters Production merely because it is popular.
+
+MULTIMODAL ML
+
+Poietek AI may combine:
+audio
+MIDI
+text
+images
+video
+project graph
+metadata
+user commands.
+
+Every modality has its own privacy/permission boundary.
+
+END DOCUMENT 95

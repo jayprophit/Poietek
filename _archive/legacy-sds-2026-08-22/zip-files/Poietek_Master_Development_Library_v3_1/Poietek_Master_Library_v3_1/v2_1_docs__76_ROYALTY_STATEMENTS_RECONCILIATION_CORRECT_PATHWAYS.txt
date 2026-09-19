@@ -1,0 +1,94 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.1
+
+76 — ROYALTY RECONCILIATION & CORRECT-PATHWAY ENGINE
+=====================================================
+
+GOAL
+
+Users should not need to understand every royalty pathway to use Poietek.
+
+Poietek can infer a recommended pathway from:
+territory
+role
+right type
+content type
+society memberships
+distribution choice
+licence/use.
+
+EXAMPLE
+
+UK songwriter:
+composition registrations -> relevant work society/publisher route.
+
+UK recording rightsholder:
+PPL repertoire route.
+
+Performer:
+PPL performer claim route.
+
+US mechanical rightsholder:
+The MLC route when applicable.
+
+US digital sound-recording performance:
+SoundExchange route when applicable.
+
+These are examples, not universal legal determinations.
+
+PATHWAY ENGINE
+
+Input:
+Party
+RightsGraph
+Territory
+Release
+Usage.
+
+Output:
+Required
+Recommended
+Optional
+Not applicable
+Needs legal review.
+
+ROYALTY STATEMENT IMPORT
+
+Normalize society/distributor/marketplace statements.
+
+Match:
+ISRC
+ISWC
+Tune Code
+provider IDs
+metadata.
+
+MATCH STATES
+
+exact_identifier
+high_confidence
+possible
+unmatched
+conflict.
+
+Never auto-allocate ambiguous money.
+
+CORRECT-PAYMENT GOAL
+
+Embedded metadata improves matching but cannot itself guarantee payment.
+
+Correct routing requires:
+approved rights;
+valid registrations;
+correct identifiers;
+usage reports;
+provider processing;
+ledger reconciliation;
+payout account;
+tax/KYC where applicable;
+dispute resolution.
+
+ACCEPTANCE
+PATH-001 performer/rightsholder routes differ.
+PATH-002 unknown territory returns review, not invented advice.
+PATH-003 unmatched royalty line stays unmatched.
+PATH-004 original statement retained immutable.

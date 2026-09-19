@@ -1,0 +1,84 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.6
+
+130 — UNIVERSAL AI STANDARDS & CREATIVE ASSISTANT WORKFLOW
+==========================================================
+
+USER
+
+"I'm making a cinematic Afrobeats music video for web and broadcast."
+
+POIETEK RESOLVES MULTIPLE PROFILES.
+
+CREATIVE AUDIO
+Afrobeats style references.
+
+CREATIVE VISUAL
+cinematic/music-video reference.
+
+WEB DELIVERY
+web video + WebVTT profile.
+
+BROADCAST DELIVERY
+BT.709 or selected HDR profile
+broadcast loudness
+caption profile.
+
+RIGHTS
+music/video Rights Manifest.
+
+AI PANEL
+
+CREATIVE
+
+Tempo/style           Within reference
+Sub-bass              Heavy — intentional lock
+Vocal level           Slightly lower than references
+Visual contrast       Cinematic/high
+
+TECHNICAL
+
+Audio clipping        Pass
+True peak             Pass
+Web export            Pass
+BT.709 tags            Pass
+Broadcast loudness    Needs adjustment
+Captions              Missing
+Rights manifest       Pass
+
+RECOMMENDATIONS
+
+1 Required:
+Create/review captions for broadcast target.
+
+2 Required:
+Preview broadcast loudness conformity render.
+
+3 Creative:
+Vocal sits below your reference set.
+[Preview +0.8 dB]
+[Keep]
+
+4 Creative:
+No change to sub-bass because "Keep heavy sub" is locked.
+
+ONE ASSISTANT
+
+The same StandardsAssistant powers:
+record
+mix
+master
+video
+colour
+captions
+delivery
+rights
+publishing.
+
+It always distinguishes:
+measured fact
+formal standard
+provider requirement
+reference norm
+creative suggestion.
+
+END DOCUMENT 130

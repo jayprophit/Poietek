@@ -1,0 +1,104 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.0
+
+Compiled from:
+1) The complete product-development conversation supplied by the creator.
+2) Deep review of GitHub repository: jayprophit/Studio-Daw-Station-SDS-
+3) Current cross-platform/offline-first architecture recommendations.
+
+WORKING PRODUCT NAME
+Poietek is the working ecosystem name discussed in the design conversation.
+Studio DAW Station (SDS) is the current repository/product label.
+Final public branding should be chosen only after trademark/domain checks.
+
+CORE RULE
+One app. One project model. One creative graph. Many workspaces.
+Offline first. Cloud optional. Hardware agnostic. Collaboration capable.
+Professional depth without forcing beginners to see every advanced control.
+
+LEGAL / CLEAN-ROOM RULE
+Competitor products, patents, papers, hardware and interfaces may be studied for
+functional principles, workflows and interoperability requirements. Do not copy
+proprietary source code, protected assets, branded UI expression, undocumented
+confidential protocols, or patented claims without appropriate legal review or
+licensing. Compatibility layers should use documented/open interfaces wherever
+possible.
+
+===============================================================================
+
+LOCAL-FIRST
+Every edit commits durably to the local device before cloud acknowledgement.
+
+STATE SPLIT
+Structured collaborative state:
+tracks, clip references, MIDI, mappings, mixer values, automation, comments,
+contributors, rights drafts.
+
+Large binaries:
+WAV, video, stems, images, freeze renders.
+Store separately by stable ID/content hash. Do not put binaries in CRDT docs.
+
+CONTENT ADDRESSING
+Use SHA-256 or equivalent content hash to deduplicate and verify media.
+
+LOCAL STORAGE
+Web: IndexedDB + service worker app shell + persistent media cache.
+Native: SQLite + content-addressed filesystem + transaction journal.
+
+SYNC PIPELINE
+local command
+-> local transaction
+-> revision
+-> sync queue
+-> upload missing media chunks
+-> send structured update
+-> ack
+-> synced.
+
+OFFLINE EDIT
+Users can create/edit cached content, record new media, MIDI, mix, arrange,
+comment, map hardware and assign credits with no network.
+
+CRDT
+Yjs is a strong candidate for structured collaborative state.
+Partition documents; do not put the whole application in one giant shared doc.
+
+COLLABORATION
+Presence: online members, cursor/selection/playhead/editing indicator.
+Shared edits: arrangement, MIDI, comments, markers, selected mixer metadata.
+Audio itself syncs as media assets.
+
+COLLAB PHASES
+A async collaboration.
+B rapid proxy/full asset sync.
+C later live jam with low-latency streaming and clock drift handling.
+
+VERSIONING
+undo/redo + named snapshots + collaboration activity.
+Support alternate branches/forks and selective merge.
+
+CONFLICTS
+CRDT structured data merges.
+Binary media conflicts preserve variants.
+Rights/split disagreements require human resolution.
+
+TEAM ROLES
+Owner, Admin, Producer, Editor, Performer, Mixer, Mastering, Video Editor,
+Visual Artist, Reviewer, Viewer, Guest.
+
+CONTRIBUTION FOOTPRINT
+Every command has actorId.
+Recordings can be assigned performer/instrument/engineer.
+Activity dashboard shows who contributed what and when.
+
+PROJECT GOVERNANCE
+Optional votes for release/artwork/creative decisions.
+Legal agreements require explicit assent, not casual majority vote.
+
+BACKUP
+Autosave is not backup.
+Provide local snapshots + optional cloud backup + exportable project archive.
+
+CORE ACCEPTANCE
+Device A edits offline. Reconnects. Device B receives merged structured state and
+missing assets. No IDs collide, no data is lost, both can reopen offline.

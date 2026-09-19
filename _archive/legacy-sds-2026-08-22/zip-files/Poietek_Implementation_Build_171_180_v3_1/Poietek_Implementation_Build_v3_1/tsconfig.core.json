@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "./dist-test",
+    "rootDir": "./repo-overlay/src/poietek",
+    "esModuleInterop": true
+  },
+  "include": [
+    "repo-overlay/src/poietek/domain/**/*.ts",
+    "repo-overlay/src/poietek/project/**/*.ts",
+    "repo-overlay/src/poietek/assets/**/*.ts",
+    "repo-overlay/src/poietek/timeline/**/*.ts",
+    "repo-overlay/src/poietek/audio/**/*.ts",
+    "repo-overlay/src/poietek/health/**/*.ts",
+    "repo-overlay/src/poietek/player/**/*.ts",
+    "repo-overlay/src/poietek/release/**/*.ts",
+    "repo-overlay/src/poietek/providers/**/*.ts",
+    "repo-overlay/src/poietek/app/**/*.ts"
+  ],
+  "exclude": [
+    "repo-overlay/src/poietek/react/**",
+    "repo-overlay/src/poietek/pwa/**"
+  ]
+}

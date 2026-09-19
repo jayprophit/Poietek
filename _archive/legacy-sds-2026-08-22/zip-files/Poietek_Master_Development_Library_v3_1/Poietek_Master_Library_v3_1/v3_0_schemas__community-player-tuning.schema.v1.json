@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/community-player-tuning/v1",
+  "title": "Poietek Community Player Tuning Preference v1",
+  "type": "object",
+  "required": [
+    "mode",
+    "preserveTempo",
+    "quality",
+    "fallback"
+  ],
+  "properties": {
+    "mode": {
+      "enum": [
+        "creator_original",
+        "community_default",
+        "listener_preference",
+        "a432",
+        "a440",
+        "a442",
+        "custom_reference",
+        "disabled"
+      ]
+    },
+    "customReferenceHz": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "exclusiveMinimum": 0
+    },
+    "referenceNote": {
+      "type": "string",
+      "default": "A4"
+    },
+    "preserveTempo": {
+      "const": true
+    },
+    "preserveVideoDuration": {
+      "type": "boolean",
+      "default": true
+    },
+    "quality": {
+      "enum": [
+        "realtime_preview",
+        "high_quality",
+        "creator_rendered"
+      ]
+    },
+    "showIndicator": {
+      "type": "boolean",
+      "default": true
+    },
+    "rememberPerListener": {
+      "type": "boolean",
+      "default": true
+    },
+    "fallback": {
+      "enum": [
+        "play_original",
+        "use_nearest_creator_rendition",
+        "disable_playback_with_explanation"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

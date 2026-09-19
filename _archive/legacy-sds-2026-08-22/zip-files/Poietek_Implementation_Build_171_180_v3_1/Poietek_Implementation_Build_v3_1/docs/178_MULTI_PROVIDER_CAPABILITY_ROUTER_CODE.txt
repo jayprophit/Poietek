@@ -1,0 +1,16 @@
+178 — MULTI-PROVIDER CAPABILITY ROUTER
+=====================================
+
+Implemented:
+CapabilityProvider
+CapabilityRouter
+LocalProvider
+Supabase REST reachability adapter
+Firebase REST reachability adapter.
+
+Router chooses available provider by capability/priority.
+
+Local remains highest-priority storage/media-processing base.
+
+This does not yet implement full Supabase/Firebase auth flows or data writes.
+Those require the project's final auth/account decisions and security rules.

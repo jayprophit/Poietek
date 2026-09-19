@@ -1,0 +1,17 @@
+176 — TUNING / COMMUNITY PLAYER BUILD BOUNDARY
+==============================================
+
+Implemented:
+reference-frequency/cents transformation math
+TimePreservingPitchBackend interface
+correct unavailable fallback.
+
+NOT implemented by cheating:
+WebAudio playbackRate.
+
+playbackRate changes tempo/duration and would break the Poietek community video
+player requirement.
+
+Next real implementation:
+AudioWorklet/WASM phase-vocoder or vetted native time-stretch/pitch backend,
+plus creator-rendered/cached rendition path.

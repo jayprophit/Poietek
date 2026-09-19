@@ -1,0 +1,40 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.9
+
+51 — MONOREPO / PACKAGE BOOTSTRAP
+=================================
+
+DELIVERED
+README.md
+tsconfig.foundation.json
+package.integration.example.json
+starter folder tree.
+
+MIGRATION APPROACH
+Do not convert to a workspace monorepo in the same commit as the first audio
+vertical slice unless tooling remains stable.
+
+Safe sequence:
+1. create packages/ directories inside existing Vite repo;
+2. use relative imports initially;
+3. move App/domain state into packages incrementally;
+4. only then introduce npm/pnpm workspace aliases if useful.
+
+WHY
+The current repository is still a single Vite application. A giant package
+manager/workspace migration would create unrelated breakage before persistence and
+real audio are proven.
+
+FIRST PACKAGE BOUNDARIES
+domain
+project
+assets
+commands
+timeline
+audio-contracts
+audio-web.
+
+No backend package required for local milestone.
+
+BOOT-001 foundation TypeScript compiles strict.
+BOOT-002 existing UI may continue importing old modules during migration.
+BOOT-003 no circular dependency from domain to React/audio/vendor SDK.

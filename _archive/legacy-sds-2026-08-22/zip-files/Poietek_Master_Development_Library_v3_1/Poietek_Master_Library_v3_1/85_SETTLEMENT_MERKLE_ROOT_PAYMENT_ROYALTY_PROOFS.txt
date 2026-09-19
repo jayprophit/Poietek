@@ -1,0 +1,59 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.2
+
+85 — SETTLEMENT MERKLE ROOTS & PAYMENT/ROYALTY PROOFS
+=====================================================
+
+COMPANION
+packages/blockchain/src/SettlementMerkle.ts
+database/blockchain-anchor-ledger.v1.sql
+
+PROBLEM
+
+Thousands of payment/royalty lines are expensive and privacy-invasive to store
+directly on chain.
+
+SOLUTION
+
+Keep private settlement lines in Poietek's normal ledger.
+Create a Merkle tree over canonical allocation records.
+Anchor only the Merkle root.
+
+Each contributor can receive:
+their settlement line
+Merkle inclusion proof
+batch anchor receipt.
+
+This can prove the contributor's line was included in the anchored batch without
+publishing every contributor's private payment details.
+
+COVERED SOURCES
+
+Poietek marketplace sales
+tips/support
+licensing
+imported PRS/PPL/MLC/SoundExchange statements
+distribution statements
+other royalty statements.
+
+IMPORTANT
+
+For an external royalty statement, Poietek anchors what the statement says.
+It does not make the blockchain the payer or change the society's legal/payment
+process.
+
+FIAT PAYMENT
+
+Payment processor/bank receipt remains off-chain.
+Hash receipt into settlement evidence.
+
+ON-CHAIN PAYMENT
+
+Future optional mode may settle eligible transactions with tokenized funds or
+stable-value rails, but requires legal, tax, custody, sanctions and smart-contract
+audit review before production.
+
+ACCEPTANCE
+SET-001 altered settlement line fails inclusion proof.
+SET-002 private line not publicly readable.
+SET-003 source statement hash retained.
+SET-004 fiat processor receipt linked by hash.

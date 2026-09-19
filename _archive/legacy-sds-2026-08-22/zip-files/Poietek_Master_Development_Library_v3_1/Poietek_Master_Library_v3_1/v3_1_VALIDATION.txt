@@ -1,0 +1,45 @@
+POIETEK IMPLEMENTATION BUILD v3.1 — VALIDATION
+
+Date: 2026-08-11
+
+STRICT CORE TYPESCRIPT
+Command:
+tsc -p tsconfig.core.json
+
+Result:
+PASS — zero TypeScript errors.
+
+RUNTIME PURE TESTS
+Command:
+node --test tests/pure-core.test.js
+
+Result:
+PASS — 4/4 tests.
+
+Passing tests:
+1. A440 -> A432 reference shift ~= -31.76665 cents.
+2. 120 BPM / 960 PPQ tempo conversion.
+3. Digital clipping detection.
+4. Destination profile with no tuning requirement preserves an A432 project.
+
+Validated core includes:
+domain
+project repository/session
+assets/import/waveform
+timeline
+WebAudio timeline player types/build
+audio health
+tuning backend contract
+release readiness
+provider router/runtime.
+
+Not covered by this isolated test:
+React integration (requires repository React dependencies)
+browser IndexedDB/OPFS runtime behavior
+actual decoded audio files in browser
+PWA browser lifecycle
+Tauri Rust compile/signing
+real Supabase/Firebase accounts
+standards-compliant LUFS/true-peak
+time-preserving pitch DSP
+native audio/MIDI/plugin host.

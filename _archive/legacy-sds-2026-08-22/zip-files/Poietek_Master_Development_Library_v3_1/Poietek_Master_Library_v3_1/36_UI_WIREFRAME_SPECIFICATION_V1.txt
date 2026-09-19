@@ -1,0 +1,202 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.7
+
+36 — UI WIREFRAME SPECIFICATION v1
+==================================
+
+This is an interaction wireframe, not final visual branding.
+
+DESKTOP — ARRANGE
+
++--------------------------------------------------------------------------------+
+| Poietek | File Edit View Project Audio MIDI ... | Sync ✓ | CPU | Search        |
++----------+------------------------------------------------------+---------------+
+| Browser  |                   Timeline                           | Inspector     |
+|          |  Bars 1 2 3 4 5 6...                                |               |
+| Projects |------------------------------------------------------| Selected Clip |
+| Sounds   | [Track 1] [===== Vocal clip =====]                   | Gain          |
+| Plugins  | [Track 2]    [== Guitar ==] [==]                    | Fade          |
+| Devices  | [Track 3] [MIDI notes.........]                      | Warp          |
+|          |                                                      | Contributor   |
+|          |                                                      | Rights        |
++----------+------------------------------------------------------+---------------+
+| <<  | > | [] | REC | Loop | 120 BPM | 4/4 | Audio: Built-in | MIDI | Offline  |
++--------------------------------------------------------------------------------+
+
+Key behavior:
+- left browser collapsible;
+- right inspector contextual;
+- center is workspace;
+- transport persistent;
+- status exposes offline/sync/storage/device truth.
+
+DESKTOP — MIX
+
++--------------------------------------------------------------------------------+
+| Menu / Command Palette                                                         |
++--------------------------------------------------------------------------------+
+| Browser | Inserts/Sends / Mixer channels x N                         | Control |
+|         | [CH1][CH2][CH3][BUS][MASTER]                               | Room    |
+|         |  M S  M S                                                  |         |
+|         |  EQ   EQ                                                   |         |
+|         |  |    |                                                    |         |
+|         |  fader fader                                               |         |
++--------------------------------------------------------------------------------+
+| Transport / Sync / Device                                                       |
++--------------------------------------------------------------------------------+
+
+DESKTOP — SAMPLE
+
++--------------------------------------------------------------------------------+
+| Asset Browser | Waveform / Spectrogram                                          |
+|               | |---slice1---|--slice2--|----slice3----|                       |
+|               +--------------------------------------------------------------- |
+|               | 16 pads | Bank | Chop: Manual/Transient/Equal/Lazy             |
+|               +--------------------------------------------------------------- |
+|               | Inspector: start/end/pitch/gain/reverse/choke                  |
++--------------------------------------------------------------------------------+
+
+TABLET LANDSCAPE
+
++--------------------------------------------------------------+
+| Poietek | Project | Sync | ...                               |
++------------------------+-------------------------------------+
+| Browser / Pads          | Main Workspace                     |
+|                         | Timeline / Waveform / Mixer         |
+|                         |                                     |
++------------------------+-------------------------------------+
+| Transport                                      | Inspector ^ |
++--------------------------------------------------------------+
+
+Tablet gestures:
+pinch zoom
+two-finger pan
+long press context
+drag handle
+stylus edit where available.
+
+PHONE — CREATE
+
++-----------------------------+
+| Project Name        Sync ✓  |
++-----------------------------+
+|                             |
+|       Main Focus View       |
+|       waveform/pads         |
+|                             |
++-----------------------------+
+| [Inspector drawer handle]   |
++-----------------------------+
+| <<  >  REC  Loop  BPM       |
++-----------------------------+
+| Create Mix Perform Library  |
++-----------------------------+
+
+PHONE — MIX
+Horizontal scroll or one/two focused channels.
+Master always reachable.
+No 8 tiny desktop faders squeezed on screen.
+
+FIRST RUN
+
+Screen 1:
+Welcome to Poietek
+[Create locally]
+[Sign in]
+
+Screen 2:
+What are you making?
+[Beat] [Song] [Mix] [DJ Set] [Video] [Learn]
+
+Screen 3:
+Storage
+(•) Auto — Recommended
+( ) Local only
+( ) Choose locations
+[Continue]
+
+Screen 4:
+Audio/MIDI
+Output: ...
+Input: ...
+MIDI: ...
+[Skip] [Test] [Continue]
+
+NEW PROJECT
+
+Name
+Template
+Sample rate
+Storage summary
+[Create]
+
+MISSING ASSET
+
+Vocal Take 07 unavailable.
+
+Known copies:
+Local SSD — missing
+TeraBox — disconnected
+External SSD — offline
+
+[Reconnect Provider]
+[Locate File]
+[Replace]
+[Keep Placeholder]
+
+PLUGIN MISSING
+
+Synth X unavailable on this device.
+Frozen audio: available.
+
+[Use Frozen]
+[Locate Plugin]
+[Remove Instance]
+Never discard state automatically.
+
+COLLABORATION
+
+Project > Team
+Members
+Activity
+Comments
+Versions
+
+Offline banner:
+"Working offline — 12 changes queued."
+Non-blocking.
+
+STORAGE SETTINGS
+
+Project files: Local SSD
+Audio: Local SSD
+Video: External SSD
+Backups: Google Drive
+Git project mirror: Off
+
+[Auto Recommend]
+[Add Provider]
+[Change...]
+
+COMMAND PALETTE
+
+> split clip
+  Split Clip at Playhead
+  Split all selected clips
+  Learn: Splitting clips
+
+ACCESSIBILITY
+All wireframes require:
+logical focus order
+keyboard equivalents
+labels
+high contrast
+non-color state indicators.
+
+WIRE-001 Desktop arrange supports browser collapse.
+WIRE-002 Inspector changes with selection.
+WIRE-003 phone can import/play/split/save.
+WIRE-004 tablet supports split view.
+WIRE-005 offline status visible but not modal.
+WIRE-006 storage/missing asset repair explicit.
+WIRE-007 dialogs have keyboard focus trap/escape.
+WIRE-008 no competitor-branded public feature names.

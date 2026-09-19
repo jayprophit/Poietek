@@ -1,0 +1,47 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 3.0
+
+167 — EXTERNAL PLATFORM EXPORT: YOUTUBE PROFILE
+===============================================
+
+CURRENT OFFICIAL YOUTUBE REQUIREMENTS REVIEWED 11 AUGUST 2026
+
+YouTube's current general recommended upload settings specify technical delivery
+details such as:
+MP4 container
+H.264 video
+AAC-LC/Opus/Eclipsa audio
+48 kHz recommended audio for the general upload profile
+BT.709 for SDR
+native recording frame rate.
+
+YouTube's current music-video partner specification recommends:
+lossless FLAC or Linear PCM
+48 kHz recommended
+24-bit recommended
+stereo, with expanded Eclipsa options where applicable.
+
+NO A440 REQUIREMENT WAS FOUND IN THESE OFFICIAL YOUTUBE UPLOAD SPECIFICATIONS.
+
+POIETEK RULE
+
+A432 creator master:
+preserve A432.
+
+Then conform:
+sample rate
+bit depth
+codec/container
+video codec
+frame rate
+colour
+channel layout
+metadata
+caption
+rights.
+
+Do NOT retune to A440 merely because target=YouTube.
+
+If YouTube later publishes a tuning-reference rule:
+versioned destination profile can add it.
+
+END DOCUMENT 167

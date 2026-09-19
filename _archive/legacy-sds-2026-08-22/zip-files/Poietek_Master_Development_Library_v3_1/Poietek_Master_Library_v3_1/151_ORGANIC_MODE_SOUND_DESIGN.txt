@@ -1,0 +1,42 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.8
+
+151 — ORGANIC MODE FOR SOUND DESIGN
+===================================
+
+"ORGANIC" SHOULD INCLUDE MORE THAN A432.
+
+OPTIONAL TOOLS
+
+Harmonic-series oscillator ratios.
+Just-intonation chord mode.
+Adaptive harmonic tuning.
+Humanized microtiming.
+Humanized velocity.
+Drift/wow/flutter.
+Round-robin samples.
+Velocity/timbre variation.
+Natural acoustic impulse responses.
+Unquantized groove preservation.
+Dynamic tuning drift modelling.
+Resonance-aware synthesis.
+
+RULE
+
+Organic is aesthetic vocabulary.
+
+Every module reveals the exact technical action.
+
+Example:
+
+Organic Pitch:
+A432 / Just Intonation.
+
+Organic Timing:
+Humanized ±8 ms.
+
+Organic Drift:
+0.04% slow random pitch drift.
+
+Nothing is secretly changed because a user selects the word "organic."
+
+END DOCUMENT 151

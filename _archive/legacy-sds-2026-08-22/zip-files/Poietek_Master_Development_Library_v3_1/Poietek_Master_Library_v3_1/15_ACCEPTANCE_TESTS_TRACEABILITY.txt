@@ -1,0 +1,185 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.0
+
+Compiled from:
+1) The complete product-development conversation supplied by the creator.
+2) Deep review of GitHub repository: jayprophit/Studio-Daw-Station-SDS-
+3) Current cross-platform/offline-first architecture recommendations.
+
+WORKING PRODUCT NAME
+Poietek is the working ecosystem name discussed in the design conversation.
+Studio DAW Station (SDS) is the current repository/product label.
+Final public branding should be chosen only after trademark/domain checks.
+
+CORE RULE
+One app. One project model. One creative graph. Many workspaces.
+Offline first. Cloud optional. Hardware agnostic. Collaboration capable.
+Professional depth without forcing beginners to see every advanced control.
+
+LEGAL / CLEAN-ROOM RULE
+Competitor products, patents, papers, hardware and interfaces may be studied for
+functional principles, workflows and interoperability requirements. Do not copy
+proprietary source code, protected assets, branded UI expression, undocumented
+confidential protocols, or patented claims without appropriate legal review or
+licensing. Compatibility layers should use documented/open interfaces wherever
+possible.
+
+===============================================================================
+
+FOUNDATION
+FND-001 project survives reload.
+FND-002 schema migrates.
+FND-003 runtime AudioBuffer is not serialized.
+FND-004 autosave recovery works.
+FND-005 undo is project-wide.
+FND-006 missing asset repair UI.
+
+CROSS PLATFORM
+XPF-001 same project opens web/native.
+XPF-002 unsupported plugin state preserved.
+XPF-003 phone usable.
+XPF-004 tablet split view.
+XPF-005 cached project opens offline.
+
+SYNC
+SYN-001 offline edits queue.
+SYN-002 reconnect syncs.
+SYN-003 concurrent structured edits converge.
+SYN-004 media upload resumes.
+SYN-005 binary conflict preserves both.
+SYN-006 sync state visible.
+SYN-007 synced project later reopens offline.
+
+COLLAB
+COL-001 invite.
+COL-002 roles enforce permissions.
+COL-003 comments sync.
+COL-004 presence.
+COL-005 activity actor.
+COL-006 snapshots restore.
+COL-007 fork provenance.
+COL-008 DM respects blocks/permissions.
+
+AUDIO
+AUD-001 real import.
+AUD-002 waveform from real asset.
+AUD-003 scheduler tolerance.
+AUD-004 recording durable.
+AUD-005 mute/solo render.
+AUD-006 buses/sends render.
+AUD-007 independent pitch/time mode.
+AUD-008 offline render.
+AUD-009 measured vs estimated latency labelled.
+
+MIDI
+MID-001 enumerate input/output.
+MID-002 receive.
+MID-003 send.
+MID-004 learn persists.
+MID-005 logical mapping works.
+MID-006 disconnect safe.
+MID-007 replacement device mapping.
+MID-008 clock tolerance.
+MID-009 profile verification visible.
+MID-010 generic device wizard.
+
+SAMPLER
+SMP-001 import.
+SMP-002 manual chop.
+SMP-003 equal chop.
+SMP-004 transient chop.
+SMP-005 zero crossing.
+SMP-006 logical pad map.
+SMP-007 MPC profile export where supported.
+SMP-008 SP profile export where supported.
+SMP-009 linked stem timing.
+
+DAW
+DAW-001 split real clip.
+DAW-002 trim/slip/fade.
+DAW-003 MIDI piano roll.
+DAW-004 step sequencing.
+DAW-005 arrangement.
+DAW-006 automation.
+DAW-007 scene launch.
+DAW-008 freeze/bounce.
+DAW-009 reference excluded from export.
+DAW-010 notation sync when implemented.
+
+AI
+AI-001 app works with AI off.
+AI-002 proposal diff.
+AI-003 reject no mutation.
+AI-004 accept undoable.
+AI-005 MIDI editable.
+AI-006 rights warning not legal verdict.
+AI-007 provider failure no corruption.
+
+VIDEO
+VID-001 import.
+VID-002 A/V sync.
+VID-003 edit transform.
+VID-004 captions.
+VID-005 beat-reactive.
+VID-006 proxy relink.
+VID-007 export.
+VID-008 visual credit retained.
+
+RIGHTS
+RGT-001 sample source/license.
+RGT-002 performer assignment.
+RGT-003 contributor activity.
+RGT-004 split approval.
+RGT-005 unresolved split blocks approved release, not private quick export.
+RGT-006 quick export no identifiers.
+RGT-007 release metadata export.
+RGT-008 audio/visual credits parity.
+
+COMMUNITY
+COM-001 private remains private.
+COM-002 public preview.
+COM-003 follow/comment/report.
+COM-004 DM.
+COM-005 remix permission.
+COM-006 transactional creator payments if enabled.
+COM-007 moderation auditable.
+
+UX
+UX-001 cascading menus accessible.
+UX-002 hover/long-press help.
+UX-003 walkthrough restart.
+UX-004 tutorial fork.
+UX-005 modes only alter UI density.
+UX-006 layout sync preference.
+UX-007 screen-reader labels.
+UX-008 touch targets.
+
+IMMEDIATE SDS REGRESSIONS
+REG-001 MasterState typechecks.
+REG-002 RackStackManager MIDI callback type matches.
+REG-003 navigation does not duplicate rack modules unintentionally.
+REG-004 ChopLab status matches bank behavior.
+REG-005 Reverse changes actual render.
+REG-006 AI label only when provider invoked.
+REG-007 latency never calls estimate measured.
+REG-008 unverified profiles not called official.
+REG-009 waveform uses actual peaks.
+REG-010 mixer UI and engine remain synchronized.
+
+RELEASE GATES
+ALPHA: durable local project + real audio/MIDI + sampler.
+BETA: cross-platform + offline + sync + collaboration + core DAW.
+1.0: stable creation, mapping, portability, recovery and team share.
+Later majors: deep video/VFX, AI, rights/community/marketplace.
+
+SUCCESS IS NOT “EVERY SCREEN EXISTS.”
+SUCCESS IS “EVERY CLAIMED FEATURE SURVIVES SAVE, REOPEN, OFFLINE, SYNC AND UNDO.”
+
+VERSION 1.2 CROSS-REFERENCE
+Use the DJ-001 through DJ-035 acceptance suite in Document 17 for the live performance subsystem, including offline performance, DVS, variable-tempo beatgrids, controller replacement, video and performance recording.
+
+VERSION 1.3 CROSS-REFERENCE
+Document 18 adds PLG, MOD, SYNTH and FX acceptance suites covering third-party host stability, modulation, built-in instruments, effects and mastering.
+
+VERSION 1.4 CROSS-REFERENCE
+Use STO-001..STO-030 from Document 19 and RES-001..RES-020 from Document 20 for storage/provider/resource/backend acceptance testing.

@@ -1,0 +1,60 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.2
+
+86 — ON-CHAIN VS OFF-CHAIN PAYMENT ROUTING
+==========================================
+
+PAYMENT ROUTER
+
+Transaction can use:
+Stripe Connect
+Apple payment rail
+Google Play Billing
+bank transfer
+PayPal/other marketplace processor
+future compliant on-chain rail.
+
+RIGHTS GRAPH stays independent of payment rail.
+
+OFF-CHAIN FIAT
+
+Best early choice for ordinary marketplace users.
+
+Benefits:
+card/bank UX
+refunds/chargebacks
+KYC/payout infrastructure
+ordinary currency.
+
+Blockchain:
+anchor settlement receipts/roots only.
+
+ON-CHAIN
+
+Optional later for:
+web3-native marketplace items
+public grants
+creator collectives
+machine-to-machine licensing
+transparent community pools.
+
+Do not force crypto wallets on ordinary artists/listeners.
+
+CUSTODY
+
+Poietek should avoid holding user funds directly where a regulated processor can
+handle them.
+
+If a smart contract holds money:
+independent audit
+reentrancy review
+emergency/pause policy
+upgrade policy
+lost-key recovery design
+sanctions/AML/tax/legal review
+must precede release.
+
+ACCEPTANCE
+PAY-001 rights split same regardless of payment rail.
+PAY-002 fiat user never needs wallet.
+PAY-003 blockchain unavailable does not block card sale.
+PAY-004 on-chain payout feature disabled until audit/legal gate.

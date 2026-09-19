@@ -1,0 +1,61 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.9
+
+160 — TUNING RELEASE UI END TO END
+==================================
+
+PROJECT SETTINGS
+
+Tuning:
+Organic / A432
+
+Temperament:
+Just Intonation
+
+Lock:
+Project Owner
+
+COMMUNITY
+
+[Publish Tuning]
+[Share]
+[Fork]
+[Create Challenge]
+
+EXPORT
+
+Target:
+Public Streaming Release
+
+TUNING CHECK
+
+Project tuning:
+A432 / Just
+
+Destination explicit tuning requirement:
+None
+
+STATUS:
+PASS
+
+ADVISORY:
+A440 is the current standard-pitch interoperability reference. Your A432 master is
+not automatically invalid. You may keep the original or create a separate A440
+compatibility version if a collaborator/client specifically requests it.
+
+[KEEP ORIGINAL]
+[CREATE A440 COMPATIBILITY MASTER]
+[EXPORT TUNING NOTES]
+
+STRICT CLIENT EXAMPLE
+
+Client requirement:
+A440.
+
+STATUS:
+NOT READY FOR THIS CLIENT PROFILE.
+
+Original remains untouched.
+
+[CREATE COMPATIBILITY COPY]
+
+END DOCUMENT 160

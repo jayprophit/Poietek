@@ -1,0 +1,43 @@
+Mechanism / concept,Class,Poietek decision,Poietek use
+Proof of Work,Blockchain consensus,External-only,Do not build Poietek PoW; only evaluate mature external chains if needed
+Proof of Stake,Blockchain consensus,External chain candidate,Optional anchor-network class; no custom Poietek consensus initially
+Delegated Proof of Stake,Blockchain consensus,External-only / research,Only relevant to third-party chain evaluation
+Proof of Activity,Blockchain consensus hybrid,Research,No direct core product need
+Proof of Location,Application evidence,Adapt,Opt-in event/performance/location evidence; privacy-preserving and coarse by default
+Proof of Importance,Consensus/reputation concept,Research,Never use to determine copyright or money
+Proof of Elapsed Time,Consensus concept,Research,Use signed/server/chain time evidence instead
+Proof of Authority,Permissioned consensus,Later option,Possible private consortium/test ledger
+Proof of Burn,Consensus/economic,Reject core,No meaningful creator-product benefit
+Proof of Capacity,Consensus,External-only,No custom implementation
+Proof of Space,Consensus,External-only,No custom implementation
+Proof of Time Stake,Ambiguous/non-standard,Research only,Do not treat as primitive without precise specification
+Proof of Brain,Social/reward concept,Research/adapt only,Never rights or payment authority
+Proof of Physical Address,Identity/KYC evidence,Use regulated verifier,Never put raw address on public chain
+Proof of Bank Account,Payout verification,Use payout provider,"Store verification status/token, not public bank data"
+Proof of Concept,Engineering evidence,ADOPT,Prototype gate before production
+Leased Proof of Stake,Consensus,External-only,Only relevant to a selected chain
+Proof of Weight,Consensus/reputation family,Research,No core need
+PBFT,Distributed consensus,Later infrastructure option,Could inform small trusted-node systems; not MVP
+BFT,Distributed systems property,ADOPT as resilience principle,"Fault-tolerant design, not a Poietek blockchain protocol"
+Delegated BFT,Consensus,Research,External/private network only
+Proof of History,Ordering/time concept,Adapt,Use append-only signed chronology; do not clone another chain
+Federated Byzantine Agreement,Consensus,Research,Only relevant to selected external network
+Proof of Space and Time,Consensus,External-only,No custom implementation
+Proof of Contribution,Application evidence,ADOPT,Signed contribution events linked to Party/project/object
+Proof of Impact,Application metric,Adapt,Creator/community impact analytics; not ownership proof
+Proof of Reputation,Marketplace/community evidence,ADOPT carefully,Explainable verified transaction/review/history signals
+Proof of Liquidity,Financial/DeFi evidence,Research only,No core application need
+Proof of Affinity,Recommendation signal,Adapt,"Discovery/personalization, never rights authority"
+Proof of Chaos,Engineering evidence,ADOPT,"Chaos/failover evidence for providers, sync and payments"
+Proof of Discovery,Attribution signal,Adapt,Track discovery/referral provenance where appropriate
+Proof of Engagement,Analytics evidence,Adapt,Privacy-preserving engagement/anti-bot metrics
+Proof of Transaction History,Commerce evidence,ADOPT,Private immutable ledger + optional Merkle anchors
+Proof of Network Activity,Operations evidence,Adapt,Service health/abuse detection with privacy controls
+Proof of Identity,Identity evidence,ADOPT,Contributor Passport + provider verification/ZKP
+Proof of Legacy,Archive/provenance concept,Adapt,Long-term creator estate/archive workflows later
+Proof of Environmental Impact,Sustainability evidence,Adapt later,Measure compute/storage/network footprint honestly
+Proof of Data Integrity,Cryptographic evidence,ADOPT,"SHA-256, signatures, C2PA, Merkle roots"
+Proof of User Consent,Consent evidence,ADOPT,Versioned approvals/signatures/timestamps
+Proof of Customization,Product evidence,Adapt,Versioned themes/presets/configurations
+Proof of Interoperability,Certification evidence,ADOPT,Automated cross-platform/provider/file round-trip tests
+Proof of Trust,Composite assurance,ADOPT as transparent bundle,"Evidence bundle, never opaque social-credit score"

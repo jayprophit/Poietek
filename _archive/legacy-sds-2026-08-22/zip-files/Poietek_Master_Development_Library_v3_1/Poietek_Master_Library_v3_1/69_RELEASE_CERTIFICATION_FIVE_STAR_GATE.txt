@@ -1,0 +1,63 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.10
+
+69 — RELEASE CERTIFICATION & FIVE-STAR GATE
+===========================================
+
+CHANNELS
+
+DEV
+Can be incomplete.
+
+ALPHA
+Core data safe; missing features acceptable.
+
+BETA
+Major workflows implemented; benchmark collection.
+
+STABLE
+No unresolved critical release gates.
+
+POIETEK 5-STAR CERTIFIED
+Stricter than Stable.
+
+CERTIFICATION CHECKLIST
+
+[ ] Native install matrix.
+[ ] Local-only project matrix.
+[ ] Audio soak.
+[ ] MIDI timing.
+[ ] Project migration.
+[ ] Crash recovery.
+[ ] Storage outage.
+[ ] Sync convergence.
+[ ] Accessibility.
+[ ] Security.
+[ ] Codec/export.
+[ ] Plugin crash isolation.
+[ ] DJ Performance Guard.
+[ ] Video render.
+[ ] Rights data integrity.
+
+CATEGORY EVIDENCE
+
+Each score includes:
+test ID
+fixture
+hardware
+result
+competitor/reference baseline
+reviewer
+date
+software versions.
+
+RELEASE BLOCK
+
+If one required category regresses below threshold:
+remove 5-star badge for that release or block release.
+
+NO MARKETING OVERRIDE
+A business deadline cannot manually change failed benchmark numbers.
+
+FIVE-STAR GOAL
+Aim for five across the board.
+Earn it test by test.

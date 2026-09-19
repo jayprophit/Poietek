@@ -1,0 +1,56 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.6
+
+126 — AI COLOUR, HDR, EXPOSURE & VISUAL QC ASSISTANT
+=====================================================
+
+DETERMINISTIC VIDEO ANALYSIS FIRST
+
+resolution
+frame rate
+time base
+colour tags
+gamut
+transfer function
+bit depth
+chroma
+illegal/out-of-range values
+freeze/black frames
+duplicate/dropped frames
+flash risk research
+subtitle safe-area checks
+audio/video sync.
+
+SCOPES
+
+waveform
+vectorscope
+histogram
+RGB parade
+HDR metadata view.
+
+AI EXPLAINS
+
+"Your file is tagged BT.709, but this export profile expects BT.2100 HDR."
+
+"Several highlights exceed your selected mastering policy."
+
+"Skin-tone hue differs from your reference by X measured units."
+
+AUTO FIX
+
+Colour-space transforms:
+previewable
+explicit source/target
+managed pipeline.
+
+Never silently reinterpret untagged video.
+
+LOOK ADVICE
+
+Subjective look suggestions are labelled:
+CREATIVE OPTION.
+
+TECHNICAL failures are labelled:
+REQUIRED FOR TARGET.
+
+END DOCUMENT 126

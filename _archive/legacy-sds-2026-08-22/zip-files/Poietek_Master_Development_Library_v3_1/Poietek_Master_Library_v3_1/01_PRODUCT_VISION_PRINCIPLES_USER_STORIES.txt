@@ -1,0 +1,138 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.0
+
+Compiled from:
+1) The complete product-development conversation supplied by the creator.
+2) Deep review of GitHub repository: jayprophit/Studio-Daw-Station-SDS-
+3) Current cross-platform/offline-first architecture recommendations.
+
+WORKING PRODUCT NAME
+Poietek is the working ecosystem name discussed in the design conversation.
+Studio DAW Station (SDS) is the current repository/product label.
+Final public branding should be chosen only after trademark/domain checks.
+
+CORE RULE
+One app. One project model. One creative graph. Many workspaces.
+Offline first. Cloud optional. Hardware agnostic. Collaboration capable.
+Professional depth without forcing beginners to see every advanced control.
+
+LEGAL / CLEAN-ROOM RULE
+Competitor products, patents, papers, hardware and interfaces may be studied for
+functional principles, workflows and interoperability requirements. Do not copy
+proprietary source code, protected assets, branded UI expression, undocumented
+confidential protocols, or patented claims without appropriate legal review or
+licensing. Compatibility layers should use documented/open interfaces wherever
+possible.
+
+===============================================================================
+
+1. PRODUCT DEFINITION
+
+Poietek/SDS is a universal creative production environment that combines:
+- professional DAW workflows;
+- sampling and chopping;
+- beat and MIDI sequencing;
+- physical hardware mapping/control;
+- modular racks and routing;
+- recording, editing, mixing and mastering;
+- video editing and visual effects;
+- AI-assisted analysis and creation;
+- cross-device local-first projects;
+- team collaboration;
+- rights/credit/contribution tracking;
+- internal creator community;
+- publishing/export;
+- extensibility through plugins, device profiles, scripts and templates.
+
+The original MPC Sample idea remains important but is no longer the product
+centre. The centre is the creator's project. MPC Sample, larger MPC devices,
+Roland SP-series samplers, MIDI keyboards, e-drums, DJ controllers, mixing
+surfaces, synths, audio interfaces and future devices are endpoints.
+
+2. MISSION
+
+Allow a creator to move from inspiration to finished audio/video and release
+without being forced to move between many disconnected applications.
+
+Core flow:
+CAPTURE
+-> RECORD / IMPORT
+-> ANALYSE
+-> REPAIR / UNMIX / STEM
+-> CHOP / SAMPLE / SOUND DESIGN
+-> PADS / DRUMS / MIDI / SCORE
+-> COMPOSE / SEQUENCE / ARRANGE
+-> RECORD PERFORMERS
+-> AUTOMATE
+-> MIX
+-> MASTER
+-> VIDEO / VISUALS
+-> CREDIT / RIGHTS
+-> COLLABORATE
+-> EXPORT / PUBLISH / SHARE
+
+3. PRODUCT VALUES
+
+A. SIMPLE WHEN NEEDED, DEEP WHEN WANTED
+A first-time user can follow a guided project. An expert can open routing,
+automation, spectral editing, scripting, control-room and advanced MIDI.
+
+B. ONE APP, MANY WORKSPACES
+A rack, mixer, piano roll, score editor, sample editor and video timeline may all
+be detached or arranged on multiple displays, but they operate on one project.
+
+C. OFFLINE FIRST
+Recording, sampling, arranging, MIDI, mixing, local video editing and export must
+not require a cloud connection.
+
+D. OPEN ENOUGH TO SURVIVE
+Use standard formats and documented protocols where practical. Support import,
+export, extensions and device profiles. Do not build a closed island.
+
+E. DEVICE-AGNOSTIC MUSIC
+Project musical intent must not depend on one physical controller. Logical pads,
+knobs, faders, transports and instruments sit between project and hardware.
+
+F. NON-DESTRUCTIVE
+Original media remains preserved. Chops, tuning, effects, AI edits and alternate
+arrangements are operations/versions wherever possible.
+
+G. CREDIT PEOPLE WHILE THEY WORK
+When a performer, producer, editor or visual artist contributes, that connection
+should be recorded at project/track/clip level and be available later for credits
+and split discussions.
+
+H. FAIR CREATOR ECONOMY
+Quick sharing, tips, sales and subscriptions can be supported internally.
+Creators can share free work without being forced into monetisation.
+
+4. MAJOR USER PERSONAS
+BEGINNER CREATOR — guided templates, automatic setup, tooltips, complete examples.
+BEATMAKER / SAMPLER — stems, chop, pad banks, swing, groove, hardware sync.
+SONGWRITER / COMPOSER — chord track, piano roll, score, lyrics, arrangement.
+ENGINEER / PRODUCER — low latency, routing, comping, plugins, mix/master.
+DJ / LIVE PERFORMER — decks, scenes, setlists, clock, live FX.
+FILM / VIDEO CREATOR — picture, captions, VFX, colour, ADR/Foley.
+SESSION MUSICIAN — assignments, credits, fee/split status.
+VISUAL ARTIST / EDITOR — visual ownership/credit, versions, approvals.
+TEAM / LABEL / STUDIO — permissions, rights entities, shared assets, release signoff.
+COMMUNITY CREATOR — profile, DMs, follows, comments, remix/fork, marketplace.
+
+5. EXPERIENCE LEVELS
+LEARN — guided builder.
+CREATE — everyday production.
+PRO — advanced routing/editing/monitoring.
+LAB — modular/scripting/DSP.
+LIVE — touch-first performance.
+
+6. SUCCESS CRITERIA
+- start on phone, continue tablet, finish desktop;
+- work offline then sync;
+- map unknown MIDI hardware without coding;
+- change controllers without breaking project content;
+- collaborate without emailing ZIPs;
+- inspect who changed what;
+- credit all contributors;
+- create audio and visual deliverables in one project;
+- quick-export without publishing paperwork;
+- optional structured release workflow.

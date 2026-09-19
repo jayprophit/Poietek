@@ -1,0 +1,29 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.7
+
+33 — DATABASE SCHEMA v1
+=======================
+
+Companion file: database.v1.sql
+
+DESIGN
+- Postgres is the canonical relational reference for a future provider-neutral backend.
+- Firebase prototype may map the same contracts to Firestore.
+- Binary media is never stored in relational tables.
+- CRDT update bytes may be retained in an update log and compacted into snapshots.
+- asset_replicas allow multiple remote/local locations per canonical asset.
+- rights approvals and audit events are separate from casual project history.
+
+FIREBASE MAPPING
+users/{userId}
+projects/{projectId}
+projects/{projectId}/members/{userId}
+projects/{projectId}/comments/{commentId}
+projects/{projectId}/syncUpdates/{updateId}
+assets/{assetId}
+assets/{assetId}/replicas/{replicaId}
+
+Do not write meters/playhead/PCM to Firestore.
+
+RLS/SECURITY
+Production Postgres/Supabase implementation must add row-level or service-level
+authorization policies using project membership and explicit permissions.

@@ -1,0 +1,192 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.7
+
+34 — SYNC / CRDT PROTOCOL v1
+============================
+
+GOAL
+Two clients may edit structured project state offline and later converge without
+putting large binary media into the CRDT.
+
+IDENTIFIERS
+projectId: ULID
+clientId: random stable installation ID
+actorId: account ID or local anonymous principal
+updateId: ULID
+assetId: ULID
+contentHash: sha256:...
+
+DOCUMENT PARTITION
+
+ProjectCoreDoc
+- title
+- tempo/signature/key maps
+- track ordering
+- lightweight track metadata
+- bus structure
+- project member display references
+- storage policy refs
+
+TrackDoc:{trackId}
+Audio track:
+- clip references/timing/gain/fades/operations
+MIDI track:
+- clips/notes/controllers
+Video track:
+- clip references/transforms/effects metadata
+
+CommentsDoc
+- comments
+- anchors
+- resolved state
+
+RightsDraftDoc
+- contributor assignments
+- draft metadata
+- proposed splits
+NOTE: approvals are server-audited records, not CRDT last-write-wins.
+
+Workspace state is per-user/local by default and NOT in project CRDT.
+
+PRESENCE
+Ephemeral awareness channel:
+user
+device
+workspace
+selection
+cursor
+playhead
+typing
+lastSeen
+Never persisted as project truth.
+
+BINARY ASSETS
+CRDT stores:
+assetId
+contentHash
+duration/metadata
+availability state
+Never WAV/video bytes.
+
+ASSET SYNC
+1. command references local assetId.
+2. local AssetStore hashes media.
+3. SyncQueue advertises hash.
+4. server/provider checks existing replica.
+5. client creates resumable upload session if needed.
+6. upload completes and checksum verifies.
+7. AssetReplica metadata syncs.
+8. other clients fetch on demand according to cache policy.
+
+UPDATE ENVELOPE
+
+{
+  "protocolVersion": "1",
+  "projectId": "...",
+  "clientId": "...",
+  "updateId": "...",
+  "actorId": "...",
+  "docId": "track:...",
+  "baseCheckpoint": "...",
+  "createdAt": "...",
+  "encoding": "yjs-v1",
+  "payload": "<binary>"
+}
+
+IDEMPOTENCY
+(projectId, clientId, updateId) unique.
+
+LOCAL TRANSACTION
+User command
+-> Domain validation
+-> local DB transaction
+-> CRDT transaction where collaborative
+-> append local sync queue
+-> UI success
+Network happens later.
+
+CONFLICT TYPES
+
+CRDT-MERGEABLE
+- MIDI note changes
+- clip positions
+- names
+- comments
+
+HUMAN-REVIEW
+- split percentages
+- release approval
+- destructive asset replacement
+- project ownership
+
+BINARY CONFLICT
+Never merge PCM bytes.
+Keep both asset versions and update clip/reference explicitly.
+
+DELETE
+Use tombstone semantics in collaborative structured state.
+Physical media garbage collection only after:
+- no project reference;
+- no snapshot retention requirement;
+- no pending sync;
+- retention grace period;
+- explicit user policy.
+
+CHECKPOINTING
+Server/local compactor can create:
+Checkpoint {
+  revision
+  stateVector
+  compactedUpdateAsset/ref
+  createdAt
+}
+
+Clients older than checkpoint fetch checkpoint + newer updates.
+
+OFFLINE
+No network:
+- all commands commit locally.
+- queue displays Pending.
+- assets remain local.
+Reconnect:
+- exchange state vectors;
+- send missing updates;
+- upload/fetch assets;
+- recompute Storage Health.
+
+PERMISSION CHANGE
+If user loses edit permission while offline:
+- preserve their local branch.
+- server rejects unauthorized pushes.
+- offer Save As Local Copy / Fork where policy allows.
+Never delete local work.
+
+SCHEMA MIGRATION
+CRDT document version is separate from Project schema version.
+Migration must occur before joining a collaborative document version that cannot
+be interpreted safely.
+
+FIREBASE PROTOTYPE
+Firestore can store:
+- project directory
+- compact update records/chunks within safe document limits
+- comments/member metadata
+But do not design around unlimited Firestore update documents.
+Prototype may use a provider-specific relay, then move to dedicated sync service.
+
+YJS PROVIDER
+Yjs is the first candidate, not a permanent public file-format dependency.
+Wrap it behind CollaborativeDocument interface.
+
+ACCEPTANCE
+CRDT-001 A and B edit different tracks offline; converge.
+CRDT-002 A/B edit same MIDI clip different notes; converge.
+CRDT-003 duplicate update ignored.
+CRDT-004 network drops mid-update; recovery.
+CRDT-005 asset upload interrupted; resumes.
+CRDT-006 binary conflict preserves both.
+CRDT-007 rejected unauthorized sync preserves local work.
+CRDT-008 comment anchors survive clip move.
+CRDT-009 checkpoint + updates reconstruct same state.
+CRDT-010 delete tombstone converges.
+CRDT-011 rights split conflict requires approval.
+CRDT-012 project remains open with remote media unavailable.

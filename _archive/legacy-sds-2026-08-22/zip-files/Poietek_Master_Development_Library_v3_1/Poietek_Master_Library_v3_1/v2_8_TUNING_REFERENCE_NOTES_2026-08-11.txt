@@ -1,0 +1,33 @@
+Primary/current sources reviewed 11 August 2026:
+
+ISO 16:1975:
+https://www.iso.org/standard/3601.html
+ISO specifies standard musical pitch A=440 Hz and lists this edition as confirmed
+in 2022/current.
+
+The MIDI Association:
+https://midi.org/microtuning-and-alternative-intonation-systems
+Official MIDI.org material describes the MIDI Tuning Standard and Scala SCL/KBM
+microtuning interoperability.
+
+MIDI 2.0:
+Current MIDI Association developer material states MIDI 2.0 preserves MIDI Tuning
+Standard concepts and adds per-note pitch/tuning mechanisms.
+
+432 Hz research examples:
+PubMed PMID 31031095:
+Music Tuned to 440 Hz Versus 432 Hz and the Health Effects: double-blind crossover
+pilot, 33 participants. Authors explicitly described the evidence gap and called
+for larger trials.
+
+PubMed PMID 35545982:
+432 Hz vs 440 Hz randomized pilot in emergency nurses.
+
+PubMed PMID 40061232:
+2025 double-blind crossover study in kickboxers reported performance/response
+differences but did not establish a universal health or "natural frequency"
+standard.
+
+Poietek policy:
+Support A432 as creative/research option without presenting universal healing or
+biological claims as settled science.

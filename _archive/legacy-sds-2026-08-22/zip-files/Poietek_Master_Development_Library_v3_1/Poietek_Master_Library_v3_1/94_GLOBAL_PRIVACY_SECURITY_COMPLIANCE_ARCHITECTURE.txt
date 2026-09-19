@@ -1,0 +1,62 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.3
+
+94 — GLOBAL PRIVACY, SECURITY & COMPLIANCE ARCHITECTURE
+=======================================================
+
+COMPANION
+privacy-security-compliance-matrix.csv
+
+Poietek uses jurisdiction/capability modules rather than claiming every law applies
+to every user.
+
+PRIVACY ENGINE
+Data inventory
+purpose
+lawful/authorized basis
+retention
+region
+processor/provider
+export
+delete
+correct
+restrict/opt-out
+consent/version
+sensitive classification.
+
+CORE PRODUCT RULE
+Creative media is not analytics.
+Rights/contracts are not marketing data.
+Payment/KYC data is isolated from public/social data.
+
+GDPR/UK STYLE
+privacy by design, transparency, minimization, access/correction/deletion and
+portable user-data workflows where scope requires.
+
+CCPA/CPRA STYLE
+notice, know/delete/correct, opt-out of sale/sharing and sensitive-information
+controls when applicable.
+
+OTHER JURISDICTIONS
+Colorado, Utah, China PIPL, Singapore PDPA and Australian Privacy Act/APP modules
+are enabled according to actual scope and legal review.
+
+SECURITY FRAMEWORK
+Adopt NIST CSF 2.0 now for governance/risk structure.
+
+SECURE DEVELOPMENT
+Use NIST SSDF 1.1 as current final baseline while monitoring the draft 1.2 update.
+
+AI GOVERNANCE
+Map AI systems to NIST AI RMF and GenAI Profile.
+
+PAYMENTS
+Minimize PCI DSS scope by keeping raw cardholder data with compliant payment rails.
+
+ASSURANCE TARGETS
+ISO/IEC 27001 and SOC 2 are future hosted-service assurance targets, not immediate
+claims.
+
+HIPAA/GLBA
+Conditional only if Poietek enters those regulated scopes.
+
+END DOCUMENT 94

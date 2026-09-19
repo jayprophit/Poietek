@@ -1,0 +1,60 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.5
+
+115 — AI RECOMMENDATIONS, SAFETY & AUTO-FIX
+===========================================
+
+AI ROLE
+
+Translate measurements into useful production advice.
+
+EXAMPLE
+
+Instead of:
+"True Peak: -0.1 dBTP."
+
+Assistant:
+"Your master is very close to full scale. Spotify's current guidance asks for
+more true-peak margin; preview a limiter ceiling change before export."
+
+ACTION MODES
+
+ADVICE ONLY
+No mutation.
+
+PREVIEWABLE COMMAND
+Build non-destructive project command.
+
+MANUAL HARDWARE ACTION
+"Lower microphone preamp."
+
+REQUIRES MORE MEASUREMENT
+"Play the loudest chorus first."
+
+NO SILENT MASTERING
+
+AI may not automatically:
+change preamp
+enable phantom
+insert compressor
+EQ vocal
+limit master
+normalize
+change sample rate
+
+without policy/user approval.
+
+AUTO MODE
+
+User may enable bounded helpers:
+Prevent digital master overload.
+Record safety track.
+Auto input trim on verified digital preamp.
+Delivery conformity pass.
+
+Every automatic action:
+bounded
+logged
+undoable when technically possible
+visible.
+
+END DOCUMENT 115

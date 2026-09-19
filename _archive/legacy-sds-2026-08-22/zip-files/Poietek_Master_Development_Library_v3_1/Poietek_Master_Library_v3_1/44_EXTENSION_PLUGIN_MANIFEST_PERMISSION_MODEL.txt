@@ -1,0 +1,64 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.8
+
+44 — EXTENSION / PLUGIN MANIFEST & PERMISSION MODEL v1
+======================================================
+
+COMPANION
+extension-manifest.schema.v1.json
+
+EXTENSION TYPES
+audio_effect
+instrument
+midi_processor
+analyzer
+video_effect
+storage_provider
+device_adapter
+ai_provider
+workflow
+theme
+ui_panel
+
+PERMISSION MODEL
+
+Default: no permission.
+
+Examples:
+A theme should need none.
+A storage connector may need network + storage.
+A workflow should not receive microphone automatically.
+An AI provider may need project.read only when user invokes it.
+
+INSTALL UX
+
+Show:
+publisher
+license
+version
+platforms
+requested permissions
+network domains
+verification
+size.
+
+[Install]
+[Cancel]
+
+Permission increase on update requires confirmation.
+
+RUNTIME
+Web-safe modules prefer WASM/sandboxed execution.
+Native modules require signing/review strategy.
+Themes cannot run arbitrary code.
+
+MARKETPLACE
+Manifest is the technical declaration, not proof of safety.
+Official registry adds review/signature/reputation metadata.
+
+ACCEPTANCE
+EXT-001 theme asking for filesystem rejected by review policy.
+EXT-002 storage connector receives only declared host access.
+EXT-003 permission increase prompts.
+EXT-004 unsigned native module follows developer-mode policy.
+EXT-005 extension incompatibility does not corrupt project.
+EXT-006 disabled extension state remains preserved.

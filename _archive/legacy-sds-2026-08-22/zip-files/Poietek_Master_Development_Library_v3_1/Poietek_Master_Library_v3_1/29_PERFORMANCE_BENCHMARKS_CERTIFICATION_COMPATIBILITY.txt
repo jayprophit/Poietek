@@ -1,0 +1,230 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 1.6 ADDENDUM
+
+29 — PERFORMANCE BUDGETS, BENCHMARKS, CERTIFICATION & COMPATIBILITY
+==================================================================
+
+PURPOSE
+
+"Professional" requires measurable targets.
+
+------------------------------------------------------------------------------
+1. PERFORMANCE BUDGET REGISTRY
+------------------------------------------------------------------------------
+
+Each subsystem:
+metric
+target
+minimum
+test hardware
+test project
+measurement method.
+
+------------------------------------------------------------------------------
+2. AUDIO
+------------------------------------------------------------------------------
+
+Measure:
+callback deadline misses
+roundtrip latency
+scheduler jitter
+DSP CPU
+record dropout
+offline render speed.
+
+Never claim one latency number across all systems.
+
+------------------------------------------------------------------------------
+3. UI
+------------------------------------------------------------------------------
+
+Frame rate
+input response
+timeline scroll
+large track count
+meter load
+waveform zoom.
+
+------------------------------------------------------------------------------
+4. PROJECT OPEN
+------------------------------------------------------------------------------
+
+Cold/warm.
+Small/large.
+Missing plugin.
+Remote asset.
+Old schema.
+
+------------------------------------------------------------------------------
+5. MEMORY
+------------------------------------------------------------------------------
+
+Idle
+per track
+per plugin
+waveform cache
+video
+AI model.
+
+------------------------------------------------------------------------------
+6. DISK
+------------------------------------------------------------------------------
+
+Recording throughput
+multitrack playback
+proxy cache
+sample streaming.
+
+------------------------------------------------------------------------------
+7. SYNC
+------------------------------------------------------------------------------
+
+Operation latency
+reconnect
+asset resume
+large project convergence.
+
+------------------------------------------------------------------------------
+8. VIDEO
+------------------------------------------------------------------------------
+
+Decode
+proxy
+frame drop
+GPU
+export.
+
+------------------------------------------------------------------------------
+9. DJ LIVE
+------------------------------------------------------------------------------
+
+8-hour performance test.
+Controller hotplug.
+DVS.
+Stems.
+video.
+No background jobs.
+
+------------------------------------------------------------------------------
+10. HARDWARE CERTIFICATION
+------------------------------------------------------------------------------
+
+Labels:
+Detected
+Mapped
+Community Tested
+Poietek Tested
+Manufacturer Verified
+
+Never call manufacturer verified without manufacturer participation.
+
+------------------------------------------------------------------------------
+11. DEVICE MATRIX
+------------------------------------------------------------------------------
+
+OS
+firmware
+connection
+input
+output
+clock
+feedback
+audio
+DVS
+known issues.
+
+------------------------------------------------------------------------------
+12. PLUGIN COMPATIBILITY
+------------------------------------------------------------------------------
+
+format
+vendor
+version
+OS
+scan
+render
+state
+GUI
+sidechain
+multiout
+crash.
+
+------------------------------------------------------------------------------
+13. BROWSER MATRIX
+------------------------------------------------------------------------------
+
+WebAudio
+AudioWorklet
+WebMIDI
+OPFS
+PWA
+permissions
+known limitations.
+
+------------------------------------------------------------------------------
+14. MOBILE MATRIX
+------------------------------------------------------------------------------
+
+device class
+OS
+audio
+MIDI
+AUv3
+storage
+battery/thermal.
+
+------------------------------------------------------------------------------
+15. BENCHMARK PROJECTS
+------------------------------------------------------------------------------
+
+Beatmaker 16-track
+Band 48-track
+Mix 100-track
+Orchestral
+Video music project
+DJ set
+Collaboration project.
+
+------------------------------------------------------------------------------
+16. PERFORMANCE TIERS
+------------------------------------------------------------------------------
+
+Minimum
+Recommended
+High-end
+Mobile compact
+Web constrained.
+
+Do not disable project opening purely because device is below recommendation;
+offer freeze/proxy/quality reductions.
+
+------------------------------------------------------------------------------
+17. THERMAL / BATTERY
+------------------------------------------------------------------------------
+
+Mobile performance adapts:
+screen
+analysis jobs
+oversampling
+video proxy
+AI.
+
+Never alter audible final export without informing user.
+
+------------------------------------------------------------------------------
+18. ACCEPTANCE
+------------------------------------------------------------------------------
+
+PERF-001 no audio-thread network call.
+PERF-002 benchmark underrun count meets release target.
+PERF-003 long recording integrity verified.
+PERF-004 100-track UI remains within stated target.
+PERF-005 mobile thermal fallback works.
+PERF-006 DJ soak completes.
+PERF-007 plugin crash recovery measured.
+PERF-008 sync reconnect benchmark.
+PERF-009 video proxy target.
+PERF-010 certification labels sourced from evidence.
+PERF-011 benchmark results tied to hardware.
+PERF-012 regression threshold blocks release where configured.
+
+END DOCUMENT 29

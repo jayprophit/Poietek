@@ -1,0 +1,64 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.6
+
+122 — MUSIC GENRE TAXONOMY & REFERENCE PROFILES
+===============================================
+
+COMPANIONS
+schemas/style-reference-profile.schema.v1.json
+packages/content-intelligence/src/GenreTaxonomyProvider.ts
+
+GENRE TAXONOMY
+
+MusicBrainz provides an open genre resource and explicitly treats genres as part
+of its tag system.
+
+Poietek can use:
+MusicBrainz genre IDs/names
+community additions
+user-defined genres
+artist-private tags.
+
+Do not assume one permanent exhaustive list.
+
+STYLE PROFILE
+
+A genre/subgenre reference profile can summarize:
+tempo distribution
+meter
+key/mode tendencies
+integrated loudness distribution
+true peak distribution
+crest factor
+dynamic range
+spectral balance
+bass energy
+vocal/instrument prominence
+stereo width
+section durations
+arrangement density
+instrumentation tags.
+
+REFERENCE SOURCES
+
+user-selected references
+artist catalogue
+licensed dataset
+open dataset
+community aggregate
+same-project history.
+
+COPYRIGHT
+
+Poietek should store extracted measurement features, not redistribute copyrighted
+reference audio without permission.
+
+GENRE MIX
+
+Tracks can have weighted tags:
+Afrobeats 0.55
+R&B 0.35
+Electronic 0.10.
+
+AI compares against more than one profile.
+
+END DOCUMENT 122

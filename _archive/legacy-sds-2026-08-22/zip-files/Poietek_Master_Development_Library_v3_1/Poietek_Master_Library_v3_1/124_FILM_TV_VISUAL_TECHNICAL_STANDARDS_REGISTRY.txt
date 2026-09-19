@@ -1,0 +1,60 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.6
+
+124 — FILM, TV & VISUAL TECHNICAL STANDARDS REGISTRY
+====================================================
+
+COMPANIONS
+schemas/delivery-standard-profile.schema.v1.json
+profiles/content-standards-registry.example.json
+
+CURRENT FORMAL REFERENCE CLASSES
+
+SDR HDTV:
+ITU-R BT.709.
+
+HDR television:
+ITU-R BT.2100.
+
+Digital Cinema:
+SMPTE D-Cinema families including 428, 429, 430, 431, 432 and 433.
+
+Interoperable Master Format:
+SMPTE ST 2067 IMF.
+
+Professional facility media over managed IP:
+SMPTE ST 2110 where relevant to infrastructure.
+
+LOUDNESS:
+ITU-R BS.1770 / EBU R128 family where applicable.
+
+CAPTIONS:
+WebVTT for web delivery;
+TTML-family profiles where target requires them.
+
+PROFILE FIELDS
+
+resolution
+frame rate
+aspect ratio
+colour primaries
+transfer
+matrix
+bit depth
+chroma
+codec/container
+HDR
+audio sample rate
+channel layout
+loudness
+true peak
+caption/subtitle format
+metadata
+packaging
+rights/accessibility.
+
+TARGET-SPECIFIC
+
+Broadcasters/streamers/festivals/clients can add separate updateable delivery
+profiles without changing the canonical project format.
+
+END DOCUMENT 124

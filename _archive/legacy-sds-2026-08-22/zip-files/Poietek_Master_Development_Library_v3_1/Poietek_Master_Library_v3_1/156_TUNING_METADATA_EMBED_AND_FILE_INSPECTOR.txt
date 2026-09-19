@@ -1,0 +1,39 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.9
+
+156 — TUNING METADATA & FILE INSPECTOR
+======================================
+
+COMPANION
+packages/tuning/src/TuningMetadataProjection.ts
+
+FILE INSPECTOR can show:
+
+Tuning:
+A4 = 432 Hz
+
+Temperament:
+12-TET
+
+Scale:
+Custom / Scala / Just etc.
+
+Project:
+Poietek Project ID
+
+Variant:
+Original Creative Master
+
+Compatibility:
+A440 version available.
+
+METADATA
+
+Where the media format has an appropriate standard/custom metadata field, Poietek
+may project the public tuning note.
+
+The canonical TuningProfile remains in the Rights/Project metadata because generic
+players can strip or ignore custom fields.
+
+Never alter the audio merely to make metadata agree.
+
+END DOCUMENT 156

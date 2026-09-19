@@ -1,0 +1,70 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.1
+
+78 — LISTENER SUPPORT, TIPS, GIFTS, DONATIONS & CREATOR ECONOMY
+==============================================================
+
+SUPPORT TYPES
+
+Purchase
+Tip
+Gift
+Membership/subscription
+Pay-what-you-want
+Crowdfunding/campaign later
+Charitable donation only where legal/platform requirements are met.
+
+IMPORTANT TERMINOLOGY
+
+A payment to an artist is generally a tip/gift/support payment unless it meets the
+legal requirements for a charitable donation.
+
+Do not market creator tips as tax-deductible donations.
+
+FAN EXPERIENCE
+
+Listen/watch/view.
+Follow.
+Like/comment.
+Buy.
+Tip.
+Gift.
+Subscribe/support.
+Purchase licences/content.
+Attend/participate in creator community.
+
+RIGHTS-AWARE SUPPORT
+
+Tip to one creator:
+payment policy determines recipient.
+
+Purchase collaborative song:
+approved CommercePolicy determines sale allocations.
+
+No rights claim should be inferred from a fan payment.
+
+MOBILE STORE ROUTING
+
+CommercePolicyRouter checks:
+platform
+storefront/territory
+product
+digital vs physical
+tip/gift vs content purchase
+current store rules.
+
+On Apple platforms, creator content is treated as UGC/creator content and digital
+purchases are subject to App Review payment rules; optional monetary gifts have a
+separate rule when 100% goes to the receiver and are not connected to digital
+content/services.
+
+On Google Play, digital goods/services generally use Play Billing unless an
+eligible current alternative-billing program applies; peer-to-peer/tax-exempt
+donation categories are treated differently.
+
+Never hard-code one global mobile checkout.
+
+ACCEPTANCE
+FAN-001 tip never grants copyright.
+FAN-002 purchase licence is explicit.
+FAN-003 app-store rail selected by current policy.
+FAN-004 blocked/refunded payment updates ledger.

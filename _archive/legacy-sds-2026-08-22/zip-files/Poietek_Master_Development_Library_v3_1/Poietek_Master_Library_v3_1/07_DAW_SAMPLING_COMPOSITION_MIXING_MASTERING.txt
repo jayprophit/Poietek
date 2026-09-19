@@ -1,0 +1,119 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.0
+
+Compiled from:
+1) The complete product-development conversation supplied by the creator.
+2) Deep review of GitHub repository: jayprophit/Studio-Daw-Station-SDS-
+3) Current cross-platform/offline-first architecture recommendations.
+
+WORKING PRODUCT NAME
+Poietek is the working ecosystem name discussed in the design conversation.
+Studio DAW Station (SDS) is the current repository/product label.
+Final public branding should be chosen only after trademark/domain checks.
+
+CORE RULE
+One app. One project model. One creative graph. Many workspaces.
+Offline first. Cloud optional. Hardware agnostic. Collaboration capable.
+Professional depth without forcing beginners to see every advanced control.
+
+LEGAL / CLEAN-ROOM RULE
+Competitor products, patents, papers, hardware and interfaces may be studied for
+functional principles, workflows and interoperability requirements. Do not copy
+proprietary source code, protected assets, branded UI expression, undocumented
+confidential protocols, or patented claims without appropriate legal review or
+licensing. Compatibility layers should use documented/open interfaces wherever
+possible.
+
+===============================================================================
+
+STANDARD PROFESSIONAL CORE
+Projects, templates, audio/MIDI/instrument tracks, folders, groups, buses, VCAs,
+sends, sidechains, recording, comping, editing, automation, tempo maps, mixer,
+plugins, freeze/bounce, stems, undo, autosave, shortcuts, drag/drop and rendering.
+
+SAMPLER / CHOP
+Waveform/spectrogram/turntable views.
+Manual, lazy, transient, equal, beat/bar, silence, AI and zero-crossing chops.
+Per-slice start/end, loop, pitch, tune, gain, pan, reverse, fade, filter,
+envelope, stretch and choke.
+Hardware banks are export profiles, not app limits.
+
+STEMS
+Vocals/drums/bass/music as compatibility baseline, optional finer models.
+Linked chop markers across stems, stem mixer and stem-to-pad mapping.
+
+PAD BUILDER
+Logical pad grid, classification, velocity layers, round robin, choke, gate/loop,
+root notes, filters, envelopes, colors and hardware adaptation.
+
+DRUM LAB
+Step grid, velocity, probability, ratchets, flam, ghost notes, microtiming,
+note repeat, swing, groove, polymeter, Euclidean/conditional tools.
+
+GROOVE
+Extract timing/velocity from audio/MIDI, apply by percentage and save templates.
+
+PIANO ROLL
+Ghost notes, chord stamps, scale highlighting, MPE/per-note expression,
+microtiming, probability, articulations, strum/flam/arp/humanize.
+
+SCORE
+Staff/percussion notation, lyrics, chord symbols, articulations, tuplets, tab and
+MusicXML-style interchange where supported. Keep score and MIDI synchronized.
+
+HARMONY
+Global chord track, key/scale maps, chord pads, scale assistant, detection,
+substitution, transpose and alternative tunings.
+
+SESSION PLAYERS
+Editable drummer/bassist/keys/guitar/percussion/strings/brass performances
+following chord track and user-defined complexity/groove.
+
+CLIP/SCENE
+Launch clips/patterns/stems and record performance into Arrangement.
+
+ARRANGEMENT
+Real audio/MIDI/video ruler, split/trim/slip/fade/stretch/loop/consolidate,
+sections, markers and alternate scratch area.
+
+RETROSPECTIVE CAPTURE
+MIDI high priority. Optional rolling audio with privacy/memory controls.
+
+VOCAL/NOTE AUDIO
+Monophonic pitch/timing first: pitch curve, drift, vibrato, formant, timing,
+sibilance and gain. Polyphonic editing later research target.
+
+ALIGNMENT
+Guide vs doubles: timing and optional pitch, loose through tight.
+
+SPECTRAL/REPAIR
+Spectrogram, selection, harmonic tools, heal/attenuate, de-click, de-hum,
+de-noise, de-clip, de-reverb, de-bleed and voice isolation.
+
+SOUND DESIGN
+Sampler, synths, granular/wavetable later, modulation, resampling and macros.
+
+AUTOMATION
+Audio, MIDI, plugins, mixer, tempo, video and show-control parameters.
+
+MIX
+Buses, groups, parallel containers, snapshots, track versions, reference tracks,
+gain-matched A/B, metering and phase/stereo/loudness tools.
+
+MASTER
+EQ/dynamic EQ, compression/multiband, saturation, image, clipper, limiter,
+resonance control, LUFS/true peak, reference assistance.
+
+EXPORT
+Audio master, stems, loops, samples, MIDI, kit/program packages and project
+archive. Settings for rate, depth, dither, range/tails and realtime/offline.
+Device-specific exports only where verified.
+
+VERSION 1.1 CROSS-REFERENCE
+For the detailed pitch/time/vocal subsystem, including Live Tune, Note Edit, Guide/Dub alignment, polyphonic research and audio-to-MIDI, see Document 16.
+
+VERSION 1.2 CROSS-REFERENCE
+Document 17 connects the DAW's clips, stems, sampler and arrangement to live DJ decks/scenes so performances can be recorded back into Arrangement.
+
+VERSION 1.3 CROSS-REFERENCE
+Document 18 defines the built-in instrument/effect/mastering suite and external plug-in host required for the production workflows in this document.

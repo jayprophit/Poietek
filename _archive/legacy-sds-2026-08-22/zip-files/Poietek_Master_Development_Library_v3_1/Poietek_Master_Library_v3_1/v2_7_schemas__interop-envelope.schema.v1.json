@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/interop-envelope/v1",
+  "title": "Poietek Interop Envelope v1",
+  "type": "object",
+  "required": [
+    "envelopeId",
+    "schemaVersion",
+    "kind",
+    "source",
+    "createdAt",
+    "payload"
+  ],
+  "properties": {
+    "envelopeId": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "kind": {
+      "enum": [
+        "command",
+        "event",
+        "project_fragment",
+        "asset_reference",
+        "device_state",
+        "console_state",
+        "timeline_selection",
+        "creative_intent",
+        "proof_record",
+        "rights_manifest_reference",
+        "compute_job",
+        "handoff",
+        "presence",
+        "diagnostic"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "appId",
+        "runtimeId"
+      ],
+      "additionalProperties": true
+    },
+    "target": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "correlationId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "contentHash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "encoding": {
+      "enum": [
+        "json",
+        "json_canonical",
+        "protobuf",
+        "cbor",
+        "binary_ref",
+        "wit_component",
+        "custom"
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

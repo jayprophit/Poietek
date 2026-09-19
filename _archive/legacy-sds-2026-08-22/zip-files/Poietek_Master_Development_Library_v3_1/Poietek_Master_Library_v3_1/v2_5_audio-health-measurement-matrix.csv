@@ -1,0 +1,13 @@
+Measurement,Unit,Deterministic?,Standards implementation required?,Primary use
+Sample peak,dBFS,Yes,No,Capture/headroom/basic clipping
+RMS,dBFS,Yes,No,Signal energy/reference diagnostic
+True peak,dBTP,Yes,Yes for compliant label,Inter-sample/delivery risk
+Integrated loudness,LUFS,Yes,Yes for compliant label,Programme/delivery loudness
+Momentary loudness,LUFS,Yes,Yes,Short local loudness
+Short-term loudness,LUFS,Yes,Yes,3-second loudness trend
+Loudness Range,LU,Yes,Yes,Programme loudness variation
+DC offset,linear / %,Yes,No,Fault detection
+Stereo correlation,-1..1,Yes,No,Phase/mono compatibility
+Noise floor,dBFS / model,Yes,Method-specific,Recording quality
+Spectral recommendation,descriptive,Partly,No,Advisory/reference comparison
+AI recommendation,text/commands,No,No,Explain measured evidence

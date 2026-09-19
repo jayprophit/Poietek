@@ -1,0 +1,48 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.9
+
+154 — PUBLIC RELEASE TUNING COMPATIBILITY ADVISOR
+=================================================
+
+IMPORTANT
+
+Public release does not automatically require A440.
+
+A440 is the current ISO standard musical-pitch reference, which makes it a strong
+interoperability default for instruments, sessions and collaborators.
+
+Poietek therefore uses ADVISORY logic.
+
+EXAMPLE
+
+Project:
+A432.
+
+Destination:
+No explicit tuning requirement.
+
+RESULT:
+PASS.
+
+Advisory:
+"Your project uses A432. Keep the original. A separate A440 compatibility master
+is available if a collaborator/client system specifically expects standard pitch."
+
+STRICT TARGET
+
+If a client/session/ensemble explicitly requires A440:
+
+NOT READY for that target.
+
+Actions:
+Preserve original project.
+Create separate A440 compatibility version.
+Review audible quality.
+Export both when appropriate.
+
+NO FEAR WARNING
+
+Poietek must not tell users:
+"Radio will reject A432"
+unless the selected destination actually documents such a requirement.
+
+END DOCUMENT 154

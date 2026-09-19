@@ -1,0 +1,41 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.9
+
+155 — DUAL MASTER: ORIGINAL + COMPATIBILITY EXPORT
+==================================================
+
+USE CASE
+
+Creator wants A432 master but client/collaborator asks for A440 compatibility.
+
+EXPORT SET:
+
+01 ORIGINAL
+SongName_MASTER_A432.wav
+
+02 COMPATIBILITY
+SongName_MASTER_A440_COMPAT.wav
+
+03 METADATA
+SongName_TUNING.txt/json
+
+Both reference the same release lineage but different render variants.
+
+RIGHTS
+
+No new copyright ownership is inferred from compatibility rendering.
+
+HASHES
+
+Each render receives:
+Asset ID
+SHA-256
+Rights Manifest link
+tuning profile
+render provenance.
+
+QUALITY
+
+Compatibility retune must be auditioned.
+Do not label it lossless if an audio pitch-shift operation was required.
+
+END DOCUMENT 155

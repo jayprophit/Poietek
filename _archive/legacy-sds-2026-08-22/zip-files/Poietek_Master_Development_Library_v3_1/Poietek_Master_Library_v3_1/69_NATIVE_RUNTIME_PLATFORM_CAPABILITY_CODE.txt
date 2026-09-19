@@ -1,0 +1,37 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 2.0
+
+69 — NATIVE RUNTIME / PLATFORM CAPABILITY CODE
+==============================================
+
+COMPANION
+packages/platform/src/PlatformCapabilities.ts
+src-tauri/tauri.conf.example.json
+
+WHY
+
+Feature UI should ask:
+"Can this runtime do VST3?"
+not:
+"Is user agent Windows?"
+
+Native shell injects authoritative platform capability data.
+
+WEB
+webCapabilities() performs only browser capability discovery.
+
+TAURI
+A future TauriPlatformCapabilities adapter obtains:
+OS
+app version
+native bridge features
+permissions.
+
+FEATURE FLAGS
+Experimental feature flag != platform capability.
+Keep separate.
+
+ACCEPTANCE
+CAP-001 web pluginFormats empty.
+CAP-002 mobile does not inherit desktop VST flags.
+CAP-003 installed app marked installedNativeApp.
+CAP-004 missing capability disables feature with explanation.

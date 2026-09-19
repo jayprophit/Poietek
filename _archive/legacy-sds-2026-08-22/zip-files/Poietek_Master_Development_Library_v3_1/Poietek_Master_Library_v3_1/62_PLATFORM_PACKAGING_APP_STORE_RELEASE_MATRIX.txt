@@ -1,0 +1,73 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.10
+
+62 — PLATFORM PACKAGING / APP-STORE RELEASE MATRIX
+==================================================
+
+WINDOWS
+Outputs:
+MSI
+NSIS setup EXE
+Microsoft Store package path later.
+Code signing before public stable.
+
+MACOS
+Outputs:
+.app
+DMG
+Mac App Store package when chosen.
+Signing + notarization for direct distribution.
+
+LINUX
+Outputs evaluated:
+AppImage
+Deb
+RPM
+Flatpak/Snap where useful.
+Build against documented minimum distro baseline.
+
+ANDROID
+AAB for Google Play.
+Signed APK for development/testing where appropriate.
+
+IOS/IPADOS
+Signed Xcode/Tauri iOS build.
+TestFlight.
+App Store.
+
+WEB
+versioned static deployment.
+PWA manifest/service worker.
+normal browser URL.
+
+WEBSITE
+static/SSR marketing/docs site may deploy independently from studio web app.
+
+UPDATE POLICY
+Installed desktop:
+signed updater or installer updates.
+Mobile/tablet:
+store update rules.
+Web:
+deployed assets/service-worker safe activation.
+
+PERFORMANCE GUARD
+No forced app update while:
+recording
+rendering
+DJ performance
+live show.
+
+RELEASE ARTIFACT
+Every platform build records:
+version
+commit
+schema
+SBOM
+signature
+supported OS
+known issues.
+
+OFFICIAL TAURI DISTRIBUTION REFERENCE
+Tauri currently documents platform-specific installers/app-store distribution for
+Linux, macOS, Windows, Android and iOS.
+https://v2.tauri.app/distribute/

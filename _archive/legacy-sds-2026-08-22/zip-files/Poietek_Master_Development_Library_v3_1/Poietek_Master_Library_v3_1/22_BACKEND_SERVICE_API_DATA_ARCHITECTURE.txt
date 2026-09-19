@@ -1,0 +1,806 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.5 ADDENDUM
+
+22 — BACKEND, SERVICE LAYER, API & DATA ARCHITECTURE
+====================================================
+
+PURPOSE
+
+This document defines the backend architecture that supports:
+accounts, teams, sync, collaboration, storage connectors, community, rights,
+publishing, notifications, search and AI jobs.
+
+Critical distinction:
+
+THE BACKEND IS NOT THE AUDIO ENGINE.
+
+Realtime creative playback/recording lives on the client/native engine.
+Backend services support persistence, synchronization and network features.
+
+------------------------------------------------------------------------------
+1. BACKEND PRINCIPLES
+------------------------------------------------------------------------------
+
+1. LOCAL FIRST
+Backend outage does not stop local project work.
+
+2. PROVIDER ABSTRACTED
+Firebase/Supabase/self-hosted are adapters.
+
+3. SERVICE BOUNDARIES
+Do not make one giant API server.
+
+4. EVENT DRIVEN WHERE USEFUL
+Uploads/transcodes/notifications/search indexing happen asynchronously.
+
+5. IDEMPOTENT
+Retrying a sync/upload operation should not duplicate state.
+
+6. AUDITABLE
+Permissions, release approvals, rights changes and monetary operations logged.
+
+7. LEAST PRIVILEGE
+Services only access required data.
+
+------------------------------------------------------------------------------
+2. BACKEND SERVICE MAP
+------------------------------------------------------------------------------
+
+IdentityService
+AccountService
+TeamService
+ProjectDirectoryService
+ProjectAccessService
+SyncRelayService
+CollaborationService
+AssetMetadataService
+StorageConnectorService
+UploadSessionService
+MediaJobService
+NotificationService
+MessagingService
+CommunityService
+SearchService
+RightsService
+ReleaseService
+MarketplaceService
+PaymentLedgerService
+AIJobService
+TelemetryService
+ModerationService
+AdminService
+
+Not all required for first release.
+
+------------------------------------------------------------------------------
+3. FIRST WEB MVP BACKEND
+------------------------------------------------------------------------------
+
+Required:
+Identity
+Project directory
+Project membership
+Sync metadata
+Comments
+Basic presence
+Storage connector registry
+Notifications minimal
+
+Optional:
+Firebase adapter.
+
+Not required initially:
+Marketplace
+Payments
+Public feed
+Distribution
+Heavy media processing
+Blockchain
+
+------------------------------------------------------------------------------
+4. SERVICE CONTRACTS
+------------------------------------------------------------------------------
+
+Each service has:
+interface
+request DTO
+response DTO
+errors
+auth policy
+audit policy
+events
+rate limits
+version
+
+UI never calls provider SDK directly if a service abstraction exists.
+
+------------------------------------------------------------------------------
+5. API GATEWAY / EDGE
+------------------------------------------------------------------------------
+
+Responsibilities:
+authentication
+request ID
+version routing
+rate limit
+CORS
+CSRF where relevant
+input size
+observability
+
+Do not put business logic entirely in gateway.
+
+------------------------------------------------------------------------------
+6. REST / RPC / WEBSOCKET
+------------------------------------------------------------------------------
+
+HTTP:
+accounts
+projects
+teams
+rights
+storage config
+release metadata.
+
+Realtime:
+WebSocket/WebRTC/provider realtime for:
+presence
+comments
+structured collaboration relay.
+
+Bulk media:
+direct provider/object-store upload sessions, not API server buffering.
+
+------------------------------------------------------------------------------
+7. API VERSIONING
+------------------------------------------------------------------------------
+
+/api/v1/
+
+Breaking changes:
+new version.
+
+Nonbreaking:
+add optional fields.
+
+Client sends:
+appVersion
+schemaVersion
+platform.
+
+Server can reject dangerously incompatible writes but should preserve local data.
+
+------------------------------------------------------------------------------
+8. IDENTITY
+------------------------------------------------------------------------------
+
+User {
+ id
+ displayName
+ email?
+ createdAt
+ profile
+}
+
+External identities:
+Firebase
+Supabase
+Google
+Microsoft
+Apple
+GitHub
+etc.
+
+Canonical internal user ID remains provider-independent.
+
+------------------------------------------------------------------------------
+9. AUTH
+------------------------------------------------------------------------------
+
+Support:
+guest/local-only
+registered account
+OAuth
+passkey later
+MFA later
+
+Backend tokens:
+short-lived.
+
+Refresh:
+secure mechanism.
+
+Native:
+secure credential storage.
+
+Web:
+secure cookies or provider-recommended secure token pattern.
+
+------------------------------------------------------------------------------
+10. TEAM / ACCESS MODEL
+------------------------------------------------------------------------------
+
+Team
+ProjectMembership
+Role
+Permission
+
+Permissions:
+project.read
+project.edit
+asset.download
+asset.upload
+comment
+invite
+manage_members
+rights.edit
+release.approve
+publish
+billing.manage
+
+Never trust frontend role labels.
+
+------------------------------------------------------------------------------
+11. PROJECT DIRECTORY SERVICE
+------------------------------------------------------------------------------
+
+Stores project discovery metadata, not full media.
+
+ProjectDirectoryEntry {
+ id
+ title
+ owner
+ team
+ modifiedAt
+ thumbnailRef?
+ syncRevision
+ schemaVersion
+ visibility
+ storageHealthSummary
+}
+
+Local project can exist without directory entry.
+
+------------------------------------------------------------------------------
+12. SYNC RELAY
+------------------------------------------------------------------------------
+
+Structured updates:
+receive
+validate auth
+persist update/log
+broadcast to authorized peers
+
+Large assets:
+reference AssetReplica and UploadSession.
+
+Sync relay does not parse PCM.
+
+------------------------------------------------------------------------------
+13. COLLABORATION
+------------------------------------------------------------------------------
+
+Presence:
+ephemeral.
+
+Comments:
+persistent.
+
+CRDT updates:
+persistent enough for convergence/recovery.
+
+Named snapshots:
+persistent.
+
+Activity:
+append-only user-facing record.
+
+------------------------------------------------------------------------------
+14. ASSET METADATA
+------------------------------------------------------------------------------
+
+Canonical server metadata:
+asset ID
+hash
+size
+type
+owner/team
+replica references
+availability
+licence/provenance metadata
+
+Actual bytes may live elsewhere.
+
+------------------------------------------------------------------------------
+15. STORAGE CONNECTOR SERVICE
+------------------------------------------------------------------------------
+
+Stores connector metadata and encrypted authorization references.
+
+Provider credentials never exposed to collaborators.
+
+Connector operations can be delegated to:
+client
+backend worker
+provider direct upload
+
+depending on provider/API.
+
+------------------------------------------------------------------------------
+16. UPLOAD SESSION
+------------------------------------------------------------------------------
+
+UploadSession {
+ id
+ assetId
+ provider
+ uploadLocator
+ parts
+ bytesUploaded
+ checksum
+ expiresAt
+ state
+}
+
+Resumable.
+Idempotent.
+Recoverable.
+
+------------------------------------------------------------------------------
+17. MEDIA JOBS
+------------------------------------------------------------------------------
+
+Async jobs:
+transcode
+proxy
+waveform
+thumbnail
+stem separation
+AI analysis
+loudness
+preview
+
+Job {
+ id
+ type
+ inputs
+ outputAssetIds
+ state
+ progress
+ logs
+ capability
+ costClass
+}
+
+Local execution can satisfy same job contract.
+
+------------------------------------------------------------------------------
+18. JOB SCHEDULER
+------------------------------------------------------------------------------
+
+Queue priorities:
+interactive
+background
+maintenance
+
+Per-user/team quotas.
+
+Cancelable where safe.
+
+No cloud job required if local worker can run it.
+
+------------------------------------------------------------------------------
+19. NOTIFICATIONS
+------------------------------------------------------------------------------
+
+Events:
+collaborator invite
+comment
+mention
+sync conflict
+release approval
+asset missing
+storage quota
+marketplace later
+
+Delivery:
+in-app
+push
+email optional
+
+User preferences required.
+
+------------------------------------------------------------------------------
+20. MESSAGING
+------------------------------------------------------------------------------
+
+Project chat
+direct message
+group
+
+Message {
+ id
+ thread
+ author
+ body
+ attachments
+ created
+ edited
+ moderationState
+}
+
+Attachments use Asset references.
+
+Do not embed giant base64 files in messages.
+
+------------------------------------------------------------------------------
+21. COMMUNITY
+------------------------------------------------------------------------------
+
+Separate public social data from private studio data.
+
+Community DB:
+posts
+profiles
+follows
+reactions
+public comments
+public media refs
+
+Private Project DB:
+members
+assets
+comments
+rights
+
+Never accidentally join private records into public feed.
+
+------------------------------------------------------------------------------
+22. SEARCH
+------------------------------------------------------------------------------
+
+Search domains:
+projects
+assets
+people
+community
+plugins
+device profiles
+help
+
+Local search:
+works offline.
+
+Server search:
+indexes authorized remote/public content.
+
+Permission filters happen before results are returned.
+
+------------------------------------------------------------------------------
+23. RIGHTS SERVICE
+------------------------------------------------------------------------------
+
+Stores:
+contributors
+roles
+entities
+agreements refs
+split proposals
+approvals
+release validation
+
+Changes audited.
+
+No automatic legal determination.
+
+------------------------------------------------------------------------------
+24. RELEASE SERVICE
+------------------------------------------------------------------------------
+
+Quick Export remains local.
+
+ReleaseService applies only to commercial/publish workflow.
+
+Checks:
+metadata
+credits
+rights declarations
+split approval
+licences
+artwork
+destination requirements.
+
+Connectors to distributors/platforms later.
+
+------------------------------------------------------------------------------
+25. PAYMENT / LEDGER
+------------------------------------------------------------------------------
+
+Future only.
+
+Never calculate balances with floating-point currency.
+
+Use integer minor units / decimal types.
+
+Immutable ledger entries.
+
+External payment processor handles cards.
+
+------------------------------------------------------------------------------
+26. AI BACKEND
+------------------------------------------------------------------------------
+
+AIProviderGateway:
+routes to provider/local.
+
+Cloud requests:
+permission
+data classification
+cost
+provider terms
+redaction where possible
+
+Store AI operation metadata separately from provider secrets.
+
+------------------------------------------------------------------------------
+27. FIREBASE ADAPTER
+------------------------------------------------------------------------------
+
+Possible first web prototype:
+
+Firebase Auth -> IdentityAdapter
+Firestore -> ProjectDirectory/comments/light sync metadata
+Hosting -> web deployment
+
+Do not let Firebase document shape become domain model.
+
+Adapter maps:
+Canonical DTO <-> Firestore document.
+
+------------------------------------------------------------------------------
+28. SUPABASE ADAPTER
+------------------------------------------------------------------------------
+
+Possible alternative:
+Auth
+Postgres
+Realtime
+Storage
+
+Again:
+Postgres tables map to domain DTO.
+Project schema not equal DB schema.
+
+------------------------------------------------------------------------------
+29. SELF-HOSTED BACKEND
+------------------------------------------------------------------------------
+
+Future:
+Postgres
+Redis-compatible cache
+object storage
+WebSocket relay
+job workers
+search
+
+Can support studios/enterprise/education.
+
+------------------------------------------------------------------------------
+30. DATABASE SPLIT
+------------------------------------------------------------------------------
+
+Relational:
+users
+teams
+permissions
+rights
+releases
+billing.
+
+CRDT/log:
+project collaborative structured updates.
+
+Object storage:
+media.
+
+Search index:
+derived.
+
+Cache:
+ephemeral.
+
+Do not put everything into one database technology.
+
+------------------------------------------------------------------------------
+31. POSTGRES CONCEPTUAL SCHEMA
+------------------------------------------------------------------------------
+
+users
+teams
+team_members
+projects
+project_members
+project_snapshots
+assets
+asset_replicas
+comments
+threads
+messages
+contributors
+rights_entities
+split_proposals
+split_approvals
+releases
+storage_connectors
+notifications
+audit_events
+
+Later:
+community_posts
+follows
+marketplace_items
+orders
+ledger_entries
+
+------------------------------------------------------------------------------
+32. AUDIT LOG
+------------------------------------------------------------------------------
+
+AuditEvent {
+ id
+ actor
+ action
+ objectType
+ objectId
+ timestamp
+ sourceIp? privacy-sensitive
+ deviceId?
+ metadata
+}
+
+Audit required:
+permissions
+rights
+release
+billing
+moderation.
+
+Creative edit history can use separate project activity stream.
+
+------------------------------------------------------------------------------
+33. EVENT BUS
+------------------------------------------------------------------------------
+
+Domain events:
+ProjectCreated
+MemberInvited
+AssetUploaded
+AssetAvailable
+CommentAdded
+ReleaseSubmitted
+SplitApproved
+StorageQuotaLow
+
+Consumers:
+notification
+search
+analytics
+jobs.
+
+Use at-least-once semantics with idempotent consumers.
+
+------------------------------------------------------------------------------
+34. BACKGROUND WORKERS
+------------------------------------------------------------------------------
+
+Worker pools:
+media
+AI
+notifications
+search
+maintenance
+
+Workers must not share mutable in-process state with API.
+
+------------------------------------------------------------------------------
+35. CACHE
+------------------------------------------------------------------------------
+
+Use cache for:
+sessions
+rate limits
+public metadata
+expensive search facets
+
+Never treat cache as canonical rights/ledger storage.
+
+------------------------------------------------------------------------------
+36. RATE LIMITS
+------------------------------------------------------------------------------
+
+Per:
+IP
+account
+team
+endpoint
+job type
+
+Separate live collaboration limits from heavy job limits.
+
+------------------------------------------------------------------------------
+37. SECURITY
+------------------------------------------------------------------------------
+
+Input validation.
+Prepared queries/ORM safety.
+Authz on every object.
+SSRF protection for storage connectors.
+Webhook verification.
+Secret rotation.
+Audit.
+Dependency scanning.
+Encryption.
+
+------------------------------------------------------------------------------
+38. WEBHOOKS
+------------------------------------------------------------------------------
+
+Future provider webhooks:
+storage changes
+payments
+distribution
+GitHub
+model hub
+
+Verify signatures.
+Deduplicate event IDs.
+Queue processing.
+
+------------------------------------------------------------------------------
+39. OBSERVABILITY
+------------------------------------------------------------------------------
+
+Metrics:
+request latency
+errors
+sync lag
+job queue
+upload success
+realtime connections
+DB health
+provider errors
+
+Tracing:
+request ID across gateway/service/worker.
+
+Logs:
+structured.
+
+No project media in logs.
+
+------------------------------------------------------------------------------
+40. BACKEND TESTS
+------------------------------------------------------------------------------
+
+BE-001 unauthorized project cannot be read.
+BE-002 team role enforced.
+BE-003 duplicate upload request idempotent.
+BE-004 sync reconnect recovers.
+BE-005 provider credential never returned to peer.
+BE-006 audit event created for rights approval.
+BE-007 comment permission enforced.
+BE-008 private project not indexed publicly.
+BE-009 job retry does not duplicate output asset.
+BE-010 backend outage does not corrupt local client.
+BE-011 Firebase adapter can be swapped in test.
+BE-012 Supabase adapter can satisfy same contract.
+BE-013 storage webhook replay deduplicated.
+BE-014 API version compatibility tested.
+BE-015 asset hash mismatch rejected.
+BE-016 release cannot silently change approved splits.
+BE-017 public post cannot expose private asset URL.
+BE-018 message attachment permission checked.
+BE-019 rate limit does not affect local engine.
+BE-020 logs contain no provider tokens.
+
+END DOCUMENT 22

@@ -1,0 +1,24 @@
+POIETEK BUILD — VERSION 3.1
+
+171 — REPO-READY IMPLEMENTATION FOUNDATION
+==========================================
+
+This batch is implementation code, not another concept-only specification.
+
+Target repository:
+jayprophit/Studio-Daw-Station-SDS-
+
+Current repo remains a React/Vite prototype.
+
+Overlay path:
+repo-overlay/
+
+Copy its contents into repository root, then apply integration patches.
+
+Core namespace:
+src/poietek/
+
+The old prototype UI can continue running while durable project state moves into
+the Poietek runtime.
+
+No GitHub changes are automatically pushed by this batch.

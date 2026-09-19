@@ -1,0 +1,144 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 2.0
+
+61 — NATIVE INSTALLED APP RUNTIME CONTRACT
+==========================================
+
+PRODUCT RULE
+
+Poietek has two delivery modes:
+
+A. WEB
+Runs in a browser as a web application/PWA.
+
+B. INSTALLED APPLICATION
+Windows, macOS, Linux, Android, iOS/iPadOS install Poietek as an application and
+launch it from the operating system like normal software.
+
+The installed application must NOT require the user to manually open a browser.
+
+SHARED CODE
+
+React/TypeScript UI
+Canonical Project format
+Commands
+Assets
+Storage Router
+Sync contracts
+Design system
+Most feature UI.
+
+NATIVE LAYER
+
+Tauri 2 is the recommended shell candidate.
+
+Native layer owns or delegates:
+filesystem
+native dialogs
+app data directories
+windowing
+system tray where useful
+audio device integration
+MIDI
+plugin hosting
+OS keychain
+updates
+camera/microphone permissions
+notifications
+share sheets
+background capability subject to platform rules.
+
+WEB LAYER
+
+Browser owns:
+WebAudio
+WebMIDI when available
+IndexedDB
+OPFS
+service worker
+browser permissions.
+
+INSTALLED USER EXPERIENCE
+
+Windows:
+installer / Microsoft Store option.
+Launch from Start Menu/Desktop/Taskbar.
+Normal file association later.
+
+macOS:
+DMG/App Store option.
+Applications folder.
+Dock.
+Signed/notarized distribution.
+
+Linux:
+AppImage/deb/rpm/Snap/AUR choices according to release policy.
+
+Android:
+Google Play / signed APK for developer/testing where policy permits.
+
+iOS/iPadOS:
+App Store/TestFlight.
+Home Screen application.
+Native permission prompts.
+
+WEBSITE
+
+poietek.<domain>
+marketing
+docs
+community
+downloads
+account
+web app launch.
+
+The public website and the Web App are separate routes/build concerns even if
+they share design components.
+
+NO "WRAPPED WEBSITE" QUALITY BAR
+
+Installed Poietek must behave like an app:
+- native file open/save;
+- native windowing where available;
+- deep links/file associations later;
+- correct sleep/background behavior;
+- native menus/shortcuts where appropriate;
+- reliable offline startup;
+- app-specific local storage;
+- installer/update lifecycle.
+
+The UI may be web technology, but the product behavior must be native-quality.
+
+PLATFORM CAPABILITY
+
+Same project file does NOT mean same binary capabilities.
+
+Desktop:
+full plugin host
+advanced audio I/O
+large projects
+multi-window.
+
+Tablet:
+touch-first
+AUv3 on Apple where implemented
+external interfaces/controllers.
+
+Phone:
+capture/edit/review/compact production/live mode.
+
+Web:
+maximum portable capability
+no claim of arbitrary native desktop plugin hosting.
+
+INSTALLATION ACCEPTANCE
+
+NATIVE-001 Windows installer creates launchable app.
+NATIVE-002 macOS signed test build launches from Applications.
+NATIVE-003 Linux package launches without browser.
+NATIVE-004 Android app launches from launcher.
+NATIVE-005 iOS/iPadOS app launches from Home Screen.
+NATIVE-006 installed app opens offline.
+NATIVE-007 installed app uses application data directory.
+NATIVE-008 uninstall does not silently delete user projects outside app-managed data.
+NATIVE-009 crash does not launch external browser as fallback.
+NATIVE-010 web version remains usable without native install.

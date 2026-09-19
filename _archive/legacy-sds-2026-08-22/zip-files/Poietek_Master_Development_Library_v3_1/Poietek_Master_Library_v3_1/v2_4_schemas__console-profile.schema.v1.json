@@ -1,0 +1,316 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/console-profile/v1",
+  "title": "Poietek Console Profile v1",
+  "type": "object",
+  "required": [
+    "id",
+    "schemaVersion",
+    "manufacturer",
+    "model",
+    "consoleClass",
+    "connections",
+    "clocking",
+    "control",
+    "parameters",
+    "verification"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "manufacturer": {
+      "type": "string"
+    },
+    "model": {
+      "type": "string"
+    },
+    "consoleClass": {
+      "enum": [
+        "digital_console",
+        "analogue_console",
+        "hybrid_console",
+        "control_surface",
+        "stagebox",
+        "audio_network_bridge",
+        "automation_bridge"
+      ]
+    },
+    "firmwareRange": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "connections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "direction"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "usb_audio",
+              "usb_midi",
+              "ethernet",
+              "dante",
+              "aes67",
+              "milan_avb",
+              "madi_coax",
+              "madi_optical",
+              "adat_optical",
+              "aes3",
+              "aes50",
+              "word_clock",
+              "midi_din",
+              "osc",
+              "gpio",
+              "analogue_audio",
+              "other"
+            ]
+          },
+          "direction": {
+            "enum": [
+              "input",
+              "output",
+              "bidirectional"
+            ]
+          },
+          "channels": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "clocking": {
+      "type": "object",
+      "properties": {
+        "sources": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "internal",
+              "word_clock",
+              "dante_ptp",
+              "aes67_ptpv2",
+              "madi_embedded",
+              "adat_embedded",
+              "aes3_embedded",
+              "aes50_embedded",
+              "usb_async",
+              "external_house",
+              "other"
+            ]
+          }
+        },
+        "canBeLeader": {
+          "type": "boolean"
+        },
+        "canBeFollower": {
+          "type": "boolean"
+        },
+        "sampleRateConversion": {
+          "type": "boolean"
+        },
+        "supportedSampleRates": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "control": {
+      "type": "object",
+      "properties": {
+        "protocols": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "midi",
+              "midi_nrpn",
+              "midi_sysex",
+              "midi_mmc",
+              "midi_mtc",
+              "midi_over_tcp",
+              "osc",
+              "aes70",
+              "eucon",
+              "hui",
+              "mackie_control",
+              "vendor_api",
+              "vendor_protocol",
+              "gpio",
+              "none"
+            ]
+          }
+        },
+        "transport": {
+          "type": "boolean"
+        },
+        "bidirectional": {
+          "type": "boolean"
+        },
+        "metering": {
+          "type": "boolean"
+        },
+        "scenes": {
+          "type": "boolean"
+        },
+        "routing": {
+          "type": "boolean"
+        },
+        "namesColors": {
+          "type": "boolean"
+        },
+        "requiresVendorDriver": {
+          "type": "boolean"
+        },
+        "secureTransport": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "parameters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "valueType",
+          "access"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "valueType": {
+            "enum": [
+              "boolean",
+              "integer",
+              "float",
+              "enum",
+              "string",
+              "meter",
+              "trigger"
+            ]
+          },
+          "access": {
+            "enum": [
+              "read_only",
+              "write_only",
+              "read_write",
+              "manual_only",
+              "not_supported"
+            ]
+          },
+          "range": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": true
+          },
+          "unit": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "motorized": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "automationSafe": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "controlBinding": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "analogueIntegration": {
+      "type": "object",
+      "properties": {
+        "digitallyControllableAnalogue": {
+          "type": "boolean"
+        },
+        "motorizedAutomation": {
+          "type": "boolean"
+        },
+        "vcaAutomation": {
+          "type": "boolean"
+        },
+        "sceneRecall": {
+          "type": "boolean"
+        },
+        "manualRecallRequired": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "visualRecallResearch": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "verification": {
+      "enum": [
+        "unverified",
+        "community_tested",
+        "poietek_tested",
+        "manufacturer_documented",
+        "manufacturer_verified"
+      ]
+    },
+    "sourceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,1085 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/project/v1/project.schema.json",
+  "title": "Poietek Project v1",
+  "type": "object",
+  "required": [
+    "id",
+    "schemaVersion",
+    "title",
+    "createdAt",
+    "updatedAt",
+    "tempoMap",
+    "tracks",
+    "assets",
+    "settings"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "description": "ULID"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "ownerId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "teamId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "tempoMap": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/tempoEvent"
+      }
+    },
+    "timeSignatureMap": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/timeSignatureEvent"
+      },
+      "default": [
+        {
+          "tick": 0,
+          "numerator": 4,
+          "denominator": 4
+        }
+      ]
+    },
+    "keyMap": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/keyEvent"
+      },
+      "default": []
+    },
+    "tracks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/track"
+      }
+    },
+    "buses": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/bus"
+      },
+      "default": []
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/asset"
+      }
+    },
+    "deviceAssignments": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/deviceAssignment"
+      },
+      "default": []
+    },
+    "mappings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/mapping"
+      },
+      "default": []
+    },
+    "contributors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/contributorAssignment"
+      },
+      "default": []
+    },
+    "rights": {
+      "$ref": "#/$defs/rights"
+    },
+    "releases": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/release"
+      },
+      "default": []
+    },
+    "snapshots": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/snapshot"
+      },
+      "default": []
+    },
+    "settings": {
+      "$ref": "#/$defs/projectSettings"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Namespaced forward-compatible extension data."
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128
+    },
+    "tempoEvent": {
+      "type": "object",
+      "required": [
+        "tick",
+        "bpm"
+      ],
+      "properties": {
+        "tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "bpm": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 999
+        }
+      },
+      "additionalProperties": false
+    },
+    "timeSignatureEvent": {
+      "type": "object",
+      "required": [
+        "tick",
+        "numerator",
+        "denominator"
+      ],
+      "properties": {
+        "tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "numerator": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
+        },
+        "denominator": {
+          "enum": [
+            1,
+            2,
+            4,
+            8,
+            16,
+            32,
+            64
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "keyEvent": {
+      "type": "object",
+      "required": [
+        "tick",
+        "root",
+        "mode"
+      ],
+      "properties": {
+        "tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "root": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 11
+        },
+        "mode": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "additionalProperties": false
+    },
+    "asset": {
+      "type": "object",
+      "required": [
+        "id",
+        "mediaType",
+        "contentHash",
+        "originalName",
+        "byteLength",
+        "replicas"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "mediaType": {
+          "enum": [
+            "audio",
+            "midi",
+            "video",
+            "image",
+            "document",
+            "preset",
+            "project_fragment",
+            "model",
+            "other"
+          ]
+        },
+        "contentHash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "originalName": {
+          "type": "string",
+          "maxLength": 1024
+        },
+        "mimeType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "byteLength": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "durationSeconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "sampleRate": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "channels": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "width": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "height": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "frameRate": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "license": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "replicas": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assetReplica"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "assetReplica": {
+      "type": "object",
+      "required": [
+        "id",
+        "providerId",
+        "locator",
+        "state"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "providerId": {
+          "type": "string"
+        },
+        "locator": {
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "available",
+            "uploading",
+            "queued",
+            "offline",
+            "missing",
+            "error",
+            "evicted"
+          ]
+        },
+        "verifiedHash": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lastVerifiedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "accessClass": {
+          "enum": [
+            "private_owner",
+            "team_shared",
+            "public",
+            "app_managed",
+            "external_shared_link"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "clipBase": {
+      "type": "object",
+      "required": [
+        "id",
+        "clipType",
+        "startTick",
+        "durationTicks",
+        "muted"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "clipType": {
+          "enum": [
+            "audio",
+            "midi",
+            "video",
+            "image",
+            "automation"
+          ]
+        },
+        "startTick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "durationTicks": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "muted": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "color": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "audioClip": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/clipBase"
+        },
+        {
+          "type": "object",
+          "required": [
+            "assetId"
+          ],
+          "properties": {
+            "clipType": {
+              "const": "audio"
+            },
+            "assetId": {
+              "$ref": "#/$defs/id"
+            },
+            "sourceOffsetSeconds": {
+              "type": "number",
+              "minimum": 0
+            },
+            "sourceDurationSeconds": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "gainDb": {
+              "type": "number",
+              "minimum": -120,
+              "maximum": 48
+            },
+            "pan": {
+              "type": "number",
+              "minimum": -1,
+              "maximum": 1
+            },
+            "fadeInSeconds": {
+              "type": "number",
+              "minimum": 0
+            },
+            "fadeOutSeconds": {
+              "type": "number",
+              "minimum": 0
+            },
+            "warpMap": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            },
+            "operations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    "midiNote": {
+      "type": "object",
+      "required": [
+        "id",
+        "startTick",
+        "durationTicks",
+        "note",
+        "velocity"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "startTick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "durationTicks": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "note": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 127
+        },
+        "velocity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "releaseVelocity": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "probability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 1
+        },
+        "microOffsetTicks": {
+          "type": "integer",
+          "default": 0
+        },
+        "expression": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "midiClip": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/clipBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "clipType": {
+              "const": "midi"
+            },
+            "notes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/midiNote"
+              }
+            },
+            "controllers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    "videoClip": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/clipBase"
+        },
+        {
+          "type": "object",
+          "required": [
+            "assetId"
+          ],
+          "properties": {
+            "clipType": {
+              "const": "video"
+            },
+            "assetId": {
+              "$ref": "#/$defs/id"
+            },
+            "sourceOffsetSeconds": {
+              "type": "number",
+              "minimum": 0
+            },
+            "transform": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "effects": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    "track": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "name",
+        "order",
+        "clips",
+        "mixer"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "type": {
+          "enum": [
+            "audio",
+            "midi",
+            "instrument",
+            "hybrid",
+            "video",
+            "automation",
+            "lighting"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "color": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "clips": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/audioClip"
+              },
+              {
+                "$ref": "#/$defs/midiClip"
+              },
+              {
+                "$ref": "#/$defs/videoClip"
+              }
+            ]
+          }
+        },
+        "mixer": {
+          "$ref": "#/$defs/mixerState"
+        },
+        "routing": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "plugins": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pluginInstance"
+          },
+          "default": []
+        },
+        "automation": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "default": []
+        },
+        "contributorAssignmentIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "default": []
+        }
+      },
+      "additionalProperties": false
+    },
+    "mixerState": {
+      "type": "object",
+      "required": [
+        "gainDb",
+        "pan",
+        "mute",
+        "solo"
+      ],
+      "properties": {
+        "gainDb": {
+          "type": "number",
+          "minimum": -120,
+          "maximum": 48
+        },
+        "pan": {
+          "type": "number",
+          "minimum": -1,
+          "maximum": 1
+        },
+        "mute": {
+          "type": "boolean"
+        },
+        "solo": {
+          "type": "boolean"
+        },
+        "sends": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "default": []
+        }
+      },
+      "additionalProperties": true
+    },
+    "pluginInstance": {
+      "type": "object",
+      "required": [
+        "id",
+        "format",
+        "pluginId",
+        "bypass"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "format": {
+          "enum": [
+            "native",
+            "vst3",
+            "clap",
+            "au",
+            "auv3",
+            "lv2",
+            "pxm",
+            "other"
+          ]
+        },
+        "pluginId": {
+          "type": "string"
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bypass": {
+          "type": "boolean"
+        },
+        "stateBlobAssetId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "frozenRenderAssetId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parameterOverrides": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "bus": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "busType",
+        "mixer"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string"
+        },
+        "busType": {
+          "enum": [
+            "group",
+            "return",
+            "cue",
+            "master",
+            "vca",
+            "other"
+          ]
+        },
+        "mixer": {
+          "$ref": "#/$defs/mixerState"
+        }
+      },
+      "additionalProperties": true
+    },
+    "deviceAssignment": {
+      "type": "object",
+      "required": [
+        "id",
+        "logicalRole",
+        "profileId"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "logicalRole": {
+          "type": "string"
+        },
+        "profileId": {
+          "type": "string"
+        },
+        "deviceInstanceId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "mapping": {
+      "type": "object",
+      "required": [
+        "id",
+        "source",
+        "target"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "target": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "transform": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "contributorAssignment": {
+      "type": "object",
+      "required": [
+        "id",
+        "personOrEntityId",
+        "roles"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "personOrEntityId": {
+          "type": "string"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "objectIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "rights": {
+      "type": "object",
+      "properties": {
+        "workTitle": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "recordingTitle": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "writers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "performers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "producers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "publishers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "identifiers": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "sampleLicenses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "releaseSignoffs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "release": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "review",
+            "approved",
+            "published",
+            "withdrawn"
+          ]
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "snapshot": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "createdAt",
+        "revision"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "revision": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "projectSettings": {
+      "type": "object",
+      "required": [
+        "ppq",
+        "storagePolicy"
+      ],
+      "properties": {
+        "ppq": {
+          "type": "integer",
+          "minimum": 96,
+          "maximum": 15360,
+          "default": 960
+        },
+        "sampleRate": {
+          "type": "integer",
+          "enum": [
+            44100,
+            48000,
+            88200,
+            96000,
+            176400,
+            192000
+          ],
+          "default": 48000
+        },
+        "storagePolicy": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "defaultRender": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/content-standards-analysis/v1",
+  "title": "Poietek Content Standards Analysis v1",
+  "type": "object",
+  "required": [
+    "analysisId",
+    "contentId",
+    "contentClass",
+    "technicalChecks",
+    "styleChecks",
+    "recommendations"
+  ],
+  "properties": {
+    "analysisId": {
+      "type": "string"
+    },
+    "contentId": {
+      "type": "string"
+    },
+    "contentClass": {
+      "type": "string"
+    },
+    "detectedGenres": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "technicalProfileId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "styleProfileIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "technicalChecks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "styleChecks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "creativeIntentLocks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

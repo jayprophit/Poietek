@@ -1,0 +1,57 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 3.0
+
+165 — COMMUNITY WALL, ARCHIVE & CHANNEL TUNING
+==============================================
+
+CREATOR CHANNEL
+
+Release card can show:
+
+Midnight Drive
+A432 · Just Intonation
+Original tuning ✓
+
+[Play]
+[Details]
+
+FILTERS
+
+A432
+A440
+Just Intonation
+Microtonal
+Historical
+Scala
+Adaptive
+Original-only.
+
+ARCHIVE
+
+Archive preserves:
+original tuning profile
+release metadata
+rights
+provenance
+available playback renditions.
+
+WALL/FEED
+
+Feed never replaces original tuning metadata based on listener preference.
+
+A listener may hear an A432 playback transformation while the card still states:
+
+Original:
+A440.
+
+Playback:
+A432 preference.
+
+COMMUNITY EVENTS
+
+A432 listening room.
+Microtonal showcase.
+Historical temperament collection.
+
+These are player/community experiences, not public-release restrictions.
+
+END DOCUMENT 165

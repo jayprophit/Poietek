@@ -1,0 +1,60 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.8
+
+152 — TUNING BENCHMARK & RELEASE COMPATIBILITY
+==============================================
+
+TEST
+
+A440 sine/reference.
+A432.
+A415.
+Just 3/2 fifth.
+MTS note map.
+MIDI 2 per-note pitch.
+Scala SCL/KBM.
+MPE fallback.
+Audio retune.
+Region changes.
+
+ACCURACY
+
+frequency error
+cent error
+pitch drift
+MIDI device result
+render result.
+
+RELEASE
+
+Changing reference pitch does not exempt a deliverable from:
+loudness
+true peak
+codec
+metadata
+rights
+broadcast/platform
+requirements.
+
+A432 song can be released publicly.
+
+The release destination usually cares about technical delivery requirements,
+not whether the composition was tuned to A432 or A440, unless a client/session
+spec explicitly says otherwise.
+
+HEALTH CLAIM REVIEW
+
+No A432 medical/therapeutic claim ships in product copy without legal/scientific
+review.
+
+5-STAR TUNING CATEGORY
+
+accurate
+portable
+musical
+low-latency
+works with MIDI/audio
+supports historical/microtonal users
+does not corrupt unsupported plugins
+clear science/creative labeling.
+
+END DOCUMENT 152

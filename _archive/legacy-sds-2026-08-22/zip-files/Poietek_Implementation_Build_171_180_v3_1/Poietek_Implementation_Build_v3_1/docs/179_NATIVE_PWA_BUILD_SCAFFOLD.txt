@@ -1,0 +1,20 @@
+179 — NATIVE + PWA BUILD SCAFFOLD
+=================================
+
+Implemented overlay:
+src-tauri Cargo/config/main/lib
+PWA webmanifest
+service worker
+service-worker registration
+persistent-storage request helper.
+
+Package patch adds Tauri CLI/API and desktop/mobile scripts.
+
+Production work still required:
+icons
+signing/notarization
+CSP hardening
+Tauri permissions/capabilities
+native audio/MIDI
+app store configuration
+mobile provisioning.

@@ -1,0 +1,67 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.6
+
+128 — CONTENT DELIVERY PREFLIGHT ENGINE
+=======================================
+
+ONE PREFLIGHT FOR ALL MEDIA.
+
+MUSIC
+codec
+sample rate
+bit depth
+LUFS/dBTP target
+metadata
+ISRC/rights
+artwork.
+
+FILM/TV
+resolution
+frame rate
+colour
+HDR/SDR
+audio channels
+loudness
+captions
+packaging
+rights.
+
+SOCIAL VIDEO
+aspect ratio
+safe zones
+codec
+captions
+loudness
+thumbnail
+metadata.
+
+IMAGE
+dimensions
+colour profile
+bit depth
+alpha
+metadata
+rights/provenance.
+
+PLUGIN/PRESET
+package/signature
+host/version
+permissions
+licence
+publisher metadata.
+
+STATUS
+
+PASS
+ADVISORY
+WARNING
+FAIL
+NOT MEASURED.
+
+EXPORT GATE
+
+User may choose:
+Block on formal target failures.
+Warn only.
+Custom client policy.
+
+END DOCUMENT 128

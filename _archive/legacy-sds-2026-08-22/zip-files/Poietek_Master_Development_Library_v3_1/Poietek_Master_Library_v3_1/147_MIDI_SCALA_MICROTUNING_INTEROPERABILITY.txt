@@ -1,0 +1,45 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.8
+
+147 — MIDI, SCALA & MICROTUNING INTEROPERABILITY
+================================================
+
+CURRENT MIDI ECOSYSTEM
+
+MIDI Tuning Standard provides fine tuning through MIDI System Exclusive messages.
+
+MIDI 2.0 preserves the MIDI Tuning Standard and adds per-note pitch/tuning
+mechanisms.
+
+Poietek should support multiple delivery methods because device/plugin support is
+not universal.
+
+ORDER OF PREFERENCE
+
+MIDI 2.0 per-note pitch
+MIDI Tuning Standard
+host/native tuning API
+Scala SCL/KBM
+MPE/per-channel pitch-bend fallback
+render/freeze audio.
+
+SCALA
+
+Support both:
+SCL scale
+KBM keyboard mapping.
+
+Do not claim complete Scala compatibility if KBM mapping is ignored.
+
+CAPABILITY NEGOTIATION
+
+Each synth/device profile declares:
+MTS
+MIDI 2
+MPE
+Scala
+host API
+none.
+
+Poietek never assumes a plugin obeys microtuning merely because MIDI reaches it.
+
+END DOCUMENT 147

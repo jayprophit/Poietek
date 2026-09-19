@@ -1,0 +1,65 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.1
+
+75 — DDEX, C2PA & OPTIONAL BLOCKCHAIN PROVENANCE
+================================================
+
+DDEX RIN
+
+Capture studio creation metadata:
+sessions
+contributors
+roles
+projects
+recordings
+musical works.
+
+RIN can link messages to audio files using URI and hash values.
+
+DDEX RDR-N
+
+Designed for exchanging sound-recording/music-video contributor information and
+rights claims in licensing-company workflows.
+
+C2PA
+
+Use Content Credentials for cryptographically signed provenance/history across
+supported media.
+
+POIETEK MANIFEST
+
+Human-facing and application-facing canonical rights graph that maps into these
+standards.
+
+BLOCKCHAIN
+
+Optional evidence anchor only.
+
+Store:
+hash of approved manifest
+timestamp/receipt
+network identifier.
+
+Do not store:
+private contracts
+personal data
+bank data
+unreleased media
+revocable credentials.
+
+A blockchain transaction is not proof that:
+the copyright claim is legally valid;
+the collecting society accepted it;
+the contributor was actually paid.
+
+Every manifest amendment creates a new hash/version.
+
+DDEX LICENSING
+
+Any production implementation of DDEX standards must follow DDEX's current
+implementation-licence requirements.
+
+ACCEPTANCE
+PROV-001 RIN export links exact content hash.
+PROV-002 C2PA verification reported clearly.
+PROV-003 old blockchain anchor remains immutable after rights amendment.
+PROV-004 no private data written to public chain.

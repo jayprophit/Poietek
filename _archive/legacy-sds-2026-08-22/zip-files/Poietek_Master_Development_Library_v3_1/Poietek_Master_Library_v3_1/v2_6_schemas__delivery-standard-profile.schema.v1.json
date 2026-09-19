@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/delivery-standard-profile/v1",
+  "title": "Poietek Delivery Standard Profile v1",
+  "type": "object",
+  "required": [
+    "profileId",
+    "version",
+    "label",
+    "authorityType",
+    "contentClass",
+    "requirements"
+  ],
+  "properties": {
+    "profileId": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "label": {
+      "type": "string"
+    },
+    "authorityType": {
+      "enum": [
+        "formal_standard",
+        "platform_specification",
+        "broadcaster_specification",
+        "festival_cinema_specification",
+        "client_specification",
+        "poietek_engineering",
+        "user_custom"
+      ]
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "contentClass": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requirements": {
+      "type": "object",
+      "properties": {
+        "video": {
+          "type": "object",
+          "properties": {
+            "colourPrimaries": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "transferFunction": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "matrix": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "bitDepth": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "frameRates": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            "resolutions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "aspectRatios": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "codecFamilies": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "chromaSubsampling": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "hdrMode": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "maxCllPolicy": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        },
+        "audio": {
+          "type": "object",
+          "properties": {
+            "sampleRates": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "bitDepths": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "channelLayouts": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "integratedLufs": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "truePeakMaxDbtp": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "loudnessRange": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "additionalProperties": true
+            },
+            "codecFamilies": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": true
+        },
+        "captions": {
+          "type": "object",
+          "properties": {
+            "required": {
+              "type": "boolean"
+            },
+            "formats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "languages": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": true
+        },
+        "packaging": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "rights": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "accessibility": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "sourceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "checkedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "validUntil": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

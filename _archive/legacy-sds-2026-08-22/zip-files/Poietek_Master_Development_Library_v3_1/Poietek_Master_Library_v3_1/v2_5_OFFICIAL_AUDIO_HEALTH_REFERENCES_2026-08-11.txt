@@ -1,0 +1,30 @@
+Official/current sources reviewed 11 August 2026:
+
+ITU-R BS.1770-5:
+https://www.itu.int/rec/R-REC-BS.1770/en
+Current in-force recommendation (approved November 2023) for algorithms to measure
+audio programme loudness and true-peak audio level.
+
+EBU R128 v5:
+https://tech.ebu.ch/publications/r128
+https://tech.ebu.ch/loudness/
+Programme loudness recommendation and EBU Mode ecosystem. Current public EBU
+material describes Momentary (400 ms), Short Term (3 s), Integrated and Loudness
+Range/True Peak concepts; EBU supplies a loudness test set/reference pink-noise
+material.
+
+Spotify artist loudness guidance:
+https://support.spotify.com/artists/article/loudness-normalization/
+Current page states Normal playback normalization at -14 LUFS following ITU 1770,
+with mastering guidance below -1 dBTP; louder-than--14-LUFS masters are advised to
+stay below -2 dBTP to reduce encoding distortion.
+
+Apple Digital Masters:
+https://www.apple.com/uk/apple-music/apple-digital-masters/
+Apple provides high-quality-master guidance and mastering/audition tools for
+testing AAC encoding, peaks and clipping.
+
+Apple MusicUnderstanding LoudnessResult:
+https://developer.apple.com/documentation/musicunderstanding/loudnessresult
+Apple documents integrated, momentary, short-term and peak loudness results aligned
+with LUFS/ITU-R BS.1770.

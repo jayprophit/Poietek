@@ -1,0 +1,25 @@
+{
+  "date": "2026-08-11",
+  "basis": "Current SDS repository audit + Poietek v1.9 starter scaffold; not a runtime lab benchmark.",
+  "scores": {
+    "platform_native": 0.5,
+    "offline_local": 2.0,
+    "audio_engine": 1.5,
+    "arrangement": 1.0,
+    "midi": 1.0,
+    "sampler": 1.0,
+    "mix_master": 1.0,
+    "plugins": 0.25,
+    "pitch_time": 0.5,
+    "dj": 0.5,
+    "video_vfx": 0.25,
+    "hardware": 1.0,
+    "collab": 0.5,
+    "storage": 1.5,
+    "rights_publish": 0.5,
+    "ux_accessibility": 2.5,
+    "stability": 0.75
+  },
+  "status": "NOT CERTIFIED",
+  "note": "These scores intentionally measure implemented/testable readiness, not the breadth of the specification."
+}

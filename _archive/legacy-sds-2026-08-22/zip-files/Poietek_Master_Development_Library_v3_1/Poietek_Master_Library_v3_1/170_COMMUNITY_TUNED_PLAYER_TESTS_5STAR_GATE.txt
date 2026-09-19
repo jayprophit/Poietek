@@ -1,0 +1,57 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 3.0
+
+170 — COMMUNITY TUNED PLAYER TESTS & 5-STAR GATE
+================================================
+
+TEST FIXTURES
+
+A440 sine.
+A432 sine.
+Vocal master.
+Dense electronic master.
+Acoustic guitar.
+Classical.
+Percussive material.
+Stereo phase-sensitive material.
+Music video with lip sync.
+Captioned video.
+
+TEST
+
+Original mode is bit-identical path where possible.
+A440 -> A432 reports -31.76665 cents.
+A432 -> A440 reports +31.76665 cents.
+Tempo unchanged.
+Duration unchanged.
+Video sync unchanged.
+Caption timing unchanged.
+Rights Manifest unchanged.
+Rendition lineage valid.
+
+QUALITY
+
+Blind A/B:
+creator rendered vs Poietek high-quality transform.
+
+Measure:
+artifact detection
+transients
+stereo consistency
+CPU
+latency
+drift
+buffer underruns.
+
+5★ PLAYER
+
+Fast.
+Transparent.
+No A/V drift.
+No hidden retuning.
+Creator control.
+Listener control where allowed.
+High quality.
+Accessible indicators.
+Works Web/Desktop/Mobile/Tablet.
+
+END DOCUMENT 170

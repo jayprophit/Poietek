@@ -1,0 +1,9 @@
+Layer,Purpose,Typical mechanisms,Poietek responsibility
+Audio transport,Move channels,"USB audio, MADI coax/fibre, ADAT optical, AES3, AES50, Dante/AES67, analogue interface",Route channels and represent capability
+Sample clock,Keep digital audio sample-aligned,"Word Clock, embedded MADI/ADAT/AES3/AES50 clock, Dante PTP, AES67 PTPv2",ClockDomainPlanner + lock monitoring
+Transport/timecode,Play/stop/locate/time reference,"MMC, MTC, LTC where interface supports, vendor transport","Transport bridge, not sample clock"
+Parameter control,Faders/mutes/pan/EQ/etc,"MIDI, NRPN, SysEx, MIDI over TCP, OSC, AES70, EUCON, HUI/Mackie, vendor protocols",Normalize to LogicalConsoleModel
+Metering,Show live levels,Vendor network metering/AES70/etc,"Fast telemetry, not project state"
+Scenes/recall,Store/recall desk state,Vendor scene APIs/MIDI program change/etc,Snapshot references + safe recall
+Analogue audio,Use analogue console signal path,Analogue I/O through converters/interfaces,Audio capture/route; no invented telemetry
+Analogue automation,Mirror controllable analogue parameters,"Motor faders, VCA automation, digitally controlled analogue stages, documented MIDI/network bridges",Mirror only verified parameters

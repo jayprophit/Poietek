@@ -1,0 +1,49 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 3.0
+
+168 — PUBLIC RADIO/BROADCAST: TUNING VS DELIVERY
+================================================
+
+RADIO DELIVERY PROFILE
+
+Usually focuses on:
+file format
+sample rate
+loudness
+true peak
+channels
+duration
+metadata
+rights
+programme identifiers
+station-specific packaging.
+
+TUNING
+
+A440 is a standard musical reference pitch.
+
+That does not mean every radio master is automatically rejected if the musical
+performance uses A432.
+
+POIETEK TARGET PROFILE
+
+If broadcaster says:
+no explicit tuning requirement
+
+-> preserve creator tuning.
+
+If broadcaster/client explicitly says:
+A440 session/reference required
+
+-> preserve original
+-> create compatibility rendition
+-> flag only that target as not ready until compatible version exists.
+
+RADIO AI
+
+Never invent requirements.
+Display:
+authority
+document/version
+date checked.
+
+END DOCUMENT 168

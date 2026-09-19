@@ -1,0 +1,10 @@
+Surface / target,Original tuning preserved?,Optional playback retune?,External requirement handling
+Poietek audio player,Yes,Yes if creator permits,N/A
+Poietek video player,Yes,"Yes, duration-preserving",N/A
+Poietek wall/feed,Yes,Listener preference may apply,N/A
+Poietek archive,Yes,Yes; original metadata always visible,N/A
+Poietek creator channel,Yes,Yes if release allows,N/A
+Poietek learning room,Yes,Yes for comparison/education,N/A
+YouTube upload,Yes by default,No player-side Poietek transform after upload,Conform current YouTube technical encoding profile; no current A440 upload requirement found
+Radio/broadcast,Yes unless explicit target requires another reference,N/A,Use station/broadcaster profile; create separate tuning compatibility only if explicitly required
+Client delivery,Yes original retained,N/A,Generate target-specific compatibility rendition when contract/spec says so

@@ -1,0 +1,56 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.5
+
+117 — DELIVERY LOUDNESS / PLATFORM PROFILE REGISTRY
+===================================================
+
+COMPANION
+profiles/audio-target-profiles.json
+
+DO NOT SERIALIZE INTERNET PLATFORM TARGETS AS PERMANENT PROJECT LAW.
+
+Services can change playback normalization behavior.
+
+Profile Registry:
+id
+provider/context
+version/date
+loudness behavior
+true-peak recommendation
+source reference
+verification.
+
+CURRENT EXAMPLE
+
+Spotify's artist guidance currently states:
+Normal playback normalization: -14 LUFS.
+Recommended master True Peak: below -1 dBTP.
+For masters louder than -14 LUFS, guidance recommends below -2 dBTP to reduce
+additional encoding distortion.
+
+This is a DELIVERY PREVIEW, not a rule that every artistic master must be exactly
+-14 LUFS.
+
+APPLE
+
+Apple Digital Masters emphasizes delivering high-quality source masters and
+provides mastering/audition tools that can detect peaks/clipping after AAC
+encoding.
+
+Poietek should invoke/replicate only documented compatible checks and should not
+invent an Apple loudness target where Apple has not stated one.
+
+BROADCAST
+
+EBU R128 profile.
+
+FUTURE PROFILES
+
+podcast
+film
+cinema
+broadcast networks
+social video
+game assets
+user/custom.
+
+END DOCUMENT 117

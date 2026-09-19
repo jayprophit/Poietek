@@ -1,0 +1,87 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.4
+
+102 — AUDIO CLOCK, TIMING & SYNC DOMAINS
+========================================
+
+SAMPLE CLOCK
+
+Digital audio devices must agree on the sampling frequency or be isolated through
+sample-rate conversion.
+
+Poietek models explicit Clock Domains.
+
+ONE LEADER PER SYNCHRONOUS DOMAIN.
+
+Possible sources:
+internal
+Word Clock
+Dante PTP
+AES67 PTPv2
+MADI embedded
+ADAT embedded
+AES3 embedded
+AES50 embedded
+external house clock.
+
+DANTE
+
+Current Dante documentation states that devices use IEEE 1588 PTP and synchronize
+to a leader clock with sample-accurate network alignment.
+
+AES67/ST 2110 interoperation can use PTPv2 where supported.
+
+MADI / OPTICAL
+
+Optical is a physical medium, not one protocol.
+
+Optical connection may be:
+MADI fibre
+ADAT optical
+other optical transport.
+
+Poietek identifies the protocol, not merely "optical cable."
+
+MADI is a point-to-point multichannel digital audio interface and may run over
+coaxial or fibre; real interfaces can clock from MADI, Word Clock or a network
+clock.
+
+AES50
+
+AES50 defines bidirectional multichannel digital audio over Category-5-style
+cabling with audio synchronization carried with the connection.
+
+USB
+
+USB audio clock behavior is adapter/device-specific.
+Poietek treats the selected native/Web audio device backend as an endpoint and
+reports actual clock/lock capabilities.
+
+SRC
+
+If two domains cannot share clock, an explicit sample-rate-conversion bridge may
+connect them.
+
+TRANSPORT IS NOT SAMPLE CLOCK
+
+MIDI Clock/MTC/MMC/timecode controls do not replace the audio sampling clock.
+
+SYNC UI
+
+Audio Settings > Clock:
+
+Domain: Studio Main
+Sample Rate: 48 kHz
+Leader: Console
+Poietek Interface: Locked
+MADI Bridge: Locked
+Dante Network: Locked
+Video Interface: SRC
+Warnings: none.
+
+CLOCK-001 no accidental two leaders.
+CLOCK-002 loss of lock creates visible warning.
+CLOCK-003 clock-source change never silently proceeds during recording.
+CLOCK-004 PTP/WordClock/etc are capability-based.
+CLOCK-005 SRC boundary shown clearly.
+
+END DOCUMENT 102

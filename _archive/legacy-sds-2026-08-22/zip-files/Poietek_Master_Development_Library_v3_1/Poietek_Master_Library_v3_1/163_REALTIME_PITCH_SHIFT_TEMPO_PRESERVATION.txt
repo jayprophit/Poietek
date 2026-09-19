@@ -1,0 +1,68 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 3.0
+
+163 — REAL-TIME PITCH SHIFT & TEMPO PRESERVATION
+================================================
+
+COMPANION
+packages/player/src/PlaybackTuning.ts
+packages/player/src/TunedMediaBackend.ts
+
+A432 -> A440
+
+Ratio:
+440 / 432 = 1.0185185...
+
+Pitch offset:
+approximately +31.76665 cents.
+
+A440 -> A432:
+approximately -31.76665 cents.
+
+PLAYER REQUIREMENT
+
+Change pitch while preserving:
+tempo
+duration
+video synchronization.
+
+NAIVE RESAMPLING
+
+Changes pitch AND speed.
+
+Do not use naïve resampling for normal community tuned playback.
+
+HIGH-QUALITY MODE
+
+Use a time-preserving pitch-shift algorithm.
+
+QUALITY TIERS
+
+REALTIME PREVIEW
+lower CPU/latency.
+
+HIGH QUALITY
+better offline/server/local derivative render.
+
+CREATOR RENDERED
+creator supplies a dedicated alternate master.
+
+PREFERRED ORDER
+
+Creator alternate rendition
+High-quality cached Poietek rendition
+Realtime pitch shift
+Original fallback.
+
+LIMITATIONS
+
+Pitch shifting a finished master can alter:
+transients
+stereo image
+formants/timbre
+phase
+codec artifacts.
+
+Player must never promise alternate playback is identical to a separately mastered
+version.
+
+END DOCUMENT 163

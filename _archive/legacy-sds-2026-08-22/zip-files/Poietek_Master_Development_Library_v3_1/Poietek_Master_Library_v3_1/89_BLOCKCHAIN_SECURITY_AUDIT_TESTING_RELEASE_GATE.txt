@@ -1,0 +1,76 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.2
+
+89 — BLOCKCHAIN SECURITY, AUDIT & RELEASE GATE
+==============================================
+
+SMART CONTRACT CODE IS FINANCIAL/SECURITY CRITICAL.
+
+BEFORE MAINNET/PRODUCTION
+
+Static analysis.
+Unit tests.
+Fuzz tests.
+Invariant tests.
+Fork/integration tests.
+Replay tests.
+Role/admin tests.
+Pause/recovery tests.
+Gas grief tests.
+Signature expiry/nonce tests.
+Independent smart-contract audit.
+Bug bounty when appropriate.
+
+OPENZEPPELIN
+
+Use mature primitives such as:
+EIP712
+SignatureChecker
+AccessControl / AccessManager
+Pausable
+Nonces
+MerkleProof
+
+rather than home-grown cryptography/access control.
+
+UPGRADES
+
+Prefer minimum immutable surface.
+
+If upgradeable:
+document admin
+timelock
+migration
+storage layout
+upgrade authorization
+user notification.
+
+NETWORK ADAPTER
+
+No business logic hard-coded to one chain.
+
+BlockchainAnchorProvider implementations can target different compatible evidence
+networks based on cost, reliability and policy.
+
+CHAIN SELECTION
+
+Do not pick a chain based only on cheap gas.
+Review:
+security
+finality
+availability
+tooling
+ecosystem
+fees
+privacy
+regulatory/product requirements
+long-term survival.
+
+RELEASE GATE
+
+No contract that can transfer user money is enabled merely because unit tests pass.
+
+ACCEPTANCE
+SECCHAIN-001 independent audit required for custody contract.
+SECCHAIN-002 signatures include nonce/expiry/domain.
+SECCHAIN-003 admin key isn't single developer hot wallet in production.
+SECCHAIN-004 emergency pause tested.

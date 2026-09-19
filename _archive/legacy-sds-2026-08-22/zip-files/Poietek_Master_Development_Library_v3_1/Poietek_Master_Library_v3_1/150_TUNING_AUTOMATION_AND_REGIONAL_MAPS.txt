@@ -1,0 +1,42 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.8
+
+150 — TUNING AUTOMATION & REGIONAL MAPS
+=======================================
+
+COMPANION
+schemas/session-tuning-map.schema.v1.json
+
+Most projects use one tuning.
+
+Advanced projects can change tuning by region.
+
+Examples:
+
+Intro:
+A432 / just.
+
+Verse:
+A432 / 12-TET.
+
+Bridge:
+19-EDO.
+
+Outro:
+adaptive just.
+
+MIDI instruments can follow region maps when supported.
+
+AUDIO
+
+Existing recordings do not automatically retune when crossing a map boundary.
+Audio operation must be explicit.
+
+LIVE
+
+Region tuning changes must be preloaded and validated for connected hardware.
+
+NO SURPRISE PITCH JUMPS
+
+Live Mode can lock tuning profile against accidental edits.
+
+END DOCUMENT 150

@@ -1,0 +1,10 @@
+POIETEK CURRENT IMPLEMENTATION-READINESS BENCHMARK
+Date: 2026-08-11
+
+Weighted score: 0.97 / 5.00
+
+Certification status: NOT CERTIFIED
+
+This score measures currently implemented/testable readiness from the audited SDS
+prototype plus the starter foundation. It deliberately does not award points for
+features that exist only in specifications.

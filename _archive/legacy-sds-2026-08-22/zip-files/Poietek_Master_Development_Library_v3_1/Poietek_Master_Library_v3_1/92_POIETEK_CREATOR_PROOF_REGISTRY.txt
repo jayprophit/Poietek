@@ -1,0 +1,39 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.3
+
+92 — CREATOR PROOF REGISTRY
+===========================
+
+COMPANIONS
+schemas/proof-record.schema.v1.json
+packages/proofs/src/ProofService.ts
+
+PROOF OF CONTRIBUTION
+Party + project + session + role + track/clip/object + timestamp + content/version
+hash + approval/signature where appropriate.
+
+Contribution does not automatically equal ownership.
+
+PROOF OF CONSENT
+Binds a Party to a precise Rights Manifest/version/policy scope.
+
+PROOF OF IDENTITY
+Uses Contributor Passport plus provider/KYC/passkey/ZK verification where useful.
+Raw identity documents remain private.
+
+PROOF OF DATA INTEGRITY
+SHA-256, signatures, C2PA, Merkle roots and immutable audit records.
+
+PROOF OF TRANSACTION HISTORY
+Order + Commerce Policy version + ledger + processor receipt + settlement proof.
+
+PROOF OF INTEROPERABILITY
+Automated evidence that a project/file/provider round-trips without critical loss.
+
+PROOF OF CHAOS
+Evidence from deliberate network/provider/storage/worker/payment failure tests.
+
+PROOF OF TRUST
+A transparent bundle of underlying evidence.
+Never a mysterious social-credit score controlling rights or money.
+
+END DOCUMENT 92

@@ -1,0 +1,172 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.7
+
+39 — FIRST VERTICAL SLICE IMPLEMENTATION PLAN
+=============================================
+
+OUTCOME
+A real Poietek Web/PWA project can:
+
+1 Create project.
+2 Import a real WAV.
+3 Generate real waveform peaks.
+4 Place clip on timeline.
+5 Play/pause/seek.
+6 Split clip.
+7 Change clip gain.
+8 Undo/redo.
+9 Autosave locally.
+10 Close browser.
+11 Reopen same project offline.
+12 Export a real audio render.
+13 Show missing-asset repair instead of fake fallback.
+
+NO Firebase account required.
+
+RECOMMENDED 10-TICKET SEQUENCE
+
+TICKET 1 — Repository boundaries
+Create:
+packages/domain
+packages/project
+packages/commands
+packages/assets
+packages/audio-contracts
+apps/web
+Do not move every UI component yet.
+
+TICKET 2 — Project schema
+Use project.schema.v1.json.
+ULID generator.
+validation.
+blank fixture.
+
+TICKET 3 — LocalProjectRepository
+IndexedDB metadata.
+Project CRUD.
+autosave transaction.
+migration shell.
+
+TICKET 4 — LocalAssetStore
+OPFS when supported.
+fallback IndexedDB Blob.
+SHA-256.
+AssetReplica local.
+missing resolver contract.
+
+TICKET 5 — Import WAV
+file picker.
+copy/store.
+decode metadata.
+create Asset.
+No timeline yet.
+
+TICKET 6 — Waveform worker
+peak pyramid.
+cache by content hash.
+real waveform component.
+
+TICKET 7 — AudioBackend
+wrap current WebAudio engine.
+AssetRuntimeCache.
+canonical transport.
+play real clip.
+
+TICKET 8 — Timeline commands
+AddTrack
+AddClip
+MoveClip
+SplitClip
+SetClipGain
+Undo/redo.
+
+TICKET 9 — Reopen offline
+service worker/PWA shell.
+reopen fixture/project.
+network disabled E2E.
+
+TICKET 10 — Export
+OfflineAudioContext/basic renderer.
+render selected range/master.
+save WAV.
+verify result.
+
+FILE TREE TARGET
+
+/apps/web/src/AppShell.tsx
+/apps/web/src/workspaces/ArrangeWorkspace.tsx
+
+/packages/domain/src/project.ts
+/packages/domain/src/asset.ts
+/packages/domain/src/track.ts
+/packages/domain/src/clip.ts
+
+/packages/commands/src/CommandBus.ts
+/packages/commands/src/commands/AddTrack.ts
+/packages/commands/src/commands/AddClip.ts
+/packages/commands/src/commands/SplitClip.ts
+/packages/commands/src/commands/SetClipGain.ts
+
+/packages/project/src/ProjectRepository.ts
+/packages/project/src/IndexedDbProjectRepository.ts
+
+/packages/assets/src/AssetStore.ts
+/packages/assets/src/WebLocalAssetStore.ts
+/packages/assets/src/hash.ts
+/packages/assets/src/waveform.worker.ts
+
+/packages/audio-contracts/src/AudioBackend.ts
+/packages/audio-web/src/WebAudioBackend.ts
+/packages/audio-web/src/TransportClock.ts
+/packages/audio-web/src/AssetRuntimeCache.ts
+
+TESTS
+project serialize
+asset ingest
+split command
+undo
+waveform
+timeline overlap
+offline reopen
+render.
+
+DO NOT INCLUDE IN SLICE
+account
+cloud
+sync
+MIDI
+plugins
+stems
+AI
+video
+rights
+community.
+
+After slice passes, add Firebase optional project directory/comments without
+altering local project semantics.
+
+MIGRATION FROM CURRENT SDS
+Keep old UI as source/reference.
+Replace fake waveform in one workspace first.
+Do not rewrite all screens.
+
+DEMO ACCEPTANCE SCRIPT
+
+1 Chrome/Edge supported environment.
+2 disable network.
+3 open installed/cached Poietek.
+4 Create "Offline Test".
+5 import test.wav.
+6 waveform appears.
+7 play.
+8 split at bar.
+9 lower second clip -6 dB.
+10 undo, redo.
+11 reload browser.
+12 project reopens.
+13 play.
+14 export.
+15 exported WAV contains expected edit.
+16 re-enable network: project still unchanged.
+
+STOP CONDITION
+If any step loses project data, do not proceed to collaboration/cloud work.

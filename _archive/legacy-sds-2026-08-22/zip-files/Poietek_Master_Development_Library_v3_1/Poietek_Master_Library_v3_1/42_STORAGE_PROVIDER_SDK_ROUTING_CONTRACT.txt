@@ -1,0 +1,92 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.8
+
+42 — STORAGE PROVIDER SDK & ROUTING CONTRACT v1
+===============================================
+
+COMPANION
+StorageProvider.ts
+storage-provider-manifest.schema.v1.json
+
+ROUTING RULE
+Project references canonical Asset IDs. StorageRouter decides which provider
+replica satisfies a read/write policy.
+
+StoragePolicy example:
+
+Working:
+local-fast
+
+Backup:
+any connected provider with resumableUpload and sufficient quota
+
+Video archive:
+prefer object_storage or user-selected bulk provider
+
+Git mirror:
+git_forge only, metadata/text whitelist
+
+AUTO RECOMMENDATION ALGORITHM
+
+Score candidate:
++ local availability
++ free capacity
++ resumable upload
++ range read for media
++ team ACL if team project
++ user preference
+- provider disconnected
+- provider quota low
+- unsupported file size
+- git forge for large raw media
+- provider policy forbids operation
+
+Recommendation never performs first remote upload without consent.
+
+INSTALL / CONNECT
+
+Connector state:
+NOT_INSTALLED
+INSTALLED_NOT_CONNECTED
+CONNECTED
+REAUTH_REQUIRED
+ERROR
+DISABLED
+
+The UI may offer installation. Skip always works.
+
+DELETE SEMANTICS
+
+RemoveReplica(assetId, replicaId)
+!=
+DeleteCanonicalAsset(assetId)
+
+Canonical delete requires reference analysis and retention policy.
+
+PROVIDER CONTRACT TEST SUITE
+- connect/disconnect
+- quota
+- upload/download checksum
+- interrupted upload
+- range read if declared
+- remove
+- permission denial
+- invalid credential
+- quota exceeded
+- offline
+- path/name encoding
+- large-file boundary
+
+SECURITY
+Connectors receive only declared capabilities.
+OAuth tokens are outside project state.
+Custom endpoint connectors must pass SSRF protections where backend-mediated.
+
+ACCEPTANCE
+STSDK-001 Local provider always available.
+STSDK-002 connector can be absent without project failure.
+STSDK-003 capability declarations match tests.
+STSDK-004 auto router rejects git forge for huge WAV by default.
+STSDK-005 user override remains possible when technically legal/supported.
+STSDK-006 checksum verifies after upload.
+STSDK-007 credentials never serialized.
+STSDK-008 failed backup leaves local asset intact.

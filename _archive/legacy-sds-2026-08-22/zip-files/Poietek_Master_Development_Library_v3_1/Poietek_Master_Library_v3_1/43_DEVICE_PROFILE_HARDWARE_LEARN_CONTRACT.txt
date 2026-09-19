@@ -1,0 +1,68 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.8
+
+43 — DEVICE PROFILE SCHEMA & HARDWARE LEARN CONTRACT v1
+=======================================================
+
+COMPANION
+device-profile.schema.v1.json
+
+PROFILE PRINCIPLE
+Device profiles describe physical capabilities and mappings. They do not own
+project musical meaning.
+
+LEARN WIZARD
+
+1 Detect ports.
+2 Capture identity if available.
+3 Ask user to press representative pads/keys.
+4 Turn knobs/encoders.
+5 Move faders.
+6 Press transport.
+7 Detect message pattern.
+8 Name/classify control.
+9 Test feedback if explicitly permitted.
+10 Save profile.
+11 Run validation suite.
+12 Optional publish.
+
+RAW INPUT EXAMPLES
+
+MIDI Note:
+{ protocol:"midi1", kind:"note", channel:10, note:36 }
+
+CC:
+{ protocol:"midi1", kind:"cc", channel:1, cc:74 }
+
+Pitch:
+{ protocol:"midi1", kind:"pitch_bend", channel:1 }
+
+HID:
+adapter-specific normalized descriptor.
+
+OUTPUT FEEDBACK
+Must be explicit and permissioned.
+Examples:
+LED
+RGB
+motor fader
+screen text
+ring indicator.
+
+Do not send undocumented SysEx merely because a profile claims it.
+
+PROFILE DISTRIBUTION
+
+Builtin
+Community
+User-local
+Manufacturer
+
+Verification label must match evidence.
+
+SCHEMA ACCEPTANCE
+DEV-001 Generic MIDI keyboard validates.
+DEV-002 16-pad profile validates.
+DEV-003 unknown extra extension fields retained under extensions.
+DEV-004 profile with invalid control type rejected.
+DEV-005 manufacturer_verified unavailable without trusted verification metadata.
+DEV-006 profile never contains OAuth/storage credentials.

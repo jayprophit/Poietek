@@ -1,0 +1,33 @@
+Official/current technical sources reviewed 11 August 2026:
+
+Ethereum:
+- Smart contracts expose block.timestamp as the current block epoch timestamp.
+- Solidity documentation warns that block.timestamp can be influenced to some degree,
+  so it should not be treated as a precision trusted clock.
+- Account abstraction is intended to make smart-contract wallets easier to use and can
+  support programmable recovery/batching and gas sponsorship.
+
+EIP-712:
+- Standard typed structured data hashing/signing.
+- Includes domain separation; protocol must handle replay protection appropriately.
+
+ERC-1271:
+- Standard method for smart-contract wallets to validate signatures.
+
+ERC-1155:
+- Multi-token standard; useful only for optional tokenized digital-asset/licence research.
+- Token ownership must not be confused with legal copyright ownership.
+
+OpenZeppelin Contracts 5.x:
+- Provides EIP712, SignatureChecker, MerkleProof, AccessControl/AccessManager,
+  Pausable, Nonces and related mature primitives.
+
+Primary references:
+https://ethereum.org/developers/docs/smart-contracts/anatomy/
+https://ethereum.org/roadmap/account-abstraction/
+https://docs.soliditylang.org/en/latest/units-and-global-variables.html
+https://eips.ethereum.org/EIPS/eip-712
+https://eips.ethereum.org/EIPS/eip-1271
+https://eips.ethereum.org/EIPS/eip-1155
+https://docs.openzeppelin.com/contracts/5.x/api/utils/cryptography
+https://docs.openzeppelin.com/contracts/5.x/access-control

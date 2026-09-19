@@ -1,0 +1,24 @@
+174 — WEBAUDIO TIMELINE PLAYBACK
+================================
+
+Implemented:
+project tempo tick->seconds
+audio clip scheduling
+clip source offsets
+track/clip gain
+track/clip pan
+mute/solo
+play/pause/stop/seek.
+
+Starter limitation:
+one-pass WebAudio scheduling.
+
+Next:
+lookahead scheduler
+live-edit reschedule
+automation
+recording
+offline render
+native backend.
+
+This is still materially more real than the prototype's simulated sequencer.

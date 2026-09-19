@@ -1,0 +1,98 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.0
+
+Compiled from:
+1) The complete product-development conversation supplied by the creator.
+2) Deep review of GitHub repository: jayprophit/Studio-Daw-Station-SDS-
+3) Current cross-platform/offline-first architecture recommendations.
+
+WORKING PRODUCT NAME
+Poietek is the working ecosystem name discussed in the design conversation.
+Studio DAW Station (SDS) is the current repository/product label.
+Final public branding should be chosen only after trademark/domain checks.
+
+CORE RULE
+One app. One project model. One creative graph. Many workspaces.
+Offline first. Cloud optional. Hardware agnostic. Collaboration capable.
+Professional depth without forcing beginners to see every advanced control.
+
+LEGAL / CLEAN-ROOM RULE
+Competitor products, patents, papers, hardware and interfaces may be studied for
+functional principles, workflows and interoperability requirements. Do not copy
+proprietary source code, protected assets, branded UI expression, undocumented
+confidential protocols, or patented claims without appropriate legal review or
+licensing. Compatibility layers should use documented/open interfaces wherever
+possible.
+
+===============================================================================
+
+INTERNAL CREATOR COMMUNITY
+
+PROFILE
+bio, skills, genres, portfolio, public/private projects, follows, collaboration
+availability, optional verified identity/equipment/region.
+
+FEED
+audio, video, image, project preview, template, device profile, tutorial, remix.
+Interactions: like, comment, share, save, follow, report, remix/fork if allowed.
+
+DIRECT MESSAGING
+1:1, project/group chat, attachments, private previews, collaboration invites.
+Include blocking, reporting, requests and spam controls.
+
+COLLAB DISCOVERY
+Search by role, genre, instrument, equipment, availability, language and portfolio.
+
+CONTRIBUTOR FOOTPRINT
+Audio and visual:
+artist, vocalist, instrumentalist, producer, songwriter, composer, engineer,
+mix/master, session musician, DJ, editor, director, camera, VFX, motion, graphic
+design and business entities.
+
+RECORDING WORKFLOW
+Project setup can preload team.
+When recording an unassigned track, prompt for performer, instrument/role,
+engineer and session date. Guests can later claim profiles.
+
+CONTRIBUTION IS NOT AUTOMATIC OWNERSHIP
+AI can suggest a discussion split, but humans approve.
+
+RIGHTS ENTITIES
+People, labels, publishers, management, PRO/CMO, distributors, promoters,
+visual-production entities and other contractual parties.
+
+QUICK EXPORT
+No ISRC/PRO requirement. Draft/private/master/stems according to permissions.
+
+PUBLISH MODE
+Optional validation for title, artists, writers, performers, producer, visual
+credits, splits, labels/publishers, licences, identifiers, artwork and release
+settings.
+
+SAMPLE RIGHTS
+Store source/licence. Before monetized/public release, flag unknown items and
+offer attach/replace/seek-permission/original-alternative workflows. Do not claim
+AI recreation makes an unlicensed protected work automatically safe.
+
+BLOCKCHAIN
+Optional content hash, timestamp, wallet and contract reference. Do not claim
+blockchain replaces copyright/contract systems.
+
+MONETISATION
+Tips, direct sales, subscriptions/fan support, marketplace, commissions, services
+and courses. Payment/KYC/tax/legal requirements are separate infrastructure.
+
+CREATOR LICENCE SETTINGS
+listen only, remix allowed, attribution, noncommercial, commercial available,
+custom terms.
+
+GOVERNANCE
+Platform roadmap voting is separate from project legal approvals.
+
+SHARING
+Internal publishing is first-class. External platforms use connector-based
+ShareService adapters and each platform's rules/APIs.
+
+VISIBILITY
+local only, private cloud, team, unlisted, community/followers, public.
+Visibility and monetisation are separate choices.

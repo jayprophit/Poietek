@@ -1,0 +1,45 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 3.0
+
+164 — VIDEO PLAYER TUNING & AUDIO/VIDEO SYNC
+============================================
+
+VIDEO DURATION MUST STAY FIXED.
+
+If the community video player's audio is retuned:
+pitch changes
+tempo/duration remain fixed.
+
+This preserves:
+lip sync
+cuts
+captions
+chapters
+timecode-aligned metadata.
+
+Do not change audio playback speed from 432 -> 440 for a normal music video.
+
+SPECIAL CASE
+
+If a creator intentionally wants:
+slower/faster visual playback with pitch,
+that is a separate creative playback mode.
+
+PLAYER PIPELINE
+
+Video decode
++
+audio decode
+-> tuned audio DSP
+-> common media clock
+-> output.
+
+SYNC MONITOR
+
+Measure:
+audio/video drift
+buffer underrun
+retune processor latency.
+
+Apply latency compensation.
+
+END DOCUMENT 164

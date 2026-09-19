@@ -1,0 +1,206 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.7
+
+40 — BUSINESS, HOSTING COST & SUSTAINABILITY MODEL
+==================================================
+
+PRINCIPLE
+Poietek's core creative product should not require Poietek to finance every
+creator's terabytes of audio/video.
+
+Architecture:
+Local First
++ Bring Your Own Cloud
++ Optional Poietek-managed services.
+
+CURRENT PUBLIC PRICING SNAPSHOT
+Checked 11 August 2026. Pricing changes; never hard-code these values in product
+logic.
+
+FIREBASE SPARK
+Official Firebase material currently lists:
+- Firestore: 1 GiB stored no-cost, 20,000 document writes/day, 50,000 reads/day,
+  20,000 deletes/day.
+- Firebase Hosting: 10 GB hosting storage no-cost and 10 GB/month transfer no-cost.
+- Cloud Storage for Firebase now requires Blaze billing plan access; the no-cost
+  Spark plan cannot access Cloud Storage buckets as of the February 3, 2026
+  requirement.
+- Firebase Authentication Spark limits must be checked before launch; current
+  auth documentation describes 3,000 DAU for most sign-in providers on Spark.
+
+Sources:
+https://firebase.google.com/pricing
+https://firebase.google.com/docs/hosting/usage-quotas-pricing
+https://firebase.google.com/docs/storage/faqs-storage-changes-announced-sept-2024
+https://firebase.google.com/docs/auth
+
+SUPABASE FREE
+Current public pricing lists:
+- 500 MB database per project.
+- 50,000 monthly active users.
+- 1 GB file storage.
+- 5 GB egress and 5 GB cached egress.
+- 200 peak realtime connections and 2 million messages/month.
+- free projects may pause after one week of inactivity.
+Source:
+https://supabase.com/pricing
+
+CLOUDFLARE R2
+Current official pricing:
+- free tier: 10 GB-month Standard storage/month,
+- 1 million Class A operations/month,
+- 10 million Class B operations/month,
+- Internet egress free.
+- Standard storage above free tier: $0.015/GB-month.
+Source:
+https://developers.cloudflare.com/r2/pricing/
+
+BACKBLAZE B2
+Current official marketing pricing begins around $6.95/TB/month for standard B2,
+with its published egress/transaction terms.
+Source:
+https://www.backblaze.com/cloud-storage/pricing
+
+PROTOTYPE COST MODEL
+
+Goal: £/$0 platform spend where possible.
+
+Client:
+local project/media.
+
+Web hosting:
+Firebase Hosting Spark.
+
+Auth/project directory:
+Firebase Spark.
+
+Large media:
+local only / user BYOC.
+
+Git:
+GitHub free repo where appropriate.
+
+Models:
+local cache / free public model sources subject to licence.
+
+RESULT
+The prototype can test product flow without offering managed bulk cloud storage.
+
+ALPHA COST MODEL
+
+Still local/BYOC first.
+
+Add optional managed object storage for:
+thumbnails
+small previews
+collaboration assets
+users who explicitly choose Poietek cloud.
+
+Use spend caps/budget alerts.
+
+BETA / PUBLIC
+
+Separate cost centers:
+
+CONTROL PLANE
+auth
+DB
+realtime
+notifications.
+
+MEDIA PLANE
+object storage
+egress
+transcode.
+
+COMPUTE PLANE
+AI
+stem separation
+video render.
+
+COMMUNITY PLANE
+feed/search/moderation.
+
+Do not bundle all cost into one opaque subscription.
+
+RECOMMENDED MONETIZATION SHAPE
+
+CORE
+Free/community or fair one-time purchase remains viable if sustainable.
+
+OPTIONAL RECURRING
+Poietek Cloud:
+managed backup
+storage
+high-speed team sync
+cloud AI
+render/transcode
+large collaboration.
+
+BYOC USERS
+Can use Google Drive/OneDrive/TeraBox/WebDAV/S3/etc. subject to provider policies.
+Poietek may charge nothing for raw storage it does not provide.
+
+MARKETPLACE
+Optional revenue share from third-party plugins/presets/templates/services.
+
+CREATOR MONETIZATION
+Transaction fee only when actual commerce occurs.
+
+COST SAFETY
+
+1 Never stream waveform meters through paid DB writes.
+2 Never put PCM/video in Firestore.
+3 Deduplicate by content hash.
+4 Upload once; use replicas.
+5 Proxy video.
+6 Cache thumbnails.
+7 Local AI when practical.
+8 Queue background work.
+9 Put maximum cost per job.
+10 Explicit cloud-compute confirmation for expensive jobs.
+
+UNIT ECONOMICS METRICS
+
+Control plane cost / MAU
+Storage GB / active creator
+Egress GB / active creator
+AI cost / active creator
+Transcode minutes / active creator
+Support cost / active creator
+Marketplace GMV
+Cloud conversion rate.
+
+SCENARIO FORMULA
+
+MonthlyManagedMediaCost =
+storage_gb * storage_rate
++ billable_write_ops
++ billable_read_ops
++ egress
++ transcode
++ AI.
+
+BYOC reduces storage_gb and egress borne by Poietek.
+
+FREE TIER ABUSE
+Need:
+rate limits
+verified email/account where needed
+App Check/anti-abuse
+job quotas
+no anonymous unlimited AI/render.
+
+NO "UNLIMITED" PROMISE
+Do not market unlimited cloud storage/AI without an enforceable economic model.
+
+BUSINESS ACCEPTANCE
+BUS-001 local-only user creates without paid infrastructure.
+BUS-002 provider outage does not force Poietek media egress.
+BUS-003 cost dashboard separates media/control/compute.
+BUS-004 per-job AI/render cost estimated before expensive run.
+BUS-005 managed storage optional.
+BUS-006 BYOC user can export/migrate.
+BUS-007 quotas fail gracefully.
+BUS-008 billing does not affect ownership of local project.
+BUS-009 subscription cancellation allows data export.
+BUS-010 pricing assumptions reviewed quarterly before public scale.

@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/community-tuning-profile/v1",
+  "title": "Poietek Community Tuning Profile v1",
+  "type": "object",
+  "required": [
+    "profileId",
+    "creatorPartyId",
+    "label",
+    "referencePitchHz",
+    "temperament",
+    "visibility",
+    "license"
+  ],
+  "properties": {
+    "profileId": {
+      "type": "string"
+    },
+    "creatorPartyId": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "referencePitchHz": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "referenceNote": {
+      "type": "string",
+      "default": "A4"
+    },
+    "temperament": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "visibility": {
+      "enum": [
+        "private",
+        "team",
+        "unlisted",
+        "public"
+      ]
+    },
+    "license": {
+      "type": "string"
+    },
+    "healthClaimClass": {
+      "enum": [
+        "none",
+        "creative_only",
+        "research_reference"
+      ]
+    },
+    "ratings": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "forkedFromProfileId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "contentHash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

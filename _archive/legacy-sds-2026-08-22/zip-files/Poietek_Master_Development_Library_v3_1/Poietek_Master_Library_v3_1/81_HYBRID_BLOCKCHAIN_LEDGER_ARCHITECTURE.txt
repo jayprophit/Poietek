@@ -1,0 +1,57 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.2
+
+81 — HYBRID BLOCKCHAIN LEDGER ARCHITECTURE
+==========================================
+
+GOAL
+
+Add a tamper-evident blockchain/smart-contract layer that can prove when a
+specific version of a Poietek rights/provenance/settlement record was anchored.
+
+DO NOT PUT THE WHOLE DATABASE ON CHAIN.
+
+PRIVATE OFF-CHAIN LEDGER
+stores:
+full Party identity
+PRS/PPL/MLC/SoundExchange IDs
+contracts
+banking/tax
+emails
+private splits
+full statements
+private project history.
+
+OPTIONAL PUBLIC CHAIN
+stores:
+hashes
+Merkle roots
+version
+kind
+block number
+block timestamp
+signer/contract address where appropriate
+supersession links.
+
+BENEFIT
+
+A later verifier can prove:
+"This exact Rights Manifest hash existed in this anchored state."
+
+It does not prove:
+the legal truth of every claim inside the document.
+
+DUAL LEDGER
+
+Operational Ledger:
+Postgres/local database.
+
+Evidence Ledger:
+blockchain anchors.
+
+The operational ledger remains usable if blockchain is unavailable.
+
+ACCEPTANCE
+CHAIN-001 no blockchain required to record session.
+CHAIN-002 anchoring failure does not block local project.
+CHAIN-003 private IDs absent from public transaction.
+CHAIN-004 manifest verification catches altered content.

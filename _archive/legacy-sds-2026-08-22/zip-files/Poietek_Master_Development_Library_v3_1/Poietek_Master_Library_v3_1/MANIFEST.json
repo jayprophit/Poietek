@@ -1,0 +1,716 @@
+{
+  "library": "Poietek Master Development Library",
+  "version": "2.0-readme-update",
+  "files": [
+    {
+      "name": "00_READ_ME_FIRST_MASTER_INDEX.txt",
+      "bytes": 10534,
+      "sha256": "72f38fb6c904d61dd0801366e8032de065fd7be2a795ac85c65342cc9d1e7eca"
+    },
+    {
+      "name": "01_PRODUCT_VISION_PRINCIPLES_USER_STORIES.txt",
+      "bytes": 5462,
+      "sha256": "ecbdb48e5ada922a43d9680e973b6dbff438eed7a28a1df603e7228765a4557c"
+    },
+    {
+      "name": "02_CURRENT_REPOSITORY_DEEP_AUDIT.txt",
+      "bytes": 9721,
+      "sha256": "97216c3c30b0fe4283bdab04a1278147ed97fea5fb860017e896f4ce24932e13"
+    },
+    {
+      "name": "03_CANONICAL_DOMAIN_MODEL_UNIVERSAL_PROJECT_FORMAT.txt",
+      "bytes": 4553,
+      "sha256": "b207ddf76a4530e6b626e5720bedd75728be67775030fb479c4a5b4c75063374"
+    },
+    {
+      "name": "04_CROSS_PLATFORM_APPLICATION_ARCHITECTURE.txt",
+      "bytes": 3328,
+      "sha256": "906ae25192be7a89392b4634626c5994efa4d1bf6e13f525de780e2a61515685"
+    },
+    {
+      "name": "05_OFFLINE_SYNC_COLLABORATION_VERSIONING.txt",
+      "bytes": 3668,
+      "sha256": "00b3d6591b589edd0c1d4c92d5ebbde44b7ec5aa9c36625b70d5a7505413aaff"
+    },
+    {
+      "name": "06_AUDIO_MIDI_HARDWARE_PLUGIN_ARCHITECTURE.txt",
+      "bytes": 4948,
+      "sha256": "4b185d2237ebc28670059ab76464365587714fc24afea5ac4f3dedcc16180417"
+    },
+    {
+      "name": "07_DAW_SAMPLING_COMPOSITION_MIXING_MASTERING.txt",
+      "bytes": 4903,
+      "sha256": "fb8718db91c1a85ec2a0962a2932c4c0116c41da2f494d1bf00db2315de2c433"
+    },
+    {
+      "name": "08_VIDEO_VFX_VISUAL_MEDIA_PRODUCTION.txt",
+      "bytes": 3631,
+      "sha256": "6b5089bbfa238f8efb68aa3a3c66b6619cde61476659a22db77e13d6da3c9448"
+    },
+    {
+      "name": "09_AI_AUTOMATION_CREATIVE_INTELLIGENCE.txt",
+      "bytes": 3592,
+      "sha256": "17ee919643450c479e7b3c5acd72af16f154c49d8f590fec88376b313dbb2ac8"
+    },
+    {
+      "name": "10_COMMUNITY_RIGHTS_PUBLISHING_MONETISATION.txt",
+      "bytes": 3845,
+      "sha256": "b78df1aaaecdbe4899ca8cebafb1159277ee3e55048ec5282ddb956a95017ff2"
+    },
+    {
+      "name": "11_UI_UX_LEARNING_ACCESSIBILITY_CUSTOMISATION.txt",
+      "bytes": 3373,
+      "sha256": "ddfb073de208301f02f3a397b1876f211c3066a04ecc2abefb186430771fbfcd"
+    },
+    {
+      "name": "12_SECURITY_PRIVACY_EXTENSIONS_SDK_OPERATIONS.txt",
+      "bytes": 3692,
+      "sha256": "799788bd5abf37cfded7b1f60d8770de449b1ff99bd62159bfa53a732506b56d"
+    },
+    {
+      "name": "13_MIGRATION_ROADMAP_SDS_TO_PRODUCTION.txt",
+      "bytes": 3636,
+      "sha256": "d410763d1673f3cb242af0f076b9741529eef1da192a5eaf7f5a11a67c503c2f"
+    },
+    {
+      "name": "14_MASTER_AI_BUILDER_PROMPT.txt",
+      "bytes": 4546,
+      "sha256": "2fe1bdcff9938914f98b4719e42955cbcd7cb3b56b26b478ad837aafce78882e"
+    },
+    {
+      "name": "15_ACCEPTANCE_TESTS_TRACEABILITY.txt",
+      "bytes": 5864,
+      "sha256": "571c884145aa9632f0e764029cde58038602b83793c75908b6178ea6735069be"
+    },
+    {
+      "name": "16_PITCH_TIME_VOCAL_ALIGNMENT_AUDIO_NOTE_RESEARCH.txt",
+      "bytes": 20144,
+      "sha256": "b346b5457d3178d7c20802e109490468aeba38bdd3bbf3398229dd5964eedeef"
+    },
+    {
+      "name": "17_DJ_DVS_LIVE_REMIX_SET_PREPARATION_PERFORMANCE_ARCHITECTURE.txt",
+      "bytes": 25780,
+      "sha256": "174ed949ff8d8d9742c0b31da69f0cdc9238d21dbf2cf691e70ce486b47ba58e"
+    },
+    {
+      "name": "18_PLUGIN_HOST_SYNTHESIS_MODULATION_EFFECTS_MASTERING_ARCHITECTURE.txt",
+      "bytes": 46855,
+      "sha256": "73ccb90538e051372e0be013bc33a5cf1b394a7fd949df66d321839648c18787"
+    },
+    {
+      "name": "19_CONNECTED_STORAGE_FABRIC_GIT_FORGES_BYOC.txt",
+      "bytes": 19316,
+      "sha256": "3c0d0796a7b4a3ff96e5c5d45e68a2bd263470e82b3cf1520750018b2b46eefd"
+    },
+    {
+      "name": "20_OPEN_RESOURCES_THIRD_PARTY_RESEARCH_FIREBASE_WEB_PROTOTYPE.txt",
+      "bytes": 15507,
+      "sha256": "04637abb7798fa0c141f718535dfa38ecdbd1e1edb2dcd79f43cf45ef98e0dca"
+    },
+    {
+      "name": "21_UI_UX_SYSTEM_FRONTEND_ARCHITECTURE.txt",
+      "bytes": 18761,
+      "sha256": "90bc048302f1c3dfe5e201abd9cd1fb3d7615ba37931acaef41b06e7d1e24f60"
+    },
+    {
+      "name": "22_BACKEND_SERVICE_API_DATA_ARCHITECTURE.txt",
+      "bytes": 16933,
+      "sha256": "551f6bdb9cf903c57af93c3c8d0664e3ab46193605bd73c3d3c963899e0ddfab"
+    },
+    {
+      "name": "23_COMPLETE_SYSTEM_ARCHITECTURE_RUNTIME_REPOSITORY_STRUCTURE.txt",
+      "bytes": 18109,
+      "sha256": "93798045a79060d8242abcec4e358e0e7a6eab56359d6e8eee9e3d774c9c5a73"
+    },
+    {
+      "name": "24_ENGINEERING_OPERATIONS_API_CONTRACTS_DEVEX_RELEASE_STRUCTURE.txt",
+      "bytes": 14520,
+      "sha256": "b6fa4ce5b206ddfc5f310d446ad66a516155e587ecb93b117860d616b74d3a82"
+    },
+    {
+      "name": "25_BRAND_NAMING_PRODUCT_TAXONOMY_IP_CLEARANCE.txt",
+      "bytes": 6777,
+      "sha256": "8154333b9203b5279b04bea9ce666eca283ee559859d01cb8052f097186bccd7"
+    },
+    {
+      "name": "26_LEGAL_COMPLIANCE_POLICY_APP_STORE_MARKETPLACE.txt",
+      "bytes": 7040,
+      "sha256": "334d7d31ab4dc6516986b449341caa89e4b6e1dc0c140de13b674052a5288b28"
+    },
+    {
+      "name": "27_INTEROPERABILITY_FILE_FORMAT_CODEC_IMPORT_EXPORT.txt",
+      "bytes": 5584,
+      "sha256": "6bdc2218a3f1d200a768e186659d85a715bcef1bf17824fadf30a5ae1ff3c5c4"
+    },
+    {
+      "name": "28_INSTALLATION_UPDATES_PACKAGING_LOCALIZATION_SUPPORT_ADMIN.txt",
+      "bytes": 5099,
+      "sha256": "464a362543e594de5179417420605f1071e64cb75f0038e9647e4dbd982a54db"
+    },
+    {
+      "name": "29_PERFORMANCE_BENCHMARKS_CERTIFICATION_COMPATIBILITY.txt",
+      "bytes": 5535,
+      "sha256": "a05421f2e810904c7dd1cb9f4372aff8a699a83d207290b5885e3d7ed123b091"
+    },
+    {
+      "name": "30_MASTER_GAP_ANALYSIS_REMAINING_ROADMAP.txt",
+      "bytes": 5328,
+      "sha256": "d2faecfdfb7ac5fba2d531544dd2255b0d27e672982de60121138e334595956a"
+    },
+    {
+      "name": "31_PROJECT_SCHEMA_V1.txt",
+      "bytes": 1581,
+      "sha256": "6f8c6869c8540c822393d1dd8beab7fc6e078d32be7ccb563227cf5c115d2e84"
+    },
+    {
+      "name": "32_API_CONTRACT_V1.txt",
+      "bytes": 742,
+      "sha256": "573c40060bf210900acb794ab84d354b4fdf0ca93974100c614acd99463bfd01"
+    },
+    {
+      "name": "33_DATABASE_SCHEMA_V1.txt",
+      "bytes": 1026,
+      "sha256": "5885d9bdf28f24214f7314ebfef575bfc59da7076b5b1638737264851a502cc4"
+    },
+    {
+      "name": "34_SYNC_CRDT_PROTOCOL_V1.txt",
+      "bytes": 4494,
+      "sha256": "ca125b8d3c6d98ac519229643030649986c3cf04057c4ef8fc7d31878abb6313"
+    },
+    {
+      "name": "35_AUDIO_ENGINE_DETAILED_DESIGN_V1.txt",
+      "bytes": 4726,
+      "sha256": "84da0608c392fc217c6db0e34569ac40216692de8eac333c670762eab6f09713"
+    },
+    {
+      "name": "36_UI_WIREFRAME_SPECIFICATION_V1.txt",
+      "bytes": 6217,
+      "sha256": "6f9bf3ef567eae958dd8d24b6f66d3d31a79fd02b9abcc8904e19486a5bbc8c9"
+    },
+    {
+      "name": "37_SECURITY_THREAT_MODEL_V1.txt",
+      "bytes": 4940,
+      "sha256": "6a08ac1c75bbe7f16f18ecacfb208d2e6480d1d480d6664dd37b25c5605f1ae7"
+    },
+    {
+      "name": "38_TEST_FIXTURE_CATALOGUE_V1.txt",
+      "bytes": 1787,
+      "sha256": "ea6b0b256fccfbe8d4744f08ace52ca29f54aeb493d28fedea3592c9746e1fbd"
+    },
+    {
+      "name": "39_FIRST_VERTICAL_SLICE_IMPLEMENTATION_PLAN.txt",
+      "bytes": 3476,
+      "sha256": "230d97dfcaa25a26eae35d146b4b98dccb1be406e8c8281a467d1b7e4817b0a3"
+    },
+    {
+      "name": "40_BUSINESS_HOSTING_COST_SUSTAINABILITY_MODEL.txt",
+      "bytes": 5104,
+      "sha256": "e16efbe67ee9ec5ea52002b77a2995a102d6e8ba6e1200f40c0e1b7994f716bd"
+    },
+    {
+      "name": "41_COMMAND_BUS_DOMAIN_EVENTS_UNDO_CONTRACT.txt",
+      "bytes": 3112,
+      "sha256": "b32e0fdc16d87764018afc1fd9597cac2e965dcd49ec736683930f8669914a08"
+    },
+    {
+      "name": "42_STORAGE_PROVIDER_SDK_ROUTING_CONTRACT.txt",
+      "bytes": 2146,
+      "sha256": "796378ee5e873ff3bbd49e94a7406df36ce99149833dd8ebe42766bbddeacea3"
+    },
+    {
+      "name": "43_DEVICE_PROFILE_HARDWARE_LEARN_CONTRACT.txt",
+      "bytes": 1526,
+      "sha256": "c27fbba7712ff528a1772b76b646d7b3c257b1c1e8acbc384b98b2969fe42efc"
+    },
+    {
+      "name": "44_EXTENSION_PLUGIN_MANIFEST_PERMISSION_MODEL.txt",
+      "bytes": 1406,
+      "sha256": "66ac0a6b87591b74eaf109976dbfe4208ca1351fddad6a30a3c23d6a2a2f48a1"
+    },
+    {
+      "name": "45_FIREBASE_WEB_MVP_DATA_MAPPING_SECURITY.txt",
+      "bytes": 1698,
+      "sha256": "5a53ae3130de3de5ddda3606c7a8ef4fa712176b069a84a7bcf0ba7e44f4896e"
+    },
+    {
+      "name": "46_PWA_OFFLINE_BOOT_LOCAL_STORAGE_CONTRACT.txt",
+      "bytes": 1923,
+      "sha256": "09a3d42d681532875a82fd488a8592e12d864722cd83cb73c62e7c48cea33bba"
+    },
+    {
+      "name": "47_FRONTEND_STATE_APPLICATION_REACT_BOUNDARIES.txt",
+      "bytes": 1627,
+      "sha256": "988bbd81cffe318610a42fd5ddcf60f0cd25d1283ea5d692dad51cf47b9a8593"
+    },
+    {
+      "name": "48_ERROR_TELEMETRY_OBSERVABILITY_CONTRACT.txt",
+      "bytes": 1641,
+      "sha256": "6b55137caf0a1961d8d0d6e151f4062ef5e7808c2706ad53304faf63b858cac5"
+    },
+    {
+      "name": "49_CI_CD_RELEASE_AUTOMATION_QUALITY_GATES.txt",
+      "bytes": 1182,
+      "sha256": "e47a9f10e6fc02ffd269ecf08b0b114707ba2d890faabbbd83e9fc049b7e5787"
+    },
+    {
+      "name": "50_SDS_TO_POIETEK_REPOSITORY_MIGRATION_TASKBOARD.txt",
+      "bytes": 4336,
+      "sha256": "4a2cb725c2362ebfbd6851d3fb12a9e2d97d8f06b1c418e5601482001745c2ea"
+    },
+    {
+      "name": "51_MONOREPO_PACKAGE_BOOTSTRAP.txt",
+      "bytes": 1107,
+      "sha256": "b0de58822a02c5f470c1a09d1fdddd9df0cadf5ff185edb1b0aef2617cdf1b3f"
+    },
+    {
+      "name": "52_PROJECT_FACTORY_VALIDATION_CODE.txt",
+      "bytes": 800,
+      "sha256": "2f47c9f4146b0addb7413db5baaca113341dbbdbc82c3f6fa55e8ff707d414c3"
+    },
+    {
+      "name": "53_INDEXEDDB_LOCAL_PROJECT_REPOSITORY_CODE.txt",
+      "bytes": 776,
+      "sha256": "b2a33c2462d1db26d28c8bfe85ebcbe2f448724aa20c25901cc1f8a1d140653f"
+    },
+    {
+      "name": "54_OPFS_ASSET_STORE_HASH_WAVEFORM_CODE.txt",
+      "bytes": 830,
+      "sha256": "95c2792a83a944bedab8bb180b009217cf7e772ef89b2791c52b728e829eba36"
+    },
+    {
+      "name": "55_COMMAND_BUS_UNDO_CODE.txt",
+      "bytes": 860,
+      "sha256": "0c40d6ce0b7e445800b1e1110c17aaf0c3013dd3705968acaa47385cdfabc3bf"
+    },
+    {
+      "name": "56_WAVEFORM_TIMELINE_READ_MODEL_CODE.txt",
+      "bytes": 653,
+      "sha256": "be0efd0320720fbfdb740d2becb3ab731f6f0ce92ba510cefe2c4afe6056d198"
+    },
+    {
+      "name": "57_WEBAUDIO_BACKEND_TRANSPORT_CODE.txt",
+      "bytes": 873,
+      "sha256": "075ec62ae33a88e4113285a788603661ede779a48f7a9cd2061f5fa84a42d374"
+    },
+    {
+      "name": "58_REACT_ARRANGEMENT_INTEGRATION.txt",
+      "bytes": 719,
+      "sha256": "efabf4eb4df684d583d7bfcea306254af2e46b20258279cc1fd6ccb992c676ff"
+    },
+    {
+      "name": "59_PWA_SERVICE_WORKER_OFFLINE_CODE.txt",
+      "bytes": 740,
+      "sha256": "b4c5953358ed10f19dc75e046eb219c5db9d68b262d379ee28e3f035cd8734c1"
+    },
+    {
+      "name": "60_FIREBASE_EMULATOR_AND_REPO_INTEGRATION.txt",
+      "bytes": 1074,
+      "sha256": "c0c26a7a90e55f89ca1cbd405b40bb5c20e798bc382bd5bb38e9732ad409a2e9"
+    },
+    {
+      "name": "61_INSTALLED_APP_NATIVE_RUNTIME_ARCHITECTURE.txt",
+      "bytes": 2256,
+      "sha256": "b1d1dfc08f73cec811a38fb3326f1f173249d77106c74fe5e11783c315c2263f"
+    },
+    {
+      "name": "61_NATIVE_INSTALLED_APP_RUNTIME_CONTRACT.txt",
+      "bytes": 3147,
+      "sha256": "a24d2f5e908f4f505cc5a125906e21e2b66561f2aa44918d54cc79316bd654bd"
+    },
+    {
+      "name": "62_PLATFORM_CAPABILITY_INSTALLATION_MATRIX.txt",
+      "bytes": 1092,
+      "sha256": "cb4d0b471f22415396bfd055c8bac7b894fbbcc867a74859006944e89779400b"
+    },
+    {
+      "name": "62_PLATFORM_PACKAGING_APP_STORE_RELEASE_MATRIX.txt",
+      "bytes": 1363,
+      "sha256": "a30d42bceefc808efe9bb4c49ea4a375fbb3af6d4978a68e87359eb670377590"
+    },
+    {
+      "name": "63_SUPABASE_FIREBASE_HYBRID_BACKEND.txt",
+      "bytes": 1762,
+      "sha256": "2b50e5896561bf10b90a446ce77d0e0e4a7287725b25ce85046c7a2e84f96cc1"
+    },
+    {
+      "name": "63_SUPABASE_FIREBASE_HYBRID_BACKEND_STRATEGY.txt",
+      "bytes": 2559,
+      "sha256": "4c5e7a2b84a7cdee9398a67782ebef5df43a23cb99ec00f2a80c045a0b0f376d"
+    },
+    {
+      "name": "64_SUPABASE_MVP_SCHEMA_RLS_CONTRACT.txt",
+      "bytes": 1017,
+      "sha256": "77f2bb5c80b4aa81091e82282a14d0a039e7532d2bc1b967d52c3b922a3fdf29"
+    },
+    {
+      "name": "64_WEBSITE_WEBAPP_DESKTOP_MOBILE_PRODUCT_SURFACES.txt",
+      "bytes": 1193,
+      "sha256": "053c66082fd83a6109359de78e6c0e4e2cb3b342b7fbd6e2fbf82485ae780ad6"
+    },
+    {
+      "name": "65_FIVE_STAR_COMPETITIVE_BENCHMARK_STANDARD.txt",
+      "bytes": 1810,
+      "sha256": "79ada9dc8eb4e547046b61e407987b26dceb51474b03c11add8aa5c3b17785c3"
+    },
+    {
+      "name": "65_TAURI_NATIVE_SHELL_PACKAGING_SCAFFOLD.txt",
+      "bytes": 1105,
+      "sha256": "9c2eca1df2c5420ff73781e7e4fb2eca2868c1e1a848463c9f02020132c1ae35"
+    },
+    {
+      "name": "66_COMPETITIVE_FEATURE_BENCHMARK_2026.txt",
+      "bytes": 3984,
+      "sha256": "b500391749b50192a3bc42872d34a011db0f8116946c2aa624cd4ffef4c67588"
+    },
+    {
+      "name": "66_FIVE_STAR_COMPETITIVE_BENCHMARK_FRAMEWORK.txt",
+      "bytes": 2379,
+      "sha256": "2bc3a2bb535a69d77725c5a88a8d6fc7aef55305304cae656217ad5da69d51f9"
+    },
+    {
+      "name": "67_CURRENT_POIETEK_BENCHMARK_REPORT.txt",
+      "bytes": 2371,
+      "sha256": "43f0fee2148f52ac743f963c1d2eaca737d0705bb5164115e81b828abcc78a81"
+    },
+    {
+      "name": "67_FIVE_STAR_GAP_BACKLOG.txt",
+      "bytes": 1758,
+      "sha256": "5a153f7a064f4df97003a5ecf030309fe42149fdc4c16b743cef212bc6048330"
+    },
+    {
+      "name": "68_BENCHMARK_TEST_HARNESS_AND_METRICS.txt",
+      "bytes": 1596,
+      "sha256": "2a064c63d3c8c8ffa876612e49218030d0bd4893741846f9d7fc69ed143d15dc"
+    },
+    {
+      "name": "68_FIVE_STAR_GAP_CLOSURE_PROGRAM.txt",
+      "bytes": 1777,
+      "sha256": "1d53148444d3afc18183be8cec47fbaeee58616b60bae587bf57232ca35b2553"
+    },
+    {
+      "name": "69_NATIVE_RUNTIME_PLATFORM_CAPABILITY_CODE.txt",
+      "bytes": 846,
+      "sha256": "29febc8251129dc767bcb6f30441b94b531b916f9f252a2c34cfccaa4128ae81"
+    },
+    {
+      "name": "69_RELEASE_CERTIFICATION_FIVE_STAR_GATE.txt",
+      "bytes": 1146,
+      "sha256": "77828b10d33fe403f687b370bcad9b4ea72351ce03593e6487324f29888d233c"
+    },
+    {
+      "name": "70_MASTER_NATIVE_BACKEND_FIVE_STAR_RELEASE_GATE.txt",
+      "bytes": 1642,
+      "sha256": "749ff21cbf4cc2482560e190abb68adabc4241fa2c47d235ad8608b707941009"
+    },
+    {
+      "name": "70_NATIVE_HYBRID_INTEGRATION_ROADMAP.txt",
+      "bytes": 1652,
+      "sha256": "69715f45f1bbd12eb4e6b9901e7f7943ceffdae472ce76137cdde0eb8a44675f"
+    },
+    {
+      "name": "99_COMPLETE_COMBINED_MASTER_SPECIFICATION.txt",
+      "bytes": 419333,
+      "sha256": "ef5e34f356718cf69d884dd29f97a7608f833a7ea8465eaee980e6d28484dcd9"
+    },
+    {
+      "name": "CommandBus.ts",
+      "bytes": 785,
+      "sha256": "e8b32839c73b006388d6b350abe924b673b04827c2d47531b56b5d2d2c8726dd"
+    },
+    {
+      "name": "ProjectRepository.ts",
+      "bytes": 481,
+      "sha256": "7bf6d67af96e8145dd8ae6c2f792e45bb7831800cfe1971aa1090b4b0c07f12e"
+    },
+    {
+      "name": "README.md",
+      "bytes": 14223,
+      "sha256": "e713a167c2a6649153ba4c1eca33e9acb02e6a3aa01e9a661671a2cd4d6e52cc"
+    },
+    {
+      "name": "StorageProvider.ts",
+      "bytes": 2097,
+      "sha256": "2b63a08c0962db04e1f36fb2c30859a552dcf25923e0ab0b5ea4bc5236186d70"
+    },
+    {
+      "name": "ci.example.yml",
+      "bytes": 581,
+      "sha256": "38b3a66d0aeb4425e19533cc3cfd99cff072cfd549d87d94e0f5d0e1e8a6fc06"
+    },
+    {
+      "name": "command.schema.v1.json",
+      "bytes": 1663,
+      "sha256": "775720c8877ed9b32b70b1430daae10f5a5056d6d80beee2372607189d0b3759"
+    },
+    {
+      "name": "database.v1.sql",
+      "bytes": 5934,
+      "sha256": "a7c782efca2e475ce09f7393662d01b6aafd7fb29e1cc52cc0fe1d461f2baa91"
+    },
+    {
+      "name": "device-profile.schema.v1.json",
+      "bytes": 3617,
+      "sha256": "aa858ef1db35bbfda0394dda9ff41ff0e5e95907f16925649e48b0a80f0095c1"
+    },
+    {
+      "name": "error-codes.v1.json",
+      "bytes": 1989,
+      "sha256": "4b3d6fe0e247dc9e85dc236bde5c93a2145dc600e3a27663130a22b7ec11cb33"
+    },
+    {
+      "name": "event.schema.v1.json",
+      "bytes": 1009,
+      "sha256": "1143f787830ebb9b6db8da5f14ff8defb41903282b383056c28e54cf1aee3e8a"
+    },
+    {
+      "name": "extension-manifest.schema.v1.json",
+      "bytes": 2067,
+      "sha256": "8f475516275fbc1bfa826ee1fdc097e64c442da8a4a1b7eaf49f09594213cc60"
+    },
+    {
+      "name": "firestore.indexes.json",
+      "bytes": 242,
+      "sha256": "3c400d9611704a43a3b5f47adf74b323a25fff627dc34b7030d53206e877f2f1"
+    },
+    {
+      "name": "firestore.rules",
+      "bytes": 2288,
+      "sha256": "f6e9162e7061b1ee5862081fcd76e4033aeca54bc7fc6a9b86baba6a4bee3840"
+    },
+    {
+      "name": "manifest.webmanifest",
+      "bytes": 433,
+      "sha256": "3d72fb12aa14bf9106be2aa1927a16eab611dca19c20448194795d0c80d73851"
+    },
+    {
+      "name": "openapi.v1.yaml",
+      "bytes": 6674,
+      "sha256": "439ee8a3708b7c2685dc16bb2441ccf9c6b9ad889abfddf531d730bc2a8d769e"
+    },
+    {
+      "name": "project.schema.v1.json",
+      "bytes": 22149,
+      "sha256": "862e9c93ac5cde0ce2a657ff22b66b2207ec4cbd751ae03351ab8deb4b8fa54b"
+    },
+    {
+      "name": "starter_apps__web__public__manifest.webmanifest",
+      "bytes": 215,
+      "sha256": "7e099bcd6fbb624f54c9862bc64188b8e36deb5efcef3f36636615ba8b8453f1"
+    },
+    {
+      "name": "starter_apps__web__public__sw.js",
+      "bytes": 1638,
+      "sha256": "93b0881901d387c8d1857a7abde544f139e161e9e7dd372a130519fb0aebba9c"
+    },
+    {
+      "name": "starter_firebase__firestore.rules",
+      "bytes": 1883,
+      "sha256": "49bcc0dd150670dfb03360b0816a43daed68b31d70171487614cacd6c358fe70"
+    },
+    {
+      "name": "starter_packages__assets__src__AssetStore.ts",
+      "bytes": 384,
+      "sha256": "1249a59e64b5d583a3253b6e93ac24178a38c6dd6217e590a160efb05d9fdca1"
+    },
+    {
+      "name": "starter_packages__assets__src__WebLocalAssetStore.ts",
+      "bytes": 4422,
+      "sha256": "1a53245445c505c049a8fdd735c65e2904c751cad74ca66340870a6cf81ccbec"
+    },
+    {
+      "name": "starter_packages__assets__src__sha256.ts",
+      "bytes": 413,
+      "sha256": "331ba39776704a2b6f29169318a6e2a3deefbd313d4ae15738e681cb538fcab7"
+    },
+    {
+      "name": "starter_packages__assets__src__waveform.ts",
+      "bytes": 1099,
+      "sha256": "1199baa0128e50abe856382d9225dd156c787148b8eefa1d58495ea537e2c256"
+    },
+    {
+      "name": "starter_packages__assets__src__waveform.worker.ts",
+      "bytes": 542,
+      "sha256": "4fe816afff054297720b333ff6acc96c8164908768c19736f6c17e79f785e90b"
+    },
+    {
+      "name": "starter_packages__audio-contracts__src__AudioBackend.ts",
+      "bytes": 720,
+      "sha256": "922b2d3fe7ccfd043a590f0e1dcf078772ea3793970ca4efc030097e29a04d0e"
+    },
+    {
+      "name": "starter_packages__audio-web__src__BlobAssetAudioResolver.ts",
+      "bytes": 1001,
+      "sha256": "5abdd397a522bd261dbb9ed57ace4a02c23649757f3159e8045ed2a5b3614e6c"
+    },
+    {
+      "name": "starter_packages__audio-web__src__WebAudioBackend.ts",
+      "bytes": 5602,
+      "sha256": "9ea3af3073aa0b5eed08df3188abd1822e44ebfc9f8a67e4e42ae246829de7ef"
+    },
+    {
+      "name": "starter_packages__commands__src__CommandBus.ts",
+      "bytes": 2205,
+      "sha256": "e2b95deb9e1cc0898f02b0afad0238bb74df61aadcf6676da51fd44928b8e4ce"
+    },
+    {
+      "name": "starter_packages__commands__src__reducer.ts",
+      "bytes": 3783,
+      "sha256": "639aa5df65d2204c68a77ca77d5ed1b251b76fda69e577c72de231e5e33a48d3"
+    },
+    {
+      "name": "starter_packages__commands__src__types.ts",
+      "bytes": 612,
+      "sha256": "c0bb83fd43929cd5e9a34927188cf07bbfe9cce0011598d606038d62b6cec9ca"
+    },
+    {
+      "name": "starter_packages__domain__src__ids.ts",
+      "bytes": 926,
+      "sha256": "5d363dc795e9f609a7398c6046da855b7dece46d2ba542471a87281280062245"
+    },
+    {
+      "name": "starter_packages__domain__src__projectFactory.ts",
+      "bytes": 1216,
+      "sha256": "2bd8b45e8063fb271d6182634a1583f47604d6e559dc409c8441202c80ace33e"
+    },
+    {
+      "name": "starter_packages__domain__src__types.ts",
+      "bytes": 3846,
+      "sha256": "1c18cc48574730e32bfcd73c7f6de6006d07112e43ce22b50ea8160f2b752792"
+    },
+    {
+      "name": "starter_packages__domain__src__validate.ts",
+      "bytes": 1506,
+      "sha256": "30bed8d592d84e1f10ad2fd5ae242de4f8bca65acc58b5f16e3664da66be9584"
+    },
+    {
+      "name": "starter_packages__project__src__IndexedDbProjectRepository.ts",
+      "bytes": 4639,
+      "sha256": "6f0f3003a5728de7302561d495a02d8c66280ff53f4905fed84d086be85a7fd5"
+    },
+    {
+      "name": "starter_packages__project__src__ProjectRepository.ts",
+      "bytes": 455,
+      "sha256": "424131abc5f4ae9d638d2b706a82b2a90e37423ccbc1b0273ac705adb10e6a20"
+    },
+    {
+      "name": "starter_packages__timeline__src__TimelineReadModel.ts",
+      "bytes": 879,
+      "sha256": "6b48b0aa432871492d2a96fbd82333f37727565d331e58bb046acfa9b02b262e"
+    },
+    {
+      "name": "starter_packages__timeline__src__tempo.ts",
+      "bytes": 1747,
+      "sha256": "048013237af0f8f1aa31c4312353dede2f89567ad276f33854352ecc322f67d1"
+    },
+    {
+      "name": "storage-provider-manifest.schema.v1.json",
+      "bytes": 1495,
+      "sha256": "80470439414f902aaa4b0ce7bee4a0638c9bbbf2211b2c0561c947ab5f965e1b"
+    },
+    {
+      "name": "v1_10__backend__BackendComposition.ts",
+      "bytes": 1219,
+      "sha256": "54f601a6cc9293b4e1ec7db19972adcc3fcdd9ca55987e72ecec73a22bb0b854"
+    },
+    {
+      "name": "v1_10__backend__BackendServices.ts",
+      "bytes": 989,
+      "sha256": "c5bffb7bd79c34e05093f05088ff9a1e4e30c69cc9b3aee4ccafbe17a080061d"
+    },
+    {
+      "name": "v1_10__backend__HYBRID_BACKEND_POLICY.md",
+      "bytes": 954,
+      "sha256": "c4cb87777729b8ee33fa47329f64919283fb7cff0d0cdb92b8f6e3ada5397ed0"
+    },
+    {
+      "name": "v1_10__backend__supabase.schema.sql",
+      "bytes": 3754,
+      "sha256": "3514c74a40396a19c73650d04902c459710042c35f8bf7c1f16a66c8d95c12e8"
+    },
+    {
+      "name": "v1_10__benchmark__CURRENT_SCORE_SUMMARY.txt",
+      "bytes": 342,
+      "sha256": "3f6a2d3720fa4a4c65ea09f2e82498b791998108a5eb8079a302b663a1abcddc"
+    },
+    {
+      "name": "v1_10__benchmark__benchmark-rubric.v1.json",
+      "bytes": 2569,
+      "sha256": "33f50febf59c095e3c077c143e7b3410eaacb675c0fdf801a7d99c6d10befb4b"
+    },
+    {
+      "name": "v1_10__benchmark__current-prototype-score.v1.json",
+      "bytes": 680,
+      "sha256": "a65bcc2d7d36834435dcbe5f0a73b7bcca171f5ca730b235d56058f2f820e953"
+    },
+    {
+      "name": "v1_10__native__NativeBridge.ts",
+      "bytes": 623,
+      "sha256": "1797a4344a1635caf548cbad835e46e5cc3461ca85765636c01f575086d74117"
+    },
+    {
+      "name": "v1_10__native__src-tauri__Cargo.toml",
+      "bytes": 415,
+      "sha256": "46683037391bdb5c12a206d3824b4f696dee5ab5676d193908f4ec859bae360b"
+    },
+    {
+      "name": "v1_10__native__src-tauri__src__lib.rs",
+      "bytes": 682,
+      "sha256": "8ebaba801c345b80ce034ca77fc61d539098ee456659ffd19a27bc6beebecf31"
+    },
+    {
+      "name": "v1_10__native__src-tauri__tauri.conf.json",
+      "bytes": 1192,
+      "sha256": "0603f525cb24aa3b93eb9edc1416d8ab631a50ef4cc5ccff58c4538f885b7397"
+    },
+    {
+      "name": "v1_10__web__WEB_SURFACES.md",
+      "bytes": 971,
+      "sha256": "ab18c308b8b9b732250a4eccb08ec63c094d78bbe23e73f8c1ce2bea144a3ac4"
+    },
+    {
+      "name": "v2_BENCHMARK_SOURCES_2026-08-11.txt",
+      "bytes": 1624,
+      "sha256": "3a081879a6b8a496336e765df16e1a2bb4915f86b75ab71b99700cc72554f3b3"
+    },
+    {
+      "name": "v2_benchmark-rubric.json",
+      "bytes": 568,
+      "sha256": "a19ac1da52a3a31eaea9e35aa81bf3a42b9a9cf98179f8ec835e99a0da9d2846"
+    },
+    {
+      "name": "v2_packages__backend-contracts__src__BackendProvider.ts",
+      "bytes": 1101,
+      "sha256": "e2a96d5fe538607fbe9c0bc926570f0589d008dcedec924b10ec7397e875bdfb"
+    },
+    {
+      "name": "v2_packages__backend-contracts__src__LocalOnlyBackendProvider.ts",
+      "bytes": 941,
+      "sha256": "e9ff9d322d24ace2d6b8b58dc65ec0cbba5088c61c44b787dbf2540206a80f80"
+    },
+    {
+      "name": "v2_packages__platform__src__PlatformCapabilities.ts",
+      "bytes": 1131,
+      "sha256": "9be9e22558808102279cd397200586694a00b2f9fe143f19b163ecdb028897b0"
+    },
+    {
+      "name": "v2_platform-capability-matrix.csv",
+      "bytes": 927,
+      "sha256": "46a5d0e0d6a142194b0f5a29ca4819ac372349bb3ac38ac7e73ebdf0aec40d51"
+    },
+    {
+      "name": "v2_poietek-5-star-benchmark.csv",
+      "bytes": 4412,
+      "sha256": "870320262c090bfa7f2db852c62ce229d05ad67c7efefe1d1ff2109516e7e031"
+    },
+    {
+      "name": "v2_src-tauri__tauri.conf.example.json",
+      "bytes": 633,
+      "sha256": "7cb2d4e71619b12c138ef3e2ffbce90d52401d9bd7048703e6418677b16d7578"
+    },
+    {
+      "name": "v2_supabase__migrations__0001_poietek_mvp.sql",
+      "bytes": 4071,
+      "sha256": "18a3585626562a30f4f7ea2772cb33141ee29c55886720056370396838c99100"
+    }
+  ]
+}

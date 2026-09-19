@@ -1,0 +1,17 @@
+172 — LOCAL PROJECT RUNTIME, SESSION & UNDO
+===========================================
+
+Implemented:
+canonical PoietekProject v1.1
+blank project factory
+validation
+IndexedDB repository
+ProjectSession
+serialized save queue
+snapshot-based whole-project undo/redo starter.
+
+Snapshot history is intentionally a first production slice, not the final
+large-project history representation.
+
+Next optimization:
+command/event deltas + snapshot checkpoints.

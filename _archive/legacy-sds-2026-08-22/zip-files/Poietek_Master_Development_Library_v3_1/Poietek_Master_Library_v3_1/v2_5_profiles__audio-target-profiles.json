@@ -1,0 +1,40 @@
+{
+  "version": "2026-08-11",
+  "profiles": [
+    {
+      "id": "capture-conservative-default",
+      "kind": "recording_capture",
+      "label": "Poietek Conservative Capture",
+      "authority": "Poietek engineering default; not an external delivery standard",
+      "samplePeakPreferredMaxDbfs": -12.0,
+      "samplePeakAdvisoryDbfs": -6.0,
+      "samplePeakCriticalDbfs": -1.0,
+      "description": "Conservative starting point for 24-bit capture; adapt after measuring source crest factor and noise floor."
+    },
+    {
+      "id": "ebu-r128-broadcast",
+      "kind": "delivery",
+      "label": "EBU R128 Programme Loudness",
+      "authority": "EBU R128 v5 / ITU-R BS.1770 family",
+      "integratedLufs": -23.0,
+      "notes": "Use current EBU mode/tolerances and target-specific supplements where applicable."
+    },
+    {
+      "id": "spotify-normal",
+      "kind": "delivery_preview",
+      "label": "Spotify Normal Playback Preview",
+      "authority": "Spotify artist support, current 2026-08-11",
+      "integratedLufs": -14.0,
+      "truePeakMaxDbtp": -1.0,
+      "louderMasterTruePeakGuidanceDbtp": -2.0,
+      "notes": "Playback normalization behavior can change; this profile must remain updateable rather than serialized as permanent project truth."
+    },
+    {
+      "id": "apple-digital-master-audition",
+      "kind": "delivery_preview",
+      "label": "Apple Digital Masters Audition",
+      "authority": "Apple Digital Masters",
+      "notes": "Use Apple's current mastering/audition tools where available to inspect encoded peaks/clipping; do not invent a fixed Apple loudness target."
+    }
+  ]
+}

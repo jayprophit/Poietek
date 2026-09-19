@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/storage/provider-manifest/v1",
+  "title": "Poietek Storage Provider Manifest v1",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "version",
+    "kind",
+    "permissions",
+    "capabilities"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]+$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "cloud_drive",
+        "object_storage",
+        "git_forge",
+        "webdav",
+        "model_hub",
+        "custom"
+      ]
+    },
+    "entry": {
+      "type": "string"
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "network",
+          "oauth",
+          "filesystem.read",
+          "filesystem.write",
+          "project.metadata",
+          "asset.read",
+          "asset.write"
+        ]
+      }
+    },
+    "allowedNetworkHosts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "boolean"
+      }
+    },
+    "publisher": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "signature": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/tuning-release-policy/v1",
+  "title": "Poietek Tuning Release Policy v1",
+  "type": "object",
+  "required": [
+    "policyId",
+    "label",
+    "mode",
+    "compatibility",
+    "actions"
+  ],
+  "properties": {
+    "policyId": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "preserve_creative_tuning",
+        "compatibility_advisory",
+        "strict_destination"
+      ]
+    },
+    "compatibility": {
+      "type": "object",
+      "properties": {
+        "referencePitchHz": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "referenceNote": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "requiredByDestination": {
+          "type": "boolean"
+        },
+        "advisoryOnly": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "effect"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "effect": {
+            "enum": [
+              "no_change",
+              "create_compatibility_render",
+              "retune_project_copy",
+              "embed_tuning_metadata",
+              "export_tuning_notes",
+              "manual_review"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,37 @@
+Official sources reviewed 11 August 2026:
+
+PRS for Music:
+- Online member account sign-up uses a membership number (CAE/IPI).
+- Nexus exposes recording ISRC, work ISWC, PRS Tunecode, and writer IPI data.
+- Registered PRS works receive a unique tune code.
+
+PPL:
+- recording rightsholder members register new recordings;
+- performers claim performances on recordings already in PPL repertoire.
+
+The MLC:
+- eligible members can register individual works, bulk works, or CWR;
+- writer IPI can be used in writer search/registration workflows.
+
+SoundExchange:
+- creators/rights owners register and manage repertoire/royalty information;
+- official materials describe ISRC-rich repertoire submissions and DDEX/flat-file routes.
+
+DDEX:
+- RIN captures project/session/contributor/recording/work data and supports
+  proprietary identifiers by namespace;
+- RIN can link messages to audio using URI/hash;
+- RDR-N exchanges recording/music-video contributor and rights-claim data;
+- production implementations require an implementation licence.
+
+C2PA:
+- current Content Credentials specification is 2.4 and is designed for
+  signed media provenance/history.
+
+Stripe Connect:
+- separate charges and transfers can split a platform payment across multiple
+  connected accounts, subject to geographic/processor rules.
+
+Apple / Google Play:
+- current policies govern digital goods, creator content, tips/gifts and
+  alternative billing by storefront/territory. Commerce must be policy-routed.

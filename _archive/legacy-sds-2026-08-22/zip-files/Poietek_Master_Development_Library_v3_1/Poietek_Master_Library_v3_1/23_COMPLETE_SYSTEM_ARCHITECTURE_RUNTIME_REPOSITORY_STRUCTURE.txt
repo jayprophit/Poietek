@@ -1,0 +1,860 @@
+POIETEK / STUDIO DAW STATION (SDS)
+MASTER DEVELOPMENT LIBRARY — VERSION 1.5 ADDENDUM
+
+23 — COMPLETE SYSTEM ARCHITECTURE, RUNTIME TOPOLOGY & REPOSITORY STRUCTURE
+=========================================================================
+
+PURPOSE
+
+This document shows how every major Poietek subsystem fits together.
+
+------------------------------------------------------------------------------
+1. SYSTEM CONTEXT
+------------------------------------------------------------------------------
+
+USER
+  |
+  v
+POIETEK CLIENT
+  |
+  +-- Local Project Repository
+  +-- Audio/MIDI/Video Engine
+  +-- Hardware Layer
+  +-- Plugin Host
+  +-- Local AI
+  +-- Storage Router
+  |
+  +---- optional network ----+
+                            |
+                            v
+                     BACKEND SERVICES
+                            |
+       +--------------------+----------------------+
+       |                    |                      |
+       v                    v                      v
+ Collaboration        Identity/Teams        Community/Rights
+       |
+       v
+ Remote Storage / Provider Connectors
+       |
+       +-- Drive Providers
+       +-- Object Storage
+       +-- Git Forges
+       +-- Model Hubs
+
+Core project operation never requires network path.
+
+------------------------------------------------------------------------------
+2. LAYERED ARCHITECTURE
+------------------------------------------------------------------------------
+
+L0 Platform
+OS, browser, device APIs.
+
+L1 Native/Runtime Adapters
+filesystem, audio, MIDI, windows, keychain.
+
+L2 Core Engines
+audio, timeline, MIDI, video, plugin, AI.
+
+L3 Domain
+project, assets, tracks, clips, rights, members.
+
+L4 Application Services
+commands, undo, import/export, sync, storage.
+
+L5 UI
+workspaces, inspectors, menus.
+
+L6 Network Services
+identity, collaboration, community.
+
+L7 External Providers
+cloud, Git, model hubs, publishing.
+
+Dependencies should point inward.
+
+------------------------------------------------------------------------------
+3. HEXAGONAL / PORTS & ADAPTERS PRINCIPLE
+------------------------------------------------------------------------------
+
+Domain defines ports.
+
+Adapters implement:
+Firebase
+Supabase
+IndexedDB
+SQLite
+WebAudio
+NativeAudio
+WebMIDI
+NativeMIDI
+Google Drive
+TeraBox
+GitHub
+Hugging Face
+etc.
+
+Business logic never imports vendor SDK directly.
+
+------------------------------------------------------------------------------
+4. RECOMMENDED REPOSITORY
+------------------------------------------------------------------------------
+
+/poietek
+  README.md
+  LICENSE
+  CONTRIBUTING.md
+  SECURITY.md
+  CODE_OF_CONDUCT.md
+
+  /apps
+    /web
+    /native
+    /admin
+    /docs-site
+
+  /packages
+    /domain
+    /commands
+    /project
+    /assets
+    /timeline
+    /transport
+    /audio-contracts
+    /midi-contracts
+    /video-contracts
+    /plugin-contracts
+    /hardware
+    /device-profiles
+    /mapping
+    /storage
+    /sync
+    /collaboration
+    /rights
+    /publishing
+    /community
+    /ai
+    /ui
+    /design-system
+    /workspace
+    /testing
+    /telemetry
+
+  /native
+    /audio-engine
+    /midi-engine
+    /plugin-host
+    /video-engine
+    /platform-bridge
+
+  /server
+    /api
+    /realtime
+    /workers
+    /notifications
+    /community
+    /admin
+
+  /connectors
+    /firebase
+    /supabase
+    /google-drive
+    /onedrive
+    /terabox
+    /webdav
+    /github
+    /gitlab
+    /huggingface
+    /s3
+
+  /schemas
+    /project
+    /device-profile
+    /plugin
+    /api
+    /events
+
+  /docs
+    /architecture
+    /adr
+    /resources
+    /protocols
+    /product
+
+  /fixtures
+    /projects
+    /audio
+    /midi
+    /devices
+
+  /tests
+    /integration
+    /e2e
+    /performance
+    /migration
+
+  /tools
+    /dev
+    /release
+    /schema
+    /benchmark
+
+------------------------------------------------------------------------------
+5. PACKAGE DEPENDENCY RULES
+------------------------------------------------------------------------------
+
+domain:
+depends on nothing vendor-specific.
+
+commands:
+depends on domain.
+
+project:
+depends on domain/commands.
+
+feature UI:
+depends on domain contracts and app services.
+
+connectors:
+depend on interfaces, never reverse.
+
+native engines:
+implement engine contracts.
+
+server:
+depends on domain DTOs, not React.
+
+------------------------------------------------------------------------------
+6. DOMAIN MODULES
+------------------------------------------------------------------------------
+
+Project
+Asset
+Track
+Clip
+Timeline
+Mixer
+Device
+Mapping
+Plugin
+Member
+Contribution
+Rights
+Release
+Community reference
+Storage policy
+
+Each module has:
+entities
+value objects
+commands
+events
+validation
+serialization.
+
+------------------------------------------------------------------------------
+7. COMMAND BUS
+------------------------------------------------------------------------------
+
+UI/HARDWARE/AI
+     |
+     v
+CommandBus
+     |
+     +-> validate
+     +-> execute
+     +-> update state
+     +-> undo record
+     +-> activity
+     +-> sync operation
+
+One mutation path.
+
+------------------------------------------------------------------------------
+8. QUERY / READ MODEL
+------------------------------------------------------------------------------
+
+UI should not mutate objects directly.
+
+Query examples:
+getTracks()
+getMixerChannels()
+getSelectedClip()
+getStorageHealth()
+getContributorStatus()
+
+Use optimized read models.
+
+------------------------------------------------------------------------------
+9. REALTIME AUDIO THREAD BOUNDARY
+------------------------------------------------------------------------------
+
+Realtime thread:
+audio graph
+DSP
+sample scheduling
+meters output.
+
+NOT ALLOWED:
+network
+database
+React
+JSON serialization
+filesystem blocking
+AI inference unless specifically realtime-safe
+plugin scanning
+
+Control thread sends lock-free/bounded commands.
+
+------------------------------------------------------------------------------
+10. TRANSPORT
+------------------------------------------------------------------------------
+
+One canonical transport clock.
+
+Consumers:
+audio
+MIDI
+automation
+video
+DJ
+lighting
+visuals
+
+No workspace-specific setInterval clocks.
+
+------------------------------------------------------------------------------
+11. ASSET PIPELINE
+------------------------------------------------------------------------------
+
+Import
+-> hash
+-> metadata
+-> local store
+-> waveform
+-> analysis
+-> project reference
+-> optional backup/sync
+
+Derived assets:
+proxy
+stem
+preview
+freeze
+thumbnail
+
+Each maintains lineage.
+
+------------------------------------------------------------------------------
+12. PROJECT OPEN
+------------------------------------------------------------------------------
+
+1 read manifest
+2 migrate schema
+3 open local DB
+4 resolve assets
+5 restore graph
+6 create missing plugin placeholders
+7 restore UI layout
+8 start engine
+9 optionally connect sync
+
+------------------------------------------------------------------------------
+13. PROJECT SAVE
+------------------------------------------------------------------------------
+
+Commands already persist incrementally.
+
+"Save" creates/marks checkpoint/snapshot.
+
+Avoid one giant blocking save.
+
+------------------------------------------------------------------------------
+14. CRASH RECOVERY
+------------------------------------------------------------------------------
+
+Journal latest transactions.
+On restart:
+detect unclean shutdown
+offer recovered state
+validate asset writes
+reopen plugins safely disabled if suspected crash.
+
+------------------------------------------------------------------------------
+15. NETWORK DISCONNECT
+------------------------------------------------------------------------------
+
+Sync service moves to queued mode.
+No domain change.
+No transport interruption.
+No modal blocking.
+
+------------------------------------------------------------------------------
+16. STORAGE DISCONNECT
+------------------------------------------------------------------------------
+
+If local replica exists:
+continue.
+
+If remote-only:
+show unavailable placeholder.
+
+Recording never targets a disappearing remote network path directly unless
+explicitly configured and validated; default staging is local.
+
+------------------------------------------------------------------------------
+17. PLUGIN PROCESS TOPOLOGY
+------------------------------------------------------------------------------
+
+Main UI process
+  |
+  +-> Audio Engine
+        |
+        +-> Plugin Host Process Pool
+              +-> Plugin A
+              +-> Plugin B
+
+Shared memory for audio.
+IPC for parameters/state/UI.
+
+Crashes isolated.
+
+------------------------------------------------------------------------------
+18. VIDEO TOPOLOGY
+------------------------------------------------------------------------------
+
+Decode worker
+GPU compositor
+timeline engine
+proxy/cache
+render worker.
+
+Audio sync driven by canonical timebase.
+
+------------------------------------------------------------------------------
+19. AI TOPOLOGY
+------------------------------------------------------------------------------
+
+AI Orchestrator
+  |
+  +-> Local Model Runtime
+  +-> Cloud Provider
+  +-> Rule/DSP Analyzer
+
+Returns structured commands/results.
+
+------------------------------------------------------------------------------
+20. HARDWARE TOPOLOGY
+------------------------------------------------------------------------------
+
+Physical Device
+-> Platform Adapter
+-> Device Profile
+-> Logical Mapping
+-> Command/Engine Target
+
+Output feedback reverses:
+State
+-> logical feedback
+-> profile translation
+-> physical device.
+
+------------------------------------------------------------------------------
+21. SYNC TOPOLOGY
+------------------------------------------------------------------------------
+
+Local Command Log
+-> Sync Queue
+-> CRDT/Operation Provider
+-> Remote Relay
+-> Other Client
+-> Merge
+-> Local Domain
+
+Assets:
+Local Asset
+-> Storage Router
+-> Replica upload
+-> AssetReplica metadata
+-> Other client fetch/cache.
+
+------------------------------------------------------------------------------
+22. DEPLOYMENT TOPOLOGY — WEB MVP
+------------------------------------------------------------------------------
+
+Browser:
+React
+IndexedDB/OPFS
+WebAudio
+WebMIDI
+Service Worker
+
+Firebase optional:
+Hosting
+Auth
+Firestore
+
+BYOC:
+Drive/WebDAV/etc.
+
+No backend media proxy needed initially.
+
+------------------------------------------------------------------------------
+23. DEPLOYMENT TOPOLOGY — DESKTOP
+------------------------------------------------------------------------------
+
+React UI
+Tauri shell
+SQLite
+filesystem
+native audio/MIDI
+plugin host
+video worker
+storage connectors
+optional backend sync.
+
+------------------------------------------------------------------------------
+24. DEPLOYMENT TOPOLOGY — MOBILE
+------------------------------------------------------------------------------
+
+React UI
+native shell
+mobile filesystem/database
+mobile audio
+AUv3 on Apple where supported
+MIDI adapters
+camera/mic
+storage connectors
+optional backend sync.
+
+------------------------------------------------------------------------------
+25. SERVER DEPLOYMENT
+------------------------------------------------------------------------------
+
+Start modular monolith if small team.
+
+One deployable API with strict module boundaries can be better than premature
+microservices.
+
+Split services only when:
+scale
+security
+failure isolation
+team ownership
+technology requirement
+
+justify it.
+
+------------------------------------------------------------------------------
+26. MODULAR MONOLITH FIRST
+------------------------------------------------------------------------------
+
+Recommended early server:
+
+server/api
+modules/
+  identity
+  teams
+  projects
+  collaboration
+  storage
+  rights
+  notifications
+
+One DB.
+One deployment.
+
+Workers separate.
+
+Later:
+split community/media/search/payments.
+
+------------------------------------------------------------------------------
+27. MICROSERVICE WARNING
+------------------------------------------------------------------------------
+
+Do NOT start with 30 network services because diagram looks impressive.
+
+Audio product complexity is already high.
+
+Keep boundaries in code first.
+
+------------------------------------------------------------------------------
+28. EVENT SCHEMA
+------------------------------------------------------------------------------
+
+EventEnvelope {
+ id
+ type
+ version
+ actor
+ projectId?
+ timestamp
+ correlationId
+ payload
+}
+
+Events versioned.
+
+------------------------------------------------------------------------------
+29. ERROR MODEL
+------------------------------------------------------------------------------
+
+AppError {
+ code
+ category
+ severity
+ retryable
+ userMessageKey
+ technical
+ context
+}
+
+Categories:
+PROJECT
+ASSET
+AUDIO
+MIDI
+PLUGIN
+SYNC
+STORAGE
+AUTH
+RIGHTS
+NETWORK
+AI
+
+------------------------------------------------------------------------------
+30. CONFIGURATION
+------------------------------------------------------------------------------
+
+Build config:
+environment.
+
+User config:
+preferences.
+
+Project config:
+project settings.
+
+Secrets:
+secure store.
+
+Never put secrets in git/project config.
+
+------------------------------------------------------------------------------
+31. FEATURE FLAGS
+------------------------------------------------------------------------------
+
+Use flags for:
+experimental poly pitch
+new sync engine
+community beta
+new plugin host
+
+Flags cannot hide required security fixes.
+
+------------------------------------------------------------------------------
+32. ADRs
+------------------------------------------------------------------------------
+
+Architecture Decision Record:
+
+ADR-0001 Tauri
+ADR-0002 Canonical Project format
+ADR-0003 Local-first
+ADR-0004 StorageProvider
+ADR-0005 CRDT
+ADR-0006 Plugin host isolation
+etc.
+
+Record:
+context
+decision
+alternatives
+consequences.
+
+------------------------------------------------------------------------------
+33. SCHEMA REPOSITORY
+------------------------------------------------------------------------------
+
+JSON Schema / equivalent:
+project
+device profile
+storage provider manifest
+plugin extension manifest
+API DTO
+events
+
+Generate validators/types where practical.
+
+------------------------------------------------------------------------------
+34. MIGRATIONS
+------------------------------------------------------------------------------
+
+Project migrations:
+client.
+
+DB migrations:
+server.
+
+Storage metadata migrations:
+adapter-neutral.
+
+Plugin state:
+vendor managed but wrapper versioned.
+
+------------------------------------------------------------------------------
+35. TEST PYRAMID
+------------------------------------------------------------------------------
+
+Domain unit
+Engine DSP
+Service integration
+Connector contract
+UI component
+E2E
+Performance/soak
+Hardware lab
+
+Connector contract test is essential:
+all StorageProvider implementations run same behavioral suite.
+
+------------------------------------------------------------------------------
+36. PERFORMANCE BUDGETS
+------------------------------------------------------------------------------
+
+Define:
+audio callback deadline
+UI frame
+project open
+waveform generation
+sync delay
+plugin scan
+video frame
+memory per track
+large project limits
+
+Benchmarks are release gates.
+
+------------------------------------------------------------------------------
+37. OBSERVABILITY ARCHITECTURE
+------------------------------------------------------------------------------
+
+Client:
+crash
+underrun
+plugin crash
+sync error
+migration failure.
+
+Server:
+latency
+error
+queue
+DB
+provider.
+
+User controls diagnostic sharing.
+
+------------------------------------------------------------------------------
+38. RELEASE ARCHITECTURE
+------------------------------------------------------------------------------
+
+Channels:
+Nightly
+Alpha
+Beta
+Stable
+
+Project schema backward/forward policy documented.
+
+Signed native installers.
+
+Web deploy canary.
+
+Rollback.
+
+------------------------------------------------------------------------------
+39. UPDATE SYSTEM
+------------------------------------------------------------------------------
+
+App updates do not force project migration before backup.
+
+Before destructive migration:
+snapshot.
+
+Plugin profile/resource updates independent where possible.
+
+------------------------------------------------------------------------------
+40. EXTENSION ARCHITECTURE
+------------------------------------------------------------------------------
+
+Extension registry:
+plugin
+device
+theme
+storage
+AI
+workflow
+video.
+
+Each has:
+manifest
+permissions
+version
+signature
+compatibility.
+
+------------------------------------------------------------------------------
+41. CURRENT REPO MAPPING
+------------------------------------------------------------------------------
+
+src/App.tsx
+-> apps/web AppShell + packages/project store.
+
+src/audio/engine.ts
+-> prototype adapter -> audio-contracts/native engine.
+
+src/midi/manager.ts
+-> midi-contracts + web-midi adapter.
+
+src/types/index.ts
+-> split domain schemas.
+
+src/data/deviceProfiles.ts
+-> packages/device-profiles.
+
+components/daw
+-> feature-arrangement/midi/mix/etc.
+
+components/workspaces
+-> feature-hardware/feature-dj.
+
+components/rack
+-> feature-rack/workspace.
+
+components/mapper
+-> mapping/hardware feature.
+
+------------------------------------------------------------------------------
+42. SYSTEM ACCEPTANCE
+------------------------------------------------------------------------------
+
+SYS-001 domain imports no Firebase/Supabase SDK.
+SYS-002 UI imports no raw database SDK.
+SYS-003 audio thread performs no network I/O.
+SYS-004 command bus is canonical mutation path.
+SYS-005 one transport clock drives all time domains.
+SYS-006 provider adapter can be swapped.
+SYS-007 server can run without community module.
+SYS-008 local app can run without server.
+SYS-009 plugin crash isolated.
+SYS-010 migrations tested with fixtures.
+SYS-011 app can recover unclean shutdown.
+SYS-012 storage connector passes common contract suite.
+SYS-013 event schemas versioned.
+SYS-014 client/server errors use stable codes.
+SYS-015 performance budgets exist and are measured.
+
+END DOCUMENT 23

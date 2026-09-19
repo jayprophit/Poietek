@@ -1,0 +1,12 @@
+Capability,Web/PWA,Windows,macOS,Linux,iPadOS/iOS,Android
+Installed app,Browser/PWA,Yes,Yes,Yes,Yes,Yes
+Native file system,Limited/granted,Full app scope,Full app scope,Full app scope,Sandboxed native,Sandboxed native
+Local project DB,IndexedDB,SQLite,SQLite,SQLite,SQLite,SQLite
+Large local media,OPFS/IDB,Filesystem,Filesystem,Filesystem,App filesystem,App filesystem
+Audio backend,WebAudio,Native preferred,Native preferred,Native preferred,Native/mobile,Native/mobile
+MIDI,WebMIDI where supported,Native,Native,Native,CoreMIDI/native,Android MIDI/native
+Desktop plugins,No,VST3/CLAP,VST3/CLAP/AU,VST3/CLAP/LV2 later,No desktop binaries,No desktop binaries
+AUv3,No,No,Yes where host implemented,No,Yes where host implemented,No
+Multi-window,Browser dependent,Yes,Yes,Yes,Platform dependent,Platform dependent
+Offline,Yes after cache/local data,Yes,Yes,Yes,Yes,Yes
+BYOC storage,OAuth/web APIs,Yes,Yes,Yes,Yes,Yes

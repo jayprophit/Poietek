@@ -1,0 +1,30 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.9
+
+153 — ALTERNATIVE TUNING CREATIVE RIGHTS POLICY
+===============================================
+
+CREATOR CONTROL
+
+A project may use:
+A432
+A415
+A442
+custom reference
+just intonation
+historical temperament
+microtonal tuning
+adaptive tuning.
+
+Poietek does not silently convert it to A440.
+
+The tuning choice is part of the creative/project metadata.
+
+PROJECT OWNER can choose:
+Preserve Original
+Compatibility Advisory
+Strict Destination.
+
+A collaborator may propose another tuning but cannot overwrite the project
+reference without permission.
+
+END DOCUMENT 153

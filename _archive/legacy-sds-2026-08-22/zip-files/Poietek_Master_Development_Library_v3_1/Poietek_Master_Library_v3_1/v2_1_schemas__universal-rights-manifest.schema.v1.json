@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/rights-manifest/v1",
+  "title": "Poietek Universal Rights Manifest v1",
+  "type": "object",
+  "required": [
+    "manifestId",
+    "version",
+    "asset",
+    "parties",
+    "credits",
+    "rightsGraph",
+    "provenance"
+  ],
+  "properties": {
+    "manifestId": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "asset": {
+      "type": "object",
+      "required": [
+        "assetId",
+        "contentHash",
+        "mediaType",
+        "title"
+      ],
+      "properties": {
+        "assetId": {
+          "type": "string"
+        },
+        "contentHash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "mediaType": {
+          "enum": [
+            "audio",
+            "video",
+            "image",
+            "sample",
+            "preset",
+            "plugin",
+            "skin",
+            "theme",
+            "clip",
+            "template",
+            "document",
+            "other"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "isrc": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "iswc": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prsTuneCode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "createdAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": true
+    },
+    "parties": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "credits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "rightsGraph": {
+      "type": "object",
+      "required": [
+        "state",
+        "claims"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "draft",
+            "proposed",
+            "approved",
+            "disputed"
+          ]
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "claimId",
+              "partyId",
+              "rightType",
+              "sharePercent"
+            ],
+            "properties": {
+              "claimId": {
+                "type": "string"
+              },
+              "partyId": {
+                "type": "string"
+              },
+              "rightType": {
+                "enum": [
+                  "master",
+                  "composition",
+                  "publishing",
+                  "performer",
+                  "visual",
+                  "software",
+                  "sale_revenue",
+                  "license_revenue",
+                  "other"
+                ]
+              },
+              "sharePercent": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "territory": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "use": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "agreementRef": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "status": {
+                "enum": [
+                  "draft",
+                  "approved",
+                  "disputed",
+                  "expired"
+                ]
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "societyRegistrations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "commercePolicyRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "c2paManifestRef": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ddexRinRef": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ddexRdrnRef": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "signature": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true
+        },
+        "anchors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

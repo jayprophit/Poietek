@@ -1,0 +1,50 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.7
+
+132 — TUNING REFERENCE & MUSICAL PITCH STANDARDS
+=================================================
+
+COMPANION
+schemas/tuning-reference.schema.v1.json
+
+ISO 16
+
+ISO 16:1975 specifies standard musical pitch with A on the treble stave at
+440 Hz and states a 0.5 Hz tuning accuracy. ISO lists this edition as current
+after confirmation in 2022.
+
+POIETEK PROFILE
+
+ISO A440:
+A4 = 440 Hz.
+
+USES
+
+instrument tuner
+session-wide reference
+sample/key detection
+pitch editor
+hardware synth tuning
+orchestral/session preparation
+stem mismatch detection.
+
+IMPORTANT
+
+A=440 Hz is a tuning reference.
+It is NOT a universal radio-broadcast technical requirement.
+
+ALTERNATIVES
+
+Historical practice.
+Ensemble-specific reference.
+Creative/custom tunings.
+Microtonal systems.
+
+Poietek stores tuning reference as explicit project/session metadata.
+
+AI CAN WARN
+
+"Vocal stem is approximately 18 cents below the session's A440 reference."
+
+It should not retune automatically unless user approves.
+
+END DOCUMENT 132

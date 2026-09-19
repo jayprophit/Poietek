@@ -1,0 +1,93 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.10
+
+61 — INSTALLED APP & NATIVE RUNTIME ARCHITECTURE
+================================================
+
+REQUIREMENT
+
+Except for the Web App / Website, Poietek runs as an installed operating-system
+application.
+
+WINDOWS
+Install using signed installer/Microsoft Store route.
+Launch from Start Menu/desktop.
+Local filesystem/database.
+Native audio/MIDI service.
+Desktop VST3/CLAP host later.
+
+MACOS
+.app bundle + DMG or App Store.
+Signed/notarized.
+Launch from Applications/Dock.
+CoreAudio/CoreMIDI/native filesystem.
+AU/VST3/CLAP where permitted.
+
+LINUX
+AppImage plus distro packages where supported.
+Native audio/MIDI adapters selected by implementation.
+VST3/CLAP/LV2 where implemented.
+
+ANDROID
+Installed APK/AAB through Google Play/direct supported channels.
+Launch from launcher.
+Android-native permissions/storage/audio/MIDI adapters.
+No claim of desktop VST binaries.
+
+IOS/IPADOS
+Installed through App Store/TestFlight/development.
+Launch from Home Screen.
+Native iOS/iPadOS audio/MIDI/storage integrations.
+AUv3 hosting where supported.
+
+WEB
+Normal browser.
+PWA optional.
+Never pretend browser capabilities equal desktop.
+
+WEBSITE
+Normal public website.
+Separate from realtime studio boot.
+
+TAURI 2
+
+Working shell recommendation:
+shared React frontend;
+Rust application core;
+Swift/Kotlin native integration when required.
+
+The user experience is an app, regardless of shared WebView UI implementation.
+
+NATIVE BRIDGE
+
+File picker
+filesystem
+secure credentials
+windowing
+power/sleep
+audio device
+MIDI
+plugin host
+camera/mic
+share/export
+notifications
+updates.
+
+RULE
+Feature code queries capability service instead of:
+if(window.__TAURI__) scattered everywhere.
+
+ACCEPTANCE
+NATIVE-001 Windows install/uninstall.
+NATIVE-002 macOS signed launch.
+NATIVE-003 Linux launch package.
+NATIVE-004 Android installed launch.
+NATIVE-005 iPad installed launch.
+NATIVE-006 installed app works with browser closed.
+NATIVE-007 local project files survive app restart.
+NATIVE-008 native app can work without account/network.
+NATIVE-009 web project opens with capability fallbacks.
+NATIVE-010 platform unsupported feature preserved/frozen, not deleted.
+
+OFFICIAL REFERENCE
+https://tauri.app/
+https://v2.tauri.app/distribute/

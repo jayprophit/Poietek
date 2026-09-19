@@ -1,0 +1,74 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.5
+
+111 — AUDIO HEALTH & AI ASSISTANT ARCHITECTURE
+==============================================
+
+GOAL
+
+Poietek continuously helps creators avoid bad recordings, clipping, unusable
+levels, phase problems and delivery mistakes without taking creative control away.
+
+TWO LAYERS
+
+1 DETERMINISTIC DSP
+Measures facts.
+
+2 AI / RULE INTERPRETER
+Explains measurements and recommends actions.
+
+AI MUST NOT INVENT METERS.
+
+MEASURE
+
+sample peak
+true peak
+RMS
+integrated LUFS
+momentary loudness
+short-term loudness
+loudness range
+clipping
+near-clipping
+crest factor
+noise floor
+DC offset
+phase/correlation
+silence/dropouts
+hum
+spectral balance
+stereo balance
+inter-channel mismatch.
+
+CONTEXT
+
+Recording assistant and mastering assistant use different recommendations.
+
+Source contexts:
+vocal
+speech
+drum
+guitar
+bass
+synth
+line input
+DJ mix
+full mix
+broadcast
+video/dialogue
+live stream
+console feed
+unknown.
+
+AI OUTPUT
+
+Good ✓
+Check
+Warning
+Critical.
+
+Every recommendation includes evidence:
+"Peak reached -0.2 dBFS and clipped 137 samples"
+rather than:
+"AI thinks it is too loud."
+
+END DOCUMENT 111

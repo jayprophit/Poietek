@@ -1,0 +1,143 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.10
+
+67 — FIVE-STAR GAP BACKLOG
+==========================
+
+P0 — FOUNDATION BEFORE FEATURE PARITY
+
+Installed native shell.
+Local project/database.
+Real asset store.
+Professional clock/scheduler.
+Crash recovery.
+Automated tests.
+Signed release.
+
+P1 — DAW FIVE STAR
+
+recording
+take lanes
+comping
+punch
+warp/stretch
+automation
+routing
+bus/returns
+plugin delay compensation
+offline render
+large-session performance.
+
+P1 — MIDI FIVE STAR
+
+MIDI input/output
+clock
+MPE
+expression
+piano roll
+score
+capture
+transform
+hardware feedback.
+
+P1 — SAMPLER FIVE STAR
+
+transient chop
+manual chop
+zero crossings
+layers
+round robin
+choke
+stretch
+resample
+pads/banks
+hardware translation.
+
+P1 — MIX/MASTER FIVE STAR
+
+full mixer graph
+automation
+sidechain
+multichannel
+meters
+built-in professional suite
+mastering validation.
+
+P2 — PITCH FIVE STAR
+
+real monophonic note detection
+formants
+timing
+alignment
+live tuning
+polyphonic R&D after benchmarks.
+
+P2 — DJ FIVE STAR
+
+deck engine
+beatgrid
+sync
+stems
+controller profiles
+performance guard
+DVS after protocol/legal review
+video/VJ.
+
+P2 — VIDEO FIVE STAR
+
+proxy pipeline
+editing
+multicam
+color
+keyframes
+captions
+Fusion-like node architecture eventually
+GPU render.
+
+P2 — PLUGIN FIVE STAR
+
+VST3
+CLAP
+AU
+sandbox
+PDC
+presets
+freeze portability.
+
+P2 — COLLAB FIVE STAR
+
+offline CRDT
+binary replicas
+comments
+snapshots
+review
+branch/variant.
+
+P2 — INSTALLED CROSS-PLATFORM FIVE STAR
+
+Windows
+macOS
+Linux
+Android
+iPhone
+iPad
+
+Each must pass:
+install
+launch
+local project
+audio
+storage
+offline
+update
+recovery.
+
+P3 — COMMUNITY/RIGHTS FIVE STAR
+
+moderation
+privacy
+credits
+splits
+release validation
+publishing connectors.
+
+NO CATEGORY GETS FIVE STARS FROM UI MOCKUPS.

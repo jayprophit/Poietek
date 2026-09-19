@@ -1,0 +1,65 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.4
+
+105 — ANALOGUE & HYBRID CONSOLE INTEGRATION
+===========================================
+
+PURE ANALOGUE DESK
+
+If a fader/EQ/pot has no electronic telemetry or remote automation, software
+cannot know its true physical value.
+
+Poietek must not invent it.
+
+LEVEL A — AUDIO INTEGRATION
+
+Console analogue I/O
+-> audio interface/converter
+-> Poietek.
+
+Capabilities:
+record/playback/routing
+digital clock at converter
+metering on digital endpoint.
+
+No remote analogue knob control.
+
+LEVEL B — PARTIAL AUTOMATION
+
+Some analogue/hybrid desks expose:
+motorized faders
+VCA automation
+mute automation
+recall
+digitally controlled preamps
+MIDI/network control.
+
+Poietek mirrors only those verified parameters.
+
+LEVEL C — DIGITALLY CONTROLLED ANALOGUE
+
+Analogue signal path with digital parameter control can expose richer two-way
+state through a documented adapter.
+
+LEVEL D — MANUAL RECALL
+
+For non-observable controls:
+store user-entered value
+photo/diagram
+recall notes
+calibration reference.
+
+The UI marks these MANUAL, not LIVE.
+
+VISUAL RECALL — RESEARCH
+
+Camera/computer-vision estimation of knob positions can assist recall, but must
+remain advisory until accuracy is proven. It is not control or authoritative
+telemetry.
+
+ANALOG-001 app never moves a passive pot.
+ANALOG-002 manual value visibly labelled manual.
+ANALOG-003 motorized supported parameter mirrors.
+ANALOG-004 converter clock can sync even when console itself is analogue.
+ANALOG-005 loss of control bridge does not stop analogue audio.
+
+END DOCUMENT 105

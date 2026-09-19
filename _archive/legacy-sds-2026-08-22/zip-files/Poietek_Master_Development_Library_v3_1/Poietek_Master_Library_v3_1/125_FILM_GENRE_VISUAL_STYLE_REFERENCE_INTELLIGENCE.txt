@@ -1,0 +1,65 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.6
+
+125 — FILM GENRE & VISUAL STYLE REFERENCE INTELLIGENCE
+======================================================
+
+FORMAL TECHNICAL DELIVERY
+separate.
+
+STYLE INTELLIGENCE
+can learn descriptive patterns from permitted reference material.
+
+FILM/VISUAL FEATURES
+
+shot length distribution
+cut frequency
+camera motion
+motion magnitude
+contrast
+luminance distribution
+colour palette
+saturation
+skin-tone consistency
+highlight/shadow distribution
+depth-of-field descriptors
+grain/noise
+dialogue/music/effects balance
+music density
+scene length
+subtitle density.
+
+STYLE LABELS
+
+documentary
+drama
+comedy
+horror
+action
+music video
+animation
+commercial
+social short
+concert film
+tutorial
+vlog
+other/custom.
+
+AI DOES NOT SAY
+
+"Horror films must be dark."
+
+It may say:
+
+"Your current sequence is substantially brighter and lower-contrast than the
+reference set you selected for this horror look."
+
+CREATIVE CONTROL
+
+Reference profile is optional.
+User can use:
+Director Intent
+Cinematographer Reference
+Client Brand Look
+Custom LUT/reference frames.
+
+END DOCUMENT 125

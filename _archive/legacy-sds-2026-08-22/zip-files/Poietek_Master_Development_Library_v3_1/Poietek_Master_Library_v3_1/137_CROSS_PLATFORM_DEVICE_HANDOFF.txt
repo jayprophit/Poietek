@@ -1,0 +1,39 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.7
+
+137 — CROSS-PLATFORM / CROSS-DEVICE HANDOFF
+===========================================
+
+COMPANION
+schemas/project-handoff.schema.v1.json
+packages/handoff/src/ProjectHandoff.ts
+
+EXAMPLE
+
+Continue on iPad.
+
+Handoff contains:
+project revision
+workspace
+selection
+playhead
+asset priorities
+required capabilities.
+
+Target opens metadata first.
+Assets hydrate progressively.
+
+UNAVAILABLE CAPABILITY
+
+Desktop VST3 unavailable on tablet:
+state preserved
+freeze/render used if available
+plugin never deleted.
+
+HANDOFF CAN BE
+
+same Wi-Fi direct
+cloud sync
+QR/deep link
+encrypted device-to-device.
+
+END DOCUMENT 137

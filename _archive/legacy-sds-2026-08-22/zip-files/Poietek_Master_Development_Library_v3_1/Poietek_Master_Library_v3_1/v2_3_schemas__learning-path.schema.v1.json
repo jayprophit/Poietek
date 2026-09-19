@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/learning-path/v1",
+  "title": "Poietek Learning Path v1",
+  "type": "object",
+  "required": [
+    "pathId",
+    "title",
+    "goal",
+    "skills",
+    "milestones",
+    "assistantPolicy"
+  ],
+  "properties": {
+    "pathId": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "goal": {
+      "type": "string"
+    },
+    "experienceLevel": {
+      "enum": [
+        "new",
+        "beginner",
+        "intermediate",
+        "advanced",
+        "professional",
+        "custom"
+      ]
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "skillId",
+          "name",
+          "dependencies"
+        ],
+        "properties": {
+          "skillId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidenceRequired": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "optional": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "milestones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "assistantPolicy": {
+      "type": "object",
+      "properties": {
+        "aiEnabled": {
+          "type": "boolean"
+        },
+        "offlineFallback": {
+          "type": "boolean"
+        },
+        "canModifyProject": {
+          "type": "boolean"
+        },
+        "requirePreviewForChanges": {
+          "type": "boolean"
+        },
+        "privacyMode": {
+          "enum": [
+            "local_only",
+            "private_cloud",
+            "standard",
+            "custom"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "progress": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

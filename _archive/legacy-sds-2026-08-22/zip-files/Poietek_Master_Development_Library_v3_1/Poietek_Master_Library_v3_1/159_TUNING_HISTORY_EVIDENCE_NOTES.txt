@@ -1,0 +1,33 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.9
+
+159 — TUNING HISTORY & EVIDENCE NOTES
+=====================================
+
+CURRENT VERIFIED HISTORY
+
+ISO 16:1975 specifies A=440 Hz and remains current after its 2022 review.
+
+Historical research and contemporary 1939 reporting show that A440 emerged through
+decades of international negotiation and an International Standards Association
+conference held at BBC Broadcasting House in London on 11–12 May 1939.
+
+Before standardization, pitch varied materially between locations, periods and
+ensembles.
+
+PRODUCT POLICY
+
+Poietek does not encode unsupported claims that one family, individual or secret
+group recently changed the musical standard.
+
+Historical notes can include:
+verified source
+date
+confidence
+alternative interpretations where serious scholarship differs.
+
+CREATIVE FREEDOM
+
+Historical uncertainty or politics does not affect a user's right to choose A432,
+A415, custom pitch or another temperament in Poietek.
+
+END DOCUMENT 159

@@ -1,0 +1,42 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.7
+
+134 — RELEASE PROFILE AI FIX ASSISTANT
+======================================
+
+EXAMPLE
+
+Target:
+EBU-style broadcast.
+
+CHECKS
+
+A440 tuning reference          PASS / N/A
+Audio format                   PASS
+Integrated loudness            FAIL
+True peak                      PASS
+Metadata                       PASS
+Rights Manifest                PASS
+Caption/subtitle requirement   N/A.
+
+AI RESPONSE
+
+"Your selected broadcaster profile expects -23 LUFS programme loudness.
+The current master measures -18.4 LUFS.
+
+Options:
+1 Preview compliant loudness render.
+2 Change delivery profile.
+3 Export anyway if client policy permits."
+
+AI NEVER SAYS
+
+"This song is wrong."
+
+It says:
+"This file does not meet the selected target requirement."
+
+SEPARATE CREATIVE LAYER
+
+Genre/style recommendations remain optional.
+
+END DOCUMENT 134

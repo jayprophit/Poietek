@@ -1,0 +1,78 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.7
+
+38 — TEST FIXTURE CATALOGUE v1
+==============================
+
+Companion fixtures/ directory included.
+
+CORE PROJECT FIXTURES
+F01 blank_project_v1.json
+F02 one_audio_clip_project_v1
+F03 missing_asset_project_v1.json
+F04 one_midi_track_project_v1
+F05 old_schema_v0_project
+F06 plugin_missing_project
+F07 two_user_collaboration_project
+F08 rights_split_conflict_project
+F09 video_proxy_project
+F10 dj_set_project
+
+AUDIO SIGNAL FIXTURES
+A01 silence 48k stereo
+A02 1kHz sine -12dBFS
+A03 impulse
+A04 stereo anti-phase
+A05 known fade
+A06 clipping fixture
+A07 variable tempo click/reference
+
+MIDI FIXTURES
+M01 C major scale
+M02 overlapping notes
+M03 sustain pedal
+M04 pitch bend
+M05 MPE expression
+M06 MIDI clock.
+
+SYNC FIXTURES
+S01 two independent track edits
+S02 same MIDI clip separate note edits
+S03 duplicate update
+S04 delete/update race
+S05 offline permission loss
+S06 interrupted asset upload.
+
+SECURITY FIXTURES
+X01 zip traversal archive
+X02 oversized JSON nesting
+X03 invalid content hash
+X04 untrusted plugin crash fixture
+X05 malicious connector URL
+X06 XSS community post.
+
+HARDWARE FIXTURES
+virtual generic keyboard
+virtual 16-pad controller
+virtual DJ controller
+unknown controller learn sequence.
+
+RULE
+Every bug that caused data loss, crash, sync divergence or audio corruption gets
+a regression fixture.
+
+FIXTURE LICENSING
+Use generated/public-domain/self-owned test media only.
+
+EXPECTED OUTPUTS
+Each fixture has a manifest with:
+input hash
+expected schema
+expected render hash/tolerance
+expected warnings
+expected migration.
+
+TEST-001 blank fixture validates.
+TEST-002 missing asset opens placeholder.
+TEST-003 invalid archive rejected safely.
+TEST-004 sync fixture converges.
+TEST-005 audio render measured within tolerance.

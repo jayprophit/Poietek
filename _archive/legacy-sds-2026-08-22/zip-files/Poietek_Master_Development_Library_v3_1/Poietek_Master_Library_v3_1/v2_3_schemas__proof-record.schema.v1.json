@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/proof-record/v1",
+  "title": "Poietek Proof Record v1",
+  "type": "object",
+  "required": [
+    "proofId",
+    "proofType",
+    "subject",
+    "issuer",
+    "createdAt",
+    "evidence",
+    "verification"
+  ],
+  "properties": {
+    "proofId": {
+      "type": "string"
+    },
+    "proofType": {
+      "enum": [
+        "contribution",
+        "consent",
+        "identity",
+        "data_integrity",
+        "transaction_history",
+        "interoperability",
+        "reputation",
+        "impact",
+        "engagement",
+        "location",
+        "chaos_resilience",
+        "discovery",
+        "legacy",
+        "environmental_impact",
+        "trust_bundle",
+        "proof_of_concept",
+        "customization",
+        "learning_competency"
+      ]
+    },
+    "subject": {
+      "type": "object",
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "party",
+            "project",
+            "asset",
+            "product",
+            "transaction",
+            "release",
+            "service",
+            "device",
+            "learning_credential"
+          ]
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "issuer": {
+      "type": "object",
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "poietek",
+            "party",
+            "provider",
+            "auditor",
+            "device",
+            "test_runner",
+            "smart_contract",
+            "learning_engine"
+          ]
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "contentHash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "signature": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "blockchainAnchor": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "verification": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "unverified",
+            "self_attested",
+            "verified",
+            "expired",
+            "revoked",
+            "failed"
+          ]
+        },
+        "verifiedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "method": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

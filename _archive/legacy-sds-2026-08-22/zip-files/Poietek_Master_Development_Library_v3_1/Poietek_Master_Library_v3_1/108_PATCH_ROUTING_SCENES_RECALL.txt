@@ -1,0 +1,81 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.4
+
+108 — PATCHING, ROUTING, SCENES & RECALL
+========================================
+
+UNIFIED PATCHBAY
+
+Sources:
+Poietek tracks
+console inputs
+USB returns
+Dante flows
+MADI channels
+ADAT
+stageboxes
+hardware synths
+outboard.
+
+Destinations:
+console channels
+Poietek inputs
+buses
+cue mixes
+record tracks
+stream outputs.
+
+ROUTING DIFFERENCE
+
+Audio routing:
+where sound goes.
+
+Control routing:
+which physical control affects which logical parameter.
+
+Clock routing:
+where sync comes from.
+
+SCENES
+
+Desk scene may be:
+ExternalSceneReference
+ImportedSceneMetadata
+PoietekConsoleSnapshot.
+
+Poietek does not claim it can deserialize proprietary scene files without a
+documented adapter.
+
+SAFE RECALL
+
+Recall scope:
+all
+routing only
+mix only
+selected channels
+selected parameters.
+
+Protect:
+preamps
+phantom
+master output
+monitor level
+broadcast feed
+record arm
+talkback.
+
+DIFF
+
+Before recall:
+Current vs Scene.
+
+User can preview:
+Fader CH1 -4 -> -9 dB
+Mute CH8 off -> on
+Bus route changes...
+
+RECALL-001 safety-critical parameters protected by default.
+RECALL-002 scene diff available.
+RECALL-003 external scene ID preserved.
+RECALL-004 offline project opens without physical desk.
+
+END DOCUMENT 108

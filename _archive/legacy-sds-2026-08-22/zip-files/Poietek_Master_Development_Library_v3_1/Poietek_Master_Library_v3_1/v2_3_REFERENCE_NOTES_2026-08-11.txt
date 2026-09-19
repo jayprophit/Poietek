@@ -1,0 +1,52 @@
+Primary/current sources reviewed 11 August 2026:
+
+Decentralized / creator media:
+Audius developer/protocol docs:
+https://docs.audius.org/
+https://dashboard.audius.org/
+
+Livepeer:
+https://docs.livepeer.org/v2/about/concepts/livepeer-stack
+https://docs.livepeer.org/v1/developers/guides/overview
+
+LBRY/Odysee protocol documentation:
+https://docs.lbry.com/
+https://docs.lbry.com/faq/lbry-basics
+https://docs.lbry.com/faq/youtube
+
+YouTube developer/analytics:
+https://developers.google.com/youtube/v3/getting-started
+https://developers.google.com/youtube/analytics/
+
+NIST:
+https://www.nist.gov/cyberframework
+https://csrc.nist.gov/pubs/sp/800/218/final
+https://www.nist.gov/itl/ai-risk-management-framework
+
+PCI SSC:
+https://www.pcisecuritystandards.org/document_library/
+
+EU GDPR guidance:
+https://commission.europa.eu/law/law-topic/data-protection/
+
+California CCPA:
+https://oag.ca.gov/privacy/ccpa
+
+Australian OAIC:
+https://www.oaic.gov.au/privacy/
+
+ML/MLOps:
+https://mlflow.org/docs/latest/
+https://huggingface.co/docs/hub/en/model-cards
+https://dvc.org/
+
+Ordinals/Runes:
+https://docs.ordinals.com/
+https://docs.ordinals.com/runes.html
+
+OP_CAT:
+https://github.com/bitcoin/bips/blob/master/bip-0347.mediawiki
+https://github.com/bitcoin/bitcoin/blob/master/src/script/interpreter.cpp
+
+MML:
+https://mml.io/docs

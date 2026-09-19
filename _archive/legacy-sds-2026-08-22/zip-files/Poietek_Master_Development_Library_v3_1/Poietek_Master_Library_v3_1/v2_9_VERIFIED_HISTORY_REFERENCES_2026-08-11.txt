@@ -1,0 +1,21 @@
+Verified/current references used 11 August 2026:
+
+ISO 16:1975
+Official ISO page:
+https://www.iso.org/standard/3601.html
+Specifies A=440 Hz. Published 1975; reviewed and confirmed in 2022.
+
+Nature, 27 May 1939
+G. W. C. Kaye, "International Standard of Concert Pitch"
+Documents the International Conference of 11–12 May 1939 held at Broadcasting
+House under the International Standards Association, with delegates from France,
+Germany, Great Britain, Holland and Italy plus views/representation from other
+standards/broadcast bodies.
+
+Max Planck Institute for the History of Science
+"Tuning the World"
+Describes A440 as the result of decades of international negotiation among
+performers, composers, instrument builders, scientists and state actors.
+
+No credible evidence was found in this review supporting a claim that the current
+A440 standard was changed by the Rothschild family "a few years ago".

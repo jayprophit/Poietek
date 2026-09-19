@@ -1,0 +1,55 @@
+You are taking over implementation of Poietek, currently stored in the connected
+GitHub repository `jayprophit/Studio-Daw-Station-SDS-`.
+
+Read `AGENTS.md` and `DEVIN_START_HERE.md` first.
+
+The existing repository is an SDS concept/prototype that contains useful UI and
+hardware/workspace ideas, but it is not yet the production architecture.
+
+Use the latest Poietek Master Development Library v3.1 as the product/architecture
+source of truth and the Poietek Implementation Build v3.1 as the current
+repo-ready implementation overlay.
+
+Do not begin by rewriting the entire application.
+
+First perform an onboarding/migration pass:
+
+1. Inspect and index the current repository.
+2. Run the current app, typecheck and build; record the baseline.
+3. Inspect `package.json`, `tsconfig.json`, `src/App.tsx`, `src/types`,
+   `src/audio`, `src/midi` and current workspace/rack components.
+4. Inspect the v3.1 implementation overlay and validation report.
+5. Produce a concise mapping:
+   - existing file/component;
+   - keep;
+   - migrate;
+   - replace;
+   - new Poietek module;
+   - risk/dependency.
+6. Propose the smallest safe integration sequence that preserves the current UI.
+7. Then implement only Phase 1 from `docs/BUILD_SEQUENCE.md`:
+   integrate the local Poietek runtime foundation under the existing UI.
+8. Run typecheck/build/tests after integration.
+9. Fix regressions introduced by the integration.
+10. Stop after Phase 1 with a summary of:
+    - files changed;
+    - commands/tests run;
+    - current failures;
+    - next recommended Phase 2 task.
+
+Important engineering rules:
+- durable creative state must not remain only in React;
+- local durable commit is the immediate success condition;
+- no serialized AudioBuffer/MIDIPort/DOM/native handles;
+- do not fake LUFS/True Peak;
+- do not use playbackRate as time-preserving A432/A440 playback;
+- preserve creator tuning unless an actual destination explicitly requires
+  something else;
+- AI is optional/advisory and project-changing actions should be previewable;
+- preserve useful rack/front/rear/hardware/floating-workspace UX;
+- do not commit secrets;
+- use focused commits;
+- do not publish 5-star claims without test evidence.
+
+Do not unpack or merge older historical code snapshots into the repo unless a
+specific missing requirement requires them.

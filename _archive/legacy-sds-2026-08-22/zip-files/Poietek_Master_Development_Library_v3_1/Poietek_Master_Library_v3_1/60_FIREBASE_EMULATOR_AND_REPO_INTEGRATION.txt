@@ -1,0 +1,56 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.9
+
+60 — FIREBASE EMULATOR + CURRENT REPO INTEGRATION
+=================================================
+
+DELIVERED
+firebase/firestore.rules
+firestore.indexes.json
+firestore.rules.test.example.ts
+package.integration.example.json
+
+FIREBASE COMES AFTER LOCAL SLICE
+
+Integration order:
+1 local project
+2 local asset
+3 real audio
+4 offline reopen
+5 render
+6 Firebase Auth/project directory/comments.
+
+Do not use Firebase to repair missing local architecture.
+
+CURRENT REPOSITORY INTEGRATION
+Keep src/App.tsx operational.
+Create packages beside src.
+Wire one Arrange workspace to new services.
+Then peel durable state out of App.tsx.
+
+RECOMMENDED FIRST REAL PR SERIES
+
+PR 1
+repo hygiene + packages/domain + project factory.
+
+PR 2
+IndexedDB repository + tests.
+
+PR 3
+AssetStore + import/hash/waveform.
+
+PR 4
+CommandBus + real arrangement edit.
+
+PR 5
+WebAudio backend + real playback.
+
+PR 6
+offline PWA + reopen/export.
+
+PR 7
+optional Firebase adapter/emulator.
+
+GATE
+Do not merge PR 7 if PR 6 cannot pass fully offline.
+
+END BATCH 51-60

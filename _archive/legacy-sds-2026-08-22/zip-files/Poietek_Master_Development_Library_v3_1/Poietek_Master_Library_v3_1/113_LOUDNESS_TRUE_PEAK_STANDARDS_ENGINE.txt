@@ -1,0 +1,55 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.5
+
+113 — LOUDNESS, TRUE-PEAK & STANDARDS ENGINE
+============================================
+
+CURRENT STANDARDS BASIS — 11 AUGUST 2026
+
+ITU-R BS.1770-5 is the current in-force ITU recommendation for algorithms that
+measure programme loudness and true-peak audio level.
+
+EBU R128 v5 uses programme loudness plus Loudness Range and Maximum True Peak
+descriptors and recommends -23 LUFS for its broadcast programme context.
+
+EBU mode includes:
+Momentary: 400 ms
+Short Term: 3 s
+Integrated: start-to-stop programme measurement.
+
+IMPLEMENTATION RULE
+
+Poietek MUST NOT:
+
+take RMS
+rename it LUFS
+
+or:
+
+take ordinary sample peak
+rename it True Peak.
+
+StandardsLoudnessAnalyzer is a separate tested engine.
+
+VALIDATION
+
+Use authoritative test material such as the EBU loudness test set and appropriate
+standards-conformance tests.
+
+MEASUREMENTS
+
+LUFS-I
+LUFS-S
+LUFS-M
+LRA
+dBTP.
+
+UI
+
+Peak meter
+True Peak meter
+Momentary
+Short-term
+Integrated
+Loudness range.
+
+END DOCUMENT 113

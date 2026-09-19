@@ -1,0 +1,113 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 2.0
+
+67 — CURRENT POIETEK BENCHMARK REPORT
+=====================================
+
+DATE
+11 August 2026.
+
+BASIS
+Current audited SDS repository + implementation scaffolds produced in development
+library.
+
+IMPORTANT
+This is not a benchmark of a finished Poietek binary. It is a readiness assessment.
+
+CURRENT RESULT
+
+There are currently NO honest 5★ implementation categories.
+
+Strongest current areas:
+- product/system architecture;
+- local-first design;
+- storage abstraction design;
+- UI concept breadth.
+
+But architecture/specification quality is not equivalent to implemented product
+quality.
+
+Current implementation-readiness estimate:
+Native install: 1★
+DAW core: 1★
+Mobile/tablet: 1★
+Pitch editing: 1★
+DJ: 1★
+Video/VFX: 1★
+Plugins: 1★
+Collaboration: 1★
+BYOC storage foundation: 2★
+Offline/local persistence starter: 2★
+Accessibility design: 2★.
+
+This is EXPECTED at the prototype-to-foundation stage.
+
+REFERENCE OBSERVATIONS
+
+Ableton Live:
+mature Arrangement + Session workflows, instruments/effects and extensibility.
+
+Bitwig:
+deep modulation and plug-in crash protection through separate-process hosting.
+
+Logic Pro:
+professional Mac/iPad creation; iPad is touch-first and supports project roundtrip.
+
+Melodyne:
+deep note-based pitch/timing editing including polyphonic material in higher editions.
+
+Serato DJ Pro:
+4-deck/Stems/DVS ecosystem and broad supported DJ hardware.
+
+rekordbox:
+set preparation, DVS, stems, video and device/library workflows.
+
+DaVinci Resolve:
+integrated editing, Fusion VFX, color and Fairlight audio post.
+
+WHAT 5★ MEANS FOR POIETEK
+
+It must beat "paper completeness."
+
+Examples:
+
+AUDIO 5★
+No data loss.
+Professional recording/editing.
+Reliable low latency.
+Automation.
+Mix/render consistency.
+Large project benchmark.
+
+MOBILE 5★
+Not a desktop page shrunk to a phone.
+Real device app.
+Touch workflow.
+Background/permission lifecycle correct.
+
+DJ 5★
+Stage-stable.
+DVS.
+hardware coverage.
+stems.
+set prep.
+no dropouts during soak.
+
+VIDEO 5★
+Proxy/edit/render.
+VFX/color depth.
+audio sync.
+GPU performance.
+
+PITCH 5★
+Transparent objective/audio-user quality, not blob UI.
+
+NEXT SCORE MOVEMENT
+
+v2.1 goal:
+Local Project/Offline: 3★
+Basic DAW vertical slice: 2–3★
+Native packaging: 2★.
+
+Do not attempt to move every category at the same time.
+
+END REPORT

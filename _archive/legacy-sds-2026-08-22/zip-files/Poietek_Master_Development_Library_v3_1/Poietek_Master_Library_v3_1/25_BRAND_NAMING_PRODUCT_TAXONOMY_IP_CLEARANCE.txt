@@ -1,0 +1,244 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 1.6 ADDENDUM
+
+25 — BRAND, NAMING, PRODUCT TAXONOMY & IP CLEARANCE
+===================================================
+
+STATUS
+Working brand recommendation: POIETEK.
+Legacy prototype/codename: Studio DAW Station (SDS).
+
+IMPORTANT
+This document is product/brand architecture, not legal trademark clearance.
+Before public launch, conduct professional trade mark/domain/company-name
+clearance in intended territories and relevant Nice classes.
+
+------------------------------------------------------------------------------
+1. WHY SDS SHOULD BECOME A CODENAME
+------------------------------------------------------------------------------
+
+"Studio DAW Station" is understandable but:
+- long;
+- generic/descriptive;
+- narrowly implies a DAW;
+- under-represents video, AI, DJ, collaboration, publishing and community;
+- is less memorable as a platform brand.
+
+Use SDS only where helpful for migration/history:
+"Poietek — formerly SDS prototype."
+
+------------------------------------------------------------------------------
+2. POITEK VS POIETEK
+------------------------------------------------------------------------------
+
+Preliminary public research found existing "Poitek Technology" usage and a
+poitek.com business presence. Therefore "Poitek" should NOT be treated as
+cleared.
+
+"Poietek" is more distinctive in preliminary public web searches and preserves
+the intended poiesis/techne-inspired origin more clearly.
+
+No web search substitutes for trade mark clearance.
+
+RECOMMENDED WORKING SPELLING:
+POIETEK
+
+Possible pronunciation guide for internal branding work:
+"poy-eh-tek" or "poi-eh-tek".
+Choose one official pronunciation before launch.
+
+------------------------------------------------------------------------------
+3. MASTER BRAND
+------------------------------------------------------------------------------
+
+POIETEK
+
+Meaning narrative:
+Creative making + craft + technology.
+
+Brand promise:
+One creative environment from idea to finished work.
+
+Do not make the public tagline overly technical.
+
+Possible positioning:
+"Create without changing worlds."
+"From idea to release."
+"Your creative system."
+"Make. Shape. Perform. Publish."
+
+Taglines require separate clearance/research before public adoption.
+
+------------------------------------------------------------------------------
+4. PRODUCT FAMILY
+------------------------------------------------------------------------------
+
+POIETEK STUDIO
+Main creative application:
+audio, MIDI, sampler, video, AI, collaboration.
+
+POIETEK LIVE
+DJ/live performance/show-control mode or product surface.
+
+POIETEK BRIDGE
+Hardware/device connectivity, mapping and optional bridge utilities.
+
+POIETEK HUB
+Creator community, collaboration/discovery and marketplace.
+
+POIETEK LEARN
+Tutorials, courses, forkable demos and education.
+
+POIETEK CLOUD
+Optional managed sync/storage/compute services.
+Never imply cloud is required.
+
+POIETEK SDK
+Developer extension ecosystem.
+
+POIETEK MOBILE
+If a separate store listing is needed, though product should remain one
+cross-platform project ecosystem.
+
+------------------------------------------------------------------------------
+5. FEATURE NAMES
+------------------------------------------------------------------------------
+
+Use original functional names rather than competitor trademarks.
+
+Examples:
+Note Edit
+Live Tune
+Align
+Poly Note Lab
+Wave Synth
+MotionShaper
+Precision EQ
+Mastering Hub
+Set Prep
+Stem Mix
+Performance Grid
+Visual Decks
+Universal Mapper
+Storage Router
+Project Graph
+
+------------------------------------------------------------------------------
+6. REPOSITORY RENAMING STRATEGY
+------------------------------------------------------------------------------
+
+Do NOT mass-rename everything before codebase stabilization.
+
+Stage 1:
+README identifies Poietek as working product name.
+
+Stage 2:
+package names become @poietek/*.
+
+Stage 3:
+user-visible "Studio DAW Suite/SDS" strings migrate.
+
+Stage 4:
+repository may be renamed after redirects/remotes are planned.
+
+Stage 5:
+bundle IDs/application IDs chosen only after final brand clearance.
+
+Maintain migration map:
+old identifier -> new identifier.
+
+Never change serialized project identifiers merely for cosmetic branding.
+
+------------------------------------------------------------------------------
+7. DOMAIN / HANDLE STRATEGY
+------------------------------------------------------------------------------
+
+Check:
+.com
+.app
+.studio
+.audio
+.music
+.dev
+social handles
+GitHub organization
+package registries
+app stores
+
+A domain being available does not mean trademark clearance.
+A trademark being available does not mean domain availability.
+
+------------------------------------------------------------------------------
+8. TRADEMARK CLASSES TO REVIEW
+------------------------------------------------------------------------------
+
+Professional counsel should identify final classes, but likely categories may
+include:
+software
+downloadable applications
+software-as-a-service
+education
+entertainment/media
+marketplace/e-commerce
+telecommunications/community
+cloud services
+
+Do not file blindly across classes without actual intended use.
+
+------------------------------------------------------------------------------
+9. BRAND DESIGN SYSTEM
+------------------------------------------------------------------------------
+
+Logo:
+must work at 16px app icon and large format.
+
+Wordmark:
+distinct from product UI typography if useful.
+
+Icon system:
+simple silhouette.
+
+Motion:
+short, low-distraction identity.
+
+Sound logo:
+optional later; avoid making startup audio mandatory.
+
+Stage/live mode:
+logo must remain legible in dark environment.
+
+------------------------------------------------------------------------------
+10. BRAND VOICE
+------------------------------------------------------------------------------
+
+Clear.
+Creative.
+Technical when needed.
+Not corporate jargon-heavy.
+Not patronizing.
+Never imply AI replaces creators.
+
+------------------------------------------------------------------------------
+11. LEGAL BRAND CHECKLIST
+------------------------------------------------------------------------------
+
+Before public beta:
+- trade mark search UK;
+- EU search;
+- US search;
+- WIPO/international search;
+- company-name conflicts;
+- domain/handle conflicts;
+- music/software adjacent marks;
+- logo/design clearance;
+- developer-name/app-store conflicts;
+- open-source package namespace conflicts.
+
+------------------------------------------------------------------------------
+12. DECISION
+------------------------------------------------------------------------------
+
+WORKING RECOMMENDATION:
+Use "Poietek" for specification and architecture going forward.
+Keep "SDS" only as legacy repository/prototype reference until safe migration.
+
+END DOCUMENT 25

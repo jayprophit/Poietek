@@ -1,0 +1,115 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 2.0
+
+66 — 5-STAR COMPETITIVE BENCHMARK FRAMEWORK
+===========================================
+
+COMPANIONS
+benchmark-rubric.json
+poietek-5-star-benchmark.csv
+
+CRITICAL RULE
+
+"Make Poietek 5 stars" is a RELEASE TARGET, not a score we can award before the
+software exists.
+
+A false 5-star score would weaken the product.
+
+STAR STANDARD
+
+1★
+Prototype / concept.
+
+2★
+Basic end-to-end feature works.
+
+3★
+Production-usable ordinary workflow.
+
+4★
+Competitive with established specialist/category leaders.
+
+5★
+Meets or exceeds the best relevant reference on agreed objective tests,
+reliability, workflow efficiency and user validation.
+
+CATEGORY LEADERSHIP MODEL
+
+Poietek does not need one competitor that matches its entire scope.
+Benchmark each subsystem against the strongest specialist reference:
+
+DAW/arrangement:
+Ableton Live
+Logic Pro
+FL Studio
+Bitwig Studio.
+
+Plugin sandbox/modulation:
+Bitwig.
+
+Pitch/note editing:
+Melodyne.
+
+DJ/DVS:
+Serato DJ Pro
+rekordbox.
+
+Video/VFX/audio post:
+DaVinci Resolve.
+
+Touch/tablet:
+Logic Pro for iPad.
+
+Extensibility:
+Max for Live
+plugin standards.
+
+5-STAR EVIDENCE
+
+Every 5★ category requires:
+feature acceptance suite
+performance benchmark
+stability/soak
+platform matrix
+data-loss test
+accessibility/usability test
+comparison workflow script
+version/date of reference competitor
+evidence artifact.
+
+NO "FEATURE COUNT" GAMING
+
+Having 200 shallow functions does not beat a competitor's 20 reliable ones.
+
+Weight:
+Reliability 25%
+Workflow/UX 20%
+Output quality 20%
+Capability depth 15%
+Performance 10%
+Interoperability 5%
+Accessibility 5%
+
+A critical data-loss/security failure caps category at 2★ until fixed.
+
+RELEASE GATES
+
+Alpha:
+may contain 1–3★ experimental modules if labelled.
+
+Beta:
+core DAW/local project categories >=3★.
+
+Stable 1.0:
+launch-critical categories >=4★.
+
+POIETEK 5-STAR CERTIFIED:
+all declared flagship categories = 5★ with evidence.
+
+If the owner's requirement is literally 5★ across all declared categories, do
+not badge/declare the release until every category passes.
+
+BENCH-001 score cannot be edited to 5 without evidence IDs.
+BENCH-002 competitor version/date recorded.
+BENCH-003 performance compared on controlled hardware where meaningful.
+BENCH-004 subjective UX includes blinded/structured user testing.
+BENCH-005 failures generate gap tickets.

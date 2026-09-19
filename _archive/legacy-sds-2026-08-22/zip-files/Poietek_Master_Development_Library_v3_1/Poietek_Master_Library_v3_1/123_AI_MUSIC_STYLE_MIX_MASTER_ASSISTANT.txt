@@ -1,0 +1,67 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.6
+
+123 — AI MUSIC STYLE / MIX / MASTER ASSISTANT
+=============================================
+
+WORKFLOW
+
+User chooses:
+"This is a UK drill track."
+
+Poietek:
+detects candidate styles
+asks/accepts confirmation
+loads reference profile
+measures project
+compares distributions.
+
+EXAMPLE
+
+Reference observation:
+Your sub-bass is stronger than 85% of your selected references.
+
+This is NOT automatically bad.
+
+AI asks:
+"Keep the heavier sub-bass, or compare a controlled version?"
+
+OPTIONS
+Keep Intent
+Preview Change
+Choose Reference
+Ignore.
+
+MIX ASSIST
+
+Can compare:
+vocal level
+kick/bass interaction
+spectral masking
+stereo width
+crest factor
+dynamic density
+reverb time
+transient balance.
+
+MASTER ASSIST
+
+Formal delivery requirements remain separate.
+
+The style assistant may say:
+"Your master is more dynamic than the selected contemporary references."
+
+The delivery assistant may separately say:
+"Your true peak fails the chosen platform profile."
+
+CREATIVE INTENT LOCK
+
+User may lock:
+do not reduce distortion
+keep vocal dry
+preserve sub weight
+do not widen master
+retain cassette noise.
+
+AI must respect these locks.
+
+END DOCUMENT 123

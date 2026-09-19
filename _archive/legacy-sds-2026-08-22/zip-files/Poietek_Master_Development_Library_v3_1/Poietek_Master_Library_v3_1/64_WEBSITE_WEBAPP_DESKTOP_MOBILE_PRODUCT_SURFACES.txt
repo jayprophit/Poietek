@@ -1,0 +1,72 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.10
+
+64 — WEBSITE, WEBAPP & INSTALLED PRODUCT SURFACES
+=================================================
+
+POIETEK WEBSITE
+
+Browser-first public surface.
+
+Pages:
+Home
+Features
+Download
+Supported Hardware
+Learn
+Docs
+Community public pages
+Developer
+Pricing later
+Status
+Legal.
+
+No audio-engine startup on marketing page.
+
+POIETEK WEB APP
+
+Browser studio.
+Local-first.
+Optional PWA installation.
+Best effort hardware based on browser support.
+
+POIETEK STUDIO DESKTOP
+
+Installed.
+Full local/native capabilities.
+Professional audio/MIDI/plugin target.
+Multi-window/multi-monitor.
+
+POIETEK STUDIO TABLET
+
+Installed.
+Touch-first.
+Split workspace.
+External controller/audio hardware where platform supports.
+
+POIETEK STUDIO MOBILE
+
+Installed.
+Capture
+sampler
+arrangement
+review
+mix
+DJ compact
+collaboration.
+
+PROJECT FORMAT
+Same canonical project.
+
+CAPABILITY DIFFERENCES
+Allowed.
+
+DATA LOSS DUE TO PLATFORM DIFFERENCE
+Not allowed.
+
+EXAMPLE
+Desktop project contains VST3.
+iPad opens frozen render and preserves plugin state.
+Desktop later restores live plugin.
+
+PRODUCT RULE
+"Same project everywhere" does not mean "identical binaries/features everywhere."

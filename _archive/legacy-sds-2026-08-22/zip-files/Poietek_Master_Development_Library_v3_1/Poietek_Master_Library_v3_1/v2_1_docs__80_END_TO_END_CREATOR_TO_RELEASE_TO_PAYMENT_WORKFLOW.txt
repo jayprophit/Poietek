@@ -1,0 +1,110 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.1
+
+80 — END-TO-END CREATOR -> RELEASE -> SALE -> PAYMENT WORKFLOW
+==============================================================
+
+1 PROJECT OWNER CREATES PROJECT
+
+Access policy:
+private/team.
+Device/session rules.
+
+2 CONTRIBUTORS JOIN
+
+Existing account
+QR/link
+studio-device guest
+claim later.
+
+3 CONTRIBUTIONS RECORDED
+
+Party
+role
+track/clip/session
+date/time
+credit suggestions.
+
+4 IDENTIFIERS RESOLVED
+
+Poietek Party ID
+-> verified PRS/PPL/MLC/SoundExchange/etc identifiers when applicable.
+
+5 RIGHTS AGREED
+
+Credit.
+Rights.
+Payment terms.
+
+Separate objects.
+
+6 CONTRIBUTORS APPROVE
+
+No silent AI determination.
+
+7 FINAL MASTER / FINAL CONTENT CREATED
+
+Hash generated.
+Rights Manifest version frozen.
+C2PA/provenance generated where enabled.
+DDEX packages generated where appropriate.
+
+8 REGISTRATIONS
+
+Correct pathway engine prepares:
+work registration
+recording registration
+performer claims
+rights claims
+distribution metadata.
+
+Provider confirmation stored.
+
+9 PUBLISH
+
+Poietek marketplace
+external distributor
+private delivery
+licensing.
+
+10 SALE/USE
+
+Internal Poietek sale:
+CommercePolicy version -> ledger allocations.
+
+External royalties:
+statements imported/synced -> matched/reconciled.
+
+11 PAYOUT
+
+Eligible internal balance -> approved payout rail/account.
+
+External society royalties:
+paid by the relevant organisation under its own process;
+Poietek tracks/reconciles the statement/payment.
+
+12 AUDIT
+
+Every important step has:
+actor
+timestamp
+manifest version
+policy version
+receipt
+hash.
+
+DESIRED USER EXPERIENCE
+
+The creator sees:
+
+Credits complete ✓
+Rights approved ✓
+PRS work: Accepted ✓
+PPL recording: Accepted ✓
+SoundExchange: Submitted
+Marketplace split: Ready ✓
+Payout accounts: 3/3 ready ✓
+Release: Ready to publish
+
+The technical complexity remains behind Poietek.
+
+END DOCUMENT 80

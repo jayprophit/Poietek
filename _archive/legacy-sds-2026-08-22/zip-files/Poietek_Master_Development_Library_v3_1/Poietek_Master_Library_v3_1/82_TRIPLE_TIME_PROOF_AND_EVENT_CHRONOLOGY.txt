@@ -1,0 +1,57 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.2
+
+82 — TRIPLE TIME PROOF & EVENT CHRONOLOGY
+=========================================
+
+USER GOAL
+
+Track time/date of:
+session
+contribution
+rights approval
+final master
+registration
+sale
+royalty statement
+payout
+manifest changes.
+
+DO NOT USE BLOCK TIMESTAMP AS A PRECISION CLOCK.
+
+Ethereum/Solidity exposes block.timestamp, but official Solidity documentation
+warns block timestamps can be influenced to some degree.
+
+POIETEK USES THREE TIME SOURCES
+
+1 SIGNED EVENT TIME
+Device/service UTC timestamp included in canonical event.
+
+2 SERVER/AUDIT RECEIPT
+Poietek backend records receipt time.
+
+3 BLOCKCHAIN INCLUSION
+block number + block timestamp + transaction confirmation.
+
+Optional fourth:
+independent RFC3161/transparency/timestamp service.
+
+EventChronology {
+ eventId
+ eventType
+ actorPartyId
+ signedEventTime
+ serverReceivedAt
+ chainIncludedAt?
+ blockNumber?
+ contentHash
+ previousEventHash?
+}
+
+For recording sessions, audio hardware clock remains the media timing authority;
+the blockchain is not a sample clock.
+
+ACCEPTANCE
+TIME-001 all stored times use UTC internally.
+TIME-002 UI renders local timezone.
+TIME-003 chain time labelled "block inclusion time".
+TIME-004 event alteration changes hash.

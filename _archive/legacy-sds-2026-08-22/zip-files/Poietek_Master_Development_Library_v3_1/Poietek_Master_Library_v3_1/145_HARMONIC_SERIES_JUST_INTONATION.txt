@@ -1,0 +1,45 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.8
+
+145 — HARMONIC SERIES & JUST INTONATION
+=======================================
+
+This is the strongest technical meaning for an "organic harmonic" mode.
+
+Natural acoustic resonators generate harmonic/partial relationships.
+
+Just intonation uses intervals represented by simple frequency ratios.
+
+Examples:
+Unison       1/1
+Octave       2/1
+Perfect fifth 3/2
+Perfect fourth 4/3
+Major third  5/4
+Minor third  6/5.
+
+Poietek can:
+
+show ratios
+show cents difference from 12-TET
+retune synth/MIDI notes
+generate reference tones
+analyse chord beating
+preview adaptive tuning.
+
+LIMITATION
+
+Fixed just intonation is key/context dependent.
+
+A ratio ideal for one harmony can become awkward after modulation.
+
+ADAPTIVE JUST
+
+Detect chord/context.
+Choose bounded rational offsets.
+Protect melodic continuity.
+Avoid sudden pitch jumps.
+Keep user-set maximum retune cents.
+
+This becomes a Poietek creative engine, not a universal correctness rule.
+
+END DOCUMENT 145

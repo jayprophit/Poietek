@@ -1,0 +1,48 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.5
+
+116 — REFERENCE LISTENING, CALIBRATION & TEST SIGNALS
+=====================================================
+
+TEST TOOLS
+
+sine generator
+pink noise
+white noise
+impulse
+polarity
+left/right identification
+channel sweep
+silence
+EBU-compatible reference/test material where licensing permits.
+
+CONSOLE / INTERFACE TEST
+
+Before session:
+sample rate
+clock lock
+channel map
+input polarity
+noise floor
+loopback
+latency
+headroom.
+
+LISTENING CALIBRATION
+
+Poietek may store a room/device CalibrationProfile.
+
+Digital signal level is not automatically acoustic SPL.
+
+Only display calibrated SPL if:
+measurement device/method provided
+calibration workflow completed.
+
+EBU currently provides a -23 LUFS pink-noise reference signal for reference
+listening-level workflows.
+
+HEARING SAFETY
+
+Poietek should avoid unexpectedly emitting high-level test tones.
+Test generator starts muted/low and requires explicit activation.
+
+END DOCUMENT 116

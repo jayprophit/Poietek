@@ -1,0 +1,84 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.1
+
+73 — UNIVERSAL RIGHTS MANIFEST & DOCUMENT-LIKE EMBEDDED METADATA
+================================================================
+
+COMPANION
+schemas/universal-rights-manifest.schema.v1.json
+
+APPLIES TO
+
+audio
+video
+images
+samples
+presets
+plugins
+skins/themes
+clips
+templates
+documents
+other creator content.
+
+THREE DISTINCT LAYERS
+
+CREDIT
+Who contributed.
+
+RIGHT
+Who owns/administers/licences what.
+
+PAYMENT
+Who receives money under a transaction/agreement.
+
+Do not automatically give every contributor ownership or payment simply because
+they are credited.
+
+DOCUMENT-LIKE INSPECTOR
+
+Selecting a file can show:
+
+File properties
+Creation date/time
+Content hash
+Author/creator
+Credits
+Rights
+Identifiers
+Licence
+Society registrations
+Provenance
+Commerce policy
+Payment beneficiaries
+Version/history.
+
+EMBEDDING
+
+Project standard metadata for common tools.
+Use media-specific standard tags.
+Use C2PA Content Credentials for signed provenance where supported.
+Use DDEX structures for relevant music-industry exchanges.
+Embed a compact/public Poietek rights projection where compatibility is proven.
+Keep the complete canonical manifest separately by content hash.
+
+WHY EXTERNAL CANONICAL COPY
+
+Transcoders/distributors can strip unknown metadata.
+A file must not be the sole copy of a legal/rights record.
+
+PRIVACY
+
+Never embed:
+banking info
+tax data
+private contracts
+OAuth tokens
+private society credentials
+private addresses.
+
+ACCEPTANCE
+META-001 standard media remains valid.
+META-002 common metadata remains readable.
+META-003 Poietek renders complete rights document.
+META-004 public embed excludes private fields.
+META-005 manifest version is linked to exact content hash.

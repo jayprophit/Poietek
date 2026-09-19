@@ -1,0 +1,224 @@
+openapi: 3.1.0
+info:
+  title: Poietek Network API
+  version: 1.0.0
+servers:
+  - url: https://api.example.invalid/api/v1
+    description: Placeholder; adapter/provider specific
+paths:
+  /health:
+    get:
+      operationId: health
+      responses:
+        '200':
+          description: OK
+  /projects:
+    get:
+      operationId: listProjects
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Project directory
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/ProjectDirectoryEntry' }
+    post:
+      operationId: registerProject
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ProjectDirectoryEntry' }
+      responses:
+        '201': { description: Registered }
+  /projects/{projectId}:
+    parameters:
+      - $ref: '#/components/parameters/ProjectId'
+    get:
+      operationId: getProjectDirectoryEntry
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Entry
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ProjectDirectoryEntry' }
+        '404': { description: Not found }
+  /projects/{projectId}/members:
+    parameters:
+      - $ref: '#/components/parameters/ProjectId'
+    get:
+      operationId: listProjectMembers
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Members
+    post:
+      operationId: inviteProjectMember
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/InviteRequest' }
+      responses:
+        '202': { description: Invitation queued }
+  /projects/{projectId}/comments:
+    parameters:
+      - $ref: '#/components/parameters/ProjectId'
+    get:
+      operationId: listComments
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200': { description: Comments }
+    post:
+      operationId: createComment
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateCommentRequest' }
+      responses:
+        '201': { description: Created }
+  /projects/{projectId}/sync/updates:
+    parameters:
+      - $ref: '#/components/parameters/ProjectId'
+    post:
+      operationId: pushSyncUpdate
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema: { type: string, contentEncoding: base64 }
+      responses:
+        '202': { description: Accepted/idempotent }
+  /assets/{assetId}:
+    get:
+      operationId: getAssetMetadata
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: assetId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Asset metadata
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AssetMetadata' }
+  /assets/{assetId}/upload-sessions:
+    post:
+      operationId: createUploadSession
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: assetId
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateUploadSessionRequest' }
+      responses:
+        '201':
+          description: Upload session
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/UploadSession' }
+  /storage/providers:
+    get:
+      operationId: listStorageProviders
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200': { description: Providers available/connected }
+  /rights/projects/{projectId}/split-proposals:
+    post:
+      operationId: createSplitProposal
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - $ref: '#/components/parameters/ProjectId'
+      responses:
+        '201': { description: Draft proposal created }
+  /releases/{releaseId}/approve:
+    post:
+      operationId: approveRelease
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: releaseId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: Approval recorded }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  parameters:
+    ProjectId:
+      name: projectId
+      in: path
+      required: true
+      schema: { type: string }
+  schemas:
+    ProjectDirectoryEntry:
+      type: object
+      required: [id, title, schemaVersion, modifiedAt, visibility]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        schemaVersion: { type: string }
+        modifiedAt: { type: string, format: date-time }
+        visibility: { enum: [local_only, private, team, unlisted, public] }
+        syncRevision: { type: [string, 'null'] }
+        thumbnailAssetId: { type: [string, 'null'] }
+    InviteRequest:
+      type: object
+      required: [principal, role]
+      properties:
+        principal: { type: string }
+        role: { type: string }
+    CreateCommentRequest:
+      type: object
+      required: [body]
+      properties:
+        body: { type: string, maxLength: 10000 }
+        anchor:
+          type: object
+          additionalProperties: true
+    AssetMetadata:
+      type: object
+      required: [id, contentHash, byteLength, mediaType]
+      properties:
+        id: { type: string }
+        contentHash: { type: string }
+        byteLength: { type: integer, minimum: 0 }
+        mediaType: { type: string }
+        replicas:
+          type: array
+          items: { type: object, additionalProperties: true }
+    CreateUploadSessionRequest:
+      type: object
+      required: [providerId, byteLength, contentHash]
+      properties:
+        providerId: { type: string }
+        byteLength: { type: integer, minimum: 0 }
+        contentHash: { type: string }
+        mimeType: { type: [string, 'null'] }
+    UploadSession:
+      type: object
+      required: [id, state, providerId]
+      properties:
+        id: { type: string }
+        state: { enum: [created, uploading, completed, failed, expired] }
+        providerId: { type: string }
+        uploadUrl: { type: [string, 'null'] }
+        expiresAt: { type: [string, 'null'], format: date-time }

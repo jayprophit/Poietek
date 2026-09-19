@@ -1,0 +1,46 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 3.0
+
+169 — RIGHTS & PROVENANCE FOR ALTERNATE PLAYBACK RENDITIONS
+===========================================================
+
+ORIGINAL
+
+Rights Manifest:
+unchanged.
+
+DERIVATIVE RENDITION
+
+Links:
+source Asset ID
+source hash
+Rights Manifest
+transform
+algorithm
+target reference
+output hash.
+
+CREDITS
+
+No contributor loses credit.
+
+PLAYBACK TRANSFORM DOES NOT CHANGE SPLITS.
+
+MARKETPLACE
+
+If product is sold as:
+Original A432 master
+
+the buyer receives original unless licence explicitly includes alternate
+renditions.
+
+If Poietek player dynamically presents A432:
+this is a playback service feature.
+
+PROVENANCE
+
+C2PA/Poietek history can describe:
+"derived playback rendition generated from source X by tuning transform Y."
+
+Do not falsely sign derivative as the creator's original master.
+
+END DOCUMENT 169

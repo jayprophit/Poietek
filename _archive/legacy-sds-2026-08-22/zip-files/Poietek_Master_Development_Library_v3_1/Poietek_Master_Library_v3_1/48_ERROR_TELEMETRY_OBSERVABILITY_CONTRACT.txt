@@ -1,0 +1,86 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.8
+
+48 — ERROR, TELEMETRY & OBSERVABILITY CONTRACT v1
+=================================================
+
+COMPANION
+error-codes.v1.json
+
+ERROR SHAPE
+
+AppError {
+  code
+  category
+  severity
+  retryable
+  userMessage
+  technicalMessage
+  objectId?
+  correlationId?
+  cause?
+}
+
+USER MESSAGE
+Plain-language.
+Never expose token/path secrets by default.
+
+TECHNICAL DETAIL
+Expandable/copyable.
+May contain safe diagnostic IDs.
+
+TELEMETRY EVENTS
+app.started
+project.opened
+project.migration_failed
+audio.underrun
+audio.device_lost
+plugin.crashed
+sync.failed
+storage.upload_failed
+storage.quota_low
+video.frame_drop
+ai.job_failed
+
+DO NOT LOG
+audio content
+lyrics
+private messages
+OAuth tokens
+full file contents
+rights contracts
+AI prompts containing private project text unless user opted into diagnostic
+sharing and policy explicitly permits.
+
+PERFORMANCE METRICS
+cold_start_ms
+project_open_ms
+audio_callback_deadline_miss_count
+plugin_scan_ms
+sync_queue_depth
+asset_upload_rate
+waveform_generation_ms
+video_frame_drop_rate
+
+PRIVACY
+Use random installation ID for local diagnostics where possible.
+Account identity unnecessary for most performance telemetry.
+
+CRASH BUNDLE
+App version
+schema
+OS
+browser/native version
+feature
+safe stack
+plugin metadata optional
+device metadata optional
+
+Never attach project media automatically.
+
+ACCEPTANCE
+OBS-001 every surfaced error has stable code.
+OBS-002 tokens redacted.
+OBS-003 offline is state, not exception spam.
+OBS-004 underrun telemetry doesn't write Firestore.
+OBS-005 user can disable optional diagnostics.
+OBS-006 support bundle preview before upload.

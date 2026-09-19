@@ -1,0 +1,24 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.9
+
+59 — PWA SERVICE WORKER / OFFLINE BOOT CODE
+===========================================
+
+DELIVERED
+public/manifest.webmanifest
+public/sw.js
+offline/registerServiceWorker.ts
+
+STARTER POLICY
+cache the app shell;
+do not cache OAuth/API indiscriminately;
+AssetStore—not CacheStorage—owns large media.
+
+IMPORTANT VITE NOTE
+A final production service worker should use build-versioned asset precache
+generation or a mature PWA build strategy. The supplied raw service worker is an
+explicit simple first milestone.
+
+PWA-001 online first boot.
+PWA-002 offline navigation gets cached shell.
+PWA-003 service worker never becomes media database.
+PWA-004 update behavior upgraded before public beta.

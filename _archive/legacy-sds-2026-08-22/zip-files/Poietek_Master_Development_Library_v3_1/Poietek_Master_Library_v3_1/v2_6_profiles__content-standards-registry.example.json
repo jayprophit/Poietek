@@ -1,0 +1,129 @@
+{
+  "version": "2026-08-11",
+  "technicalProfiles": [
+    {
+      "profileId": "itu-bt709-sdr",
+      "label": "ITU-R BT.709 SDR HDTV",
+      "authorityType": "formal_standard",
+      "contentClass": [
+        "film",
+        "tv",
+        "music_video",
+        "social_video",
+        "live_stream"
+      ],
+      "requirements": {
+        "video": {
+          "colourPrimaries": "BT.709",
+          "hdrMode": "SDR"
+        }
+      },
+      "sourceRefs": [
+        "ITU-R BT.709-6"
+      ]
+    },
+    {
+      "profileId": "itu-bt2100-hdr",
+      "label": "ITU-R BT.2100 HDR Television",
+      "authorityType": "formal_standard",
+      "contentClass": [
+        "film",
+        "tv",
+        "music_video",
+        "live_stream"
+      ],
+      "requirements": {
+        "video": {
+          "colourPrimaries": "BT.2100",
+          "hdrMode": "HDR",
+          "transferFunction": "PQ or HLG per selected workflow"
+        }
+      },
+      "sourceRefs": [
+        "ITU-R BT.2100-3"
+      ]
+    },
+    {
+      "profileId": "smpte-dcinema",
+      "label": "SMPTE Digital Cinema / DCP Family",
+      "authorityType": "formal_standard",
+      "contentClass": [
+        "film",
+        "advertisement"
+      ],
+      "requirements": {
+        "packaging": {
+          "family": "SMPTE 428/429/430/431/432/433",
+          "delivery": "DCP"
+        }
+      },
+      "sourceRefs": [
+        "SMPTE Digital Cinema standards suites"
+      ]
+    },
+    {
+      "profileId": "smpte-imf",
+      "label": "SMPTE ST 2067 IMF",
+      "authorityType": "formal_standard",
+      "contentClass": [
+        "film",
+        "tv",
+        "advertisement",
+        "music_video"
+      ],
+      "requirements": {
+        "packaging": {
+          "family": "IMF",
+          "standard": "SMPTE ST 2067"
+        }
+      },
+      "sourceRefs": [
+        "SMPTE ST 2067"
+      ]
+    },
+    {
+      "profileId": "ebu-r128",
+      "label": "EBU R128 Broadcast Loudness",
+      "authorityType": "formal_standard",
+      "contentClass": [
+        "tv",
+        "film",
+        "advertisement",
+        "broadcast_audio"
+      ],
+      "requirements": {
+        "audio": {
+          "integratedLufs": -23
+        }
+      },
+      "sourceRefs": [
+        "EBU R128 v5",
+        "ITU-R BS.1770-5"
+      ]
+    },
+    {
+      "profileId": "webvtt-web-captions",
+      "label": "WebVTT Web Captions/Subtitles",
+      "authorityType": "formal_standard",
+      "contentClass": [
+        "social_video",
+        "web_video",
+        "live_stream"
+      ],
+      "requirements": {
+        "captions": {
+          "formats": [
+            "WebVTT"
+          ]
+        }
+      },
+      "sourceRefs": [
+        "W3C WebVTT"
+      ]
+    }
+  ],
+  "styleProfilesPolicy": {
+    "formalStandard": false,
+    "description": "Music genres and visual styles are treated as adaptive reference distributions, not mandatory industry standards."
+  }
+}

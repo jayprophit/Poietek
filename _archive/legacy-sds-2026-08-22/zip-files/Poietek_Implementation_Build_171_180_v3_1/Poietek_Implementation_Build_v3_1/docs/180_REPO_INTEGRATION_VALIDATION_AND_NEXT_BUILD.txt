@@ -1,0 +1,30 @@
+180 — REPO INTEGRATION, VALIDATION & NEXT BUILD
+===============================================
+
+Integration patches:
+main.tsx
+App.tsx
+package.json
+index.html.
+
+App.tsx patch fixes the current MasterState initialization mismatch by adding
+reverbLevel and delayLevel.
+
+Validation in this artifact:
+strict TypeScript compile of framework-independent Poietek core
+Node runtime unit tests.
+
+NEXT BUILD 181-190
+
+181 Import UI wired into existing Browser
+182 Arrange workspace uses canonical Project
+183 waveform canvas
+184 global transport UI -> WebAudioTimelinePlayer
+185 recording input + Check My Level
+186 WAV offline renderer/export
+187 crash journal
+188 real time-preserving pitch backend spike
+189 Supabase project-directory/auth adapter
+190 Tauri desktop first launch/file open/save.
+
+END

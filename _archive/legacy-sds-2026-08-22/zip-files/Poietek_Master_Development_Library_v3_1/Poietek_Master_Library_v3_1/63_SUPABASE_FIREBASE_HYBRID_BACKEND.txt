@@ -1,0 +1,74 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.10
+
+63 — SUPABASE + FIREBASE HYBRID BACKEND
+=======================================
+
+RECOMMENDED PROTOTYPE
+
+LOCAL CLIENT
+Creative source of truth while working.
+IndexedDB/OPFS web.
+SQLite/files native.
+
+SUPABASE
+Canonical hosted backend:
+Auth
+Postgres
+teams/project directory
+comments
+rights metadata later
+Realtime collaboration relay/presence.
+
+FIREBASE
+Non-overlapping optional services:
+Hosting for Web App/Website
+Cloud Messaging where appropriate
+Remote Config / staged feature flags
+App Check where appropriate
+other Firebase diagnostics/platform services after privacy review.
+
+MEDIA
+Local + BYOC.
+Supabase free Storage may handle small thumbnails/previews, but is not the large
+multitrack media strategy.
+
+WHY NOT DOUBLE WRITE?
+Writing every project record to Firestore and Postgres creates:
+conflicts
+cost
+migration problems
+two authorization models
+two failure paths.
+
+CanonicalBackend interface selects one hosted data authority.
+
+FIREBASE-ONLY TEST MODE
+Allowed.
+Implement FirebaseBackendAdapter and disable Supabase adapter.
+
+SUPABASE-ONLY MODE
+Allowed.
+
+SELF-HOSTED MODE
+Later.
+
+CURRENT FREE-TIER SNAPSHOT — AUGUST 2026
+Supabase Free currently advertises:
+50,000 MAU
+500 MB DB
+5 GB egress
+1 GB file storage
+200 peak realtime connections
+2 million realtime messages/month
+50 MB max file upload
+and free projects may pause after one week inactivity.
+
+Firebase Spark documentation currently provides no-cost usage for many Firebase
+services and daily Firestore quota such as 20k writes/50k reads in its example.
+
+Always re-check before release.
+
+OFFICIAL SOURCES
+https://supabase.com/pricing
+https://supabase.com/docs/guides/auth
+https://firebase.google.com/docs/projects/billing/firebase-pricing-plans

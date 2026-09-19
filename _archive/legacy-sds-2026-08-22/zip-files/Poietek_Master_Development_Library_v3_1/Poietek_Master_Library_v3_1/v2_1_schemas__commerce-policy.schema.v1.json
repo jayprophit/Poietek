@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.poietek.local/commerce-policy/v1",
+  "title": "Poietek Commerce Policy v1",
+  "type": "object",
+  "required": [
+    "policyId",
+    "version",
+    "productId",
+    "currency",
+    "pricing",
+    "allocationBasis",
+    "beneficiaries"
+  ],
+  "properties": {
+    "policyId": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "productId": {
+      "type": "string"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "pricing": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "allocationBasis": {
+      "enum": [
+        "gross",
+        "net_after_tax",
+        "net_after_processor",
+        "net_after_platform",
+        "contractual_waterfall"
+      ]
+    },
+    "beneficiaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "partyId",
+          "shareBasisPoints",
+          "reason"
+        ],
+        "properties": {
+          "partyId": {
+            "type": "string"
+          },
+          "shareBasisPoints": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          },
+          "reason": {
+            "type": "string"
+          },
+          "holdIfPayoutUnavailable": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "platformFee": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "refundPolicy": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "taxPolicy": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

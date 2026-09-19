@@ -1,0 +1,63 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.8
+
+49 — CI/CD, RELEASE AUTOMATION & QUALITY GATES v1
+=================================================
+
+COMPANION
+ci.example.yml
+
+PR REQUIRED
+typecheck
+lint
+unit tests
+schema validation
+fixture validation
+web build
+secret scan
+licence scan.
+
+WHEN IMPLEMENTED
+Firebase emulator rules tests.
+E2E offline tests.
+Audio render fixtures.
+Sync convergence.
+Native builds.
+Plugin host tests.
+
+RELEASE CHANNELS
+nightly
+alpha
+beta
+stable
+
+BLOCK RELEASE IF
+project migration fixture fails
+data-loss regression
+security critical
+audio render critical regression
+unsigned native package
+invalid SBOM/licence gate.
+
+ARTIFACTS
+web dist
+native installers
+checksums
+SBOM
+notices
+schema bundle
+migration report
+release notes.
+
+GITHUB
+Use repository workflows for CI, issues, PR review and release artifacts.
+Do not store production provider secrets in repository variables accessible to
+untrusted PR code.
+
+ACCEPTANCE
+CI-001 clean clone builds.
+CI-002 schemas validate.
+CI-003 fixtures validate.
+CI-004 failing migration blocks release.
+CI-005 dependency licence report generated.
+CI-006 release checksum published.
+CI-007 secrets absent from build logs.

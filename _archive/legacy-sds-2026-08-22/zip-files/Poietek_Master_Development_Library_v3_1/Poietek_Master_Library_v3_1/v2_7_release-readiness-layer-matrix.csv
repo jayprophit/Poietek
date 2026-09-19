@@ -1,0 +1,10 @@
+Readiness layer,Example,Formal?,Poietek behavior
+Musical tuning,ISO A4=440 Hz,Yes when selected as ISO reference,Measure/flag tuning offset; never call it a radio rule
+Broadcast loudness,EBU R128,Yes for selected EBU workflow,LUFS/true-peak conformance
+US TV/streaming loudness,ATSC A/85:2026,Authoritative recommended practice,Target-specific loudness/true-peak workflow
+Streaming music,Provider-specific current mastering/playback guidance,Platform rule/guidance,Updateable provider profile
+Film/TV colour,BT.709 / BT.2100,Formal,Check tags/transform/delivery
+Cinema package,SMPTE DCP family,Formal,Package/preflight
+Captions,WebVTT / target TTML family,Formal/target-specific,Validate timed text
+Rights/metadata,ISRC/ISWC/DDEX/manifest as applicable,Industry/target-specific,Completeness + registration status
+Creative genre style,Reference distributions,No,Advisory only

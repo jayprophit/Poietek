@@ -1,0 +1,59 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.6
+
+121 — TECHNICAL STANDARDS VS STYLE NORMS
+========================================
+
+CORE DISTINCTION
+
+Not every genre has a formal industry standard.
+
+Formal standards can define:
+colour spaces
+HDR transfer functions
+loudness measurement
+broadcast targets
+cinema packaging
+caption formats
+timecode
+interchange
+delivery codecs/containers.
+
+Genres/styles usually define tendencies, conventions and audience expectations.
+
+Examples:
+drill
+jazz
+classical
+ambient
+Afrobeats
+metal
+film score
+documentary
+horror
+anime
+music video.
+
+These are not one fixed LUFS/EQ/colour rule.
+
+POIETEK THEREFORE HAS TWO REGISTRIES.
+
+STANDARDS REGISTRY
+
+Formal/versioned requirements.
+
+STYLE REFERENCE REGISTRY
+
+Adaptive reference distributions.
+
+AI must label each recommendation:
+
+REQUIRED BY TARGET
+TECHNICAL BEST PRACTICE
+REFERENCE NORM
+CREATIVE OPTION.
+
+Never use:
+"industry standard"
+for a subjective genre tendency.
+
+END DOCUMENT 121

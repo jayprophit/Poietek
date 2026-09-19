@@ -1,0 +1,92 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.10
+
+65 — FIVE-STAR COMPETITIVE BENCHMARK STANDARD
+=============================================
+
+PURPOSE
+
+The creator requires Poietek to target five-star quality against products with
+similar functions.
+
+IMPORTANT
+
+A five-star score is NOT awarded because the specification contains a feature.
+It requires reproducible implementation evidence.
+
+STAR SCALE
+
+1
+Prototype / critical capabilities missing.
+
+2
+Basic usable implementation, materially behind professional references.
+
+3
+Competitive baseline for ordinary professional use.
+
+4
+Strong professional implementation, at or near best references.
+
+5
+Best-in-class release gate:
+meets or exceeds the strongest relevant reference for the defined benchmark and
+has no critical reliability/usability regression.
+
+COMPARISON PRINCIPLE
+
+Poietek is not compared to one product.
+
+For each module compare against category leaders:
+
+DAW/Live:
+Ableton Live
+Logic Pro
+Pro Tools
+FL Studio
+Studio One where applicable.
+
+Pitch/time:
+Melodyne
+Auto-Tune
+Revoice
+DAW-native pitch tools.
+
+DJ:
+Serato
+rekordbox
+Traktor
+VirtualDJ
+djay
+Mixxx.
+
+Video/VFX:
+DaVinci Resolve
+Premiere/After Effects-class workflows where relevant.
+
+Synth/modulation/effects:
+Serum/Vital
+high-quality commercial/open references.
+
+Cloud/collaboration:
+current creator tools plus Git-like versioning references.
+
+CATEGORIES
+See benchmark-rubric.v1.json.
+
+5-STAR CERTIFICATION RULE
+
+No category below 4.5.
+Weighted total >= 4.8.
+Audio Engine = 5.
+Offline/Local = 5.
+Stability = 5.
+Installed Platform behavior = 5.
+No P0/P1 data loss/security/audio-dropout bug.
+Every score linked to evidence.
+
+PUBLIC CLAIM
+Do not market "5-Star Certified" until independent/reproducible test records exist.
+
+RETEST
+Every major release.
+Competitor reference versions recorded.

@@ -1,0 +1,70 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isProjectMember(projectId) {
+      return signedIn() &&
+        exists(/databases/$(database)/documents/projects/$(projectId)/members/$(request.auth.uid));
+    }
+
+    function projectRole(projectId) {
+      return get(/databases/$(database)/documents/projects/$(projectId)/members/$(request.auth.uid)).data.role;
+    }
+
+    function canEdit(projectId) {
+      return isProjectMember(projectId) &&
+        projectRole(projectId) in ['owner','admin','producer','editor'];
+    }
+
+    match /users/{userId} {
+      allow read, write: if signedIn() && request.auth.uid == userId;
+    }
+
+    match /projects/{projectId} {
+      allow create: if signedIn() && request.resource.data.ownerUserId == request.auth.uid;
+      allow read: if isProjectMember(projectId);
+      allow update, delete: if canEdit(projectId);
+
+      match /members/{userId} {
+        allow read: if isProjectMember(projectId);
+        allow create, update, delete:
+          if signedIn() && projectRole(projectId) in ['owner','admin'];
+      }
+
+      match /comments/{commentId} {
+        allow read: if isProjectMember(projectId);
+        allow create: if isProjectMember(projectId)
+          && request.resource.data.authorUserId == request.auth.uid;
+        allow update, delete: if signedIn() &&
+          (resource.data.authorUserId == request.auth.uid ||
+           projectRole(projectId) in ['owner','admin']);
+      }
+
+      match /syncUpdates/{updateId} {
+        allow read: if isProjectMember(projectId);
+        allow create: if canEdit(projectId)
+          && request.resource.data.actorUserId == request.auth.uid;
+        allow update, delete: if false;
+      }
+    }
+
+    match /assets/{assetId} {
+      allow read: if signedIn() &&
+        isProjectMember(resource.data.projectId);
+      allow create: if signedIn() &&
+        canEdit(request.resource.data.projectId);
+      allow update: if signedIn() &&
+        canEdit(resource.data.projectId);
+
+      match /replicas/{replicaId} {
+        allow read: if signedIn();
+        allow write: if false; // prototype: manage through trusted service/client path later
+      }
+    }
+  }
+}

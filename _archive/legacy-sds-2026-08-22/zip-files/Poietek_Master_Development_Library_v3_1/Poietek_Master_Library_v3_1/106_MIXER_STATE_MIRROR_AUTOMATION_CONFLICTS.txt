@@ -1,0 +1,75 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.4
+
+106 — MIXER STATE MIRROR, AUTOMATION & CONFLICT RESOLUTION
+==========================================================
+
+COMPANION
+packages/console/src/MixerStateMirror.ts
+
+THE MIRROR
+
+Keeps the latest normalized desk/app state for readable/writable parameters.
+
+SOURCES
+
+physical_console
+poietek_ui
+automation_playback
+scene_recall
+remote_client
+system.
+
+CONFLICT MODES
+
+LAST TOUCH
+last intentional control wins.
+
+CONSOLE PRIORITY
+physical desk wins.
+
+POIETEK PRIORITY
+app/automation wins.
+
+AUTOMATION PRIORITY
+playback automation owns controlled parameters.
+
+PICKUP
+non-motorized controls must cross software value before taking over.
+
+READ ONLY
+app displays state but writes nothing.
+
+AUTOMATION MODES
+
+Read
+Touch
+Latch
+Write
+Trim later.
+
+DESK CHANGE DURING AUTOMATION RECORD
+
+physical change
+-> timestamp against transport
+-> automation points
+-> app UI
+-> project command/automation transaction.
+
+HIGH-RATE DATA
+
+Meters and touch movement telemetry are not written as individual project
+commands at raw device frequency.
+Automation recorder downsamples/curves appropriately.
+
+LOOP PREVENTION
+
+Each control event has source/sequence.
+Adapter must not echo Poietek-originated writes forever as new user changes.
+
+MIRROR-001 physical fader moves UI.
+MIRROR-002 app fader moves motor fader where supported.
+MIRROR-003 no feedback loop.
+MIRROR-004 pickup prevents parameter jump.
+MIRROR-005 automation time aligns to transport.
+
+END DOCUMENT 106

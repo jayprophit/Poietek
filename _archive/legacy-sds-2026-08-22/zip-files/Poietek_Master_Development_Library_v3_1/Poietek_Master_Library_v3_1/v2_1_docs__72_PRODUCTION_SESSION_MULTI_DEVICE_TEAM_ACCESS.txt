@@ -1,0 +1,99 @@
+POIETEK MASTER DEVELOPMENT LIBRARY — VERSION 2.1
+
+72 — PRODUCTION SESSION, MULTI-DEVICE TEAM ACCESS & GUEST CLAIMING
+=================================================================
+
+COMPANION
+schemas/project-access-policy.schema.v1.json
+packages/identity/src/ContributorSession.ts
+
+JOIN OPTIONS
+
+1 Contributor scans project QR on their own phone/tablet/laptop.
+2 Contributor opens invite link/email.
+3 Producer searches an existing Poietek profile.
+4 Contributor creates a guest identity on the studio device.
+5 Guest identity is claimed later from their own device/account.
+
+OWNER / ADMIN CONTROLS
+
+Role.
+Permissions.
+Access mode.
+Expiry.
+Concurrent sessions.
+Devices per contributor.
+Project-only or reusable team membership.
+Revoke device.
+Suspend contributor.
+Allow/deny export.
+Allow/deny rights editing.
+Allow/deny financial visibility.
+
+ACCESS MODES
+
+ONE_SESSION
+Valid for the current production session.
+
+TIME_LIMITED
+Ends at specified time.
+
+PROJECT_LIFETIME
+Access continues for this project.
+
+TEAM_REUSABLE
+Contributor can join future projects in the same team when invited/allowed.
+
+ORGANISATION
+Company/studio account policy.
+
+UNLIMITED
+No project-level device/session cap, subject to system/security/product plan.
+
+IMPORTANT
+
+"Unlimited" does not mean unauthenticated.
+Every active device/session still has identity, token, audit and revocation.
+
+STUDIO-DEVICE GUEST
+
+Contributor enters:
+display name
+email/phone optional
+role
+society IDs optional.
+
+Poietek creates:
+Temporary Party
+Session contribution record.
+
+Later:
+Claim this contribution
+-> authenticate on contributor's own device
+-> prove invite/claim token
+-> merge temporary Party into permanent Party
+-> preserve original audit history.
+
+CREDITS SURVIVE ACCESS REVOCATION
+
+Removing access must never remove:
+credits
+approved rights
+session history
+registration evidence.
+
+FINALIZATION
+
+When a recording is selected as final:
+Poietek asks contributors with unresolved metadata/rights to review.
+Remote contributors receive review tasks.
+Owner cannot silently impersonate another contributor's approval.
+
+ACCEPTANCE
+TEAM-001 QR join works.
+TEAM-002 studio-device guest can claim later.
+TEAM-003 owner can revoke one device.
+TEAM-004 revoked user retains credits.
+TEAM-005 unlimited access still records sessions.
+TEAM-006 contributor can use several permitted devices.
+TEAM-007 rights approval requires correct Party identity.

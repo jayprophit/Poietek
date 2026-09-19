@@ -1,0 +1,12 @@
+Content type,Formal technical profile examples,Style/reference intelligence,AI assistance
+Music single/album,"BS.1770/R128 or selected platform profile, codec/sample/metadata",Genre/subgenre/reference-track distributions,Mix/master/reference advice
+Classical/orchestral,Delivery format + target loudness policy,Artist/ensemble/reference dynamics & spectral profile,"Preserve dynamics, noise/edit checks"
+Electronic/club,Delivery + DJ/export profile,Genre/subgenre bass/transient/density reference,"Kick/bass, level, phase, club translation"
+Podcast/speech,Podcast/platform delivery profile,Voice/production reference profile,Dialogue loudness/noise/de-ess/caption/transcript
+Film,"BT.709/BT.2100, DCP/IMF, target audio/captions",Genre/director/reference look,"QC, colour, audio, captions, packaging"
+TV/broadcast,BT.709/BT.2100 + broadcaster/R128 profile,Programme-type reference,Compliance preflight
+Music video,Web/broadcast/cinema target,Music+visual style references,Cross-modal pacing/colour/audio advice
+Social video,Platform delivery profile,Creator/channel style profile,Aspect/captions/loudness/thumbnail suggestions
+Live stream,Streaming + caption + audio profile,Channel/show style,Real-time health/compliance
+Image/artwork,Colour/profile/dimensions/client spec,Brand/artist/reference look,Colour/gamut/composition/accessibility advice
+Game asset,Engine/client asset profile,Game/scene style,"Loop, loudness, texture/codec/pipeline checks"

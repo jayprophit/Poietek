@@ -1,0 +1,34 @@
+POIETEK IMPLEMENTATION BATCH — VERSION 1.9
+
+53 — INDEXEDDB LOCAL PROJECT REPOSITORY CODE
+============================================
+
+DELIVERED
+ProjectRepository.ts
+IndexedDbProjectRepository.ts
+
+FUNCTIONS
+create
+get
+save
+list
+delete.
+
+TRANSACTION RULE
+Project is considered locally committed only after IndexedDB transaction completes.
+
+AUTOSAVE
+Application layer should debounce ordinary UI edits modestly OR persist every
+command in a queued transaction depending measured performance.
+Do not debounce recording-finalization integrity.
+
+FUTURE
+checkpoints
+migration table
+journal
+crash recovery.
+
+IDB-001 save/reload identical project.
+IDB-002 duplicate create rejected.
+IDB-003 invalid project rejected before write.
+IDB-004 local-only operation requires no account.
