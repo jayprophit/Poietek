@@ -8,6 +8,9 @@ build/
 native-core/build/
 native-core/build-msvc/
 native-core/build-ninja/
+native-build/
+buildlog.txt
+buildlog-tail.txt
 
 *.log
 
