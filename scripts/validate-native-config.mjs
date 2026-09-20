@@ -5,18 +5,29 @@ import {fileURLToPath} from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file) => readFile(path.join(root, file), 'utf8');
-const [manifestText, packageText, tauriText, cargoText, rustText, nodeText, capabilityText, permissionText, commandText] =
-  await Promise.all([
-    read('deployment/toolchains.json'),
-    read('package.json'),
-    read('src-tauri/tauri.conf.json'),
-    read('src-tauri/Cargo.toml'),
-    read('rust-toolchain.toml'),
-    read('.node-version'),
-    read('src-tauri/capabilities/main-minimal.json'),
-    read('src-tauri/permissions/studio-device-inventory.toml'),
-    read('src-tauri/src/commands.rs'),
-  ]);
+const [
+  manifestText,
+  packageText,
+  tauriText,
+  cargoText,
+  rustText,
+  nodeText,
+  capabilityText,
+  permissionText,
+  commandText,
+  deviceCommandText,
+] = await Promise.all([
+  read('deployment/toolchains.json'),
+  read('package.json'),
+  read('src-tauri/tauri.conf.json'),
+  read('src-tauri/Cargo.toml'),
+  read('rust-toolchain.toml'),
+  read('.node-version'),
+  read('src-tauri/capabilities/main-minimal.json'),
+  read('src-tauri/permissions/studio-device-inventory.toml'),
+  read('src-tauri/src/commands.rs'),
+  read('src-tauri/src/commands/devices.rs'),
+]);
 
 const manifest = JSON.parse(manifestText);
 const packageJson = JSON.parse(packageText);
@@ -55,8 +66,8 @@ expect(
   'native inventory permission does not allow the reviewed command',
 );
 expect(
-  commandText.includes('selectable_by_native_engine: false') &&
-    commandText.includes('latency_status: "not_measured"'),
+  deviceCommandText.includes('selectable_by_native_engine: false') &&
+    deviceCommandText.includes('latency_status: "not_measured"'),
   'native inventory must keep selection and latency states honest',
 );
 expect(tauri.bundle.targets === 'all', 'base bundle targets must remain portable');

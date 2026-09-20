@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
-  <title id="title">Poietek Studio</title>
-  <desc id="description">A gold waveform and record dot on a dark studio panel.</desc>
-  <rect width="512" height="512" rx="104" fill="#0a0a0e"/>
-  <rect x="44" y="44" width="424" height="424" rx="76" fill="none" stroke="#f59e0b" stroke-width="18"/>
-  <path d="M104 280h48l26-116 42 216 42-260 42 208 28-132 26 84h50" fill="none" stroke="#f5b942" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="396" cy="116" r="24" fill="#ef4444"/>
-</svg>
