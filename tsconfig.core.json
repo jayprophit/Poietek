@@ -52,6 +52,7 @@
     ,"src/poietek/region-workflows/**/*.ts"
     ,"src/poietek/tracking-workflows/**/*.ts"
     ,"src/poietek/editorial-workflows/**/*.ts"
+    ,"src/poietek/qa/**/*.ts"
     ,"src/poietek/design/**/*.ts"
     ,"src/poietek/consistency/**/*.ts"
     ,"src/poietek/refs/**/*.ts"
