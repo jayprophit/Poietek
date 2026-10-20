@@ -1,0 +1,134 @@
+# =============================================================================
+# BUILD MANIFEST — Poietek
+# =============================================================================
+# Authoritative record of how this project is built, tested and verified, and
+# of what is still broken. Read by Aetherius-OS's build manifest registry
+# (docs/BUILD-MANIFEST-REGISTRY.yaml) and validated by
+# src/programme/buildManifest.ts.
+# =============================================================================
+schema_version: "1.0.0"
+
+project:
+  id: poietek
+  name: Poietek
+  kind: application
+  domain: poietek
+  description: >-
+    Poietek Studio: a local-first cross-platform creative production system
+    with a Tauri desktop shell, a web preview build, and a native audio
+    core. Canonical creative surface of the Aetherius ecosystem.
+  repository: true
+  branch: refactor/architecture-foundation
+  languages: [typescript, rust, javascript]
+
+toolchain:
+  build_system: npm/vite/tauri
+  package_manager: npm
+  requirements:
+    - name: node
+      version: ">=18"
+      required: true
+      purpose: build scripts, Vite, TypeScript compiler, node:test runner
+    - name: npm
+      version: ">=9"
+      required: true
+      purpose: dependency install and script running
+    - name: rust
+      version: ">=1.77"
+      required: false
+      purpose: Tauri desktop shell and the native audio core
+    - name: cargo
+      version: ">=1.77"
+      required: false
+      purpose: Tauri build tooling
+
+commands:
+  - name: install
+    command: npm ci
+    working_directory: .
+    timeout_minutes: 15
+  - name: typecheck
+    command: npm run typecheck:core
+    working_directory: .
+    timeout_minutes: 10
+  - name: test
+    command: npm test
+    working_directory: .
+    timeout_minutes: 20
+    requires: [typecheck]
+  - name: build
+    command: npm run build
+    working_directory: .
+    timeout_minutes: 20
+    requires: [typecheck]
+  - name: verify
+    command: npm run format:check && npm run native:verify-config && npm run typecheck && npm test && npm run build
+    working_directory: .
+    timeout_minutes: 60
+    requires: [typecheck, test, build]
+  - name: build-desktop
+    command: npm run native:build:windows
+    working_directory: .
+    timeout_minutes: 90
+    requires: [typecheck, test]
+  - name: dev
+    command: npm run dev:web
+    working_directory: .
+    timeout_minutes: 0
+
+dependencies:
+  projects: [universal-bridge]
+  external:
+    - react
+    - vite
+    - typescript
+    - "@tauri-apps/cli"
+    - tailwindcss
+
+status:
+  state: VERIFIED
+  last_verified: "2026-10-20"
+  summary: >-
+    The core typecheck passes with no diagnostics and the full test suite
+    passes: 384 tests, 0 failures, 0 skipped, 8.66s. The web build path is
+    the verified surface; the Tauri desktop build was not exercised in this
+    pass because it needs the Rust toolchain and a longer build.
+  evidence:
+    - "npm run typecheck:core -> exit 0, no diagnostics"
+    - "npm test -> 384 tests, 384 pass, 0 fail, 0 cancelled, 0 skipped, 0 todo, 8664ms"
+    - "npm test -> typecheck:core && node ./scripts/prepare-core-tests.mjs && node --test tests/*.test.js"
+
+known_issues:
+  - id: POI-001
+    severity: low
+    summary: >-
+      The Tauri desktop packaging path was not exercised in this verification
+      pass; only the web build and core test surface were confirmed.
+    evidence: >-
+      npm run native:build:windows was not run; the build.yaml records the
+      web path as the verified surface.
+    status: OPEN
+    todo_ref: TODO-POI-001
+  - id: POI-002
+    severity: low
+    summary: >-
+      The references/ directory is untracked on this branch and its intended
+      content is not yet established.
+    evidence: >-
+      git status --porcelain -> "?? references/"
+    status: OPEN
+    todo_ref: TODO-POI-002
+
+notes:
+  - >-
+    AGENTS.md is the project's standing engineering rules file. It defines
+    the source-of-truth priority order, the local-first rule, the audio
+    correctness rules and the first trustworthy vertical slice. Read it
+    before changing anything in this tree.
+  - >-
+    Durable creative truth must not live only in React component state. The
+    canonical serializable PoietekProject, ProjectRepository, AssetStore and
+    ProjectSession are the durable layer.
+  - >-
+    The repository was migrated from an SDS concept prototype. Do not preserve
+    architectural mistakes merely to preserve UI.
